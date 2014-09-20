@@ -1,0 +1,44 @@
+/*
+  Injader - Content management for everyone
+  Copyright (c) 2005-2009 Ben Barden
+  Please go to http://www.injader.com if you have questions or need help.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Page number links */
+span.pagedesc {font-weight: bold;}
+span.pagelink {padding: 4px; border: 1px solid #ccc;}
+span.thispage {background-color: #ccc; color: #000;}
+
+/* Special text styles */
+div.errortext {background-color: #fff; color: #f00; margin: 2px; padding: 4px; width: 250px;}
+div.scroll {width: 725px; height: 400px; overflow: auto; }
+div#notice-locked {background-color: #f00; color: #fff; font-family: Verdana; font-size: 80%; font-weight: bold; margin: 0; padding: 2px;}
+
+/* CMS codes */
+.cmsQuote {background-color: #9cf; border: 1px solid #000; color: #000; font-size: 80%; padding: 2px; width: 90%;}
+code {background-color: #fff; border: 2px dotted #ccc; color: #000; font-size: 120%; padding: 2px;}
+.cmsWrapLeft {float: left !important; margin: 8px;}
+.cmsWrapRight {float: right !important; margin: 8px;}
+.cmsSpacer {clear: both !important; float: none !important;}
+
+/* Error page */
+div#err-page {font-family: Verdana, Arial, Helvetica, sans-serif !important; font-size: 0.8em !important; margin: 0 0 0 0 !important; padding: 4px !important;}
+div#err-page h1 {font-size: 180% !important; font-variant: small-caps !important;}
+div#err-page p#err-src {border: 1px solid #000 !important; background-color: #9f9 !important; color: #000 !important; font-size: 90% !important; font-style: italic !important; padding: 5px !important; width: 375px !important;}
+
+/* Query execution time */
+#majQueryTimeData {background-color: #e1f0ff; border: 1px solid #000; color: #000; font-family: Verdana, Arial, sans-serif; font-size: 90%; height: 300px; overflow: auto !important; margin: 5px 0 0 0; padding: 0; width: 600px;}
+#majQueryTimeData p {background-color: #fff; color: #000; font-weight: bold; margin: 0; padding: 4px; text-align: center;}

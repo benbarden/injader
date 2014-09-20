@@ -1,0 +1,80 @@
+/*
+  Injader - Content management for everyone
+  Copyright (c) 2005-2009 Ben Barden
+  Please go to http://www.injader.com if you have questions or need help.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@import url(system.css);
+
+/* Default margins for standard pages */
+.mPage {margin: 0px 5px 0px 5px; padding: 0px 5px 0px 5px;}
+
+/* UserCP */
+#UserCP-UserProfile h1#heading {font-size: 180%; font-style: normal; letter-spacing: 0.05em;}
+
+/* Tag Map and Search */
+#tagmap {padding: 14px; width: 95%;}
+#tagmap .item {padding: 8px;}
+#search-results .search-item {margin-bottom: 5px; padding: 5px; width: 75%;}
+#search-results .search-item .title {display: inline;}
+#search-results .search-item .area {display: inline; font-style: italic; margin-left: 5px;}
+#search-results .search-item .intro {padding: 4px;}
+
+/* Comment verification description */
+.VerifyDesc {font-size: 90%; margin: 2px; width: 200px;}
+
+/* Base navigation bar (main site) */
+.Navigator span {font-size: 70%; line-height: 1.5em; padding-left: 10px;}
+
+/* Standard table styles */
+table.DefaultTable, table.OptionTable {background-color: #fff; color: #000; font-family: Verdana, Arial, Helvetica, sans-serif; text-align: left;}
+
+table.FixedTable {table-layout: fixed !important;}
+table.CentreTable {margin-left: auto !important; margin-right: auto !important;}
+
+table.DefaultTable tr th, table.DefaultTable tr td, table.OptionTable tr th, table.OptionTable tr td {padding: 4px;}
+
+table.DefaultTable th, table.OptionTable th, td.HeadColour {background-color: #fff; color: #000;}
+table.DefaultTable th, table.OptionTable th {text-align: center;}
+
+table.NarrowTable {width: 300px !important;}
+table.MediumTable {width: 450px !important;}
+table.WideTable {width: 650px !important;}
+table.PageTable {width: 95% !important;}
+
+col.BaseColour, td.BaseColour {background-color: #fff; color: #000;}
+col.InfoColour, td.InfoColour {background-color: #9cf; color: #000;}
+col.FootColour, td.FootColour {background-color: #fff; color: #000;}
+col.HeadColour, td.HeadColour {background-color: #fff; color: #000;}
+
+col.TinyCell, td.TinyCell {width: 50px !important;}
+col.NarrowCell, td.NarrowCell {width: 100px !important;}
+col.MediumCell, td.MediumCell {width: 175px !important;}
+col.WideCell, td.WideCell {width: 250px !important;}
+col.HalfCell, td.HalfCell {width: 50% !important;}
+col.SpanCell, td.SpanCell {width: 100% !important;}
+
+col.Left, td.Left {text-align: left !important;}
+col.Centre, td.Centre {text-align: center !important;}
+col.Right, td.Right {text-align: right !important;}
+
+col.Bold, td.Bold {font-weight: bold !important;}
+
+/* Results table */
+table#tblSysResults {table-layout: auto !important; text-align: center;}
+
+/* Form controls */
+input, option, textarea {border: 1px solid #999; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 95%; font-weight: normal; padding: 2px;}

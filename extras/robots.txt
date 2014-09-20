@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /cgi-bin
+Disallow: /cp
+Disallow: /data
+Disallow: /info
+Disallow: /sys
+Disallow: /search.php

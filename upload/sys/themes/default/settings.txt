@@ -1,0 +1,3 @@
+SidebarHeader1 => Secondary Nav
+SidebarHeader2 => Tertiary Nav
+FooterCaption => Copyright © 2009 Your Site Title
