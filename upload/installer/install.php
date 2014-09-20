@@ -20,7 +20,7 @@
 
   require 'InjaderPage.php';
   $IJP = new InjaderPage;
-  $intStep = $_GET['step'];
+  $intStep = isset($_GET['step']) ? $_GET['step'] : null;
   if (!$intStep) {
     $intStep = 1;
   }
@@ -37,6 +37,18 @@
       require '../sys/header.php';
       break;
   }
+  // Instantiate
+switch ($intStep) {
+    case 2:
+        $strDBHost        = "";
+        $strDBSchema      = "";
+        $strDBAdminUser   = "";
+        $strDBAdminPass   = "";
+        $strMajesticUser  = "";
+        $strMajesticPass  = "";
+        break;
+}
+
   // POST stuff
   if ($_POST) {
     switch ($intStep) {
@@ -154,6 +166,7 @@ htaccess;
             $arrInstallRelURL = explode("installer", $_SERVER['PHP_SELF']);
             $strInstallRelURL = $arrInstallRelURL[0];
             // Do stuff with the file
+            $strFile = "";
             foreach ($arrFile as $strKey => $strData) {
                 if (strpos($strData, "define('URL_ROOT',") > -1) {
                     $strData = "define('URL_ROOT', \"$strInstallRelURL\");\r\n";

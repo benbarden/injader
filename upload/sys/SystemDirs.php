@@ -24,7 +24,7 @@
   define('SVR_HOST',      $_SERVER['HTTP_HOST']);
   define('SVR_WWWROOT',   $_SERVER['DOCUMENT_ROOT']);
   // Root path MUST include a trailing forward slash!
-define('URL_ROOT', "/dev/injader/");
+define('URL_ROOT', "/");
   define('URL_CACHE',         URL_ROOT.'data/cache/');
   define('URL_CUSTOM',        URL_ROOT.'custom/');
   define('URL_SYS_ROOT',      URL_ROOT.'sys/');

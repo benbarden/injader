@@ -107,7 +107,7 @@
 		$strContURL     = $_POST['txtURL'];
 		$strExcerpt     = $CMS->StripSlashesIFW($_POST['txtExcerpt']);
 		$intCustomOrder = $CMS->FilterNumeric($_POST['txtCustomOrder']);
-		if (!isset($intCustomOrder)) $intCustomOrder = 0;
+		if (!isset($intCustomOrder) || ($intCustomOrder == '')) $intCustomOrder = 0;
     $strArticleTags = $CMS->StripSlashesIFW($_POST['txtArticleTags']);
     // Validate area
     $strNavType   = empty($_POST['optNavType']) ? C_NAV_PRIMARY : $_POST['optNavType'];

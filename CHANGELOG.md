@@ -1,5 +1,14 @@
 # Injader changelog
 
+## 2.4.6 (currently on master)
+
+* Bug: Fixed an issue where the custom order field wasn't getting set, causing a database error
+* Bug: Fixed an issue with the default timezone not being set
+* Guides: Created new install guide within the download file, under /guides/
+* Maintenance: Fixed several notices in the installer
+* Maintenance: Added support for a /private/ folder for storing files outside of Git but within your project
+* Maintenance: Updated .gitignore
+
 ## 2.4.5
 
 * New: Certain file types are now restricted when uploading files.
