@@ -20,9 +20,9 @@ The installer checks if it can write to your site. If this works, proceed to the
 
 If it fails: The installer needs to be able to write to the folder you just uploaded to. You'll need to set the ownership of the folder to the web user. E.g.
 
-$ cd <project-root>
-$ sudo chown -R apache:apache .
-$ sudo chmod -R g+rw .
+    $ cd <project-root>
+    $ sudo chown -R apache:apache .
+    $ sudo chmod -R g+rw .
 
 ## Installer Step 2
 
