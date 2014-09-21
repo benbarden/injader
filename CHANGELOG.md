@@ -15,7 +15,7 @@ Note: You must be on version 2.4.4 or above to upgrade to 2.5.
 * Maintenance: Added support for a /private/ folder for storing files outside of Git but within your project
 * Maintenance: Cleaned up old version upgrade code. Upgrades prior to 2.4.4 are no longer supported.
 * Maintenance: Updated .gitignore
-* Maintenance: Moved jQuery to a new assets folder
+* Maintenance: Moved jQuery and TinyMCE to a new assets folder
 * Deletions: Removed unreleased interface changes (images and CSS)
 * Deletions: Removed CodePress (doesn't work in Chrome, and I prefer plaintext)
 * Deletions: Removed MagpieRSS (no feed to import anymore - check Github for news)
