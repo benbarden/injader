@@ -88,34 +88,6 @@
     $intUserCount = $arrUserCount[0]['count'];
     
   }
-
-  // New Releases
-  $strNewReleases = "";
-  @ $rss = fetch_rss("http://feeds.feedburner.com/InjaderNewReleases");
-  if ($rss) {
-    $i = 0;
-    foreach ($rss->items as $item) {
-      if ($i >= 5) {
-        break;
-      }
-      if ($i == 0) {
-        $strRowClass = "first";
-      } else {
-        $strRowClass = "";
-      }
-      $strLink  = $item['link'];
-      $strTitle = $item['title'];
-      $dteDate  = date('M d', strtotime($item['pubdate']));
-      $strNewReleases .= <<<ReleaseData
-          <tr class="$strRowClass">
-            <td class="column1 list"><a href="$strLink">$strTitle</a></td>
-            <td class="column2">$dteDate</td>
-          </tr>
-
-ReleaseData;
-      $i++;
-    }
-  }
   
   // Content
   $CMS->RES->ViewManageContent();
@@ -133,34 +105,44 @@ ReleaseData;
   // Comments / Users
   $CMS->RES->Admin();
   if ($CMS->RES->IsError()) {
-    $strApprovedComments = "Approved";
-    $strPendingComments  = "Pending";
+    $strApprovedComments = "Approved Comments";
+    $strPendingComments  = "Pending Comments";
     $strSpamComments     = "Spam";
     $strActiveUsers      = "Active Users";
   } else {
-    $strApprovedComments = "<a href=\"{FN_ADM_COMMENTS}\">Approved</a>";
-    $strPendingComments  = "<a href=\"{FN_ADM_COMMENTS}?type=pending\">Pending</a>";
+    $strApprovedComments = "<a href=\"{FN_ADM_COMMENTS}\">Approved Comments</a>";
+    $strPendingComments  = "<a href=\"{FN_ADM_COMMENTS}?type=pending\">Pending Comments</a>";
     $strSpamComments     = "<a href=\"{FN_ADM_COMMENTS}?type=spam\">Spam</a>";
     $strActiveUsers      = "<a href=\"{FN_ADM_USERS}\">Active Users</a>";
   }
   
   // Recent Comments
   $strRecentCommentsHTML = "";
-  $arrRecentComments = $CMS->ResultQuery("SELECT id, content, create_date FROM maj_comments WHERE comment_status = 'Approved' ORDER BY id DESC LIMIT 5", basename(__FILE__), __LINE__);
+  $arrRecentComments = $CMS->ResultQuery("
+    SELECT com.id, com.content, com.create_date, con.title
+    FROM maj_comments com
+    JOIN maj_content con ON com.story_id = con.id
+    WHERE com.comment_status = 'Approved'
+    ORDER BY com.id DESC LIMIT 5
+  ", basename(__FILE__), __LINE__);
   if ((count($arrRecentComments) > 0) && (is_array($arrRecentComments))) {
     for ($i=0; $i<count($arrRecentComments); $i++) {
       $intRecentCommentID   = $arrRecentComments[$i]['id'];
-      $strRecentCommentBody = $arrRecentComments[$i]['content'];
-      $strRecentCommentItem = "<a href=\"".$CMS->PL->ViewComment($intRecentCommentID)."\">".$strRecentCommentBody."</a>";
-      $dteRecentCommentDate = date('d M Y H:i:s', strtotime($arrRecentComments[$i]['create_date']));
+      $strRecentCommentBody = strip_tags($arrRecentComments[$i]['content']);
+      $commentLink = $CMS->PL->ViewComment($intRecentCommentID);
+      //$strRecentCommentItem = "<a href=\"".$CMS->PL->ViewComment($intRecentCommentID)."\">".$strRecentCommentBody."</a>";
+      $dteRecentCommentDate = date('d M Y H:i', strtotime($arrRecentComments[$i]['create_date']));
       $intRecentCommentNum  = $i + 1;
+      $articleTitle = $arrRecentComments[$i]['title'];
       $strRecentCommentsHTML .= <<<RecentDrafts
           <tr>
-            <td class="column1 comments">
-              $strRecentCommentItem
-              <br /><i>$dteRecentCommentDate</i>
+            <td><a href="$commentLink">$articleTitle</a></td>
+            <td>$dteRecentCommentDate</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              $strRecentCommentBody
             </td>
-            <td class="column2">$intRecentCommentNum</td>
           </tr>
     
 RecentDrafts;
@@ -181,15 +163,12 @@ RecentDrafts;
   if ((count($arrRecentDrafts) > 0) && (is_array($arrRecentDrafts))) {
     for ($i=0; $i<count($arrRecentDrafts); $i++) {
       $strRecentDraftItem = "<a href=\"".FN_ADM_WRITE."?action=edit&amp;id=".$arrRecentDrafts[$i]['id']."\">".$arrRecentDrafts[$i]['title']."</a>";
-      $dteRecentDraftDate = date('d M Y H:i:s', strtotime($arrRecentDrafts[$i]['create_date']));
+      $dteRecentDraftDate = date('d M Y H:i', strtotime($arrRecentDrafts[$i]['create_date']));
       $intRecentCommentNum = $i + 1;
       $strRecentDraftsHTML .= <<<RecentDrafts
           <tr>
-            <td class="column1 page">
-              $strRecentDraftItem
-              <br /><i>$dteRecentDraftDate</i>
-            </td>
-            <td class="column2">$intRecentCommentNum</td>
+            <td>$strRecentDraftItem</td>
+            <td>$dteRecentDraftDate</td>
           </tr>
     
 RecentDrafts;
@@ -197,144 +176,114 @@ RecentDrafts;
   } else {
     $strRecentDraftsHTML = <<<RecentDrafts
           <tr>
-            <td class="column1 page"><i>No drafts</i></td>
-            <td class="column2">-</td>
+            <td><i>No drafts</i></td>
+            <td>-</td>
           </tr>
     
 RecentDrafts;
   }
-  
+
+  // Columns
+  $htmlColumn1 = <<<column1
+<h2>Overview</h2>
+<table class="DefaultTable">
+    <colgroup>
+        <col class="InfoColour MediumCell">
+        <col class="BaseColour MediumCell">
+    </colgroup>
+    <tr>
+        <td>$strArticleLink</td>
+        <td>$intArticleCount</td>
+    </tr>
+    <tr>
+        <td>Site Files</td>
+        <td>$intSiteFileCount</td>
+    </tr>
+    <tr>
+        <td>$strActiveUsers</td>
+        <td>$intUserCount</td>
+    </tr>
+    <tr>
+        <td>$strApprovedComments</td>
+        <td>$intApprovedComments</td>
+    </tr>
+    <tr>
+        <td>$strPendingComments</td>
+        <td>$intPendingComments</td>
+    </tr>
+    <tr>
+        <td>$strSpamComments</td>
+        <td>$intSpamComments</td>
+    </tr>
+</table>
+
+<h2>Options</h2>
+
+<table class="DefaultTable">
+    <colgroup>
+        <col class="BaseColour MediumCell">
+        <col class="BaseColour MediumCell">
+    </colgroup>
+    <tr>
+        <td>
+            <a href="{FN_ADM_EDIT_PROFILE}">Edit Profile</a>
+        </td>
+        <td>
+            <a href="$strViewMyProfile">View Profile</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            $strChangePass
+        </td>
+        <td>
+            $strManageAvatars
+        </td>
+    </tr>
+</table>
+
+column1;
+
+
+  $htmlColumn2 = <<<column2
+<h2>Recent Comments</h2>
+<table class="DefaultTable">
+    <colgroup>
+        <col class="InfoColour MediumCell">
+        <col class="BaseColour MediumCell">
+    </colgroup>
+$strRecentCommentsHTML
+</table>
+
+<h2>Recent Drafts</h2>
+<table class="DefaultTable">
+    <colgroup>
+        <col class="InfoColour MediumCell">
+        <col class="BaseColour MediumCell">
+    </colgroup>
+$strRecentDraftsHTML
+</table>
+
+column2;
+
   // Build the page
   $strHTML = <<<END
 <h1>Injader Control Panel</h1>
-<div id="content">
-  <div class="panel">
-    <div class="column-x2">
-      <ul class="tabs top">
-        <li id="LeftTab1" class="overview first on"><a id="LeftTab1A" href="#" onclick="SwitchLeftTab('1');" class="nostyle">Overview</a></li>
-        <li id="LeftTab2" class="comments"><a id="LeftTab2A" href="#" onclick="SwitchLeftTab('2');">Recent Comments</a></li>
-        <li id="LeftTab3" class="page-edit"><a id="LeftTab3A" href="#" onclick="SwitchLeftTab('3');">Recent Drafts</a></li>
-      </ul>
-      <!-- DashBodyA1 -->
-      <div id="DashBodyA1" class="body" style="display: block;">
-        <table class="dashboard-overview">
-          <tr class="first">
-            <td class="column1 title"><h3>Content</h3></td>
-            <td class="column2">&nbsp;</td>
-          </tr>
-          <tr>
-            <td class="column1 page">$strArticleLink</td>
-            <td class="column2">$intArticleCount</td>
-          </tr>
-          <tr>
-            <td class="column1 page">Site Files</td>
-            <td class="column2">$intSiteFileCount</td>
-          </tr>
-        </table>
-        <table class="dashboard-overview-b">
-          <tr>
-            <td class="column1 title"><h3>Comments</h3></td>
-            <td class="column2">&nbsp;</td>
-          </tr>
-          <tr>
-            <td class="column1 comments">$strApprovedComments</td>
-            <td class="column2">$intApprovedComments</td>
-          </tr>
-          <tr>
-            <td class="column1 comments">$strPendingComments</td>
-            <td class="column2">$intPendingComments</td>
-          </tr>
-          <tr>
-            <td class="column1 comments">$strSpamComments</td>
-            <td class="column2">$intSpamComments</td>
-          </tr>
-        </table>
-        <table class="dashboard-overview">
-          <tr>
-            <td class="column1 title"><h3>Users</h3></td>
-            <td class="column2">&nbsp;</td>
-          </tr>
-          <tr>
-            <td class="column1">$strActiveUsers</td>
-            <td class="column2">$intUserCount</td>
-          </tr>
-        </table>
-        <div class="btn-primary"><a href="{FN_ADM_EDIT_PROFILE}"><span><span><span>Edit Profile</span></span></span></a></div>
-        <div class="btn-primary"><a href="$strViewMyProfile"><span><span><span>View Profile</span></span></span></a></div>
-        <br />
-        $strChangePass
-        $strManageAvatars
-      </div>
-      <!-- /DashBodyA1 -->
-      <!-- DashBodyA2 -->
-      <div id="DashBodyA2" class="body" style="display: none;">
-        <table class="dashboard-overview">
-          <tr class="first">
-            <td class="column1 title" colspan="2"><h3>Recent Comments - click to view</h3></td>
-          </tr>
-$strRecentCommentsHTML
-        </table>
-      </div>
-      <!-- /DashBodyA2 -->
-      <!-- DashBodyA3 -->
-      <div id="DashBodyA3" class="body" style="display: none;">
-        <table class="dashboard-overview">
-          <tr class="first">
-            <td class="column1 title" colspan="2"><h3>Recent Drafts - click to edit</h3></td>
-          </tr>
-$strRecentDraftsHTML
-        </table>
-      </div>
-      <!-- /DashBodyA3 -->
-    </div>
-    <div class="column-x3">
-      <ul class="tabs top">
-        <li class="news first on">Injader News</li>
-        <!--
-        <li class="widget"><a href="#">New Widgets</a></li>
-        <li class="tools"><a href="#">New Tools</a></li>
-        <li class="layout"><a href="#">New Themes</a></li>
-        -->
-      </ul>
-      <div class="body">
-        <table class="dashboard-news">
-$strNewReleases
-        </table>
-        <div class="btn-primary"><a href="http://www.injader.com"><span><span><span>More News</span></span></span></a></div>
-        <div class="btn-primary"><a href="http://help.injader.com"><span><span><span>Help Docs</span></span></span></a></div>
-        <div class="btn-primary"><a href="http://forums.injader.com"><span><span><span>Support Forum</span></span></span></a></div>
-      </div>
-    </div>
-  </div>
+
+<div id="cp">
+
+<table width="100%;">
+    <tr>
+        <td style="vertical-align: top; width: 50%;">
+        $htmlColumn1
+        </td>
+        <td style="vertical-align: top; width: 50%;">
+        $htmlColumn2
+        </td>
+    </tr>
+</table>
+
 </div>
-<script type="text/javascript">
-/* <![CDATA[ */
-  function SwitchLeftTab(intWhich) {
-    document.getElementById('DashBodyA1').style.display = 'none';
-    document.getElementById('DashBodyA2').style.display = 'none';
-    document.getElementById('DashBodyA3').style.display = 'none';
-    document.getElementById('LeftTab1').className = 'overview first';
-    document.getElementById('LeftTab2').className = 'comments';
-    document.getElementById('LeftTab3').className = 'page-edit';
-    document.getElementById('LeftTab1A').className = '';
-    document.getElementById('LeftTab2A').className = '';
-    document.getElementById('LeftTab3A').className = '';
-    if (intWhich == "1") {
-      document.getElementById('DashBodyA1').style.display = 'block';
-      document.getElementById('LeftTab1').className = 'overview first on';
-      document.getElementById('LeftTab1A').className = 'nostyle';
-    } else if (intWhich == "2") {
-      document.getElementById('DashBodyA2').style.display = 'block';
-      document.getElementById('LeftTab2').className = 'comments on';
-      document.getElementById('LeftTab2A').className = 'nostyle';
-    } else if (intWhich == "3") {
-      document.getElementById('DashBodyA3').style.display = 'block';
-      document.getElementById('LeftTab3').className = 'page-edit on';
-      document.getElementById('LeftTab3A').className = 'nostyle';
-    }
-  }
-/* ]]> */
-</script>
 
 END;
   $CMS->AP->Display($strHTML);

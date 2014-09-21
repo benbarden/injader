@@ -130,7 +130,6 @@ AdminLinks;
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 $strMetaGenerator
 <title>$strPageTitle</title>
-<link href="{URL_SYS_ROOT}interface.css" rel="stylesheet" type="text/css" />
 <link href="{URL_SYS_ROOT}cp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{URL_SYS_ROOT}scripts.js"></script>
 <script type="text/javascript" src="{URL_SYS_JQUERY}jquery-1.3.2.js"></script>
@@ -168,8 +167,11 @@ CMSHeader;
 </div> <!-- /cp -->
 \$cmsQueryTime
 <div id="footer">
-Powered by <a href="{PRD_PRODUCT_URL}">{PRD_PRODUCT_NAME}</a> $strVersion | <a href="http://help.injader.com" title="Help Docs">Help Docs</a> | <a href="http://forums.injader.com" title="Discussion Forum">Discussion Forum</a>
-<br />{PRD_PRODUCT_NAME} is free software released under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a> (v3). Copyright &copy; 2005-$intYear <a href="{PRD_COMPANY_URL}">{PRD_COMPANY_NAME}</a>. Interface design by <a href="http://www.distinctivequality.com/">Distinctive Quality</a>.
+<a href="{PRD_PRODUCT_URL}">{PRD_PRODUCT_NAME}</a> is free software released under the
+<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a> (v3).
+Copyright &copy; 2005-$intYear <a href="{PRD_COMPANY_URL}">{PRD_COMPANY_NAME}</a>. |
+{PRD_PRODUCT_NAME} $strVersion |
+<a href="https://github.com/benbarden/injader" title="Github">Github</a>
 </div>
 </div> <!-- /tplPageWrapper -->
 </body>

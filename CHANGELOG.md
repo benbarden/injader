@@ -2,12 +2,14 @@
 
 ## 2.4.6 (currently on master)
 
+* New: Simplified Control Panel layout
 * Bug: Fixed an issue where the custom order field wasn't getting set, causing a database error
 * Bug: Fixed an issue with the default timezone not being set
 * Guides: Created new install guide within the download file, under /guides/
 * Maintenance: Fixed several notices in the installer
 * Maintenance: Added support for a /private/ folder for storing files outside of Git but within your project
 * Maintenance: Updated .gitignore
+* Maintenance: Removed unreleased interface changes (images and CSS)
 
 ## 2.4.5
 
