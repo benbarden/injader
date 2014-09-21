@@ -1,1 +1,0 @@
-DELETE FROM {IFW_TBL_SYS_PREFERENCES} WHERE preference = 'prefRSSEmail';

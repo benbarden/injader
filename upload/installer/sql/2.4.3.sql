@@ -1,4 +1,0 @@
-ALTER TABLE {IFW_TBL_CONTENT} ADD article_order INT( 10 ) UNSIGNED NOT NULL DEFAULT '0',
-ADD article_excerpt TEXT NOT NULL ;
-
-ALTER TABLE {IFW_TBL_AREAS} ADD subarea_content_on_index CHAR( 1 ) NOT NULL DEFAULT 'N';

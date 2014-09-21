@@ -97,33 +97,14 @@ htaccess;
 
   // Prevent upgrade to max version
   if ($strVersion == $strMaxVersion) {
-    $IJP->Display("<h1>Upgrade Error</h1>\n\n<p>The upgrade script could not start because your site is already using Injader $strMaxVersion.</p>\n\n<p><i>Source: &lt;upgrade.php, version $strMaxVersion&gt;</i></p>", "Error");
+    $IJP->Display("<h1>Upgrade Error</h1>\n\n<p>The upgrade script could not start because your site is already
+    using Injader $strMaxVersion.</p>\n\n
+    <p><i>Source: &lt;upgrade.php, version $strMaxVersion&gt;</i></p>", "Error");
   }
 
   // Upgrade switcher
   $blnFile = true;
   switch ($strVersion) {
-    case "2.0.0":
-    case "2.0.1":
-    case "2.0.2": $strUpgradeTo = "2.0.3"; break;
-    case "2.0.3": $strUpgradeTo = "2.1.0"; break;
-    case "2.1.0":
-    case "2.1.1":
-    case "2.1.2": $strUpgradeTo = "2.1.3"; break;
-    case "2.1.3":
-    case "2.1.4": $strUpgradeTo = "2.1.5"; break;
-    case "2.1.5": $strUpgradeTo = "2.1.6"; break;
-    case "2.1.6": $strUpgradeTo = "2.1.7"; break;
-    case "2.1.7": $strUpgradeTo = "2.2.0"; break;
-    case "2.2.0": $strUpgradeTo = "2.2.1"; break;
-    case "2.2.1": $strUpgradeTo = "2.3.0"; break;
-    case "2.3.0": $strUpgradeTo = "2.3.1"; break;
-    case "2.3.1": $strUpgradeTo = "2.3.2"; break;
-    case "2.3.2": $strUpgradeTo = "2.4";   break;
-    case "2.4":   $strUpgradeTo = "2.4.1"; break;
-    case "2.4.1": $strUpgradeTo = "2.4.2"; break;
-    case "2.4.2": $strUpgradeTo = "2.4.3"; break;
-    case "2.4.3": $strUpgradeTo = "2.4.4"; $blnFile = false; break;
     case "2.4.4": $strUpgradeTo = "2.4.5"; $blnFile = false; break;
     default:
       // Not a supported upgrade route
@@ -157,97 +138,11 @@ htaccess;
     $blnSuccess = $CMS->MultiQuery($strInstallFile);
   }
 
-  ///////////////////////////////////////////////////////////////
-  
-  if ($strUpgradeTo == "2.3.1") {
-    // 1. Calculate guest email stats.
-    $arrComments = $CMS->ResultQuery("SELECT guest_email, count(*) AS count 
-    FROM {IFW_TBL_COMMENTS} WHERE guest_email <> '' GROUP BY guest_email
-    ", basename(__FILE__), __LINE__);
-    if (is_array($arrComments) && (count($arrComments) > 0)) {
-      for ($i=0; $i<count($arrComments); $i++) {
-        $strEmail = $arrComments[$i]['guest_email'];
-        $intCount = $arrComments[$i]['count'];
-        $CMS->Query("INSERT INTO {IFW_TBL_USER_STATS}(user_email, comment_count) 
-        VALUES('$strEmail', $intCount)", basename(__FILE__), __LINE__);
-      }
-    }
-    // 2. Calculate registered user stats.
-    $arrComments = $CMS->ResultQuery("SELECT u.email, count(*) AS count 
-    FROM ({IFW_TBL_COMMENTS} c, {IFW_TBL_USERS} u) 
-    WHERE c.author_id = u.id AND author_id <> 0 AND email <> '' GROUP BY u.email
-    ", basename(__FILE__), __LINE__);
-    if (is_array($arrComments) && (count($arrComments) > 0)) {
-      for ($i=0; $i<count($arrComments); $i++) {
-        $strEmail = $arrComments[$i]['email'];
-        $intCount = $arrComments[$i]['count'];
-        $blnDoInsert = true;
-        $arrTemp = $CMS->ResultQuery("SELECT comment_count FROM {IFW_TBL_USER_STATS} 
-        WHERE user_email = '$strEmail'", basename(__FILE__), __LINE__);
-        if (is_array($arrTemp) && (count($arrTemp) > 0)) {
-          if ($arrTemp[0]['comment_count'] > 0) {
-            $CMS->Query("UPDATE {IFW_TBL_USER_STATS} 
-            SET comment_count = comment_count + $intCount 
-            WHERE user_email = '$strEmail'", basename(__FILE__), __LINE__);
-            $blnDoInsert = false;
-          }
-        }
-        if ($blnDoInsert) {
-          $CMS->Query("INSERT INTO {IFW_TBL_USER_STATS}(user_email, comment_count) 
-          VALUES('$strEmail', $intCount)", basename(__FILE__), __LINE__);
-        }
-      }
-    }
-  }
-  
     //////////////////////////////////////////////////////////////////////
     
-    if ($strUpgradeTo == "2.4.2") {
+    if ($strUpgradeTo == "x.x.x") {
         
-        $arrDataWidgets = $CMS->ResultQuery("
-            SELECT * FROM ".IFW_TBL_PFX."plugins
-        ");
-        
-        for ($i=0; $i<count($arrDataWidgets); $i++) {
-            
-            $strQuery = sprintf("
-                INSERT INTO {IFW_TBL_WIDGETS}
-                (name, version, conn_id, ucp_link, acp_link,
-                query_string, item_limit, widget_variable,
-                widget_template, widget_type)
-                VALUES('%s', '%s', %s, '%s', '%s', '%s', %s, '%s', '%s', '%s')
-            ",
-                mysql_escape_string($arrDataWidgets[$i]['name']),
-                mysql_escape_string($arrDataWidgets[$i]['version']),
-                mysql_escape_string($arrDataWidgets[$i]['conn_id']),
-                mysql_escape_string($arrDataWidgets[$i]['ucp_link']),
-                mysql_escape_string($arrDataWidgets[$i]['acp_link']),
-                mysql_escape_string($arrDataWidgets[$i]['query_string']),
-                mysql_escape_string($arrDataWidgets[$i]['item_limit']),
-                mysql_escape_string($arrDataWidgets[$i]['plugin_variable']),
-                mysql_escape_string($arrDataWidgets[$i]['plugin_template']),
-                C_WIDGET_DATA
-            );
-            
-            $CMS->Query($strQuery, basename(__FILE__), __LINE__);
-            
-        }
-        
-        $CMS->Query("DROP TABLE IF EXISTS ".IFW_TBL_PFX."plugins",
-            basename(__FILE__), __LINE__
-        );
-        /*
-        $CMS->Query("DROP TABLE IF EXISTS ".IFW_TBL_PFX."extensions",
-            basename(__FILE__), __LINE__
-        );
-        */
-    }
-    
-    //////////////////////////////////////////////////////////////////////
-    
-    if ($strUpgradeTo == "2.4.3") {
-        
-        $CMS->UM->rebuildAll();
+        //
         
     }
     
