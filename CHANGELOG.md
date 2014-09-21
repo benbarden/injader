@@ -1,8 +1,8 @@
 # Injader changelog
 
-## 2.5
+## 2.5.0
 
-Note: You must be on version 2.4.4 or above to upgrade to 2.5.
+Note: You must be on version 2.4.4 or above to upgrade to 2.5.0.
 
 * New: Simplified Control Panel layout
 * Guides: Created new install guide under /guides/

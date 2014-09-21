@@ -19,7 +19,7 @@
 */
 
   // Latest version of Injader
-  define('C_SYS_LATEST_VERSION', '2.4.5');
+  define('C_SYS_LATEST_VERSION', '2.5.0');
 
   // Product
   define('PRD_PRODUCT_NAME', 'Injader');

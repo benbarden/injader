@@ -106,6 +106,7 @@ htaccess;
   $blnFile = true;
   switch ($strVersion) {
     case "2.4.4": $strUpgradeTo = "2.4.5"; $blnFile = false; break;
+    case "2.4.5": $strUpgradeTo = "2.5.0"; $blnFile = false; break;
     default:
       // Not a supported upgrade route
       $IJP->Display("<h1>Upgrade Error</h1>
