@@ -100,9 +100,6 @@
     // Pages
     require ABS_SYS_INCLUDES."pages/Archives.php";
     
-    // Third-party
-    require ABS_SYS_INCLUDES.'magpierss/rss_fetch.inc';
-    
     // Database
     require ABS_SYS_DB.'AccessLog.php';
     require ABS_SYS_DB.'Area.php';

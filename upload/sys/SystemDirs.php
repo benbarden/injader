@@ -36,7 +36,6 @@ define('URL_ROOT', "/");
   define('URL_SYS_HTML',      URL_SYS_INCLUDES.'html/');
   define('URL_SYS_IFW',       URL_SYS_INCLUDES.'ifw/');
   define('URL_SYS_JQUERY',    URL_SYS_INCLUDES.'jquery/');
-  define('URL_SYS_MAGPIERSS', URL_SYS_INCLUDES.'magpierss/');
   define('URL_SYS_TINYMCE',   URL_SYS_INCLUDES.'tiny_mce/');
   // This won't work in unit testing
   define('URL_HTTP',          'http://'.SVR_HOST.URL_ROOT);
