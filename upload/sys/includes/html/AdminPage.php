@@ -132,9 +132,7 @@ $strMetaGenerator
 <title>$strPageTitle</title>
 <link href="{URL_SYS_ROOT}cp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{URL_SYS_ROOT}scripts.js"></script>
-<script type="text/javascript" src="{URL_SYS_JQUERY}jquery-1.3.2.js"></script>
-<script type="text/javascript" src="{URL_SYS_JQUERY}tablesorter/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="{URL_SYS_JQUERY}tablesorter/jquery.tablesorter.pager.js"></script>
+<script type="text/javascript" src="{URL_SYS_JQUERY}jquery-1.11.1.min.js"></script>
 </head>
 <body id="cp-body">
 $strSystemLocked

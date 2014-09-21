@@ -331,7 +331,16 @@ END;
       $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
       // Get content
       $strDateFormat = $CMS->SYS->GetDateFormat();
-      $strContentSQL = "SELECT c.id, c.title, c.seo_title, c.content_status, c.hits, c.comment_count, c.content_area_id, DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw, a.name AS area_name, a.seo_name AS area_seo_name FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id WHERE c.content_area_id = a.id $strWhereClause ORDER BY c.id ASC";
+      $strContentSQL = "
+        SELECT c.id, c.title, c.seo_title, c.content_status, c.hits, c.comment_count, c.content_area_id,
+        DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw,
+        a.name AS area_name, a.seo_name AS area_seo_name
+        FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a)
+        LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id
+        WHERE c.content_area_id = a.id $strWhereClause
+        ORDER BY c.id ASC
+        LIMIT $intStart, $intContentPerPage
+      ";
       // LIMIT $intStart, $intContentPerPage
       $arrAreaContent = $CMS->ResultQuery($strContentSQL, basename(__FILE__), __LINE__);
       $strCountSQL = "SELECT count(*) AS count FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) WHERE c.content_area_id = a.id $strWhereClause ORDER BY c.id ASC";
@@ -386,6 +395,7 @@ AdminBulk;
           // Build header
           $strHTML .= <<<TableHeader
 $strAddArticle
+$strPageNumbers
   <!--<form action="{FN_ADM_CONTENT_MANAGE}" method="post">-->
   <!--</form>-->
 <form action="{FN_ADM_CONTENT_BULK}" method="post">
@@ -411,30 +421,16 @@ $strAddArticle
         <th>Comments</th>
         <th>Hits</th>
         <th>Options</th>
-        <th>&nbsp;</th>
+        <th>
+          <a href="#FooterRow1" id="js-manage-content-check-all" style="color: #fff; text-decoration: none;" title="Toggle All">+</a>
+        </th>
       </tr>
     </thead>
     <tfoot>
       <tr id="FooterRow1">
         <td class="FootColour" colspan="5">
-          <div id="pager" class="pager">
-            <img src="{URL_SYS_IMAGES}first.png" class="first" alt="Go to first page" />
-            <img src="{URL_SYS_IMAGES}prev.png" class="prev" alt="Go to previous page" />
-            <input type="text" class="pagedisplay" disabled="disabled" size="5" />
-            <img src="{URL_SYS_IMAGES}next.png" class="next" alt="Go to next page" />
-            <img src="{URL_SYS_IMAGES}last.png" class="last" alt="Go to last page" />
-            <select class="pagesize">
-              <option selected="selected" value="25">25</option>
-              <option value="50">50</option>
-              <option value="75">75</option>
-              <option value="100">100</option>
-            </select>
-          </div>
         </td>
         <td class="FootColour" style="text-align: right;" colspan="4">
-          <a href="#FooterRow1" onclick="ToggleCheckboxes(true);">Check All</a> / 
-          <a href="#FooterRow1" onclick="ToggleCheckboxes(false);">Uncheck All</a>
-          <br />
           <select name="optBulk" style="margin-top: 5px;">
 $strBulkOptions
           </select>
@@ -507,11 +503,12 @@ TableFooter;
     document.getElementById(strWhich).style.display = 'block';
   }
   SwitchDropDown('$strStartupList'); // do on startup
-  $(document).ready(function()
-    {
-      $("#tblArticles").tablesorter().tablesorterPager({container: $("#pager"), totalPages: $intNumPages, size: 25, page: 0});
-    }
-  );
+
+    var checkAll = true;
+    $('#js-manage-content-check-all').on('click', function() {
+        ToggleCheckboxes(checkAll);
+        checkAll = !checkAll;
+    });
 </script>
 
 FooterScript;

@@ -1,20 +1,24 @@
 # Injader changelog
 
-## 2.4.6 (currently on master)
+## 2.5.0 (currently on master)
 
-Note: You must be on version 2.4.4 or above to upgrade to 2.4.6.
+Note: You must be on version 2.4.4 or above to upgrade to 2.5.0.
 
 * New: Simplified Control Panel layout
+* Guides: Created new install guide under /guides/
 * Bug: Fixed an issue where the custom order field wasn't getting set, causing a database error
 * Bug: Fixed an issue with the default timezone not being set
-* Guides: Created new install guide within the download file, under /guides/
-* Maintenance: Fixed several notices in the installer
+* Bug: Fixed several notices in the installer
+* Upgrades: Upgraded jQuery from 1.3.2 to 1.11.1
+* Maintenance: Manage Content no longer uses AJAX pagination
 * Maintenance: Added support for a /private/ folder for storing files outside of Git but within your project
-* Maintenance: Updated .gitignore
-* Maintenance: Removed unreleased interface changes (images and CSS)
-* Maintenance: Removed CodePress
-* Maintenance: Removed MagpieRSS
 * Maintenance: Cleaned up old version upgrade code. Upgrades prior to 2.4.4 are no longer supported.
+* Maintenance: Updated .gitignore
+* Maintenance: Moved jQuery to a new assets folder
+* Deletions: Removed unreleased interface changes (images and CSS)
+* Deletions: Removed CodePress (doesn't work in Chrome, and I prefer plaintext)
+* Deletions: Removed MagpieRSS (no feed to import anymore - check Github for news)
+* Deletions: Removed Tablesorter plugin (doesn't work with latest jQuery)
 
 ## 2.4.5
 
