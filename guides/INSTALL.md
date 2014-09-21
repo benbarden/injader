@@ -10,7 +10,7 @@ Transfer the contents of the "upload" folder to your site via FTP.
 
 Open your site in a browser - you should automatically be redirected to the installer.
 
-Under "Setting up a brand new site", click the link to run the install wizard.
+Under "New installs", click the link to run the install wizard.
 
 You'll need to follow some additional steps, but starting the install wizard now is the easiest way to ensure you don't miss anything.
 
@@ -40,4 +40,6 @@ This will confirm that the installer is able to connect to the database. If this
 
 This creates a default installation in your database.
 
-For security reasons, you should now remove the installer folder from your site. It will reappear for upgrades and can be deleted again when those are complete.
+## Tidying up
+
+Delete the installer folder from your site.

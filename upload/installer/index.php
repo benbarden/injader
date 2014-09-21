@@ -25,23 +25,22 @@
 <table>
   <tr>
     <td style="padding: 8px; vertical-align: top; width: 48%;">
-      <h2 style="background-color: #000; color: #fff; margin-top: 0px; padding: 4px;">Setting up a brand new site</h2>
+      <h2 style="background-color: #000; color: #fff; margin-top: 0px; padding: 4px;">New installs</h2>
       <p><b>IMPORTANT: If you install over an existing site, all of your content will be deleted - so be careful!</b></p>
       <ol>
-      <li>Read the <a href="http://help.injader.com/installation">Installation Overview</a>. Ensure that you haven't missed any steps.</li>
-      <li>When you get to the step that asks you to run the installation wizard, you're ready to go. <a href="install.php">Click here to run the installation wizard</a>. Follow the on-screen prompts and you'll be up and running in no time.</li>
+      <li>First, read the install guide. This can be found in the release download, under guides/INSTALL.md.</li>
+      <li><a href="install.php">Start the installation wizard</a>. Follow the on-screen prompts and you'll be up and running in no time.</li>
       </ol>
     </td>
     <td style="border-left: 2px solid #000; padding: 8px; vertical-align: top; width: 48%;">
-      <h2 style="background-color: #000; color: #fff; margin-top: 0px; padding: 4px;">Upgrading an existing site</h2>
+      <h2 style="background-color: #000; color: #fff; margin-top: 0px; padding: 4px;">Upgrades</h2>
       <ol>
-      <li>Read the <a href="http://help.injader.com/upgrading">Upgrade Guide</a>. Ensure you haven't missed any steps.</li>
-      <li><a href="upgrade-intro.php">Run the upgrade script</a>.</li>
+      <li>First, read the upgrade guide. This can be found in the release download, under guides/UPGRADE.md.</li>
+      <li><a href="upgrade-intro.php">Run the upgrade</a>.</li>
       </ol>
     </td>
   </tr>
 </table>
-<p style="text-align: center;">Need help? Post in our <a href="http://forums.injader.com">Help Forum</a>.</p>
 
 PageContent;
   $IJP->Display($strHTML, "Injader Install Wizard");

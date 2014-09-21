@@ -33,15 +33,9 @@
   if ($strVersion == $strMaxVersion) {
     $IJP->Display("<h1>Upgrade Aborted</h1>\n\n<p>Your site cannot be upgraded because you're already running Injader $strMaxVersion.</p>\n\n<ul>\n<li>Target version: $strMaxVersion</li>\n<li>Your site: $strVersion</li>\n</ul>", $strPageTitle);
   } else {
-    if ($strMaxVersion == "2.1.0") {
-      $strWarning = "<h2>WARNING! DO NOT IGNORE THIS NOTICE!</h2>\n\n
-        <p>This upgrade will permanently delete ALL of your site templates, 
-        area templates, page templates, comment templates, and custom links.</p>\n\n
-        <p>You are STRONGLY advised to backup your database BEFORE running this upgrade. 
-        Please go to <a href=\"http://www.injader.com\">www.injader.com</a> if you need 
-        help.</p>\n\n<h2>If you're absolutely sure you want to continue:</h2>\n\n";
-    } else {
-      $strWarning = "";
+    $strWarning = "";
+    if ($strMaxVersion == "x.x.x") {
+        //
     }
     $IJP->Display("<h1>System Upgrade</h1>\n\n<p>You are about to upgrade your site from Injader $strVersion to Injader $strMaxVersion.</p>\n\n$strWarning<p><a href=\"upgrade.php\">Run the upgrade script</a>.</p>", $strPageTitle);
   }
