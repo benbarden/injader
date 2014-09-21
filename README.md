@@ -28,7 +28,7 @@ amount of memory. This is why I decided to revive the project, but with a new fo
 The new Injader is really a fork of the original project, although you can still download the last
 version (2.4.5) from Github.
 
-I may upload a maintenance update or two (2.4.6) before moving onto the next stage.
+I may upload a maintenance update or two before moving onto the next stage.
 The new versioning will probably start with 3.0.0 - it may not be a massive update, but it will
 break ties with the old version.
 

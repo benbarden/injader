@@ -165,11 +165,11 @@ CMSHeader;
 </div> <!-- /cp -->
 \$cmsQueryTime
 <div id="footer">
-<a href="{PRD_PRODUCT_URL}">{PRD_PRODUCT_NAME}</a> is free software released under the
+<a href="http://www.injader.com/">Injader</a> $strVersion |
+<a href="https://github.com/benbarden/injader" title="Github">Github</a> |
+Injader is free software released under the
 <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a> (v3).
-Copyright &copy; 2005-$intYear <a href="{PRD_COMPANY_URL}">{PRD_COMPANY_NAME}</a>. |
-{PRD_PRODUCT_NAME} $strVersion |
-<a href="https://github.com/benbarden/injader" title="Github">Github</a>
+Copyright &copy; 2005-$intYear <a href="http://www.benbarden.com/">Ben Barden</a>.
 </div>
 </div> <!-- /tplPageWrapper -->
 </body>
