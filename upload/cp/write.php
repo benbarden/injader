@@ -520,10 +520,10 @@ PostArticleHTML;
     plugins : "contextmenu, emotions, fullscreen, inlinepopups, media, paste, preview, print, safari, spellchecker, table, visualchars",
     plugin_preview_width : "1024",
     plugin_preview_height : "768",
-    plugin_preview_pageurl : "http://{SVR_HOST}{URL_ROOT}sys/includes/tiny_mce/plugins/preview/injader.php",
+    plugin_preview_pageurl : "http://{SVR_HOST}{URL_ROOT}assets/js/tinymce/plugins/preview/injader.php",
     // Theme options
     theme_advanced_buttons1 : "bold, italic, underline, strikethrough, |, bullist, numlist, blockquote, |, justifyleft, justifycenter, justifyright, justifyfull, |, formatselect, fontselect, fontsizeselect, forecolor",
-    theme_advanced_buttons2 : "table, |, more, |, cut, copy, paste, pastetext, pasteword, |, outdent, indent, undo, redo, |, link, unlink, image, media, emotions, charmap, |, removeformat, code, |, spellchecker, preview, help",
+    theme_advanced_buttons2 : "table, |, more, |, cut, copy, paste, pastetext, pasteword, |, outdent, indent, undo, redo, |, link, unlink, image, media, emotions, charmap, |, removeformat, code, |, preview, help",
     theme_advanced_buttons3 : "",
     theme_advanced_buttons4 : "",
     theme_advanced_toolbar_location : "top",

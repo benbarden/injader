@@ -36,7 +36,7 @@ define('URL_ROOT', "/");
   define('URL_SYS_HTML',      URL_SYS_INCLUDES.'html/');
   define('URL_SYS_IFW',       URL_SYS_INCLUDES.'ifw/');
   define('URL_SYS_JQUERY',    URL_ROOT.'assets/js/jquery/');
-  define('URL_SYS_TINYMCE',   URL_SYS_INCLUDES.'tiny_mce/');
+  define('URL_SYS_TINYMCE',   URL_ROOT.'assets/js/tinymce/');
   // This won't work in unit testing
   define('URL_HTTP',          'http://'.SVR_HOST.URL_ROOT);
   // Absolute URLs
@@ -49,7 +49,7 @@ define('URL_ROOT', "/");
   define('ABS_SYS_HTML',      ABS_SYS_INCLUDES.'html/');
   define('ABS_SYS_IFW',       ABS_SYS_INCLUDES.'ifw/');
   define('ABS_SYS_JQUERY',    ABS_ROOT.'assets/js/jquery/');
-  define('ABS_SYS_TINYMCE',   ABS_SYS_INCLUDES.'tiny_mce/');
+  define('ABS_SYS_TINYMCE',   ABS_ROOT.'assets/js/tinymce/');
   // This stops template constants from being parsed
   define('ZZZ_TEMP', 'DummyTextToBeReplaced');
 ?>

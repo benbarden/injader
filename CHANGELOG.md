@@ -1,8 +1,8 @@
 # Injader changelog
 
-## 2.5.0 (currently on master)
+## 2.5 (currently on master)
 
-Note: You must be on version 2.4.4 or above to upgrade to 2.5.0.
+Note: You must be on version 2.4.4 or above to upgrade to 2.5.
 
 * New: Simplified Control Panel layout
 * Guides: Created new install guide under /guides/
@@ -10,6 +10,7 @@ Note: You must be on version 2.4.4 or above to upgrade to 2.5.0.
 * Bug: Fixed an issue with the default timezone not being set
 * Bug: Fixed several notices in the installer
 * Upgrades: Upgraded jQuery from 1.3.2 to 1.11.1
+* Upgrades: Upgraded TinyMCE from 3.0.1 to 3.5.11
 * Maintenance: Manage Content no longer uses AJAX pagination
 * Maintenance: Added support for a /private/ folder for storing files outside of Git but within your project
 * Maintenance: Cleaned up old version upgrade code. Upgrades prior to 2.4.4 are no longer supported.
