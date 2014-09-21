@@ -12,6 +12,7 @@ Note: You must be on version 2.4.4 or above to upgrade to 2.4.6.
 * Maintenance: Added support for a /private/ folder for storing files outside of Git but within your project
 * Maintenance: Updated .gitignore
 * Maintenance: Removed unreleased interface changes (images and CSS)
+* Maintenance: Removed CodePress - theme file editing now uses a simple textarea
 * Maintenance: Cleaned up old version upgrade code. Upgrades prior to 2.4.4 are no longer supported.
 
 ## 2.4.5

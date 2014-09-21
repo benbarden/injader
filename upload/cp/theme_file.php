@@ -101,18 +101,10 @@
   }
   
     $strExtension = $CMS->GetExtensionFromPath($strFile);
-    switch (strtolower($strExtension)) {
-        case "js":   $strEditorFormat = "javascript"; break;
-        case "css":  $strEditorFormat = "css"; break;
-        case "php":  $strEditorFormat = "php"; break;
-        case "html": $strEditorFormat = "html"; break;
-        default:     $strEditorFormat = "html"; break;
-    }
   
   $strFileData = $CMS->DoEntities($strFileData);
   
   $strHTML = <<<EditForm
-<script src="{URL_SYS_INCLUDES}codepress/codepress.js" type="text/javascript"></script>
 <h1>$strPageTitle</h1>
 $strConfMsg
 <script type="text/javascript">
@@ -133,18 +125,12 @@ $strConfMsg
   <tr>
     <td>
       $strMissingContent
-      <textarea id="txtContent" name="txtContent" cols="90" rows="25"
-       class="codepress $strEditorFormat linenumbers-off"
-      >$strFileData</textarea>
+      <textarea id="txtContent" name="txtContent" cols="90" rows="25">$strFileData</textarea>
     </td>
   </tr>
   <tr>
     <td class="FootColour Centre">
-      <input class="button" type="button" value="Save Changes" onclick="
-       txtContent.toggleEditor();
-       themeFileForm.submit();
-       document.getElementById('txtContent').disabled = true;
-       " />
+      <input class="button" type="submit" value="Save Changes" />
       $strCancelButton
     </td>
   </tr>
