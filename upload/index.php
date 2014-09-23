@@ -129,13 +129,33 @@
             $CMS->Err_MFail(M_ERR_INVALID_VIEW_PARAM, $strObject);
             break;
     }
-    
-    // ** Object selection ** //
-    switch ($strObject) {
-        case "area":    $CMS->MV->Area($intItemID);    break;
-        case "article": $CMS->MV->Article($intItemID); break;
-        case "file":    $CMS->MV->File($intItemID);    break;
-        case "user":    $CMS->MV->User($intItemID);    break;
+
+    // ** Twig engine ** //
+    if ($twigEngineEnabled == 1) {
+
+        // ** Object selection ** //
+        switch ($strObject) {
+            case "area":
+                $currentTheme = 'injader';
+                $cmsThemeArea = new Cms\Theme\Area;
+                $outputHtml = $cmsThemeArea->generateOutput($currentTheme);
+                print($outputHtml);
+                exit;
+                break;
+            case "article": $CMS->MV->Article($intItemID); break;
+            case "file":    $CMS->MV->File($intItemID);    break;
+            case "user":    $CMS->MV->User($intItemID);    break;
+        }
+
+    } else {
+
+        // ** Object selection ** //
+        switch ($strObject) {
+            case "area":    $CMS->MV->Area($intItemID);    break;
+            case "article": $CMS->MV->Article($intItemID); break;
+            case "file":    $CMS->MV->File($intItemID);    break;
+            case "user":    $CMS->MV->User($intItemID);    break;
+        }
+
     }
-    
-?>
+

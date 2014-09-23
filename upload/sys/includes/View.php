@@ -269,6 +269,8 @@
 
 
     function Area($intID) {
+
+        $injThemeArea = new Injader\Theme\Area;
       global $CMS;
       $dteStartTime = $this->MicrotimeFloat();
       

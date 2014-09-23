@@ -71,7 +71,35 @@
     
     // Variables
     require ABS_ROOT.'data/secure/db_vars.php';
-    
+
+    // inj Framework v3
+    function injAutoloader($className)
+    {
+        $filePath = str_replace('\\', '/', $className);
+        $fullPath = sprintf('%slib/%s.php', ABS_ROOT, $filePath);
+        if (file_exists($fullPath)) {
+            require_once($fullPath);
+        }
+    }
+    spl_autoload_register('injAutoloader');
+
+    // Twig - experimental!
+    $twigEngineEnabled = 1; // 1 = enabled
+    $twigCacheEnabled  = 0; // 1 = enabled; disable for dev purposes
+
+    // Third-party
+    if ($twigEngineEnabled == 1) {
+        if ($twigCacheEnabled == 1) {
+            $envArray = array('cache' => ABS_ROOT.'data/cache');
+        } else {
+            $envArray = array();
+        }
+        require_once ABS_ROOT.'/lib/Twig/Autoloader.php';
+        Twig_Autoloader::register();
+        $twigLoader = new Twig_Loader_Filesystem(ABS_ROOT.'themes');
+        $cmsTemplateEngine = new Twig_Environment($twigLoader, $envArray);
+    }
+
     // Framework - must be loaded before any classes
     require ABS_SYS_IFW.'IFWCore.php';
     require ABS_SYS_IFW.'Helper.php';
@@ -135,8 +163,7 @@
     require ABS_SYS_HTML.'Theme.php';
     require ABS_SYS_HTML.'ThemeSetting.php';
     require ABS_SYS_HTML.'UserVariableDisplay.php';
-    
-    
+
     // Instantiate core classes
     $CMS = new CMS;
     $CMS->InitClasses();
