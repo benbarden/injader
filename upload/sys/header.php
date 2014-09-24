@@ -45,17 +45,13 @@
     // System variables - Do not modify
     $strExecutionTime = "";
     $intNumQueries = 0;
-    
-    // Current directory - /sys
-    $strSysDir = str_replace("\\", "/", dirname(__FILE__)."\\");
-    
-    // Root directory
-    $strRootDir = str_replace("/sys", "", $strSysDir);
-    
-    // Core constants
-    define('ABS_ROOT', $strRootDir);
-    define('ABS_SYS_ROOT', $strSysDir);
-    require 'SystemDirs.php'; // Must be loaded first
+
+    // inj Framework v3: System Constants
+    $tempPath = dirname(__FILE__).'/../lib/Cms/Core/Constants';
+    require $tempPath.'/System.php';
+
+    // Must be loaded first
+    require 'SystemDirs.php';
     
     // Other constants
     require ABS_SYS_CONSTANTS.'General.php';
@@ -72,16 +68,8 @@
     // Variables
     require ABS_ROOT.'data/secure/db_vars.php';
 
-    // inj Framework v3
-    function injAutoloader($className)
-    {
-        $filePath = str_replace('\\', '/', $className);
-        $fullPath = sprintf('%slib/%s.php', ABS_ROOT, $filePath);
-        if (file_exists($fullPath)) {
-            require_once($fullPath);
-        }
-    }
-    spl_autoload_register('injAutoloader');
+    // inj Framework v3: Autoloader
+    require ABS_ROOT.'/lib/Cms/Core/Autoloader/Base.php';
 
     // Twig - experimental!
     $twigEngineEnabled = 1; // 1 = enabled
