@@ -2,6 +2,8 @@
     <testsuites>
         <testsuite name="TestDemo">
             <file>./lib/Cms/TestDemo/TestDemoA.php</file>
+            <file>./lib/Cms/Core/Di/TestConfig.php</file>
+            <file>./lib/Cms/Core/Di/TestContainer.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

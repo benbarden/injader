@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cms\Interfaces;
+namespace Cms\Theme;
 
 
-interface Renderer
+interface IRenderer
 {
     public function generateOutput($currentTheme);
 } 

@@ -4,9 +4,7 @@
 namespace Cms\Theme;
 
 
-use Cms\Interfaces\Renderer;
-
-abstract class Base implements Renderer
+abstract class Base implements IRenderer
 {
     // Theme locations
     const THEME_LOC_INDEX   = 'ThemeLocationIndex';
