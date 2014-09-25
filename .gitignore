@@ -4,6 +4,8 @@ Thumbs.db
 private/
 upload/.htaccess
 
+upload/tests/test-config.ini
+
 upload/data/*
 
 !upload/data/attach
