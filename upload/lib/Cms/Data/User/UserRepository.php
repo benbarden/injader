@@ -16,10 +16,10 @@ class UserRepository implements IUserRepository
     {
         try {
             $pdoQuery = ('SELECT count(1) FROM maj_users WHERE id = :uid');
-            $podStatement = $this->dbh->prepare($pdoQuery);
-            $podStatement->bindParam(':uid', $userId);
-            $podStatement->execute();
-            return $podStatement->fetchColumn() >0;
+            $pdoStatement = $this->db->prepare($pdoQuery);
+            $pdoStatement->bindParam(':uid', $userId);
+            $pdoStatement->execute();
+            return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
             throw new \Exception('Failed to check if profile exists for '. $userId, 0, $e);
         }

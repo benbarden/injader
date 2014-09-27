@@ -77,15 +77,9 @@
 
     // Third-party
     if ($twigEngineEnabled == 1) {
-        if ($twigCacheEnabled == 1) {
-            $envArray = array('cache' => ABS_ROOT.'data/cache');
-        } else {
-            $envArray = array();
-        }
-        require_once ABS_ROOT.'/lib/Twig/Autoloader.php';
-        Twig_Autoloader::register();
-        $twigLoader = new Twig_Loader_Filesystem(ABS_ROOT.'themes');
-        $cmsTemplateEngine = new Twig_Environment($twigLoader, $envArray);
+        $config = new \Cms\Core\Di\Config(ABS_ROOT.'data/secure/config.ini');
+        $factory = new \Cms\Core\Di\Factory();
+        $cmsContainer = $factory->buildContainer($config);
     }
 
     // Framework - must be loaded before any classes

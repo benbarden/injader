@@ -31,4 +31,12 @@ class TestContainer extends \PHPUnit_Framework_TestCase
         $varActual = $themeBinding->get('Head.Title');
         $this->assertEquals($varExpected, $varActual);
     }
+
+    public function testThemeEngineRender()
+    {
+        $varExpected = '<p>Hello Ben!</p>';
+        $themeEngine = $this->container->getService('Theme.EngineUT');
+        $varActual = $themeEngine->render('index.html', array('Name' => 'Ben'));
+        $this->assertEquals($varExpected, $varActual);
+    }
 } 
