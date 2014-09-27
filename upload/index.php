@@ -132,25 +132,9 @@
 
     // ** Twig engine ** //
     if ($twigEngineEnabled == 1) {
-        //global $cmsContainer;
+
         $themeRenderer = new \Cms\Theme\Renderer($cmsContainer, $strObject, $intItemID);
         $themeRenderer->render();
-        /*
-        // Object selection
-        switch ($strObject) {
-            case "area":
-                //$cmsContainer->get('Theme.Engine');
-                //$currentTheme = 'injader';
-                //$cmsThemeArea = new Cms\Theme\Area;
-                //$outputHtml = $cmsThemeArea->generateOutput($currentTheme);
-                //print($outputHtml);
-                //exit;
-                break;
-            case "article": $CMS->MV->Article($intItemID); break;
-            case "file":    $CMS->MV->File($intItemID);    break;
-            case "user":    $CMS->MV->User($intItemID);    break;
-        }
-        */
 
     } else {
 
