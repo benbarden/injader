@@ -41,6 +41,43 @@ class AreaRepository implements IAreaRepository
         }
     }
 
+    public function getSubareas($areaId)
+    {
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                SELECT * FROM maj_areas
+                WHERE parent_id = :id
+                ORDER BY node.hier_left
+            ");
+            $pdoStatement->bindParam(':id', $areaId);
+            $pdoStatement->execute();
+            $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
+            return $dbData;
+        } catch(\PDOException $e) {
+            throw new \Exception("Couldn't get subareas for: ". $areaId, 0, $e);
+        }
+    }
+
+    public function getNavigation($navType)
+    {
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                SELECT * FROM maj_areas
+                WHERE nav_type = :nav_type
+                AND parent_id = 0
+                ORDER BY hier_left
+            ");
+            $pdoStatement->bindParam(':nav_type', $navType);
+            $pdoStatement->execute();
+            $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
+            return $dbData;
+        } catch(\PDOException $e) {
+            throw new \Exception("Couldn't get navigation for: ". $navType, 0, $e);
+        }
+    }
+
     public function saveArea(Area $area)
     {
 

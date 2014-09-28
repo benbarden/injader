@@ -105,6 +105,12 @@ class Renderer
         $siteRSSArticlesUrl = $repoSetting->getSettingRSSArticlesURL();
         $siteCustomHeader = $repoSetting->getSettingSiteHeader();
 
+        $repoArea = $this->container->getService('Repo.Area');
+        /* @var \Cms\Data\Area\AreaRepository $repoArea */
+        $navPrimary = $repoArea->getNavigation('Primary');
+        $navSecondary = $repoArea->getNavigation('Secondary');
+        $navTertiary = $repoArea->getNavigation('Tertiary');
+
         // Default RSS URL
         if (!$siteRSSArticlesUrl) {
             $siteRSSArticlesUrl = FN_FEEDS."?name=articles";
@@ -132,6 +138,30 @@ class Renderer
         $bindings['URL']['SiteRoot'] = URL_ROOT;
         $bindings['URL']['ThemeRoot'] = $publicThemePath;
 
+        $bindings['Nav']['Primary'] = $this->processAreaData($navPrimary);
+        $bindings['Nav']['Secondary'] = $this->processAreaData($navSecondary);
+        $bindings['Nav']['Tertiary'] = $this->processAreaData($navTertiary);
+
         return $bindings;
+    }
+
+    private function processAreaData($areaData)
+    {
+        $areaArray = array();
+
+        if ($areaData) {
+            foreach ($areaData as $areaItem) {
+                $areaObject = new \Cms\Data\Area\Area($areaItem);
+                /* @var \Cms\Data\Area\Area $areaObject */
+                $areaRow = array(
+                    'Id' => $areaObject->getAreaId(),
+                    'Name' => $areaObject->getName(),
+                    'Desc' => $areaObject->getAreaDescription()
+                );
+                $areaArray[] = $areaRow;
+            }
+        }
+
+        return $areaArray;
     }
 }

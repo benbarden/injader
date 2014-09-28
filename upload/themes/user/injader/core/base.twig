@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
     <title>{{ Page.Title }} | {{ CMS.Settings.SiteTitle }}</title>
-    {{ cmsSystemBlock('header')|raw }}
+    {{ cmsBlock('header')|raw }}
 </head>
 <body>
 
@@ -14,45 +14,19 @@
         <tr>
             <td id="tplMajHeader" class="header" colspan="3">
                 <div style="float: right;">
-                    {# Search form ... #}
+                    {{ cmsBlock('search')|raw }}
                 </div>
-                <!-- Begin Header -->
                 <h1>{{ CMS.Settings.SiteTitle }}</h1>
-                <!-- End Header -->
             </td>
         </tr>
         <tr>
             <td id="tplMajNavbar" class="header" colspan="3">
-                <ul class="navtext">
-                    <li class="off">
-                        Nav Link
-                    </li>
-                    <li class="off">
-                        Nav Link
-                    </li>
-                    <li class="off">
-                        Nav Link
-                    </li>
-                </ul>
+                {{ cmsBlock('nav.primary')|raw }}
             </td>
         </tr>
         <tr>
             <td id="tplMajLeftSide" class="sidebar">
-                <!-- Begin Left Sidebar -->
-                <div class="subarea-listing">
-                    <h2>Subareas</h2>
-                    <div>
-                        <span class="subarea-name">
-                            Subarea Link
-                        </span>
-                        <br />
-                        <span class="subarea-desc">
-                            Subarea Desc
-                        </span>
-                    </div>
-                </div>
-                <p>New content...</p>
-                <!-- End Left Sidebar -->
+                {{ cmsBlock('area.subareas')|raw }}
             </td>
 
             <td id="tplMajContent" class="content">
@@ -60,7 +34,6 @@
             </td>
 
             <td id="tplMajRightSide" class="sidebar">
-                <!-- Begin Right Sidebar -->
                 <h2>Welcome (who?)!</h2>
                 <ul>
                     <li><a href="{{ URL.SiteRoot }}cms/archives">Archives</a></li>
@@ -70,27 +43,8 @@
                     <li><a href="{{ URL.SiteRoot }}logout.php">Logout</a></li>
                     <li><a href="{{ URL.SiteRoot }}tagmap.php">Tag Map</a></li>
                 </ul>
-                <h2>Sidebar 1</h2>
-                <p style="margin: 0 0 5px 0;">
-                    Nav item 1
-                </p>
-                <p style="margin: 0 0 5px 0;">
-                    Nav item 2
-                </p>
-                <p style="margin: 0 0 5px 0;">
-                    Nav item 3
-                </p>
-                <h2>Sidebar 2</h2>
-                <p style="margin: 0 0 5px 0;">
-                    Nav item 1
-                </p>
-                <p style="margin: 0 0 5px 0;">
-                    Nav item 2
-                </p>
-                <p style="margin: 0 0 5px 0;">
-                    Nav item 3
-                </p>
-                <!-- End Right Sidebar -->
+                {{ cmsBlock('nav.secondary')|raw }}
+                {{ cmsBlock('nav.tertiary')|raw }}
             </td>
         </tr>
         <tr>

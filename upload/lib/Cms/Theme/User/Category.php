@@ -11,16 +11,31 @@ class Category
      */
     private $area;
 
+    /**
+     * @var string
+     */
     private $themeFile;
 
+    /**
+     * @var array
+     */
     private $bindings;
+
+    /**
+     * @var array
+     */
+    private $subareaData;
 
     public function __construct(\Cms\Core\Di\Container $container, $areaId)
     {
         $this->themeFile = 'core/category.twig';
 
         $areaRepo = $container->getService('Repo.Area');
+        /* @var \Cms\Data\Area\AreaRepository $areaRepo */
         $this->area = $areaRepo->getArea($areaId);
+
+        // Subareas
+        $this->subareaData = $areaRepo->getSubareas($areaId);
 
         $this->setupBindings();
     }
@@ -50,6 +65,20 @@ class Category
         // Wrapper IDs and classes
         $bindings['Page']['WrapperId'] = sprintf('area-index-%s', $areaId);
         $bindings['Page']['WrapperClass'] = 'area-index';
+
+        // Subareas
+        if ($this->subareaData) {
+            foreach ($this->subareaData as $subareaItem) {
+                $subareaObject = new \Cms\Data\Area\Area($subareaItem);
+                /* @var \Cms\Data\Area\Area $subareaObject */
+                $subareaRow = array(
+                    'Id' => $subareaObject->getAreaId(),
+                    'Name' => $subareaObject->getName(),
+                    'Desc' => $subareaObject->getAreaDescription()
+                );
+                $bindings['Area']['Subareas'][] = $subareaRow;
+            }
+        }
 
         $this->bindings = $bindings;
     }

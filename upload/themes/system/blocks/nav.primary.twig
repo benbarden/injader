@@ -1,0 +1,9 @@
+{% if Nav.Primary %}
+    <ul class="navtext">
+        {% for Item in Nav.Primary %}
+            <li class="off">
+                {{ Item.Name }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

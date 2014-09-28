@@ -1,0 +1,14 @@
+{% if Area.Subareas %}
+    <div class="subarea-listing">
+        <h2>Subareas</h2>
+        <div>
+            {% for Item in Area.Subareas %}
+            <span class="subarea-name">{{ Item.Name }}</span>
+            {% if Item.Desc %}
+            <br />
+            <span class="subarea-desc">{{ Item.Desc }}</span>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

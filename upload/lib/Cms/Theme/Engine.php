@@ -66,7 +66,7 @@ class Engine
 
     private function setupFunctions($twig)
     {
-        $function = new \Twig_SimpleFunction('cmsSystemBlock', array($this, 'cmsSystemBlock'), array(
+        $function = new \Twig_SimpleFunction('cmsBlock', array($this, 'cmsBlock'), array(
             'is_safe' => array('html'),
             'needs_environment' => true,
             'needs_context' => true
@@ -75,11 +75,13 @@ class Engine
         return $twig;
     }
 
-    public function cmsSystemBlock(\Twig_Environment $twig, $context, $blockFile)
+    public function cmsBlock(\Twig_Environment $twig, $context, $blockFile)
     {
-        $absBlockPath = sprintf(ABS_ROOT.'themes/system/blocks/%s.twig', $blockFile);
+        $urlThemeRoot = $context['URL']['ThemeRoot'];
+        $absSysBlockPath  = sprintf(ABS_ROOT.'themes/system/blocks/%s.twig', $blockFile);
+        $absUserBlockPath = sprintf(ABS_ROOT.$urlThemeRoot.'blocks/%s.twig', $blockFile);
         $relBlockPath = sprintf('blocks/%s.twig', $blockFile);
-        if (file_exists($absBlockPath)) {
+        if (file_exists($absSysBlockPath) || file_exists($absUserBlockPath)) {
             return $twig->render($relBlockPath, $context);
         } else {
             return sprintf('<p><strong>MISSING: %s</strong></p>', $blockFile);
