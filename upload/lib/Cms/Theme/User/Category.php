@@ -18,7 +18,6 @@ class Category
     public function __construct(\Cms\Core\Di\Container $container, $areaId)
     {
         $this->themeFile = 'core/category.twig';
-        //$this->bindings = array('Cms' => array('Head' => array('Title' => 'Demo')));
 
         $areaRepo = $container->getService('Repo.Area');
         $this->area = $areaRepo->getArea($areaId);
@@ -28,11 +27,29 @@ class Category
 
     private function setupBindings()
     {
+        $areaId = $this->area->getAreaId();
+
         $bindings = array();
 
         //$bindings['Area'] = $this->area;
-        $bindings['Area']['Id'] = $this->area->getAreaId();
+        $bindings['Page']['Type'] = 'category';
+        $bindings['Page']['Title'] = $this->area->getName();
+
+        $bindings['Area']['Id'] = $areaId;
         $bindings['Area']['Name'] = $this->area->getName();
+        $bindings['Area']['Desc'] = $this->area->getAreaDescription();
+
+        $bindings['Area']['IsTypeContent'] = $this->area->isContentArea();
+        $bindings['Area']['IsTypeLinked'] = $this->area->isLinkedArea();
+        $bindings['Area']['IsTypeSmart'] = $this->area->isSmartArea();
+
+        if ($this->area->isContentArea()) {
+            $bindings['Area']['FeedUrl'] = sprintf('%s?name=articles&id=%s', FN_FEEDS, $areaId);
+        }
+
+        // Wrapper IDs and classes
+        $bindings['Page']['WrapperId'] = sprintf('area-index-%s', $areaId);
+        $bindings['Page']['WrapperClass'] = 'area-index';
 
         $this->bindings = $bindings;
     }

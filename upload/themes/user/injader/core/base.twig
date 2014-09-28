@@ -1,9 +1,107 @@
 <!doctype html>
 <html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>{{ CMS.Head.Title }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>{{ Page.Title }} | {{ CMS.Settings.SiteTitle }}</title>
+    {{ cmsSystemBlock('header')|raw }}
 </head>
 <body>
-{% block cms_content %}{% endblock cms_content %}
+
+<div id="{{ Page.WrapperId }}" class="{{ Page.WrapperClass }}">
+
+    <table id="tplMajWrapper" class="wrapper" cellpadding="0" cellspacing="0" summary="Simple Three Column Layout">
+        <tr>
+            <td id="tplMajHeader" class="header" colspan="3">
+                <div style="float: right;">
+                    {# Search form ... #}
+                </div>
+                <!-- Begin Header -->
+                <h1>{{ CMS.Settings.SiteTitle }}</h1>
+                <!-- End Header -->
+            </td>
+        </tr>
+        <tr>
+            <td id="tplMajNavbar" class="header" colspan="3">
+                <ul class="navtext">
+                    <li class="off">
+                        Nav Link
+                    </li>
+                    <li class="off">
+                        Nav Link
+                    </li>
+                    <li class="off">
+                        Nav Link
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td id="tplMajLeftSide" class="sidebar">
+                <!-- Begin Left Sidebar -->
+                <div class="subarea-listing">
+                    <h2>Subareas</h2>
+                    <div>
+                        <span class="subarea-name">
+                            Subarea Link
+                        </span>
+                        <br />
+                        <span class="subarea-desc">
+                            Subarea Desc
+                        </span>
+                    </div>
+                </div>
+                <p>New content...</p>
+                <!-- End Left Sidebar -->
+            </td>
+
+            <td id="tplMajContent" class="content">
+            {% block cms_content %}{% endblock cms_content %}
+            </td>
+
+            <td id="tplMajRightSide" class="sidebar">
+                <!-- Begin Right Sidebar -->
+                <h2>Welcome (who?)!</h2>
+                <ul>
+                    <li><a href="{{ URL.SiteRoot }}cms/archives">Archives</a></li>
+                    <li><a href="{{ URL.SiteRoot }}register.php">Register</a></li>
+                    <li><a href="{{ URL.SiteRoot }}login.php">Login</a></li>
+                    <li><a href="{{ URL.SiteRoot }}cp/index.php">Control Panel</a></li>
+                    <li><a href="{{ URL.SiteRoot }}logout.php">Logout</a></li>
+                    <li><a href="{{ URL.SiteRoot }}tagmap.php">Tag Map</a></li>
+                </ul>
+                <h2>Sidebar 1</h2>
+                <p style="margin: 0 0 5px 0;">
+                    Nav item 1
+                </p>
+                <p style="margin: 0 0 5px 0;">
+                    Nav item 2
+                </p>
+                <p style="margin: 0 0 5px 0;">
+                    Nav item 3
+                </p>
+                <h2>Sidebar 2</h2>
+                <p style="margin: 0 0 5px 0;">
+                    Nav item 1
+                </p>
+                <p style="margin: 0 0 5px 0;">
+                    Nav item 2
+                </p>
+                <p style="margin: 0 0 5px 0;">
+                    Nav item 3
+                </p>
+                <!-- End Right Sidebar -->
+            </td>
+        </tr>
+        <tr>
+            <td id="tplMajFooter" class="footer" style="padding: 4px; text-align: center;" colspan="3">
+                Copyright &copy; 2014 {{ CMS.Settings.SiteTitle }} |
+                Powered by <a href="http://www.injader.com" title="Injader">Injader</a>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
 </body>
 </html>

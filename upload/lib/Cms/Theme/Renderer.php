@@ -51,10 +51,18 @@ class Renderer
     {
         $this->getRenderer();
         $themeFile = $this->renderer->getFile();
-        $themeBindings = $this->renderer->getBindings();
+        $userBindings = $this->renderer->getBindings();
 
+        if (array_key_exists('CMS', $userBindings)) {
+            throw new \Exception('Illegal binding key! CMS-level bindings cannot be set at the theme level.');
+        }
+
+        // we may allow certain overrides here
+        $globalBindings = $this->getGlobalBindings($userBindings);
+
+        $bindings = array_merge($globalBindings, $userBindings);
         $engine = $this->container->getService('Theme.Engine');
-        $outputHtml = $engine->render($themeFile, $themeBindings);
+        $outputHtml = $engine->render($themeFile, $bindings);
         print($outputHtml);
         exit;
     }
@@ -79,5 +87,51 @@ class Renderer
                 throw new \Exception(sprintf('Unknown object type: %s', $this->objectType));
                 break;
         }
+    }
+
+    private function getGlobalBindings($userBindings)
+    {
+        $bindings = array();
+
+        $cmsThemeEngine = $this->container->getService('Cms.ThemeEngine');
+        $publicThemePath = $cmsThemeEngine->getPublicThemePath();
+
+        $repoSetting = $this->container->getService('Repo.Setting');
+        /* @var \Cms\Data\Setting\SettingRepository $repoSetting */
+        $siteTitle = $repoSetting->getSettingSiteTitle();
+        $siteDesc = $repoSetting->getSettingSiteDesc();
+        $siteKeywords = $repoSetting->getSettingSiteKeywords();
+        $siteFavicon = $repoSetting->getSettingSiteFavicon();
+        $siteRSSArticlesUrl = $repoSetting->getSettingRSSArticlesURL();
+        $siteCustomHeader = $repoSetting->getSettingSiteHeader();
+
+        // Default RSS URL
+        if (!$siteRSSArticlesUrl) {
+            $siteRSSArticlesUrl = FN_FEEDS."?name=articles";
+        }
+
+        // Core styles URL
+        $siteStylesCoreUrl = URL_SYS_ROOT."core.css";
+        $siteScriptsCoreUrl = URL_SYS_ROOT."scripts.js";
+        $siteScriptsInitUrl = URL_SYS_ROOT."init.js";
+
+        $settingsArray = array(
+            'SiteTitle' => $siteTitle,
+            'SiteDesc' => $siteDesc,
+            'SiteKeywords' => $siteKeywords,
+            'SiteFavicon' => $siteFavicon,
+            'SiteRSSArticlesUrl' => $siteRSSArticlesUrl,
+            'SiteStylesCoreUrl' => $siteStylesCoreUrl,
+            'SiteScriptsCoreUrl' => $siteScriptsCoreUrl,
+            'SiteScriptsInitUrl' => $siteScriptsInitUrl,
+            'SiteCustomHeader' => $siteCustomHeader
+        );
+
+        $bindings['CMS']['Settings'] = $settingsArray;
+
+        $bindings['URL']['SiteRoot'] = URL_ROOT;
+        $bindings['URL']['ThemeRoot'] = $publicThemePath;
+
+        return $bindings;
     }
 }

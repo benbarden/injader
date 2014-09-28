@@ -3,7 +3,8 @@
 
 namespace Cms\Core\Di;
 
-use Cms\Data\User\UserRepository,
+use Cms\Data\Setting\SettingRepository,
+    Cms\Data\User\UserRepository,
     Cms\Data\Area\AreaRepository;
 
 
@@ -23,6 +24,7 @@ class Factory
 
         $repoArea = new AreaRepository($pdo);
         $repoUser = new UserRepository($pdo);
+        $repoSetting = new SettingRepository($pdo);
 
         $cmsThemeEngine = new \Cms\Theme\Engine($themeCurrent, $engineCache);
         $themeEngine   = $cmsThemeEngine->getEngine();
@@ -33,9 +35,11 @@ class Factory
         $serviceLocator = new ServiceLocator();
         $serviceLocator->set('Repo.Area', $repoArea);
         $serviceLocator->set('Repo.User', $repoUser);
+        $serviceLocator->set('Repo.Setting', $repoSetting);
         $serviceLocator->set('Theme.Engine', $themeEngine);
         $serviceLocator->set('Theme.EngineUT', $themeEngineUT);
         $serviceLocator->set('Theme.Binding', $themeBinding);
+        $serviceLocator->set('Cms.ThemeEngine', $cmsThemeEngine);
 
         return new Container($serviceLocator);
     }

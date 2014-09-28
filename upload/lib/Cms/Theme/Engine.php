@@ -17,6 +17,11 @@ class Engine
     private $envArray;
 
     /**
+     * @var string
+     */
+    private $publicThemePath;
+
+    /**
      * @param string $current
      * @param integer $cache
      * @throws \Exception
@@ -43,9 +48,42 @@ class Engine
             $this->envArray = array();
         }
 
+        // Save the theme path
+        $this->publicThemePath = sprintf('%sthemes/user/%s/', URL_ROOT, $current);
+
         // Instantiate Twig
         require_once ABS_ROOT.'/lib/Twig/Autoloader.php';
         \Twig_Autoloader::register();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicThemePath()
+    {
+        return $this->publicThemePath;
+    }
+
+    private function setupFunctions($twig)
+    {
+        $function = new \Twig_SimpleFunction('cmsSystemBlock', array($this, 'cmsSystemBlock'), array(
+            'is_safe' => array('html'),
+            'needs_environment' => true,
+            'needs_context' => true
+        ));
+        $twig->addFunction($function);
+        return $twig;
+    }
+
+    public function cmsSystemBlock(\Twig_Environment $twig, $context, $blockFile)
+    {
+        $absBlockPath = sprintf(ABS_ROOT.'themes/system/blocks/%s.twig', $blockFile);
+        $relBlockPath = sprintf('blocks/%s.twig', $blockFile);
+        if (file_exists($absBlockPath)) {
+            return $twig->render($relBlockPath, $context);
+        } else {
+            return sprintf('<p><strong>MISSING: %s</strong></p>', $blockFile);
+        }
     }
 
     /**
@@ -54,7 +92,9 @@ class Engine
     public function getEngine()
     {
         $loader = new \Twig_Loader_Filesystem($this->pathsArray);
-        return new \Twig_Environment($loader, $this->envArray);
+        $twig = new \Twig_Environment($loader, $this->envArray);
+        $twig = $this->setupFunctions($twig);
+        return $twig;
     }
 
     /**

@@ -1,0 +1,23 @@
+{% if Page.Type == 'category' and Area.Desc != '' %}
+<meta name="description" content="{{ Area.Desc }}">
+{% else %}
+<meta name="description" content="{{ CMS.Settings.SiteDesc }}">
+{% endif %}
+<meta name="keywords" content="{{ CMS.Settings.SiteKeywords }}">
+{% if CMS.Settings.SiteFavicon %}
+<link rel="icon" href="{{ CMS.Settings.SiteFavicon }}" type="image/x-icon">
+{% endif %}
+<meta name="generator" content="Injader - http://www.injader.com">
+<link rel="alternate" type="application/rss+xml" title="Site Feed - {{ CMS.Settings.SiteTitle }}" href="{{ CMS.Settings.SiteRSSArticlesUrl }}">
+{% if Area.FeedUrl %}
+<link rel="alternate" type="application/rss+xml" title="Area Feed - {{ Area.Name }} - {{ CMS.Settings.SiteTitle }}" href="{{ Area.FeedUrl }}">
+{% endif %}
+{% if Article.FeedUrl %}
+<link rel="alternate" type="application/rss+xml" title="Comment Feed - {{ Article.Title }} - {{ CMS.Settings.SiteTitle }}" href="{{ Article.FeedUrl }}">
+{% endif %}
+<link href="{{ CMS.Settings.SiteStylesCoreUrl }}" rel="stylesheet" type="text/css">
+<link href="{{ URL.ThemeRoot }}stylesheet.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{{ CMS.Settings.SiteScriptsCoreUrl }}"></script>
+<script type="text/javascript" src="{{ CMS.Settings.SiteScriptsInitUrl }}"></script>
+{# NOTE: TinyMCE preview overrides this, so ensure it hasn't been set yet. #}
+{{ CMS.Settings.SiteCustomHeader|raw }}

@@ -4,7 +4,7 @@
 namespace Cms\Data\Area;
 
 
-class MockAreaRepository implements IUserRepository
+class MockAreaRepository implements IAreaRepository
 {
     public function areaExists($areaId)
     {
