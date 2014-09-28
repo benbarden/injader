@@ -142,6 +142,15 @@ class Renderer
         $bindings['Nav']['Secondary'] = $this->processAreaData($navSecondary);
         $bindings['Nav']['Tertiary'] = $this->processAreaData($navTertiary);
 
+        // User access
+        if ($this->container->hasService('Auth.CurrentUser')) {
+            $authCurrentUser = $this->container->getService('Auth.CurrentUser');
+            $userArray = array(
+                'Name' => $authCurrentUser->getUsername()
+            );
+            $bindings['Login']['User'] = $userArray;
+        }
+
         return $bindings;
     }
 

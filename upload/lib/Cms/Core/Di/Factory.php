@@ -3,13 +3,38 @@
 
 namespace Cms\Core\Di;
 
-use Cms\Data\Setting\SettingRepository,
+use Cms\Data\Area\AreaRepository,
+    Cms\Data\Setting\SettingRepository,
     Cms\Data\User\UserRepository,
-    Cms\Data\Area\AreaRepository;
+    Cms\Data\UserSession\UserSessionRepository;
 
 
 class Factory
 {
+    /**
+     * @var \Cms\Data\User\User
+     */
+    private $loggedInUser;
+
+    /**
+     * @param UserSessionRepository $repoUserSession
+     * @param UserRepository $repoUser
+     */
+    private function setupAuthLayer(
+        UserSessionRepository $repoUserSession,
+        UserRepository $repoUser)
+    {
+        $accessLogin = new \Cms\Access\Login();
+        $cookie = $accessLogin->getCookie();
+        $userId = $repoUserSession->getValidUserId($cookie);
+        if ($userId) {
+            $user = $repoUser->getUser($userId);
+            if ($user) {
+                $this->loggedInUser = $user;
+            }
+        }
+    }
+
     public function buildContainer(Config $config)
     {
         $dsn  = $config->getByKey('Database.DSN');
@@ -23,23 +48,34 @@ class Factory
         $pdo = new \PDO($dsn, $user, $pw);
 
         $repoArea = new AreaRepository($pdo);
-        $repoUser = new UserRepository($pdo);
         $repoSetting = new SettingRepository($pdo);
+        $repoUser = new UserRepository($pdo);
+        $repoUserSession = new UserSessionRepository($pdo);
+
+        $this->setupAuthLayer($repoUserSession, $repoUser);
 
         $cmsThemeEngine = new \Cms\Theme\Engine($themeCurrent, $engineCache);
         $themeEngine   = $cmsThemeEngine->getEngine();
         $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
 
+        $linkStyle = $repoSetting->getSettingLinkStyle();
+        $iaLink = new \Cms\Ia\Link($linkStyle);
+
         $themeBinding = new \Cms\Theme\Binding();
 
         $serviceLocator = new ServiceLocator();
+        if ($this->loggedInUser) {
+            $serviceLocator->set('Auth.CurrentUser', $this->loggedInUser);
+        }
+        $serviceLocator->set('Cms.ThemeEngine', $cmsThemeEngine);
+        $serviceLocator->set('IA.Link', $iaLink);
         $serviceLocator->set('Repo.Area', $repoArea);
-        $serviceLocator->set('Repo.User', $repoUser);
         $serviceLocator->set('Repo.Setting', $repoSetting);
+        $serviceLocator->set('Repo.User', $repoUser);
+        $serviceLocator->set('Repo.UserSession', $repoUserSession);
         $serviceLocator->set('Theme.Engine', $themeEngine);
         $serviceLocator->set('Theme.EngineUT', $themeEngineUT);
         $serviceLocator->set('Theme.Binding', $themeBinding);
-        $serviceLocator->set('Cms.ThemeEngine', $cmsThemeEngine);
 
         return new Container($serviceLocator);
     }

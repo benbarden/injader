@@ -9,10 +9,10 @@ class User
     private $userId;
     private $username;
 
-    public function __construct($userId, $username)
+    public function __construct($dbData)
     {
-        $this->userId = $userId;
-        $this->username = $username;
+        $this->userId = $dbData['id'];
+        $this->username = $dbData['username'];
     }
 
     public function getUserId()

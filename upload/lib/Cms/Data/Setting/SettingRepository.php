@@ -83,6 +83,11 @@ class SettingRepository implements ISettingRepository
         return $this->getSettingValue(Setting::SETTING_SITE_HEADER);
     }
 
+    public function getSettingLinkStyle()
+    {
+        return $this->getSettingValue(Setting::SETTING_LINK_STYLE);
+    }
+
     public function saveSetting(Setting $setting)
     {
 

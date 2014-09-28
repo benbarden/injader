@@ -24,4 +24,9 @@ class Container
         return $this->serviceLocator->get($service);
     }
 
+    public function hasService($service)
+    {
+        return $this->serviceLocator->has($service);
+    }
+
 }
