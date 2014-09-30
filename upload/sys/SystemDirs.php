@@ -20,8 +20,14 @@
 
   // Server variables
   define('SVR_LOCATION',  $_SERVER['PHP_SELF']);
-  define('SVR_REQUEST',   $_SERVER['REQUEST_URI']);
-  define('SVR_HOST',      $_SERVER['HTTP_HOST']);
+  if (isset($_SERVER['REQUEST_URI'])) {
+      define('SVR_REQUEST', $_SERVER['REQUEST_URI']);
+  }
+  if (isset($_SERVER['HTTP_HOST'])) {
+      define('SVR_HOST', $_SERVER['HTTP_HOST']);
+  } else {
+      define('SVR_HOST', '/');
+  }
   define('SVR_WWWROOT',   $_SERVER['DOCUMENT_ROOT']);
   // Root path MUST include a trailing forward slash!
 define('URL_ROOT', "/");

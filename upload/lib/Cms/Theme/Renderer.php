@@ -32,19 +32,69 @@ class Renderer
      */
     private $itemId;
 
-    public function __construct(
-        \Cms\Core\Di\Container $container, $objectType, $itemId
-    )
+    /**
+     * @param \Cms\Core\Di\Container $container
+     * @return void
+     */
+    public function __construct(\Cms\Core\Di\Container $container)
     {
         $this->container = $container;
-        $this->objectType = $objectType;
-        $this->itemId = $itemId;
     }
 
     public function __destruct()
     {
         unset($this->container);
         unset($this->renderer);
+    }
+
+    public function setObjectCategory()
+    {
+        $this->objectType = self::OBJECT_TYPE_CATEGORY;
+    }
+
+    public function setObjectArticle()
+    {
+        $this->objectType = self::OBJECT_TYPE_ARTICLE;
+    }
+
+    public function setObjectFile()
+    {
+        $this->objectType = self::OBJECT_TYPE_FILE;
+    }
+
+    public function setObjectUser()
+    {
+        $this->objectType = self::OBJECT_TYPE_USER;
+    }
+
+    public function setItemId($itemId)
+    {
+        $this->itemId = $itemId;
+    }
+
+    public function isObjectCategory()
+    {
+        return $this->objectType == self::OBJECT_TYPE_CATEGORY;
+    }
+
+    public function isObjectArticle()
+    {
+        return $this->objectType == self::OBJECT_TYPE_ARTICLE;
+    }
+
+    public function isObjectFile()
+    {
+        return $this->objectType == self::OBJECT_TYPE_FILE;
+    }
+
+    public function isObjectUser()
+    {
+        return $this->objectType == self::OBJECT_TYPE_USER;
+    }
+
+    public function getItemId()
+    {
+        return $this->itemId;
     }
 
     public function render()
@@ -58,7 +108,7 @@ class Renderer
         }
 
         // we may allow certain overrides here
-        $globalBindings = $this->getGlobalBindings($userBindings);
+        $globalBindings = $this->getGlobalBindings();
 
         $bindings = array_merge($globalBindings, $userBindings);
         $engine = $this->container->getService('Theme.Engine');
@@ -89,7 +139,7 @@ class Renderer
         }
     }
 
-    private function getGlobalBindings($userBindings)
+    private function getGlobalBindings()
     {
         $bindings = array();
 

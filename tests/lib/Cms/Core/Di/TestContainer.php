@@ -1,28 +1,7 @@
 <?php
 
-use Cms\Core\Di\Factory,
-    Cms\Core\Di\Config,
-    Cms\Core\Di\Container;
-
-class TestContainer extends \PHPUnit_Framework_TestCase
+class TestContainer extends ContainerBase
 {
-    /**
-     * @var Container
-     */
-    private $container;
-
-    public function setUp()
-    {
-        $config = new Config('test-config.ini');
-        $factory = new Factory();
-        $this->container = $factory->buildContainer($config);
-    }
-
-    public function tearDown()
-    {
-        unset($this->container);
-    }
-
     public function testGetTemplateVarHeadTitle()
     {
         $varExpected = 'Injader Test Site';

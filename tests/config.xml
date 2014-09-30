@@ -1,9 +1,21 @@
 <phpunit bootstrap="./Bootstrap.php">
     <testsuites>
         <testsuite name="TestDemo">
-            <file>./lib/Cms/TestDemo/TestDemoA.php</file>
+            <file>./lib/Cms/Access/TestLogin.php</file>
             <file>./lib/Cms/Core/Di/TestConfig.php</file>
             <file>./lib/Cms/Core/Di/TestContainer.php</file>
+            <file>./lib/Cms/Core/Di/TestFactory.php</file>
+            <file>./lib/Cms/Core/Di/TestServiceLocator.php</file>
+            <file>./lib/Cms/Data/Area/TestArea.php</file>
+            <file>./lib/Cms/Data/Article/TestArticle.php</file>
+            <file>./lib/Cms/Data/Setting/TestSetting.php</file>
+            <file>./lib/Cms/Data/User/TestUser.php</file>
+            <file>./lib/Cms/Data/UserSession/TestUserSession.php</file>
+            <file>./lib/Cms/Ia/TestLink.php</file>
+            <file>./lib/Cms/Theme/User/TestCategory.php</file>
+            <file>./lib/Cms/Theme/TestBinding.php</file>
+            <file>./lib/Cms/Theme/TestEngine.php</file>
+            <file>./lib/Cms/Theme/TestRenderer.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

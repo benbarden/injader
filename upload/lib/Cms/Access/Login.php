@@ -18,6 +18,11 @@ class Login
         return isset($_COOKIE['IJ-Login']) ? $_COOKIE['IJ-Login'] : null;
     }
 
+    public function setLoggedInUser(User $user)
+    {
+        $this->loggedInUser = $user;
+    }
+
     public function getLoggedInUser()
     {
         return $this->loggedInUser;

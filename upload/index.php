@@ -133,7 +133,23 @@
     // ** Twig engine ** //
     if ($twigEngineEnabled == 1) {
 
-        $themeRenderer = new \Cms\Theme\Renderer($cmsContainer, $strObject, $intItemID);
+        $themeRenderer = new \Cms\Theme\Renderer($cmsContainer);
+        switch ($strObject) {
+            case "area":
+            case "category":
+                $themeRenderer->setObjectCategory();
+                break;
+            case "article":
+                $themeRenderer->setObjectArticle();
+                break;
+            case "file":
+                $themeRenderer->setObjectFile();
+                break;
+            case "user":
+                $themeRenderer->setObjectUser();
+                break;
+        }
+        $themeRenderer->setItemId($intItemID);
         $themeRenderer->render();
 
     } else {

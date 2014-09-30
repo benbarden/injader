@@ -18,7 +18,7 @@ class MockAreaRepository implements IAreaRepository
             throw new \Exception(sprintf('Area %s does not exist.', $areaId));
         }
     }
-    public function saveUser(Area $area)
+    public function saveArea(Area $area)
     {
         // @todo
     }

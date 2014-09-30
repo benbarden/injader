@@ -13,7 +13,7 @@ class MockUserRepository implements IUserRepository
     public function getUser($userId)
     {
         if ($this->userExists($userId)) {
-            return new User($userId, 'Ben');
+            return new User(array('id' => $userId, 'username' => 'Ben'));
         } else {
             throw new \Exception(sprintf('User %s does not exist.', $userId));
         }
