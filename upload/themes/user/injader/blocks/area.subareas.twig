@@ -1,0 +1,11 @@
+{% if Area.Subareas %}
+    {% for Item in Area.Subareas %}
+    <p>{{ Item.Name }}
+    {% if Item.Desc %}
+    <br>{{ Item.Desc }}
+    {% endif %}
+    </p>
+    {% endfor %}
+{% else %}
+    <p>No subareas.</p>
+{% endif %}

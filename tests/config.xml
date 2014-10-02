@@ -11,7 +11,8 @@
             <file>./lib/Cms/Data/Setting/TestSetting.php</file>
             <file>./lib/Cms/Data/User/TestUser.php</file>
             <file>./lib/Cms/Data/UserSession/TestUserSession.php</file>
-            <file>./lib/Cms/Ia/TestLink.php</file>
+            <file>./lib/Cms/Ia/Link/TestArticleLink.php</file>
+            <file>./lib/Cms/Ia/Tools/TestOptimiseUrl.php</file>
             <file>./lib/Cms/Theme/User/TestCategory.php</file>
             <file>./lib/Cms/Theme/TestBinding.php</file>
             <file>./lib/Cms/Theme/TestEngine.php</file>

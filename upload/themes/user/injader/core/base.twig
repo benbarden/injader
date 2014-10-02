@@ -1,40 +1,68 @@
 <!doctype html>
-<html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ Page.Title }} | {{ CMS.Settings.SiteTitle }}</title>
     {{ cmsBlock('header')|raw }}
+    <!-- Add your own custom header code below -->
+    <link href="{{ URL.ThemeRoot }}blog.css" rel="stylesheet">
 </head>
 <body>
 
+{#
 <div id="{{ Page.WrapperId }}" class="{{ Page.WrapperClass }}">
+#}
 
-    <table id="tplMajWrapper" class="wrapper" cellpadding="0" cellspacing="0" summary="Simple Three Column Layout">
-        <tr>
-            <td id="tplMajHeader" class="header" colspan="3">
-                <div style="float: right;">
-                    {{ cmsBlock('search')|raw }}
-                </div>
-                <h1>{{ CMS.Settings.SiteTitle }}</h1>
-            </td>
-        </tr>
-        <tr>
-            <td id="tplMajNavbar" class="header" colspan="3">
-                {{ cmsBlock('nav.primary')|raw }}
-            </td>
-        </tr>
-        <tr>
-            <td id="tplMajLeftSide" class="sidebar">
-                {{ cmsBlock('area.subareas')|raw }}
-            </td>
+<div class="blog-masthead">
+    <div class="container">
+        <nav class="blog-nav">
+            {{ cmsBlock('nav.primary')|raw }}
+        </nav>
+    </div>
+</div>
 
-            <td id="tplMajContent" class="content">
+<div class="container">
+
+    <div class="blog-header">
+        <h1 class="blog-title">{{ Page.Title }}</h1>
+        <p class="lead blog-description">
+            {% block cms_page_description %}{% endblock cms_page_description %}
+        </p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
             {% block cms_content %}{% endblock cms_content %}
-            </td>
 
-            <td id="tplMajRightSide" class="sidebar">
-                <h2>Welcome {{ Login.User.Name }}!</h2>
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>About {{ CMS.Settings.SiteTitle }}</h4>
+                <p>{{ CMS.Settings.SiteDesc }}</p>
+            </div>
+            <div class="sidebar-module">
+                <h4>Search</h4>
+                {{ cmsBlock('search')|raw }}
+            </div>
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>Subareas</h4>
+                {{ cmsBlock('area.subareas')|raw }}
+            </div>
+            <div class="sidebar-module">
+                <h4>Secondary Nav</h4>
+                {{ cmsBlock('nav.secondary')|raw }}
+            </div>
+            <div class="sidebar-module">
+                <h4>Tertiary Nav</h4>
+                {{ cmsBlock('nav.tertiary')|raw }}
+            </div>
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>Welcome {{ Login.User.Name }}!</h4>
                 <ul>
                     <li><a href="{{ URL.SiteRoot }}cms/archives">Archives</a></li>
                     <li><a href="{{ URL.SiteRoot }}register.php">Register</a></li>
@@ -43,18 +71,20 @@
                     <li><a href="{{ URL.SiteRoot }}logout.php">Logout</a></li>
                     <li><a href="{{ URL.SiteRoot }}tagmap.php">Tag Map</a></li>
                 </ul>
-                {{ cmsBlock('nav.secondary')|raw }}
-                {{ cmsBlock('nav.tertiary')|raw }}
-            </td>
-        </tr>
-        <tr>
-            <td id="tplMajFooter" class="footer" style="padding: 4px; text-align: center;" colspan="3">
-                Copyright &copy; 2014 {{ CMS.Settings.SiteTitle }} |
-                Powered by <a href="http://www.injader.com" title="Injader">Injader</a>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div><!-- /.blog-sidebar -->
 
+    </div><!-- /.row -->
+
+</div><!-- /.container -->
+
+<div class="blog-footer">
+    <p>
+        Copyright &copy; 2014 {{ CMS.Settings.SiteTitle }} |
+        Blog template by <a href="https://twitter.com/mdo">@mdo</a> |
+        Powered by <a href="http://www.injader.com" title="Injader">Injader</a> |
+        <a href="#">Back to top</a>
+    </p>
 </div>
 
 </body>

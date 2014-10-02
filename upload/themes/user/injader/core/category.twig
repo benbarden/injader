@@ -1,5 +1,19 @@
 {% extends "core/base.twig" %}
 
+{% block cms_page_description %}
+{{ Area.Desc }}
+{% endblock cms_page_description %}
+
 {% block cms_content %}
-    <h1>{{ Page.Title }}</h1>
+    {#
+    <div class="blog-post">
+        <h2 class="blog-post-title">Sample blog post</h2>
+        <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+    </div><!-- /.blog-post -->
+
+    <ul class="pager">
+        <li><a href="#">Previous</a></li>
+        <li><a href="#">Next</a></li>
+    </ul>
+    #}
 {% endblock cms_content %}

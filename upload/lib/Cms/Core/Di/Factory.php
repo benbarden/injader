@@ -59,7 +59,8 @@ class Factory
         $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
 
         $linkStyle = $repoSetting->getSettingLinkStyle();
-        $iaLink = new \Cms\Ia\Link($linkStyle);
+        $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
+        $iaLinkArticle = new \Cms\Ia\Link\ArticleLink($linkStyle, $iaOptimiser);
 
         $themeBinding = new \Cms\Theme\Binding();
 
@@ -68,7 +69,7 @@ class Factory
             $serviceLocator->set('Auth.CurrentUser', $this->loggedInUser);
         }
         $serviceLocator->set('Cms.ThemeEngine', $cmsThemeEngine);
-        $serviceLocator->set('IA.Link', $iaLink);
+        $serviceLocator->set('IA.LinkArticle', $iaLinkArticle);
         $serviceLocator->set('Repo.Area', $repoArea);
         $serviceLocator->set('Repo.Setting', $repoSetting);
         $serviceLocator->set('Repo.User', $repoUser);

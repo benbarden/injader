@@ -1,0 +1,6 @@
+{% if Nav.Primary %}
+    {#<a class="blog-nav-item active" href="#">Home</a>#}
+    {% for Item in Nav.Primary %}
+        <a class="blog-nav-item" href="#">{{ Item.Name }}</a>
+    {% endfor %}
+{% endif %}

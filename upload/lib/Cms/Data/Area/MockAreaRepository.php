@@ -13,7 +13,7 @@ class MockAreaRepository implements IAreaRepository
     public function getArea($areaId)
     {
         if ($this->areaExists($areaId)) {
-            return new Area($areaId, 'Home');
+            return new Area(array('id' => $areaId, 'name' => 'Home'));
         } else {
             throw new \Exception(sprintf('Area %s does not exist.', $areaId));
         }

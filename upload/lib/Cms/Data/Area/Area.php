@@ -138,31 +138,38 @@ class Area
      */
     private $subareaContentOnIndex;
 
+    private $areaData;
+
+    private function getFieldSafe($key, $default = "")
+    {
+        return isset($this->areaData[$key]) ? $this->areaData[$key] : $default;
+    }
+
     public function __construct($areaData)
     {
-        $this->areaId = $areaData['id'];
-        $this->name = $areaData['name'];
-        $this->areaLevel = $areaData['area_level'];
-        $this->areaOrder = $areaData['area_order'];
-        $this->hierLeft = $areaData['hier_left'];
-        $this->hierRight = $areaData['hier_right'];
-        $this->parentId = $areaData['parent_id'];
-        $this->permissionProfileId = $areaData['permission_profile_id'];
-        $this->areaGraphicId = $areaData['area_graphic_id'];
-        $this->contentPerPage = $areaData['content_per_page'];
-        $this->sortRule = $areaData['sort_rule'];
-        $this->includeInRssFeed = $areaData['include_in_rss_feed'];
-        $this->maxFileSize = $areaData['max_file_size'];
-        $this->maxFilesPerUser = $areaData['max_files_per_user'];
-        $this->areaUrl = $areaData['area_url'];
-        $this->smartTags = $areaData['smart_tags'];
-        $this->seoName = $areaData['seo_name'];
-        $this->areaDescription = $areaData['area_description'];
-        $this->areaType = $areaData['area_type'];
-        $this->themePath = $areaData['theme_path'];
-        $this->layoutStyle = $areaData['layout_style'];
-        $this->navType = $areaData['nav_type'];
-        $this->subareaContentOnIndex = $areaData['subarea_content_on_index'];
+        $this->areaId                = $areaData['id'];
+        $this->name                  = $areaData['name'];
+        $this->areaLevel             = $this->getFieldSafe('area_level');
+        $this->areaOrder             = $this->getFieldSafe('area_order');
+        $this->hierLeft              = $this->getFieldSafe('hier_left');
+        $this->hierRight             = $this->getFieldSafe('hier_right');
+        $this->parentId              = $this->getFieldSafe('parent_id');
+        $this->permissionProfileId   = $this->getFieldSafe('permission_profile_id');
+        $this->areaGraphicId         = $this->getFieldSafe('area_graphic_id');
+        $this->contentPerPage        = $this->getFieldSafe('content_per_page');
+        $this->sortRule              = $this->getFieldSafe('sort_rule');
+        $this->includeInRssFeed      = $this->getFieldSafe('include_in_rss_feed');
+        $this->maxFileSize           = $this->getFieldSafe('max_file_size');
+        $this->maxFilesPerUser       = $this->getFieldSafe('max_files_per_user');
+        $this->areaUrl               = $this->getFieldSafe('area_url');
+        $this->smartTags             = $this->getFieldSafe('smart_tags');
+        $this->seoName               = $this->getFieldSafe('seo_name');
+        $this->areaDescription       = $this->getFieldSafe('area_description');
+        $this->areaType              = $this->getFieldSafe('area_type');
+        $this->themePath             = $this->getFieldSafe('theme_path');
+        $this->layoutStyle           = $this->getFieldSafe('layout_style');
+        $this->navType               = $this->getFieldSafe('nav_type');
+        $this->subareaContentOnIndex = $this->getFieldSafe('subarea_content_on_index');
     }
 
     public function getAreaId()
