@@ -3,19 +3,21 @@
 
 namespace Cms\Data\Area;
 
+use Cms\Data\IRepository;
 
-class MockAreaRepository implements IAreaRepository
+
+class MockAreaRepository implements IRepository
 {
-    public function areaExists($areaId)
+    public function exists($id)
     {
-        return $areaId == 1;
+        return $id == 1;
     }
-    public function getArea($areaId)
+    public function getById($id)
     {
-        if ($this->areaExists($areaId)) {
-            return new Area(array('id' => $areaId, 'name' => 'Home'));
+        if ($this->exists($id)) {
+            return new Area(array('id' => $id, 'name' => 'Home'));
         } else {
-            throw new \Exception(sprintf('Area %s does not exist.', $areaId));
+            throw new \Exception(sprintf('Area %s does not exist.', $id));
         }
     }
     public function saveArea(Area $area)

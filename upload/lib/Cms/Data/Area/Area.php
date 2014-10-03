@@ -3,8 +3,10 @@
 
 namespace Cms\Data\Area;
 
+use Cms\Data\IModel;
 
-class Area
+
+class Area extends IModel
 {
     /**
      * @var integer
@@ -138,17 +140,12 @@ class Area
      */
     private $subareaContentOnIndex;
 
-    private $areaData;
-
-    private function getFieldSafe($key, $default = "")
+    public function __construct($dbData)
     {
-        return isset($this->areaData[$key]) ? $this->areaData[$key] : $default;
-    }
+        $this->dbData = $dbData;
 
-    public function __construct($areaData)
-    {
-        $this->areaId                = $areaData['id'];
-        $this->name                  = $areaData['name'];
+        $this->areaId                = $dbData['id'];
+        $this->name                  = $dbData['name'];
         $this->areaLevel             = $this->getFieldSafe('area_level');
         $this->areaOrder             = $this->getFieldSafe('area_order');
         $this->hierLeft              = $this->getFieldSafe('hier_left');

@@ -125,6 +125,11 @@ class ArticleLink
     private function generateLinkStyleDateAndTime()
     {
         $optimisedUrl = $this->optimiser->optimise($this->article->getTitle());
-        return sprintf('%s/%s/%s/%s', '??', '??', '??', $optimisedUrl);
+        $createDate = $this->article->getCreateDate();
+        $articleDate = new \DateTime($createDate);
+        $articleYY = $articleDate->format('Y');
+        $articleMM = $articleDate->format('m');
+        $articleDD = $articleDate->format('d');
+        return sprintf('%s/%s/%s/%s', $articleYY, $articleMM, $articleDD, $optimisedUrl);
     }
 }

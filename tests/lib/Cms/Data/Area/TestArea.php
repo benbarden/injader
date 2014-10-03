@@ -2,10 +2,16 @@
 
 class TestArea extends \PHPUnit_Framework_TestCase
 {
-    public function testDummy()
+    public function testMockAreaId()
     {
-        $expected = true;
-        $actual = false;
-        $this->assertEquals($expected, $actual);
+        $mockArea = new \Cms\Data\Area\MockAreaRepository();
+        $area = $mockArea->getById(1);
+        $this->assertEquals(1, $area->getAreaId());
+    }
+    public function testMockArticleTitle()
+    {
+        $mockArea = new \Cms\Data\Area\MockAreaRepository();
+        $area = $mockArea->getById(1);
+        $this->assertEquals('Home', $area->getName());
     }
 }

@@ -32,7 +32,7 @@ class Category
 
         $areaRepo = $container->getService('Repo.Area');
         /* @var \Cms\Data\Area\AreaRepository $areaRepo */
-        $this->area = $areaRepo->getArea($areaId);
+        $this->area = $areaRepo->getById($areaId);
 
         // Subareas
         $this->subareaData = $areaRepo->getSubareas($areaId);

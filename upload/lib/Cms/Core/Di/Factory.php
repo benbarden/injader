@@ -28,7 +28,7 @@ class Factory
         $cookie = $accessLogin->getCookie();
         $userId = $repoUserSession->getValidUserId($cookie);
         if ($userId) {
-            $user = $repoUser->getUser($userId);
+            $user = $repoUser->getById($userId);
             if ($user) {
                 $this->loggedInUser = $user;
             }

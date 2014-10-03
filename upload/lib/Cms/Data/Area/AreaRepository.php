@@ -3,8 +3,10 @@
 
 namespace Cms\Data\Area;
 
+use Cms\Data\IRepository;
 
-class AreaRepository implements IAreaRepository
+
+class AreaRepository implements IRepository
 {
     private $db;
 
@@ -12,32 +14,31 @@ class AreaRepository implements IAreaRepository
     {
         $this->db = $db;
     }
-
-    public function areaExists($areaId)
+    public function exists($id)
     {
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("SELECT count(1) FROM maj_areas WHERE id = :id");
-            $pdoStatement->bindParam(':id', $areaId);
+            $pdoStatement->bindParam(':id', $id);
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $areaId, 0, $e);
+            throw new \Exception('Failed to check if row exists for '. $id, 0, $e);
         }
     }
 
-    public function getArea($areaId)
+    public function getById($id)
     {
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("SELECT * FROM maj_areas WHERE id = :id");
-            $pdoStatement->bindParam(':id', $areaId);
+            $pdoStatement->bindParam(':id', $id);
             $pdoStatement->execute();
             $dbData = $pdoStatement->fetch();
             $cmsArea = new Area($dbData);
             return $cmsArea;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $areaId, 0, $e);
+            throw new \Exception('Failed to check if row exists for '. $id, 0, $e);
         }
     }
 

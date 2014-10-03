@@ -3,17 +3,11 @@
 
 namespace Cms\Data\UserSession;
 
-use Cms\Data\IRepository;
+use Cms\Data\BaseRepository;
 
 
-class UserSessionRepository implements IRepository
+class UserSessionRepository extends BaseRepository
 {
-    private $db;
-
-    public function __construct(\PDO $db)
-    {
-        $this->db = $db;
-    }
     public function exists($id)
     {
         try {

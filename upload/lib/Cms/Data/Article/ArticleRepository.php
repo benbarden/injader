@@ -3,17 +3,11 @@
 
 namespace Cms\Data\Article;
 
-use Cms\Data\IRepository;
+use Cms\Data\BaseRepository;
 
 
-class ArticleRepository implements IRepository
+class ArticleRepository extends BaseRepository
 {
-    private $db;
-
-    public function __construct(\PDO $db)
-    {
-        $this->db = $db;
-    }
     public function exists($id)
     {
         try {

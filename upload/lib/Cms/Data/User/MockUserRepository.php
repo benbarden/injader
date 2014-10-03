@@ -3,19 +3,21 @@
 
 namespace Cms\Data\User;
 
+use Cms\Data\IRepository;
 
-class MockUserRepository implements IUserRepository
+
+class MockUserRepository implements IRepository
 {
-    public function userExists($userId)
+    public function exists($id)
     {
-        return $userId == 1;
+        return $id == 1;
     }
-    public function getUser($userId)
+    public function getById($id)
     {
-        if ($this->userExists($userId)) {
-            return new User(array('id' => $userId, 'username' => 'Ben'));
+        if ($this->exists($id)) {
+            return new User(array('id' => $id, 'username' => 'Ben'));
         } else {
-            throw new \Exception(sprintf('User %s does not exist.', $userId));
+            throw new \Exception(sprintf('User %s does not exist.', $id));
         }
     }
     public function saveUser(User $user)

@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('Europe/London');
+
 // inj Framework v3
 
 // inj Framework v3: System Constants

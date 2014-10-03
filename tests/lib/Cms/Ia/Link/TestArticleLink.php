@@ -6,7 +6,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     {
         $expected = 'view.php/article/1/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
-        $area = $mockAreaRepo->getArea(1);
+        $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
         $article = $mockArticleRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -19,7 +19,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     {
         $expected = 'article/1/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
-        $area = $mockAreaRepo->getArea(1);
+        $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
         $article = $mockArticleRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -32,7 +32,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     {
         $expected = 'test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
-        $area = $mockAreaRepo->getArea(1);
+        $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
         $article = $mockArticleRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -45,7 +45,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     {
         $expected = 'home/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
-        $area = $mockAreaRepo->getArea(1);
+        $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
         $article = $mockArticleRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -58,7 +58,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     {
         $expected = '2009/12/31/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
-        $area = $mockAreaRepo->getArea(1);
+        $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
         $article = $mockArticleRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
