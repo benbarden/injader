@@ -112,17 +112,24 @@ class Engine
     private function setupFunctions($twig)
     {
         // cmsBlock
-        $function = new \Twig_SimpleFunction('cmsBlock', array($this, 'cmsBlock'), array(
-            'is_safe' => array('html'),
+        $funcBlock = new \Twig_SimpleFunction('cmsBlock',
+            array($this, 'cmsBlock'),
+            array('is_safe' => array('html'),
             'needs_environment' => true,
             'needs_context' => true
         ));
+        $twig->addFunction($funcBlock);
         // cmsLink
-        $twig->addFunction($function);
-        $function = new \Twig_SimpleFunction('cmsLink', array($this, 'cmsLink'), array(
-            'is_safe' => array('html')
+        $funcLinkArticle = new \Twig_SimpleFunction('cmsLinkArticle',
+            array($this, 'cmsLinkArticle'),
+            array('is_safe' => array('html')
         ));
-        $twig->addFunction($function);
+        $twig->addFunction($funcLinkArticle);
+        $funcLinkArea = new \Twig_SimpleFunction('cmsLinkArea',
+            array($this, 'cmsLinkArea'),
+            array('is_safe' => array('html')
+        ));
+        $twig->addFunction($funcLinkArea);
         return $twig;
     }
 
@@ -139,27 +146,22 @@ class Engine
         }
     }
 
-    public function cmsLink($objectType, $itemId)
+    public function cmsLinkArticle($itemId)
     {
-        switch ($objectType) {
-            case 'article':
-                $article = $this->repoArticle->getById($itemId);
-                $areaId = $article->getContentAreaId();
-                $area = $this->repoArea->getById($areaId);
-                $this->iaLinkArticle->setArea($area);
-                $this->iaLinkArticle->setArticle($article);
-                $outputHtml = $this->iaLinkArticle->generate();
-                break;
-            case 'area':
-                $area = $this->repoArea->getById($itemId);
-                $this->iaLinkArea->setArea($area);
-                $outputHtml = $this->iaLinkArea->generate();
-                break;
-            default:
-                $outputHtml = sprintf('Unknown object type: %s', $objectType);
-                break;
-        }
+        $article = $this->repoArticle->getById($itemId);
+        $areaId = $article->getContentAreaId();
+        $area = $this->repoArea->getById($areaId);
+        $this->iaLinkArticle->setArea($area);
+        $this->iaLinkArticle->setArticle($article);
+        $outputHtml = $this->iaLinkArticle->generate();
+        return URL_ROOT.$outputHtml;
+    }
 
+    public function cmsLinkArea($itemId)
+    {
+        $area = $this->repoArea->getById($itemId);
+        $this->iaLinkArea->setArea($area);
+        $outputHtml = $this->iaLinkArea->generate();
         return URL_ROOT.$outputHtml;
     }
 

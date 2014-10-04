@@ -1,9 +1,9 @@
 {% if Nav.Tertiary %}
-    <ol class="list-unstyled">
-        {% for Item in Nav.Tertiary %}
-            <li><a href="{{ cmsLink('area', Item.Id) }}">{{ Item.Name }}</a></li>
-        {% endfor %}
-    </ol>
+<ol class="list-unstyled">
+    {% for Item in Nav.Tertiary %}
+    <li><a href="{{ cmsLinkArea(Item.Id) }}">{{ Item.Name }}</a></li>
+    {% endfor %}
+</ol>
 {% else %}
 <p>Fill in your tertiary nav links to populate this box</p>
 {% endif %}
