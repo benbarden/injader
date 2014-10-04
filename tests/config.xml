@@ -13,6 +13,7 @@
             <file>./lib/Cms/Data/UserSession/TestUserSession.php</file>
             <file>./lib/Cms/Ia/Link/TestArticleLink.php</file>
             <file>./lib/Cms/Ia/Link/TestAreaLink.php</file>
+            <file>./lib/Cms/Ia/Pages/TestOffset.php</file>
             <file>./lib/Cms/Ia/Tools/TestOptimiseUrl.php</file>
             <file>./lib/Cms/Theme/User/TestCategory.php</file>
             <file>./lib/Cms/Theme/TestBinding.php</file>

@@ -138,6 +138,15 @@
             case "area":
             case "category":
                 $themeRenderer->setObjectCategory();
+                // Pagination
+                $pageNo = null;
+                if (isset($_GET['page'])) {
+                    $pageNo = (int) $_GET['page'];
+                }
+                if (!$pageNo) {
+                    $pageNo = 1;
+                }
+                $themeRenderer->setPageNo($pageNo);
                 break;
             case "article":
                 $themeRenderer->setObjectArticle();

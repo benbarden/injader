@@ -33,6 +33,11 @@ class Renderer
     private $itemId;
 
     /**
+     * @var integer
+     */
+    private $pageNo;
+
+    /**
      * @param \Cms\Core\Di\Container $container
      * @return void
      */
@@ -70,6 +75,11 @@ class Renderer
     public function setItemId($itemId)
     {
         $this->itemId = $itemId;
+    }
+
+    public function setPageNo($pageNo)
+    {
+        $this->pageNo = $pageNo;
     }
 
     public function isObjectCategory()
@@ -123,15 +133,30 @@ class Renderer
             case self::OBJECT_TYPE_AREA:
             case self::OBJECT_TYPE_CATEGORY:
 
-                // Area and subarea setup
                 $areaRepo = $this->container->getService('Repo.Area');
                 /* @var \Cms\Data\Area\AreaRepository $areaRepo */
+                $articleRepo = $this->container->getService('Repo.Article');
+                /* @var \Cms\Data\Article\ArticleRepository $articleRepo */
+
+                // Area and subarea setup
                 $area = $areaRepo->getById($this->itemId);
                 $subareas = $areaRepo->getSubareas($this->itemId);
+
+                // Content setup
+                $perPage = $area->getContentPerPage();
+                $totalCount = $articleRepo->countByArea($this->itemId);
+                $iaPagesOffset = new \Cms\Ia\Pages\Offset();
+                $iaPagesOffset->setPageNo($this->pageNo);
+                $iaPagesOffset->setPerPage($perPage);
+                $offset = $iaPagesOffset->calculate();
+                $areaContent = $articleRepo->getByArea($this->itemId, $perPage, $offset);
 
                 // Renderer setup
                 $this->renderer = new \Cms\Theme\User\Category($this->container);
                 $this->renderer->setArea($area);
+                if ($areaContent) {
+                    $this->renderer->setAreaContent($areaContent);
+                }
                 if ($subareas) {
                     $this->renderer->setSubareas($subareas);
                 }

@@ -28,6 +28,11 @@ class Category
      */
     private $subareas;
 
+    /**
+     * @var array
+     */
+    private $areaContent;
+
     public function __construct(\Cms\Core\Di\Container $container)
     {
         $this->themeFile = 'core/category.twig';
@@ -41,6 +46,11 @@ class Category
     public function setSubareas($subareas)
     {
         $this->subareas = $subareas;
+    }
+
+    public function setAreaContent($areaContent)
+    {
+        $this->areaContent = $areaContent;
     }
 
     public function setupBindings()
@@ -73,13 +83,27 @@ class Category
         if ($this->subareas) {
             foreach ($this->subareas as $subareaItem) {
                 $subareaObject = new \Cms\Data\Area\Area($subareaItem);
-                /* @var \Cms\Data\Area\Area $subareaObject */
                 $subareaRow = array(
                     'Id' => $subareaObject->getAreaId(),
                     'Name' => $subareaObject->getName(),
                     'Desc' => $subareaObject->getAreaDescription()
                 );
                 $bindings['Area']['Subareas'][] = $subareaRow;
+            }
+        }
+
+        // Content
+        // @todo Remove stripslashes once article editor is rebuilt
+        if ($this->areaContent) {
+            foreach ($this->areaContent as $contentItem) {
+                $contentObject = new \Cms\Data\Article\Article($contentItem);
+                $contentRow = array(
+                    'Id' => $contentObject->getId(),
+                    'Title' => stripslashes($contentObject->getTitle()),
+                    'Body' => stripslashes($contentObject->getContent()),
+                    'Date' => $contentObject->getCreateDate()
+                );
+                $bindings['Area']['Content'][] = $contentRow;
             }
         }
 

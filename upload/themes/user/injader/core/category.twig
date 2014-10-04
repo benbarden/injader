@@ -5,11 +5,16 @@
 {% endblock cms_page_description %}
 
 {% block cms_content %}
-    {#
+{% if Area.Content %}
+{% for Item in Area.Content %}
     <div class="blog-post">
-        <h2 class="blog-post-title">Sample blog post</h2>
-        <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+        <h2 class="blog-post-title">{{ Item.Title }}</h2>
+        <p class="blog-post-meta">{{ Item.Date }}{# by <a href="#">Mark</a>#}</p>
+        {{ Item.Body|raw }}
     </div><!-- /.blog-post -->
+{% endfor %}
+{% endif %}
+    {#
 
     <ul class="pager">
         <li><a href="#">Previous</a></li>
