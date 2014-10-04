@@ -1,6 +1,6 @@
 {% if Nav.Primary %}
     {#<a class="blog-nav-item active" href="#">Home</a>#}
     {% for Item in Nav.Primary %}
-        <a class="blog-nav-item" href="#">{{ Item.Name }}</a>
+        <a class="blog-nav-item" href="{{ cmsLink('area', Item.Id) }}">{{ Item.Name }}</a>
     {% endfor %}
 {% endif %}

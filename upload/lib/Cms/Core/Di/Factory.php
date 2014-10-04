@@ -7,6 +7,7 @@ use Cms\Data\Area\AreaRepository,
     Cms\Data\Setting\SettingRepository,
     Cms\Data\User\UserRepository,
     Cms\Data\UserSession\UserSessionRepository;
+use Cms\Data\Article\ArticleRepository;
 
 
 class Factory
@@ -48,29 +49,37 @@ class Factory
         $pdo = new \PDO($dsn, $user, $pw);
 
         $repoArea = new AreaRepository($pdo);
+        $repoArticle = new ArticleRepository($pdo);
         $repoSetting = new SettingRepository($pdo);
         $repoUser = new UserRepository($pdo);
         $repoUserSession = new UserSessionRepository($pdo);
 
         $this->setupAuthLayer($repoUserSession, $repoUser);
 
-        $cmsThemeEngine = new \Cms\Theme\Engine($themeCurrent, $engineCache);
-        $themeEngine   = $cmsThemeEngine->getEngine();
-        $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
-
         $linkStyle = $repoSetting->getSettingLinkStyle();
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
         $iaLinkArticle = new \Cms\Ia\Link\ArticleLink($linkStyle, $iaOptimiser);
+        $iaLinkArea = new \Cms\Ia\Link\AreaLink($linkStyle, $iaOptimiser);
 
         $themeBinding = new \Cms\Theme\Binding();
+
+        $cmsThemeEngine = new \Cms\Theme\Engine($themeCurrent, $engineCache);
+        $cmsThemeEngine->setIALinkArea($iaLinkArea);
+        $cmsThemeEngine->setIALinkArticle($iaLinkArticle);
+        $cmsThemeEngine->setRepoArea($repoArea);
+        $cmsThemeEngine->setRepoArticle($repoArticle);
+        $themeEngine   = $cmsThemeEngine->getEngine();
+        $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
 
         $serviceLocator = new ServiceLocator();
         if ($this->loggedInUser) {
             $serviceLocator->set('Auth.CurrentUser', $this->loggedInUser);
         }
         $serviceLocator->set('Cms.ThemeEngine', $cmsThemeEngine);
+        $serviceLocator->set('IA.LinkArea', $iaLinkArea);
         $serviceLocator->set('IA.LinkArticle', $iaLinkArticle);
         $serviceLocator->set('Repo.Area', $repoArea);
+        $serviceLocator->set('Repo.Article', $repoArticle);
         $serviceLocator->set('Repo.Setting', $repoSetting);
         $serviceLocator->set('Repo.User', $repoUser);
         $serviceLocator->set('Repo.UserSession', $repoUserSession);

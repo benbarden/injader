@@ -3,6 +3,11 @@
 
 namespace Cms\Theme;
 
+use Cms\Ia\Link\AreaLink,
+    Cms\Ia\Link\ArticleLink,
+    Cms\Data\Area\AreaRepository,
+    Cms\Data\Article\ArticleRepository;
+
 
 class Engine
 {
@@ -20,6 +25,26 @@ class Engine
      * @var string
      */
     private $publicThemePath;
+
+    /**
+     * @var AreaLink
+     */
+    private $iaLinkArea;
+
+    /**
+     * @var ArticleLink
+     */
+    private $iaLinkArticle;
+
+    /**
+     * @var ArticleRepository
+     */
+    private $repoArticle;
+
+    /**
+     * @var AreaRepository
+     */
+    private $repoArea;
 
     /**
      * @param string $current
@@ -56,6 +81,26 @@ class Engine
         \Twig_Autoloader::register();
     }
 
+    public function setIALinkArea(AreaLink $iaLinkArea)
+    {
+        $this->iaLinkArea = $iaLinkArea;
+    }
+
+    public function setIALinkArticle(ArticleLink $iaLinkArticle)
+    {
+        $this->iaLinkArticle = $iaLinkArticle;
+    }
+
+    public function setRepoArea(AreaRepository $repoArea)
+    {
+        $this->repoArea = $repoArea;
+    }
+
+    public function setRepoArticle(ArticleRepository $repoArticle)
+    {
+        $this->repoArticle = $repoArticle;
+    }
+
     /**
      * @return string
      */
@@ -66,10 +111,16 @@ class Engine
 
     private function setupFunctions($twig)
     {
+        // cmsBlock
         $function = new \Twig_SimpleFunction('cmsBlock', array($this, 'cmsBlock'), array(
             'is_safe' => array('html'),
             'needs_environment' => true,
             'needs_context' => true
+        ));
+        // cmsLink
+        $twig->addFunction($function);
+        $function = new \Twig_SimpleFunction('cmsLink', array($this, 'cmsLink'), array(
+            'is_safe' => array('html')
         ));
         $twig->addFunction($function);
         return $twig;
@@ -86,6 +137,30 @@ class Engine
         } else {
             return sprintf('<p><strong>MISSING: %s</strong></p>', $blockFile);
         }
+    }
+
+    public function cmsLink($objectType, $itemId)
+    {
+        switch ($objectType) {
+            case 'article':
+                $article = $this->repoArticle->getById($itemId);
+                $areaId = $article->getContentAreaId();
+                $area = $this->repoArea->getById($areaId);
+                $this->iaLinkArticle->setArea($area);
+                $this->iaLinkArticle->setArticle($article);
+                $outputHtml = $this->iaLinkArticle->generate();
+                break;
+            case 'area':
+                $area = $this->repoArea->getById($itemId);
+                $this->iaLinkArea->setArea($area);
+                $outputHtml = $this->iaLinkArea->generate();
+                break;
+            default:
+                $outputHtml = sprintf('Unknown object type: %s', $objectType);
+                break;
+        }
+
+        return URL_ROOT.$outputHtml;
     }
 
     /**

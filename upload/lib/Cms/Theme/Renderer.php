@@ -122,8 +122,21 @@ class Renderer
         switch ($this->objectType) {
             case self::OBJECT_TYPE_AREA:
             case self::OBJECT_TYPE_CATEGORY:
-                $this->renderer = new \Cms\Theme\User\Category($this->container, $this->itemId);
-                break;
+
+                // Area and subarea setup
+                $areaRepo = $this->container->getService('Repo.Area');
+                /* @var \Cms\Data\Area\AreaRepository $areaRepo */
+                $area = $areaRepo->getById($this->itemId);
+                $subareas = $areaRepo->getSubareas($this->itemId);
+
+                // Renderer setup
+                $this->renderer = new \Cms\Theme\User\Category($this->container);
+                $this->renderer->setArea($area);
+                if ($subareas) {
+                    $this->renderer->setSubareas($subareas);
+                }
+                $this->renderer->setupBindings();
+            break;
             case self::OBJECT_TYPE_ARTICLE:
                 //$this->renderer = new \Cms\Theme\User\Article();
                 //break;

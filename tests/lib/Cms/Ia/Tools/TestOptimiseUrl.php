@@ -20,7 +20,7 @@ class TestOptimiseUrl extends \PHPUnit_Framework_TestCase
     public function testNumbers()
     {
         $input = 'Hello World 237492347';
-        $expected = 'hello-world';
+        $expected = 'hello-world-237492347';
         $this->assertEquals($expected, $this->optimiser->optimise($input));
     }
     public function testSpaces()

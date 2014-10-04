@@ -49,7 +49,7 @@ class AreaRepository implements IRepository
             $pdoStatement = $this->db->prepare("
                 SELECT * FROM maj_areas
                 WHERE parent_id = :id
-                ORDER BY node.hier_left
+                ORDER BY hier_left
             ");
             $pdoStatement->bindParam(':id', $areaId);
             $pdoStatement->execute();

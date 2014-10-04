@@ -3,6 +3,8 @@
 
 namespace Cms\Theme\User;
 
+use Cms\Data\Area\Area;
+
 
 class Category
 {
@@ -24,23 +26,24 @@ class Category
     /**
      * @var array
      */
-    private $subareaData;
+    private $subareas;
 
-    public function __construct(\Cms\Core\Di\Container $container, $areaId)
+    public function __construct(\Cms\Core\Di\Container $container)
     {
         $this->themeFile = 'core/category.twig';
-
-        $areaRepo = $container->getService('Repo.Area');
-        /* @var \Cms\Data\Area\AreaRepository $areaRepo */
-        $this->area = $areaRepo->getById($areaId);
-
-        // Subareas
-        $this->subareaData = $areaRepo->getSubareas($areaId);
-
-        $this->setupBindings();
     }
 
-    private function setupBindings()
+    public function setArea(Area $area)
+    {
+        $this->area = $area;
+    }
+
+    public function setSubareas($subareas)
+    {
+        $this->subareas = $subareas;
+    }
+
+    public function setupBindings()
     {
         $areaId = $this->area->getAreaId();
 
@@ -67,8 +70,8 @@ class Category
         $bindings['Page']['WrapperClass'] = 'area-index';
 
         // Subareas
-        if ($this->subareaData) {
-            foreach ($this->subareaData as $subareaItem) {
+        if ($this->subareas) {
+            foreach ($this->subareas as $subareaItem) {
                 $subareaObject = new \Cms\Data\Area\Area($subareaItem);
                 /* @var \Cms\Data\Area\Area $subareaObject */
                 $subareaRow = array(
