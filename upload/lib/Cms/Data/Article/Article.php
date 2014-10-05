@@ -40,6 +40,12 @@ class Article extends IModel
      */
     private $createDate;
 
+    /**
+     * text
+     * @var string
+     */
+    private $excerpt;
+
     public function __construct($dbData)
     {
         $this->dbData = $dbData;
@@ -50,6 +56,7 @@ class Article extends IModel
         $this->authorId = $this->getFieldSafe('author_id');
         $this->contentAreaId = $this->getFieldSafe('content_area_id');
         $this->createDate = $this->getFieldSafe('create_date');
+        $this->excerpt = $this->getFieldSafe('article_excerpt');
     }
 
     public function getId()
@@ -80,6 +87,11 @@ class Article extends IModel
     public function getCreateDate()
     {
         return $this->createDate;
+    }
+
+    public function getExcerpt()
+    {
+        return $this->excerpt;
     }
 
 }

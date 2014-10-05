@@ -88,6 +88,48 @@ class SettingRepository implements ISettingRepository
         return $this->getSettingValue(Setting::SETTING_LINK_STYLE);
     }
 
+    public function getSettingDateFormat()
+    {
+        return $this->getSettingValue(Setting::SETTING_DATE_FORMAT);
+    }
+
+    public function getSettingTimeFormat()
+    {
+        return $this->getSettingValue(Setting::SETTING_TIME_FORMAT);
+    }
+
+    public function getDateFormat()
+    {
+        $settingDateFormat = $this->getSettingDateFormat();
+        if (!$settingDateFormat) $settingDateFormat = 1;
+        $settingTimeFormat = $this->getSettingTimeFormat();
+        if (!$settingTimeFormat) $settingTimeFormat = 0;
+
+        switch ($settingDateFormat) {
+            case 1: $dateFormat = "F j, Y"; break; // September 16, 2007
+            case 2: $dateFormat = "j F, Y"; break; // 16 September, 2007
+            case 3: $dateFormat = "d/m/Y";  break; // 16/09/2007
+            case 4: $dateFormat = "m/d/Y";  break; // 09/16/2007
+            case 5: $dateFormat = "Y/m/d";  break; // 2007/09/16
+            case 6: $dateFormat = "Y-m-d";  break; // 2007-09-16
+            case 7: $dateFormat = "Y/d/m";  break; // 2007/16/09
+            case 8: $dateFormat = "Y-d-m";  break; // 2007-16-09
+        }
+
+        switch ($settingTimeFormat) {
+            case 1: $timeFormat = "H:i";    break; // 24H
+            case 2: $timeFormat = "H:i:s"; break; // 24H with seconds
+            case 3: $timeFormat = "g:i A"; break; // 12H followed by AM or PM
+            default: $timeFormat = "";        break; // Do not display time
+        }
+
+        $combinedFormat = $dateFormat;
+        if ($timeFormat) {
+            $combinedFormat .= ' '.$timeFormat;
+        }
+        return $combinedFormat;
+    }
+
     public function saveSetting(Setting $setting)
     {
 

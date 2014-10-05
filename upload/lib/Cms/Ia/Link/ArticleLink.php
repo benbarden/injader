@@ -52,7 +52,7 @@ class ArticleLink extends Base
      */
     protected function generateLinkStyleClassic()
     {
-        return sprintf('view.php/article/%s/%s',
+        return URL_ROOT.sprintf('view.php/article/%s/%s',
             $this->article->getId(), $this->getOptimisedArticleUrl());
     }
 
@@ -62,7 +62,7 @@ class ArticleLink extends Base
      */
     protected function generateLinkStyleLong()
     {
-        return sprintf('article/%s/%s',
+        return URL_ROOT.sprintf('article/%s/%s',
             $this->article->getId(), $this->getOptimisedArticleUrl());
     }
 
@@ -72,7 +72,7 @@ class ArticleLink extends Base
      */
     protected function generateLinkStyleTitleOnly()
     {
-        return $this->getOptimisedArticleUrl();
+        return URL_ROOT.$this->getOptimisedArticleUrl();
     }
 
     /**
@@ -81,7 +81,7 @@ class ArticleLink extends Base
      */
     protected function generateLinkStyleAreaAndTitle()
     {
-        return sprintf('%s/%s',
+        return URL_ROOT.sprintf('%s/%s',
             $this->getOptimisedAreaUrl(), $this->getOptimisedArticleUrl());
     }
 
@@ -96,7 +96,7 @@ class ArticleLink extends Base
         $articleYY = $articleDate->format('Y');
         $articleMM = $articleDate->format('m');
         $articleDD = $articleDate->format('d');
-        return sprintf('%s/%s/%s/%s',
+        return URL_ROOT.sprintf('%s/%s/%s/%s',
             $articleYY, $articleMM, $articleDD, $this->getOptimisedArticleUrl());
     }
 }

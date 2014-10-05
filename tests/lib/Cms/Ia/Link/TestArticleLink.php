@@ -4,7 +4,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
 {
     public function testLinkStyle1()
     {
-        $expected = 'view.php/article/1/test-article';
+        $expected = '/view.php/article/1/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
@@ -17,7 +17,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle2()
     {
-        $expected = 'article/1/test-article';
+        $expected = '/article/1/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
@@ -30,7 +30,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle3()
     {
-        $expected = 'test-article';
+        $expected = '/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
@@ -43,7 +43,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle4()
     {
-        $expected = 'home/test-article';
+        $expected = '/home/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();
@@ -56,7 +56,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle5()
     {
-        $expected = '2009/12/31/test-article';
+        $expected = '/2009/12/31/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();

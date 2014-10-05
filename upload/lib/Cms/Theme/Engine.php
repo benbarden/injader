@@ -154,7 +154,7 @@ class Engine
         $this->iaLinkArticle->setArea($area);
         $this->iaLinkArticle->setArticle($article);
         $outputHtml = $this->iaLinkArticle->generate();
-        return URL_ROOT.$outputHtml;
+        return $outputHtml;
     }
 
     public function cmsLinkArea($itemId)
@@ -162,7 +162,7 @@ class Engine
         $area = $this->repoArea->getById($itemId);
         $this->iaLinkArea->setArea($area);
         $outputHtml = $this->iaLinkArea->generate();
-        return URL_ROOT.$outputHtml;
+        return $outputHtml;
     }
 
     /**

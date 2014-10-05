@@ -87,6 +87,13 @@ class Factory
         $serviceLocator->set('Theme.EngineUT', $themeEngineUT);
         $serviceLocator->set('Theme.Binding', $themeBinding);
 
-        return new Container($serviceLocator);
+        $container = new Container($serviceLocator);
+
+        // Save some settings
+        $dateFormat = $repoSetting->getDateFormat();
+        $container->saveSetting('DateFormat', $dateFormat);
+        $container->saveSetting('LinkStyle', $linkStyle);
+
+        return $container;
     }
 } 

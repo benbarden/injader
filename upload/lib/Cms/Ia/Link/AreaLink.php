@@ -36,7 +36,7 @@ class AreaLink extends Base
      */
     protected function generateLinkStyleClassic()
     {
-        return sprintf('view.php/area/%s/%s/',
+        return URL_ROOT.sprintf('view.php/area/%s/%s/',
             $this->area->getAreaId(), $this->getOptimisedAreaUrl());
     }
 
@@ -46,7 +46,7 @@ class AreaLink extends Base
      */
     protected function generateLinkStyleLong()
     {
-        return sprintf('area/%s/%s/',
+        return URL_ROOT.sprintf('area/%s/%s/',
             $this->area->getAreaId(), $this->getOptimisedAreaUrl());
     }
 
@@ -56,7 +56,7 @@ class AreaLink extends Base
      */
     protected function generateLinkStyleTitleOnly()
     {
-        return $this->getOptimisedAreaUrl().'/';
+        return URL_ROOT.$this->getOptimisedAreaUrl().'/';
     }
 
     /**
@@ -66,7 +66,7 @@ class AreaLink extends Base
      */
     protected function generateLinkStyleAreaAndTitle()
     {
-        return $this->getOptimisedAreaUrl().'/';
+        return URL_ROOT.$this->getOptimisedAreaUrl().'/';
     }
 
     /**
@@ -76,6 +76,6 @@ class AreaLink extends Base
      */
     protected function generateLinkStyleDateAndTime()
     {
-        return $this->getOptimisedAreaUrl().'/';
+        return URL_ROOT.$this->getOptimisedAreaUrl().'/';
     }
 }

@@ -100,7 +100,7 @@ old links will automatically redirect to the new links.</p>
         </td>
         <td>
             <input type="radio" id="optLink1" name="optLink" value="1"$strLinkStyle1Checked />
-            <label for="optLink1">#1: yoursite.com/view.php/article/1/hello-world - full-length</label>
+            <label for="optLink1">#1: yoursite.com/index.php/article/1/hello-world - full-length</label>
             <br />
             <input type="radio" id="optLink2" name="optLink" value="2"$strLinkStyle2Checked />
             <label for="optLink2">#2: yoursite.com/article/1/hello-world - no view.php</label>

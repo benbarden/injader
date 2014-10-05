@@ -4,7 +4,7 @@ class TestAreaLink extends \PHPUnit_Framework_TestCase
 {
     public function testLinkStyle1()
     {
-        $expected = 'view.php/area/1/home/';
+        $expected = '/view.php/area/1/home/';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -14,7 +14,7 @@ class TestAreaLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle2()
     {
-        $expected = 'area/1/home/';
+        $expected = '/area/1/home/';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -24,7 +24,7 @@ class TestAreaLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle3()
     {
-        $expected = 'home/';
+        $expected = '/home/';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -34,7 +34,7 @@ class TestAreaLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle4()
     {
-        $expected = 'home/';
+        $expected = '/home/';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
@@ -44,7 +44,7 @@ class TestAreaLink extends \PHPUnit_Framework_TestCase
     }
     public function testLinkStyle5()
     {
-        $expected = 'home/';
+        $expected = '/home/';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();

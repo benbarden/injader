@@ -3,11 +3,17 @@
 
 namespace Cms\Theme\User;
 
-use Cms\Data\Area\Area;
+use Cms\Data\Area\Area,
+    Cms\Core\Di\Container;
 
 
 class Category
 {
+    /**
+     * @var Container
+     */
+    private $container;
+
     /**
      * @var \Cms\Data\Area\Area
      */
@@ -33,9 +39,15 @@ class Category
      */
     private $areaContent;
 
-    public function __construct(\Cms\Core\Di\Container $container)
+    public function __construct(Container $container)
     {
+        $this->container = $container;
         $this->themeFile = 'core/category.twig';
+    }
+
+    public function __destruct()
+    {
+        unset($this->container);
     }
 
     public function setArea(Area $area)
@@ -92,16 +104,20 @@ class Category
             }
         }
 
+        // Date
+        $dateFormat = $this->container->getSetting('DateFormat');
+        $iaLink = $this->container->getService('IA.LinkArticle');
+
         // Content
-        // @todo Remove stripslashes once article editor is rebuilt
         if ($this->areaContent) {
             foreach ($this->areaContent as $contentItem) {
                 $contentObject = new \Cms\Data\Article\Article($contentItem);
+                $contentArticle = new \Cms\Content\Article($contentObject, $iaLink);
                 $contentRow = array(
                     'Id' => $contentObject->getId(),
                     'Title' => stripslashes($contentObject->getTitle()),
-                    'Body' => stripslashes($contentObject->getContent()),
-                    'Date' => $contentObject->getCreateDate()
+                    'Body' => $contentArticle->getCategoryBody(),
+                    'Date' => date($dateFormat, strtotime($contentObject->getCreateDate()))
                 );
                 $bindings['Area']['Content'][] = $contentRow;
             }
