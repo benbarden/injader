@@ -57,17 +57,20 @@ class Factory
         $this->setupAuthLayer($repoUserSession, $repoUser);
 
         $linkStyle = $repoSetting->getSettingLinkStyle();
-        $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();
+        $iaOptimiser   = new \Cms\Ia\Tools\OptimiseUrl();
         $iaLinkArticle = new \Cms\Ia\Link\ArticleLink($linkStyle, $iaOptimiser);
-        $iaLinkArea = new \Cms\Ia\Link\AreaLink($linkStyle, $iaOptimiser);
+        $iaLinkArea    = new \Cms\Ia\Link\AreaLink($linkStyle, $iaOptimiser);
+        $iaLinkUser    = new \Cms\Ia\Link\UserLink($linkStyle, $iaOptimiser);
 
         $themeBinding = new \Cms\Theme\Binding();
 
         $cmsThemeEngine = new \Cms\Theme\Engine($themeCurrent, $engineCache);
         $cmsThemeEngine->setIALinkArea($iaLinkArea);
         $cmsThemeEngine->setIALinkArticle($iaLinkArticle);
+        $cmsThemeEngine->setIALinkUser($iaLinkUser);
         $cmsThemeEngine->setRepoArea($repoArea);
         $cmsThemeEngine->setRepoArticle($repoArticle);
+        $cmsThemeEngine->setRepoUser($repoUser);
         $themeEngine   = $cmsThemeEngine->getEngine();
         $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
 

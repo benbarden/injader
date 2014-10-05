@@ -52,7 +52,7 @@ class ArticleLink extends Base
      */
     protected function generateLinkStyleClassic()
     {
-        return URL_ROOT.sprintf('view.php/article/%s/%s',
+        return URL_ROOT.sprintf('index.php/article/%s/%s',
             $this->article->getId(), $this->getOptimisedArticleUrl());
     }
 

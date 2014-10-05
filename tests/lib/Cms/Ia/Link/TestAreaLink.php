@@ -4,7 +4,7 @@ class TestAreaLink extends \PHPUnit_Framework_TestCase
 {
     public function testLinkStyle1()
     {
-        $expected = '/view.php/area/1/home/';
+        $expected = '/index.php/area/1/home/';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $iaOptimiser = new \Cms\Ia\Tools\OptimiseUrl();

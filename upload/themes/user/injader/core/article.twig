@@ -1,0 +1,12 @@
+{% extends "core/base.twig" %}
+
+{% block cms_content %}
+<div class="blog-post">
+    <p class="blog-post-meta">
+        {{ Article.Date }}
+        | By <a href="{{ cmsLinkUser(Article.Author.Id) }}">{{ Article.Author.Username }}</a>
+        | <a href="{{ cmsLinkArticle(Article.Id) }}">Permalink</a>
+    </p>
+    {{ Article.Body|raw }}
+</div>
+{% endblock cms_content %}

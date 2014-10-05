@@ -163,8 +163,16 @@ class Renderer
                 $this->renderer->setupBindings();
             break;
             case self::OBJECT_TYPE_ARTICLE:
-                //$this->renderer = new \Cms\Theme\User\Article();
-                //break;
+
+                $articleRepo = $this->container->getService('Repo.Article');
+                /* @var \Cms\Data\Article\ArticleRepository $articleRepo */
+                $article = $articleRepo->getById($this->itemId);
+
+                $this->renderer = new \Cms\Theme\User\Article($this->container);
+                $this->renderer->setArticle($article);
+                $this->renderer->setupBindings();
+
+                break;
             case self::OBJECT_TYPE_FILE:
                 //$this->renderer = new \Cms\Theme\User\File();
                 //break;

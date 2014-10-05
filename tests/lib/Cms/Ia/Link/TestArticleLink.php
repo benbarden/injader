@@ -4,7 +4,7 @@ class TestArticleLink extends \PHPUnit_Framework_TestCase
 {
     public function testLinkStyle1()
     {
-        $expected = '/view.php/article/1/test-article';
+        $expected = '/index.php/article/1/test-article';
         $mockAreaRepo = new \Cms\Data\Area\MockAreaRepository();
         $area = $mockAreaRepo->getById(1);
         $mockArticleRepo = new \Cms\Data\Article\MockArticleRepository();

@@ -5,8 +5,10 @@ namespace Cms\Theme;
 
 use Cms\Ia\Link\AreaLink,
     Cms\Ia\Link\ArticleLink,
+    Cms\Ia\Link\UserLink,
     Cms\Data\Area\AreaRepository,
-    Cms\Data\Article\ArticleRepository;
+    Cms\Data\Article\ArticleRepository,
+    Cms\Data\User\UserRepository;
 
 
 class Engine
@@ -37,6 +39,11 @@ class Engine
     private $iaLinkArticle;
 
     /**
+     * @var UserLink
+     */
+    private $iaLinkUser;
+
+    /**
      * @var ArticleRepository
      */
     private $repoArticle;
@@ -45,6 +52,11 @@ class Engine
      * @var AreaRepository
      */
     private $repoArea;
+
+    /**
+     * @var UserRepository
+     */
+    private $repoUser;
 
     /**
      * @param string $current
@@ -91,6 +103,11 @@ class Engine
         $this->iaLinkArticle = $iaLinkArticle;
     }
 
+    public function setIALinkUser(UserLink $iaLinkUser)
+    {
+        $this->iaLinkUser = $iaLinkUser;
+    }
+
     public function setRepoArea(AreaRepository $repoArea)
     {
         $this->repoArea = $repoArea;
@@ -99,6 +116,11 @@ class Engine
     public function setRepoArticle(ArticleRepository $repoArticle)
     {
         $this->repoArticle = $repoArticle;
+    }
+
+    public function setRepoUser(UserRepository $repoUser)
+    {
+        $this->repoUser = $repoUser;
     }
 
     /**
@@ -130,6 +152,11 @@ class Engine
             array('is_safe' => array('html')
         ));
         $twig->addFunction($funcLinkArea);
+        $funcLinkUser = new \Twig_SimpleFunction('cmsLinkUser',
+            array($this, 'cmsLinkUser'),
+            array('is_safe' => array('html')
+            ));
+        $twig->addFunction($funcLinkUser);
         return $twig;
     }
 
@@ -162,6 +189,14 @@ class Engine
         $area = $this->repoArea->getById($itemId);
         $this->iaLinkArea->setArea($area);
         $outputHtml = $this->iaLinkArea->generate();
+        return $outputHtml;
+    }
+
+    public function cmsLinkUser($itemId)
+    {
+        $user = $this->repoUser->getById($itemId);
+        $this->iaLinkUser->setUser($user);
+        $outputHtml = $this->iaLinkUser->generate();
         return $outputHtml;
     }
 

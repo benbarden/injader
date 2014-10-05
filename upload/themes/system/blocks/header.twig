@@ -1,9 +1,16 @@
-{% if Page.Type == 'category' and Area.Desc != '' %}
-<meta name="description" content="{{ Area.Desc }}">
+{% if Page.Type == 'category' %}
+    {% if Area.Desc != '' %}
+        <meta name="description" content="{{ Area.Desc }}">
+    {% endif %}
+{% elseif Page.Type == 'article' %}
+    {% if Article.Excerpt != '' %}
+        <meta name="description" content="{{ Article.Excerpt }}">
+    {% endif %}
 {% else %}
 <meta name="description" content="{{ CMS.Settings.SiteDesc }}">
-{% endif %}
 <meta name="keywords" content="{{ CMS.Settings.SiteKeywords }}">
+{% endif %}
+
 {% if CMS.Settings.SiteFavicon %}
 <link rel="icon" href="{{ CMS.Settings.SiteFavicon }}" type="image/x-icon">
 {% endif %}
@@ -15,7 +22,6 @@
 {% if Article.FeedUrl %}
 <link rel="alternate" type="application/rss+xml" title="Comment Feed - {{ Article.Title }} - {{ CMS.Settings.SiteTitle }}" href="{{ Article.FeedUrl }}">
 {% endif %}
-{# Bootstrap #}
 
 <!-- Bootstrap -->
 <link href="{{ URL.SiteRoot }}assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">

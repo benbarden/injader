@@ -36,7 +36,7 @@ class AreaLink extends Base
      */
     protected function generateLinkStyleClassic()
     {
-        return URL_ROOT.sprintf('view.php/area/%s/%s/',
+        return URL_ROOT.sprintf('index.php/area/%s/%s/',
             $this->area->getAreaId(), $this->getOptimisedAreaUrl());
     }
 

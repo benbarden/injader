@@ -109,15 +109,26 @@ class Category
         $iaLink = $this->container->getService('IA.LinkArticle');
 
         // Content
+        $repoUser = $this->container->getService('Repo.User');
+
         if ($this->areaContent) {
             foreach ($this->areaContent as $contentItem) {
                 $contentObject = new \Cms\Data\Article\Article($contentItem);
                 $contentArticle = new \Cms\Content\Article($contentObject, $iaLink);
+                $articleId = $contentObject->getId();
+                // Author
+                $articleAuthor = $repoUser->getById($contentObject->getAuthorId());
+                /* @var \Cms\Data\User\User $articleAuthor */
+                $authorId = $articleAuthor->getUserId();
+                $authorUsername = $articleAuthor->getUsername();
+                // Setup array
                 $contentRow = array(
-                    'Id' => $contentObject->getId(),
+                    'Id' => $articleId,
                     'Title' => stripslashes($contentObject->getTitle()),
                     'Body' => $contentArticle->getCategoryBody(),
-                    'Date' => date($dateFormat, strtotime($contentObject->getCreateDate()))
+                    'Date' => date($dateFormat, strtotime($contentObject->getCreateDate())),
+                    'AuthorId' => $authorId,
+                    'AuthorUsername' => $authorUsername
                 );
                 $bindings['Area']['Content'][] = $contentRow;
             }
