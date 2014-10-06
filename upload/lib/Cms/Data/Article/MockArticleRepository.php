@@ -3,7 +3,8 @@
 
 namespace Cms\Data\Article;
 
-use Cms\Data\IRepository;
+use Cms\Data\IRepository,
+    Cms\Exception\Data\DataException;
 
 
 class MockArticleRepository implements IRepository
@@ -23,7 +24,7 @@ class MockArticleRepository implements IRepository
                 )
             );
         } else {
-            throw new \Exception(sprintf('Record %s does not exist.', $id));
+            throw new DataException(sprintf('Record %s does not exist.', $id));
         }
     }
 } 

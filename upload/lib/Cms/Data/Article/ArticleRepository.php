@@ -3,7 +3,8 @@
 
 namespace Cms\Data\Article;
 
-use Cms\Data\BaseRepository;
+use Cms\Data\BaseRepository,
+    Cms\Exception\Data\DataException;
 
 
 class ArticleRepository extends BaseRepository
@@ -17,7 +18,7 @@ class ArticleRepository extends BaseRepository
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if record exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if record exists for '. $id, 0, $e);
         }
     }
     public function getById($id)
@@ -34,7 +35,7 @@ class ArticleRepository extends BaseRepository
             $cmsSession = new Article($dbData);
             return $cmsSession;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if record exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if record exists for '. $id, 0, $e);
         }
     }
 
@@ -52,7 +53,7 @@ class ArticleRepository extends BaseRepository
             $count = $pdoStatement->fetch();
             return $count;
         } catch(\PDOException $e) {
-            throw new \Exception('getByArea: Failed', 0, $e);
+            throw new DataException('getByArea: Failed', 0, $e);
         }
     }
 
@@ -72,7 +73,7 @@ class ArticleRepository extends BaseRepository
             $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
             return $dbData;
         } catch(\PDOException $e) {
-            throw new \Exception('getByArea: Failed', 0, $e);
+            throw new DataException('getByArea: Failed', 0, $e);
         }
     }
 } 

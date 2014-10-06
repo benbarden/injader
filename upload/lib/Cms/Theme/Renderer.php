@@ -3,6 +3,8 @@
 
 namespace Cms\Theme;
 
+use Cms\Exception\Theme\RendererException;
+
 
 class Renderer
 {
@@ -114,7 +116,7 @@ class Renderer
         $userBindings = $this->renderer->getBindings();
 
         if (array_key_exists('CMS', $userBindings)) {
-            throw new \Exception('Illegal binding key! CMS-level bindings cannot be set at the theme level.');
+            throw new RendererException('Illegal binding key! CMS-level bindings cannot be set at the theme level.');
         }
 
         // we may allow certain overrides here
@@ -180,7 +182,7 @@ class Renderer
                 //$this->renderer = new \Cms\Theme\User\User();
                 //break;
             default:
-                throw new \Exception(sprintf('Unknown object type: %s', $this->objectType));
+                throw new RendererException(sprintf('Unknown object type: %s', $this->objectType));
                 break;
         }
     }

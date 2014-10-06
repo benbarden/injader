@@ -3,6 +3,8 @@
 
 namespace Cms\Core\Di;
 
+use Cms\Exception\Core\Di\ConfigException;
+
 
 class Config
 {
@@ -11,7 +13,7 @@ class Config
     public function __construct($file)
     {
         if (!file_exists($file)) {
-            throw new \Exception(sprintf('Config file not found: %s', $file));
+            throw new ConfigException(sprintf('Config file not found: %s', $file));
         }
 
         $this->config = parse_ini_file($file, true);
@@ -24,7 +26,7 @@ class Config
             // Dot syntax
             $keyArray = explode(".", $key);
             if (count($keyArray) > 2) {
-                throw new \Exception('Only one dot allowed per key!');
+                throw new ConfigException('Only one dot allowed per key!');
             }
 
             $keyPrimary   = $keyArray[0];
@@ -32,7 +34,7 @@ class Config
             if (isset($this->config[$keyPrimary][$keySecondary])) {
                 return $this->config[$keyPrimary][$keySecondary];
             } else {
-                throw new \Exception(sprintf('Cannot get config value for key: %s', $key));
+                throw new ConfigException(sprintf('Cannot get config value for key: %s', $key));
             }
 
         } else {
@@ -41,7 +43,7 @@ class Config
             if (isset($this->config[$key])) {
                 return $this->config[$key];
             } else {
-                throw new \Exception(sprintf('Cannot get config value for key: %s', $key));
+                throw new ConfigException(sprintf('Cannot get config value for key: %s', $key));
             }
 
         }

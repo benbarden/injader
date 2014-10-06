@@ -3,7 +3,8 @@
 
 namespace Cms\Data\User;
 
-use Cms\Data\BaseRepository;
+use Cms\Data\BaseRepository,
+    Cms\Exception\Data\DataException;
 
 
 class UserRepository extends BaseRepository
@@ -17,7 +18,7 @@ class UserRepository extends BaseRepository
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if row exists for '. $id, 0, $e);
         }
     }
     public function getById($id)
@@ -34,7 +35,7 @@ class UserRepository extends BaseRepository
             $cmsUser = new User($dbData);
             return $cmsUser;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if row exists for '. $id, 0, $e);
         }
     }
     public function saveUser(User $user)

@@ -8,7 +8,8 @@ use Cms\Ia\Link\AreaLink,
     Cms\Ia\Link\UserLink,
     Cms\Data\Area\AreaRepository,
     Cms\Data\Article\ArticleRepository,
-    Cms\Data\User\UserRepository;
+    Cms\Data\User\UserRepository,
+    Cms\Exception\Theme\EngineException;
 
 
 class Engine
@@ -67,11 +68,11 @@ class Engine
     {
         // Validate theme path
         if (!$current) {
-            throw new \Exception('Current theme not defined!');
+            throw new EngineException('Current theme not defined!');
         }
         $userThemePath = sprintf('%sthemes/user/%s', ABS_ROOT, $current);
         if (!is_dir($userThemePath)) {
-            throw new \Exception(sprintf('Cannot find theme: %s', $userThemePath));
+            throw new EngineException(sprintf('Cannot find theme: %s', $userThemePath));
         }
         $this->pathsArray = array(
             $userThemePath,

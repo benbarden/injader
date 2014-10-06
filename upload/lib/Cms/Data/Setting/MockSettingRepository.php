@@ -3,6 +3,8 @@
 
 namespace Cms\Data\Setting;
 
+use Cms\Exception\Data\DataException;
+
 
 class MockSettingRepository implements ISettingRepository
 {
@@ -27,7 +29,7 @@ class MockSettingRepository implements ISettingRepository
                 'content' => 'Injader Unit Test Site'
             ));
         } else {
-            throw new \Exception(sprintf('Setting %s does not exist.', $settingName));
+            throw new DataException(sprintf('Setting %s does not exist.', $settingName));
         }
     }
 

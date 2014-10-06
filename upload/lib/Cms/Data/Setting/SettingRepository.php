@@ -3,6 +3,8 @@
 
 namespace Cms\Data\Setting;
 
+use Cms\Exception\Data\DataException;
+
 
 class SettingRepository implements ISettingRepository
 {
@@ -25,7 +27,7 @@ class SettingRepository implements ISettingRepository
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '.$settingName, 0, $e);
+            throw new DataException('Failed to check if row exists for '.$settingName, 0, $e);
         }
     }
 
@@ -43,7 +45,7 @@ class SettingRepository implements ISettingRepository
             $cmsSetting = new Setting($dbData);
             return $cmsSetting;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $settingName, 0, $e);
+            throw new DataException('Failed to check if row exists for '. $settingName, 0, $e);
         }
     }
 

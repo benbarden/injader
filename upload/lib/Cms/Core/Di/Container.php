@@ -3,6 +3,8 @@
 
 namespace Cms\Core\Di;
 
+use Cms\Exception\Core\Di\ContainerException;
+
 
 class Container
 {
@@ -41,7 +43,7 @@ class Container
     public function getSetting($key)
     {
         if (!array_key_exists($key, $this->settings)) {
-            throw new \Exception(sprintf('Cannot find setting with key: %s', $key));
+            throw new ContainerException(sprintf('Cannot find setting with key: %s', $key));
         }
 
         return $this->settings[$key];

@@ -3,7 +3,8 @@
 
 namespace Cms\Data\User;
 
-use Cms\Data\IRepository;
+use Cms\Data\IRepository,
+    Cms\Exception\Data\DataException;
 
 
 class MockUserRepository implements IRepository
@@ -17,7 +18,7 @@ class MockUserRepository implements IRepository
         if ($this->exists($id)) {
             return new User(array('id' => $id, 'username' => 'Ben'));
         } else {
-            throw new \Exception(sprintf('User %s does not exist.', $id));
+            throw new DataException(sprintf('User %s does not exist.', $id));
         }
     }
     public function saveUser(User $user)

@@ -3,7 +3,9 @@
 
 namespace Cms\Data\Area;
 
-use Cms\Data\IRepository;
+use Cms\Data\IRepository,
+    Cms\Exception\Data\DataException;
+
 
 
 class AreaRepository implements IRepository
@@ -23,7 +25,7 @@ class AreaRepository implements IRepository
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if row exists for '. $id, 0, $e);
         }
     }
 
@@ -38,7 +40,7 @@ class AreaRepository implements IRepository
             $cmsArea = new Area($dbData);
             return $cmsArea;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if row exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if row exists for '. $id, 0, $e);
         }
     }
 
@@ -56,7 +58,7 @@ class AreaRepository implements IRepository
             $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
             return $dbData;
         } catch(\PDOException $e) {
-            throw new \Exception("Couldn't get subareas for: ". $areaId, 0, $e);
+            throw new DataException("Couldn't get subareas for: ". $areaId, 0, $e);
         }
     }
 
@@ -75,7 +77,7 @@ class AreaRepository implements IRepository
             $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
             return $dbData;
         } catch(\PDOException $e) {
-            throw new \Exception("Couldn't get navigation for: ". $navType, 0, $e);
+            throw new DataException("Couldn't get navigation for: ". $navType, 0, $e);
         }
     }
 

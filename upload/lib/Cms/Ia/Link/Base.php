@@ -3,7 +3,8 @@
 
 namespace Cms\Ia\Link;
 
-use Cms\Ia\Tools\OptimiseUrl;
+use Cms\Ia\Tools\OptimiseUrl,
+    Cms\Exception\Ia\LinkException;
 
 
 abstract class Base implements ILink
@@ -63,7 +64,7 @@ abstract class Base implements ILink
                 $functionName = 'generateLinkStyleDateAndTime';
                 break;
             default:
-                throw new \Exception(sprintf('Unknown link style: %s', $this->linkStyle));
+                throw new LinkException(sprintf('Unknown link style: %s', $this->linkStyle));
                 break;
         }
 

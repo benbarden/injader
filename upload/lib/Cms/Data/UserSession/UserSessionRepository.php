@@ -3,7 +3,8 @@
 
 namespace Cms\Data\UserSession;
 
-use Cms\Data\BaseRepository;
+use Cms\Data\BaseRepository,
+    Cms\Exception\Data\DataException;
 
 
 class UserSessionRepository extends BaseRepository
@@ -17,7 +18,7 @@ class UserSessionRepository extends BaseRepository
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if record exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if record exists for '. $id, 0, $e);
         }
     }
     public function getById($id)
@@ -34,7 +35,7 @@ class UserSessionRepository extends BaseRepository
             $cmsSession = new UserSession($dbData);
             return $cmsSession;
         } catch(\PDOException $e) {
-            throw new \Exception('Failed to check if record exists for '. $id, 0, $e);
+            throw new DataException('Failed to check if record exists for '. $id, 0, $e);
         }
     }
 
