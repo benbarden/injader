@@ -25,7 +25,6 @@ class CMS extends Helper {
     var $Cache; // ICache
     var $CacheFile; // ICacheFile
     var $CacheBuild; // ICacheBuild
-    var $IP; // IPacker
     var $IQ; // IQuery
     var $RES; // Restriction
     var $SYS; // System
@@ -75,7 +74,6 @@ class CMS extends Helper {
         $this->Cache = new ICache;
         $this->CacheFile  = new ICacheFile;
         $this->CacheBuild = new ICacheBuild;
-        $this->IP    = new IPacker;
         $this->IQ    = new IQuery;
         $this->RES   = new Restriction;
         $this->SYS   = new System;

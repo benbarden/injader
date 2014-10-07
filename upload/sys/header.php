@@ -89,7 +89,6 @@
     require ABS_SYS_IFW.'ICache.php';
     require ABS_SYS_IFW.'ICacheFile.php';
     require ABS_SYS_IFW.'ICacheBuild.php';
-    require ABS_SYS_IFW.'IPacker.php';
     require ABS_SYS_IFW.'IQuery.php';
     require ABS_SYS_IFW.'RSSParser.php';
     require ABS_SYS_IFW.'Thumb.php';
