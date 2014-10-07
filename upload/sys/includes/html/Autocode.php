@@ -133,7 +133,7 @@ PostButtons;
       global $CMS;
       $dteToday = date('r', strtotime($dteToday));
       $strVersion   = $CMS->SYS->GetSysPref(C_PREF_CMS_VERSION);
-      $strHTML  = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n";
+      $strHTML  = '<?xml version="1.0" encoding="utf-8"?>'."\n";
       $strHTML .= <<<RSSHeader
 <rss version="2.0" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>

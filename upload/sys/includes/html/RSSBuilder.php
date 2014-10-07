@@ -87,7 +87,7 @@
         if (strlen($arrNewContent[$i]['content']) > 300) {
           $strContentBody .= "...";
         }
-        $strContentDesc   = $this->DoEntities($strContentBody);
+        //$strContentDesc   = $this->DoEntities($strContentBody);
         $dteRSS           = $arrNewContent[$i]['rss_date'];
         $dteRSS           = date('r', strtotime($dteRSS));
         $intAreaID        = $arrNewContent[$i]['content_area_id'];
@@ -103,7 +103,11 @@
       <title>$strContentTitle</title>
       <link>$strArticleLink</link>
       <guid>$strArticleLink</guid>
-      <description>$strContentBody</description>
+      <description>
+      <![CDATA[
+      $strContentBody
+      ]]>
+      </description>
       <pubDate>$dteRSS</pubDate>
       <dc:creator>$strAuthorName</dc:creator>
       <wfw:commentRss>$strCommentRSS</wfw:commentRss>
@@ -197,7 +201,7 @@ RSSFile;
         } elseif (strpos($strContentBody, $strReadMoreEditor) !== false) {
             $strContentBody = str_replace($strReadMoreEditor, "", $strContentBody);
         }
-        $strContentBody   = $this->DoEntities($strContentBody);
+        //$strContentBody   = $this->DoEntities($strContentBody);
         
         $dteRSS           = $arrNewContent[$i]['rss_date'];
         // D, j M Y H:i:s e
@@ -217,7 +221,11 @@ RSSFile;
       <title>$strContentTitle</title>
       <link>$strArticleLink</link>
       <guid>$strArticleLink</guid>
-      <description>$strContentBody</description>
+      <description>
+      <![CDATA[
+      $strContentBody
+      ]]>
+      </description>
       <pubDate>$dteRSS</pubDate>
       <dc:creator>$strAuthorName</dc:creator>
       <wfw:commentRss>$strCommentRSS</wfw:commentRss>
@@ -294,7 +302,7 @@ RSSFile;
         $strCommentBody = $arrNewComments[$j]['content'];
         $strCommentBody = str_replace("<br><br>", " ", $strCommentBody);
         $strCommentBody = str_replace("\r", " ", $strCommentBody);
-        $strCommentBody = $this->DoEntities($strCommentBody);
+        //$strCommentBody = $this->DoEntities($strCommentBody);
         /*
         $strCommentBody = $arrNewComments[$j]['content'];
         $strCommentBody = str_replace("<br><br>", " ", $strCommentBody);
@@ -327,7 +335,11 @@ RSSFile;
       <title>$strCommentTitle</title>
       <link>$strNewItemURL</link>
       <guid>$strNewItemURL</guid>
-      <description>$strCommentBody</description>
+      <description>
+      <![CDATA[
+      $strCommentBody
+      ]]>
+      </description>
       <pubDate>$dteRSS</pubDate>
     </item>
 

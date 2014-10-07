@@ -36,11 +36,15 @@
           }
         }
       }
-      exit($RSS->GetArticleRSS($intAreaID));
+      header('Content-type: text/xml');
+      print($RSS->GetArticleRSS($intAreaID));
+      exit;
       break;
     case "comments":
       $intArticleID = empty($_GET['id']) ? "" : $CMS->FilterNumeric($_GET['id']);
-      exit($RSS->GetCommentRSS($intArticleID));
+      header('Content-type: text/xml');
+      print($RSS->GetCommentRSS($intArticleID));
+      exit;
       break;
     default: $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "name");
   }
