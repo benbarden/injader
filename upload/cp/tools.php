@@ -32,7 +32,6 @@
 <ul>
 <li><a href="{FN_ADM_USER_VARIABLES}" title="Manage user variables">User Variables</a></li>
 <li><a href="{FN_ADM_TOOLS_SITEMAP}" title="Information about your Sitemap">Sitemap</a></li>
-<li><a href="{FN_ADM_FORMS_RECIPIENTS}" title="Form Recipients">Form Recipients</a></li>
 <li><a href="{FN_ADM_SPAM_RULES}" title="Spam Rules">Spam Rules</a></li>
 <li><a href="{FN_ADM_TOOLS_SPAM_STATS}" title="Comment Spam Stats">Comment Spam Stats</a></li>
 <li><a href="{FN_ADM_TOOLS_USER_SESSIONS}" title="View logged in users, force a logout">User Sessions</a></li>

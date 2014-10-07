@@ -47,7 +47,6 @@ class CMS extends Helper {
     var $DD; // DropDown
     var $FL; // File
     var $FMT; // Formatting
-    var $FR; // FormRecipient
     var $LP; // LoginPage
     var $MV; // View
     var $MSG; // Messaging
@@ -97,7 +96,6 @@ class CMS extends Helper {
         $this->DD    = new DropDown;
         $this->FL    = new File;
         $this->FMT   = new Formatting;
-        $this->FR    = new FormRecipient;
         $this->LP    = new LoginPage;
         $this->MV    = new View;
         $this->MSG   = new Messaging;

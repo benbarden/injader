@@ -283,15 +283,6 @@
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $strHTML;
     }
-    // ** Contact Form Recipient List ** //
-    function FormRecipients($strSelValue) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $arrRecipients = $this->ResultQuery("SELECT id AS list_value, name AS list_text FROM {IFW_TBL_FORM_RECIPIENTS} ORDER BY recipient_order ASC", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $strHTML = $this->BasicList($arrRecipients, $strSelValue);
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $strHTML;
-    }
     // ** Used for custom links ** //
     function SystemComponents($strSelValue) {
       $dteStartTime = $this->MicrotimeFloat();

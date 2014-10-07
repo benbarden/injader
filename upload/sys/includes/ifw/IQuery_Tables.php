@@ -28,7 +28,6 @@
     define('IFW_TBL_CONNECTIONS',         IFW_TBL_PFX."connections");
     define('IFW_TBL_CONTENT',             IFW_TBL_PFX."content");
     define('IFW_TBL_EXTENSIONS',          IFW_TBL_PFX."extensions");
-    define('IFW_TBL_FORM_RECIPIENTS',     IFW_TBL_PFX."form_recipients");
     define('IFW_TBL_PERMISSION_PROFILES', IFW_TBL_PFX."permission_profiles");
     define('IFW_TBL_RATINGS',             IFW_TBL_PFX."ratings");
     define('IFW_TBL_SPAM_RULES',          IFW_TBL_PFX."spam_rules");

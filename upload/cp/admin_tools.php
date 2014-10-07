@@ -32,7 +32,6 @@
     case "suspenduser":           $strPageTitle = "Suspend User"; break;
     case "reinstateuser":         $strPageTitle = "Reinstate User"; break;
     case "deletecustomlink":      $strPageTitle = "Delete Custom Link"; break;
-    case "deleteformrecipient":   $strPageTitle = "Delete Form Recipient"; break;
     case "deleteperprofile":      $strPageTitle = "Delete Permission Profile"; break;
     case "deletesession":         $strPageTitle = "Delete User Session"; break;
     case "deleteexpiredsessions": $strPageTitle = "Delete Expired Sessions"; $blnCheckID = false; break;
@@ -113,30 +112,6 @@
         $CMS->AP->Display($strHTML);
       } else {
         $strFormMsg = "You are about to reinstate the user with ID: $intItemID.";
-      }
-      break;
-    case "deleteformrecipient":
-      if ($_POST) {
-        // ** Build Query: Get recipient name ** //
-        $strQuery = sprintf("SELECT name FROM {IFW_TBL_FORM_RECIPIENTS} WHERE id = %s",
-          $intItemID
-        );
-        // ** Process query ** //
-        $arrRData = $CMS->ResultQuery($strQuery, basename(__FILE__), __LINE__);
-        $strName = $arrRData[0]['name'];
-        // ** Build Query: Delete form recipient ** //
-        $strQuery = sprintf("DELETE FROM {IFW_TBL_FORM_RECIPIENTS} WHERE id = %s",
-          $intItemID
-        );
-        // ** Process query ** //
-        $CMS->Query($strQuery, basename(__FILE__), __LINE__);
-        // ** Access log ** //
-        $CMS->AL->Build(AL_TAG_FORM_RECIPIENT_DELETE, $intItemID, $strName);
-        // ** Confirmation ** //
-        $strHTML = "<div id=\"mPage\">\n<h1>$strPageTitle</h1>\n<p>Form recipient deleted. <a href=\"$strReturnURL\">Return</a></p>\n</div>\n";
-        $CMS->AP->Display($strHTML);
-      } else {
-        $strFormMsg = "You are about to delete the form recipient with ID: $intItemID.";
       }
       break;
     case "deleteperprofile":

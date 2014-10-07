@@ -82,11 +82,6 @@
   define('AL_TAG_PLUGIN_EDIT',   "PluginEdit");
   define('AL_TAG_PLUGIN_DELETE', "PluginDelete");
   
-  // Forms
-  define('AL_TAG_FORM_RECIPIENT_CREATE', "FormRecipientCreate");
-  define('AL_TAG_FORM_RECIPIENT_DELETE', "FormRecipientDelete");
-  define('AL_TAG_FORM_RECIPIENT_EDIT',   "FormRecipientEdit");
-
   // User
   define('AL_TAG_AVATAR_DELETE',     "AvatarDelete");
   define('AL_TAG_AVATAR_SET',        "AvatarSet");

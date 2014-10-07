@@ -65,8 +65,6 @@
   define('FN_ADM_FILES',               URL_CP_ROOT.'files'.F_EXT_PHP);
   define('FN_ADM_FILES_SETTINGS',      URL_CP_ROOT.'files_settings'.F_EXT_PHP);
   define('FN_ADM_FILES_SITE_UPLOAD',   URL_CP_ROOT.'files_site_upload'.F_EXT_PHP);
-  define('FN_ADM_FORMS_RECIPIENT',     URL_CP_ROOT.'forms_recipient'.F_EXT_PHP);
-  define('FN_ADM_FORMS_RECIPIENTS',    URL_CP_ROOT.'forms_recipients'.F_EXT_PHP);
   define('FN_ADM_GENERAL_SETTINGS',    URL_CP_ROOT.'general_settings'.F_EXT_PHP);
   define('FN_ADM_IMPORT_WP',           URL_CP_ROOT.'import_wp'.F_EXT_PHP);
   define('FN_ADM_MANAGE_AVATARS',      URL_CP_ROOT.'manage_avatars'.F_EXT_PHP);

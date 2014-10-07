@@ -118,7 +118,6 @@
     require ABS_SYS_DB.'Comment.php';
     require ABS_SYS_DB.'Connection.php';
     require ABS_SYS_DB.'File.php';
-    require ABS_SYS_DB.'FormRecipient.php';
     require ABS_SYS_DB.'PermissionProfile.php';
     require ABS_SYS_DB.'Ratings.php';
     require ABS_SYS_DB.'SpamRule.php';
