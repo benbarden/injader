@@ -57,13 +57,30 @@ class ArticleRepository extends BaseRepository
         }
     }
 
-    public function getByArea($areaId, $limit = 25, $offset = 0)
+    public function getByArea($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
         try {
+
+            switch (strtolower($sortField)) {
+                case "author_name":   $pdoSortField = "username";      break;
+                case "create_date":   $pdoSortField = "create_date";   break;
+                case "last_updated":  $pdoSortField = "last_updated";  break;
+                case "article_title": $pdoSortField = "title";         break;
+                case "random":        $pdoSortField = "rand()";        break;
+                case "custom":        $pdoSortField = "article_order"; break;
+                default:              $pdoSortField = "create_date";   break;
+            }
+            switch (strtolower($sortDirection)) {
+                case "asc":  $pdoSortDirection = "ASC";  break;
+                case "desc": $pdoSortDirection = "DESC"; break;
+                default:     $pdoSortDirection = "DESC"; break;
+            }
+
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT * FROM maj_content
                 WHERE content_area_id = :areaId
+                ORDER BY $pdoSortField $pdoSortDirection
                 LIMIT :limit OFFSET :offset
             ");
             $pdoStatement->bindParam(':areaId', $areaId);

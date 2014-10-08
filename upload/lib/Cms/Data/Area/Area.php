@@ -66,6 +66,16 @@ class Area extends IModel
     private $sortRule;
 
     /**
+     * @var string
+     */
+    private $sortRuleField;
+
+    /**
+     * @var string
+     */
+    private $sortRuleDirection;
+
+    /**
      * char(1)
      * @var string
      */
@@ -167,6 +177,15 @@ class Area extends IModel
         $this->layoutStyle           = $this->getFieldSafe('layout_style');
         $this->navType               = $this->getFieldSafe('nav_type');
         $this->subareaContentOnIndex = $this->getFieldSafe('subarea_content_on_index');
+
+        if ($this->sortRule) {
+            $sortRuleArray = explode("|", $this->sortRule);
+            $this->sortRuleField = $sortRuleArray[0];
+            $this->sortRuleDirection = $sortRuleArray[1];
+        } else {
+            $this->sortRuleField = "create_date";
+            $this->sortRuleDirection = "DESC";
+        }
     }
 
     public function getAreaId()
@@ -222,6 +241,16 @@ class Area extends IModel
     public function getSortRule()
     {
         return $this->sortRule;
+    }
+
+    public function getSortRuleField()
+    {
+        return $this->sortRuleField;
+    }
+
+    public function getSortRuleDirection()
+    {
+        return $this->sortRuleDirection;
     }
 
     public function getIncludeInRssFeed()

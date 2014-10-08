@@ -144,6 +144,10 @@ class Renderer
                 $area = $areaRepo->getById($this->itemId);
                 $subareas = $areaRepo->getSubareas($this->itemId);
 
+                // Sort Rule setup
+                $sortField = $area->getSortRuleField();
+                $sortDirection = $area->getSortRuleDirection();
+
                 // Content setup
                 $perPage = $area->getContentPerPage();
                 $totalCount = $articleRepo->countByArea($this->itemId);
@@ -151,7 +155,9 @@ class Renderer
                 $iaPagesOffset->setPageNo($this->pageNo);
                 $iaPagesOffset->setPerPage($perPage);
                 $offset = $iaPagesOffset->calculate();
-                $areaContent = $articleRepo->getByArea($this->itemId, $perPage, $offset);
+                $areaContent = $articleRepo->getByArea(
+                    $this->itemId, $perPage, $offset, $sortField, $sortDirection
+                );
 
                 // Renderer setup
                 $this->renderer = new \Cms\Theme\User\Category($this->container);
