@@ -28,7 +28,8 @@
   
   $strDefaultTheme = $CMS->SYS->GetSysPref(C_PREF_DEFAULT_THEME);
 
-  $arrDirList = $CMS->Dir(ABS_SYS_THEMES, "both", false);
+  //$arrDirList = $CMS->Dir(ABS_SYS_THEMES, "both", false);
+  $arrDirList = glob(ABS_SYS_THEMES.'*');
 
   $strHTML = <<<MainContentStart
 <h1>$strPageTitle</h1>
@@ -47,7 +48,9 @@ MainContentStart;
   if (is_array($arrDirList)) {
     for ($i=0; $i<count($arrDirList); $i++) {
       $strDir = $arrDirList[$i];
-      if ($strDir != "index.php") {
+      if (!is_dir($strDir)) continue;
+      //if ($strDir == 'index.php') continue;
+      $strDir = basename($strDir);
         if ($strDir == $strDefaultTheme) {
           $strDefaultLink = "<i>(default)</i>";
         } else {
@@ -60,7 +63,6 @@ MainContentStart;
   </tr>
 
 TableRow;
-      }
     }
   }
   $strHTML .= "</table>\n";
