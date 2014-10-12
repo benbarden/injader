@@ -116,7 +116,13 @@ class Renderer
         $userBindings = $this->renderer->getBindings();
 
         if (array_key_exists('CMS', $userBindings)) {
-            throw new RendererException('Illegal binding key! CMS-level bindings cannot be set at the theme level.');
+            throw new RendererException('Illegal binding key - Cannot override: CMS');
+        } elseif (array_key_exists('URL', $userBindings)) {
+            throw new RendererException('Illegal binding key - Cannot override: URL');
+        } elseif (array_key_exists('Nav', $userBindings)) {
+            throw new RendererException('Illegal binding key - Cannot override: Nav');
+        } elseif (array_key_exists('Login', $userBindings)) {
+            throw new RendererException('Illegal binding key - Cannot override: Login');
         }
 
         // we may allow certain overrides here
