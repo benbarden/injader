@@ -49,7 +49,7 @@ define('URL_ROOT', "/");
   define('ABS_CACHE',         ABS_ROOT.'data/cache/');
   define('ABS_SYS_IMAGES',    ABS_SYS_ROOT.'images/');
   define('ABS_SYS_INCLUDES',  ABS_SYS_ROOT.'includes/');
-  define('ABS_SYS_THEMES',    ABS_SYS_ROOT.'themes/');
+  define('ABS_SYS_THEMES',    ABS_ROOT.'themes/user/');
   define('ABS_SYS_CONSTANTS', ABS_SYS_INCLUDES.'constants/');
   define('ABS_SYS_DB',        ABS_SYS_INCLUDES.'db/');
   define('ABS_SYS_HTML',      ABS_SYS_INCLUDES.'html/');

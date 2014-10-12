@@ -35,12 +35,10 @@
 <table id="tblSysResults" class="DefaultTable" cellspacing="1">
   <colgroup>
     <col class="BaseColour MediumCell" />
-    <col class="BaseColour MediumCell" />
     <col class="BaseColour" />
   </colgroup>
   <tr>
-    <th>Theme Name</th>
-    <th>Configure</th>
+    <th>Theme</th>
     <th>Usage</th>
   </tr>
 
@@ -58,8 +56,7 @@ MainContentStart;
         $strHTML .= <<<TableRow
   <tr>
     <td>$strDir</td>
-    <td><a href="{FN_ADM_THEME}?name=$strDir">Files</a> : <a href="{FN_ADM_THEME_SETTINGS}?name=$strDir">Settings</a></td>
-    <td><a href="{FN_ADM_THEME_PREVIEW}?name=$strDir">Preview</a> : $strDefaultLink</td>
+    <td>$strDefaultLink</td>
   </tr>
 
 TableRow;
