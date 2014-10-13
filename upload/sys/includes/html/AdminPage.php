@@ -86,16 +86,34 @@ AdminNotice;
       // Index
       $strSiteTitle  = $CMS->SYS->GetSysPref(C_PREF_SITE_TITLE);
       $strIndexURL   = str_replace("index".F_EXT_PHP, "", FN_INDEX);
+
+
+      // CP LINKS
+      $controlPanelLinks = array();
+
       // New article
-      $strNewArticleLink = "<a href=\"{FN_ADM_WRITE}?action=create\" title=\"Add new content to the site\">New Article</a>";
       // Content
-      $CMS->RES->ViewManageContent();
+        $strNewArticleLink = "";
+        $CMS->RES->ViewManageContent();
       if ($CMS->RES->IsError()) {
         $strManageContent = "";
       } else {
         // Create article?
         if ($CMS->RES->CountTotalWriteAccess() > 0) {
           $strManageContent = $strNewArticleLink." | <a href=\"{FN_ADM_CONTENT_MANAGE}\" title=\"Manage Content\">Content</a>";
+          /*
+          $controlPanelLinks[] = array(
+              'URL' => '{FN_ADM_WRITE}?action=create',
+              'Title' => 'Add new content to the site',
+              'Text' => 'New Article'
+          );
+          */
+          $strNewArticleLink = "<li><a href=\"{FN_ADM_WRITE}?action=create\" title=\"Add new content to the site\">New Article</a></li>";
+          $controlPanelLinks[] = array(
+              'URL' => '{FN_ADM_CONTENT_MANAGE}',
+              'Title' => 'Manage Content',
+              'Text' => 'Content'
+          );
         } else {
           $strManageContent = "";
         }
@@ -106,16 +124,14 @@ AdminNotice;
         $strAdminLinks = $strManageContent;
       } else {
         $strAdminLinks = <<<AdminLinks
-$strNewArticleLink | 
-<a href="{FN_ADM_AREAS}" title="Manage your site areas">Areas</a> | 
-<a href="{FN_ADM_CONTENT_MANAGE}" title="Manage Content">Content</a> | 
-<a href="{FN_ADM_FILES}" title="Manage site files, attachments and avatars">Files</a> | 
-<a href="{FN_ADM_COMMENTS}" title="Manage comments">Comments</a> | 
-<a href="{FN_ADM_WIDGETS}" title="Manage your Widgets">Widgets</a> | 
-<a href="{FN_ADM_THEMES}" title="Manage your themes">Themes</a> | 
-<a href="{FN_ADM_TOOLS}" title="Plugins and more">Tools</a> | 
-<a href="{FN_ADM_GENERAL_SETTINGS}" title="Configure website settings">Settings</a> | 
-<a href="{FN_ADM_USERS}" title="Manage user accounts, roles, and permissions">Access</a>
+<li><a href="{FN_ADM_AREAS}" title="Manage your site areas">Areas</a></li>
+<li><a href="{FN_ADM_CONTENT_MANAGE}" title="Manage Content">Content</a></li>
+<li><a href="{FN_ADM_FILES}" title="Manage site files, attachments and avatars">Files</a></li>
+<li><a href="{FN_ADM_COMMENTS}" title="Manage comments">Comments</a></li>
+<li><a href="{FN_ADM_THEMES}" title="Manage your themes">Themes</a></li>
+<li><a href="{FN_ADM_TOOLS}" title="Plugins and more">Tools</a></li>
+<li><a href="{FN_ADM_GENERAL_SETTINGS}" title="Configure website settings">Settings</a></li>
+<li><a href="{FN_ADM_USERS}" title="Manage user accounts, roles, and permissions">Access</a></li>
 
 AdminLinks;
       }
@@ -123,32 +139,91 @@ AdminLinks;
       $strMetaGenerator = "<meta name=\"generator\" content=\"".PRD_PRODUCT_NAME." - ".PRD_PRODUCT_URL."\" />";
       // Build code
       $strHeaderHTML = <<<CMSHeader
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-$strMetaGenerator
-<title>$strPageTitle</title>
-<link href="{URL_SYS_ROOT}cp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{URL_SYS_ROOT}scripts.js"></script>
-<script type="text/javascript" src="{URL_SYS_JQUERY}jquery-1.11.1.min.js"></script>
-</head>
-<body id="cp-body">
-$strSystemLocked
-<!-- Begin header -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>$strPageTitle</title>
 
-<div id="tplPageWrapper">
-  <div id="topnav">
-    <a href="$strIndexURL" title="Back to $strSiteTitle">Back to $strSiteTitle</a> | <a href="{FN_ADM_INDEX}" title="Go to the Control Panel Index">Control Panel Index</a>
-  </div>
-  <div id="tplHeadContent">
-    <img src="{URL_SYS_IMAGES}ij_header.jpg" alt="Injader" border="0" />
-  </div>
-  <div id="navbar">
-    $strAdminLinks
-  </div>
-  <div id="cp">
+    <script type="text/javascript" src="{URL_SYS_ROOT}scripts.js"></script>
+    <script type="text/javascript" src="{URL_ROOT}assets/js/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="{URL_ROOT}assets/js/jqueryui/jquery-ui.min.js"></script>
+    <link href="{URL_ROOT}assets/css/jqueryui/jquery-ui.min.css" rel="stylesheet">
+    <link href="{URL_ROOT}assets/css/jqueryui/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="{URL_ROOT}assets/css/jqueryui/jquery-ui.theme.min.css" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{URL_ROOT}assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{URL_ROOT}assets/css/bootstrap/dashboard.css" rel="stylesheet">
+
+    <!-- Custom Injader styles -->
+    <link href="{URL_ROOT}assets/css/injader-cp/injader-cp.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <!-- 3.7.2 -->
+      <script src="{URL_ROOT}assets/js/bootstrap/html5shiv.min.js"></script>
+      <!-- 1.4.2 -->
+      <script src="{URL_ROOT}assets/js/bootstrap/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+</head>
+
+  <body id="abc">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="$strIndexURL">&lt; back to: $strSiteTitle</a>
+        </div> <!-- /navbar-header -->
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{FN_ADM_INDEX}">Dashboard</a></li>
+            $strNewArticleLink
+            <li><a href="{FN_ADM_MY_SETTINGS}">My Settings</a></li>
+            <!--
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+            -->
+          </ul>
+          <!--
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+          -->
+        </div> <!-- /navbar-collapse -->
+      </div> <!-- /container-fluid -->
+    </div> <!-- /navbar -->
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="{FN_ADM_INDEX}">Dashboard</a></li>
+            $strAdminLinks
+          </ul>
+          <!--
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Overview</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+          -->
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 CMSHeader;
       $dteEndTime = $this->MicrotimeFloat();
@@ -159,19 +234,19 @@ CMSHeader;
     function GetFooter() {
       global $CMS;
       $dteStartTime = $this->MicrotimeFloat();
-      $strVersion   = $CMS->SYS->GetSysPref(C_PREF_CMS_VERSION);
-      $intYear = date('Y'); // Current year
       $strFooter = <<<Footer
-</div> <!-- /cp -->
-\$cmsQueryTime
-<div id="footer">
-<a href="http://www.injader.com/">Injader</a> $strVersion |
-<a href="https://github.com/benbarden/injader" title="Github">Github</a> |
-Injader is free software released under the
-<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a> (v3).
-Copyright &copy; 2005-$intYear <a href="http://www.benbarden.com/">Ben Barden</a>.
 </div>
-</div> <!-- /tplPageWrapper -->
+</div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{URL_ROOT}assets/js/bootstrap/bootstrap.min.js"></script>
+<script src="{URL_ROOT}assets/js/bootstrap/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="{URL_ROOT}assets/js/bootstrap/ie10-viewport-bug-workaround.js"></script>
+
 </body>
 </html>
 Footer;

@@ -1,0 +1,12 @@
+
+/* Tables */
+td.centre {text-align: center;}
+tr.separator-row td {background: #999999 !important; color: #ffffff; font-weight: bold;}
+tr.separator-row td a {background: inherit; color: #ffffff; text-decoration: underline;}
+
+/* Forms */
+select.ij-dropdown {}
+select.ij-text {padding: 10px;}
+
+/* Errors */
+.errortext {color: #ff0000; font-weight: bold;}
