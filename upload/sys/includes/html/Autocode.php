@@ -276,44 +276,6 @@ $strCAPTCHA
 CommentFormGuest;
       }
       
-      /*
-      if ($strActionMode == "create") {
-        $strRatingItems = "";
-        if (!$CMS->RAT->HasUserAlreadyVoted($intItemID, $CMS->RES->GetCurrentUserID())) {
-          $intRating = (integer) $intRating;
-          for ($i=5; $i>-1; $i--) {
-            if ($i == 0) {
-              $intValue = "-1";
-              $strLabel = "No rating";
-            } else {
-              $intValue = $i;
-              $strLabel = $i;
-            }
-            if ($intValue == $intRating) {
-              $strSelected = " checked=\"checked\"";
-            } else {
-              $strSelected = "";
-            }
-            $strRatingItems .= "      <label for=\"optRating$i\">$strLabel</label><input id=\"optRating$i\" name=\"optRating[]\" value=\"$intValue\" type=\"radio\"$strSelected />\n";
-          }
-          $strRatingItems .= "<br />\n(5 = Highest, 1 = Lowest)<br />\n<span class=\"rating-note\">Note: if you have already posted a rating on this page,<br />a new vote will not be added.</span>\n";
-          $strRatings = <<<RatingCode
-  <tr>
-    <td class="BaseColour ratings" colspan="2">
-      Rate this article: 
-$strRatingItems
-    </td>
-  </tr>
-
-RatingCode;
-        } else {
-          $strRatings = "";
-        }
-      } else {
-        $strRatings = "";
-      }
-      */
-      
       // ** Is user subscribed? ** //
       $strUSTEmail = $CMS->UST->GetEmail();
       if ($CMS->UST->IsSubscribed($strUSTEmail, $intItemID)) {

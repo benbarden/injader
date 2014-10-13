@@ -53,7 +53,6 @@ class CMS extends Helper {
     var $PN; // PageNumber
     var $PNN; // PageNumberNavigation
     var $PP; // PermissionProfile
-    var $RAT; // Rating
     var $RC; // ReplaceConstants
     var $SR; // SortRule
     var $TG; // Tag
@@ -101,7 +100,6 @@ class CMS extends Helper {
         $this->PN    = new PageNumber;
         $this->PNN   = new PageNumberNavigation;
         $this->PP    = new PermissionProfile;
-        $this->RAT   = new Ratings;
         $this->RC    = new ReplaceConstants;
         $this->SR    = new SpamRule;
         $this->TG    = new Tags;

@@ -82,14 +82,6 @@
     $CMS->Err_MFail(M_ERR_COMMENT_LOCKED, "");
   }
   
-  // ** Ratings ** //
-  $intRating = empty($_POST['optRating']) ? "-1" : $_POST['optRating'][0];
-  if ($blnCreate) {
-    $blnRatings = true;
-  } else {
-    $blnRatings = false;
-  }
-
   $intUserID = $CMS->RES->GetCurrentUserID();
   
   $strGuestName         = "";
@@ -192,13 +184,6 @@
     } else {
       $strContent = $CMS->DoEntities($_POST['txtContent']);
       //$strContent = strip_tags($_POST['txtContent']);
-    }
-    // Allow users to submit a rating without a comment
-    if ($intRating == "-1") {
-      if (!$strContent) {
-        $blnSubmitForm = false;
-        $strMissingContent = $CMS->AC->InvalidFormData("");
-      }
     }
     // Preview
     $blnPreview = empty($_POST['chkPreview']) ? false : true;
@@ -321,20 +306,6 @@
         $intCommentID = $CMS->Query($strQuery, basename(__FILE__), __LINE__);
         // ** Log ** //
         $CMS->AL->Build(AL_TAG_COMMENT_ADD, $intCommentID, "");
-        // Add rating
-        /*
-        if (($blnRatings) && ($intRating)) {
-          if (!$CMS->RAT->HasUserAlreadyVoted($intArticleID, $intUserID)) {
-            if ($intRating == "-1") {
-              $intRating = "0";
-            }
-            $intRating = (integer) $intRating;
-            if ($intRating > 0) {
-              $CMS->RAT->Create($intArticleID, $intCommentID, $intRating, $intUserIP, $intUserID);
-            }
-          }
-        }
-        */
         // Append comment ID to page link
         $strRawPageLink = $strViewLink; // required if the comment is awaiting review
         // Notifications

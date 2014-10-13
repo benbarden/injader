@@ -165,8 +165,6 @@ class Article extends Helper {
         $arrArticle = $this->ResultQuery("SELECT title FROM {IFW_TBL_CONTENT} WHERE id = $intArticleID", 
             __CLASS__ . "::" . __FUNCTION__, __LINE__);
         $strTitle = $arrArticle[0]['title'];
-        // Delete ratings
-        $CMS->RAT->Delete($intArticleID);
         // Delete attached comments
         $this->Query("DELETE FROM {IFW_TBL_COMMENTS} WHERE story_id = $intArticleID", 
             __CLASS__ . "::" . __FUNCTION__, __LINE__);
