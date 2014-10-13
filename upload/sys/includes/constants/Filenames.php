@@ -68,6 +68,7 @@
   define('FN_ADM_GENERAL_SETTINGS',    URL_CP_ROOT.'general_settings'.F_EXT_PHP);
   define('FN_ADM_IMPORT_WP',           URL_CP_ROOT.'import_wp'.F_EXT_PHP);
   define('FN_ADM_MANAGE_AVATARS',      URL_CP_ROOT.'manage_avatars'.F_EXT_PHP);
+  define('FN_ADM_MY_SETTINGS',         URL_CP_ROOT.'my_settings'.F_EXT_PHP);
   define('FN_ADM_PERMISSION',          URL_CP_ROOT.'permission'.F_EXT_PHP);
   define('FN_ADM_PERMISSIONS',         URL_CP_ROOT.'permissions'.F_EXT_PHP);
   define('FN_ADM_SPAM_RULE',           URL_CP_ROOT.'spam_rule'.F_EXT_PHP);
