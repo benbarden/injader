@@ -230,11 +230,9 @@ DROP TABLE IF EXISTS {IFW_TBL_UPLOADS};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_UPLOADS} (
   id int(10) unsigned NOT NULL auto_increment,
   title varchar(100) NOT NULL default '',
-  description text NOT NULL,
   location text NOT NULL,
   file_area_id int(10) unsigned NOT NULL default '0',
   author_id int(10) unsigned NOT NULL default '0',
-  user_groups TEXT NOT NULL,
   create_date datetime NOT NULL default '0000-00-00 00:00:00',
   edit_date datetime NOT NULL default '0000-00-00 00:00:00',
   hits int(10) unsigned NOT NULL default '0',
