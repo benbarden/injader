@@ -162,7 +162,7 @@
       } else {
         $intAreaGraphicID = $arrPostData['txtAreaGraphicID'];
         $strAreaTheme     = $arrPostData['optAreaTheme'];
-        $strLayoutStyle   = $arrPostData['txtLayoutStyle'];
+        $strLayoutStyle   = ""; // option removed
       }
       if ($blnContentArea) {
         $intPerProfileID = $arrPostData['optPerProfile'];
@@ -329,7 +329,7 @@
       $strSubareaContentOnIndexChecked = 'checked="checked"';
     }
     $strAreaDesc  = $CMS->PrepareTemplateForEditing($_POST['txtAreaDesc']);
-    $strLayoutStyle = $arrData['txtLayoutStyle'];
+    $strLayoutStyle = ""; // option removed
   } else {
     if (!$blnCreate) {
       $arrArea = $CMS->AR->GetArea($intAreaID);
@@ -385,7 +385,7 @@
   if ($blnDelete) {
   
     $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <form id="frmMajesticForm" action="{FN_ADM_AREA}?$strFormAction" method="post">
 <table class="DefaultTable MediumTable FixedTable" cellspacing="1">
   <tr>
@@ -435,7 +435,7 @@ END;
     $strAreaListTertiary = $CMS->DD->AreaHierarchy($intParentID, $intAreaID, "All", true, false, C_NAV_TERTIARY);
     
     $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>* = Required field</p>
 <form id="frmMajesticForm" action="{FN_ADM_AREA}?$strFormAction" method="post">
 <script type="text/javascript">
@@ -443,19 +443,14 @@ END;
     frmMajesticForm = document.getElementById('frmMajesticForm');
   }
 </script>
-<table class="DefaultTable PageTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour WideCell" />
-    <col class="BaseColour" />
-  </colgroup> 
-  <tr>
-    <td class="HeadColour SpanCell" colspan="2"><b>General Settings</b></td>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="2">General Settings</td>
   </tr>
   <tr>
     <td>
-      <label for="txtAreaName"><b>Area Name</b>: *</label>
-      <br />The name of this area. Will be displayed in navigation links.
-      <br /><i>Do not use HTML in this field.</i>
+      <label for="txtAreaName"><b>Area Name</b> *</label>
     </td>
     <td>
       $strMissingAreaName
@@ -464,34 +459,31 @@ END;
   </tr>
   <tr>
     <td>
-      <label for="txtAreaDesc"><b>Area Description</b>:</label>
-      <br />The description of this area. Can be displayed in your theme.
-      <br /><i>You can use HTML in this field.</i>
+      <label for="txtAreaDesc"><b>Area Description</b></label>
+      <br /><em>HTML is ok here</em>
     </td>
     <td>
       <textarea id="txtAreaDesc" name="txtAreaDesc" rows="10" cols="60">$strAreaDesc</textarea>
     </td>
   </tr>
-  <tr>
-    <td class="HeadColour SpanCell" colspan="2"><b>Navigation Settings</b></td>
+  <tr class="separator-row">
+    <td colspan="2">Navigation Settings</td>
   </tr>
   <tr>
     <td>
-      <b>Navigation Type:</b>
-      <br />This determines where the area will appear on your site.
+      <b>Navigation Type</b>
     </td>
     <td>
-      <input type="radio" id="optNavType1" name="optNavType" onclick="SwitchDropDown('Primary');" value="1"$strNavType1Checked /><label for="optNavType1">Primary</label>
+      <input type="radio" id="optNavType1" name="optNavType" onclick="SwitchDropDown('Primary');" value="1"$strNavType1Checked /> <label for="optNavType1">Primary</label>
       <br />
-      <input type="radio" id="optNavType2" name="optNavType" onclick="SwitchDropDown('Secondary');" value="2"$strNavType2Checked /><label for="optNavType2">Secondary</label>
+      <input type="radio" id="optNavType2" name="optNavType" onclick="SwitchDropDown('Secondary');" value="2"$strNavType2Checked /> <label for="optNavType2">Secondary</label>
       <br />
-      <input type="radio" id="optNavType3" name="optNavType" onclick="SwitchDropDown('Tertiary');" value="3"$strNavType3Checked /><label for="optNavType3">Tertiary</label>
+      <input type="radio" id="optNavType3" name="optNavType" onclick="SwitchDropDown('Tertiary');" value="3"$strNavType3Checked /> <label for="optNavType3">Tertiary</label>
     </td>
   </tr>
   <tr>
     <td>
-      <b>Parent</b>:
-      <br />Choose "None" to create a top-level area, or choose a parent to create a subarea.
+      <b>Parent</b>
     </td>
     <td>
       <select id="optParentPrimary" name="optParentPrimary">
@@ -507,8 +499,7 @@ $strAreaListTertiary
   </tr>
   <tr>
     <td>
-      <label for="txtAreaOrder"><b>Order</b>: *</label>
-      <br />This determines how your areas should be ordered (numerical order, lowest to highest).
+      <label for="txtAreaOrder"><b>Order</b> *</label>
     </td>
     <td>
       $strMissingAreaOrder
@@ -521,8 +512,8 @@ END;
     // ** CONTENT SETTINGS HEADING ** // -- All
     
     $strHTML .= <<<ContentSettings
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>Content Settings</b></td>
+    <tr class="separator-row">
+      <td colspan="2">Content Settings</td>
     </tr>
 
 ContentSettings;
@@ -533,8 +524,7 @@ ContentSettings;
       $strHTML .= <<<AreaURL
     <tr>
       <td>
-        <label for="txtAreaURL"><b>URL</b>:</label>
-        <br />The area will link to the URL you specify in this field.
+        <label for="txtAreaURL"><b>URL</b></label>
       </td>
       <td>
         $strMissingAreaURL
@@ -544,35 +534,16 @@ ContentSettings;
 
 AreaURL;
     }
-    
-    // ** ITEMS PER PAGE ** // -- All except linked areas
 
-    if (!$blnLinkedArea) {
-      $strHTML .= <<<ItemsPerPage
+      // ** SORT RULE ** // -- All except linked areas
+
+      if (!$blnLinkedArea) {
+          $strSRFieldDD = $CMS->DD->SortRuleField($strSortRuleField);
+          $strSROrderDD = $CMS->DD->SortRuleOrder($strSortRuleOrder);
+          $strHTML .= <<<SortRule
     <tr>
       <td>
-        <label for="txtItemsPerPage"><b>Items per page</b>: *</label>
-        <br />The number of articles that will be displayed on each page of this area.
-      </td>
-      <td>
-        $strMissingItemsPerPage
-        <input type="text" id="txtItemsPerPage" name="txtItemsPerPage" maxlength="5" size="5" value="$intItemsPerPage" />
-      </td>
-    </tr>
-
-ItemsPerPage;
-    }
-
-    // ** SORT RULE ** // -- All except linked areas
-
-    if (!$blnLinkedArea) {
-      $strSRFieldDD = $CMS->DD->SortRuleField($strSortRuleField);
-      $strSROrderDD = $CMS->DD->SortRuleOrder($strSortRuleOrder);
-      $strHTML .= <<<SortRule
-    <tr>
-      <td>
-        <label for="optSortRuleField"><b>Sort by</b>:</label>
-        <br />How the content in this area should be ordered.
+        <label for="optSortRuleField"><b>Sort by</b></label>
       </td>
       <td>
         <select id="optSortRuleField" name="optSortRuleField">
@@ -585,8 +556,25 @@ ItemsPerPage;
     </tr>
 
 SortRule;
+      }
+
+      // ** ITEMS PER PAGE ** // -- All except linked areas
+
+    if (!$blnLinkedArea) {
+      $strHTML .= <<<ItemsPerPage
+    <tr>
+      <td>
+        <label for="txtItemsPerPage"><b>Items per page</b> *</label>
+      </td>
+      <td>
+        $strMissingItemsPerPage
+        <input type="text" id="txtItemsPerPage" name="txtItemsPerPage" maxlength="5" size="5" value="$intItemsPerPage" />
+      </td>
+    </tr>
+
+ItemsPerPage;
     }
-    
+
     // ** SMART TAGS ** // -- Smart areas only
     
     if ($blnSmartArea) {
@@ -594,11 +582,11 @@ SortRule;
       $strTagList2 = $CMS->DD->TagList(empty($intTagID2) ? "" : $intTagID2);
       $strTagList3 = $CMS->DD->TagList(empty($intTagID3) ? "" : $intTagID3);
       $strHTML .= <<<SmartTags
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>Smart Tags</b></td>
+    <tr class="separator-row">
+      <td colspan="2">Smart Tags</td>
     </tr>
     <tr>
-      <td><label for="optTagList1">Tag 1:</label></td>
+      <td><label for="optTagList1">Tag 1</label></td>
       <td>
         $strMissingSmartTags
         <select id="optTagList1" name="optTagList1">
@@ -607,7 +595,7 @@ $strTagList1
       </td>
     </tr>
     <tr>
-      <td><label for="optTagList2">Tag 2:</label></td>
+      <td><label for="optTagList2">Tag 2</label></td>
       <td>
         <select id="optTagList2" name="optTagList2">
 $strTagList2
@@ -615,7 +603,7 @@ $strTagList2
       </td>
     </tr>
     <tr>
-      <td><label for="optTagList3">Tag 3:</label></td>
+      <td><label for="optTagList3">Tag 3</label></td>
       <td>
         <select id="optTagList3" name="optTagList3">
 $strTagList3
@@ -632,23 +620,18 @@ SmartTags;
       $strHTML .= <<<IncludeInRSSFeed
     <tr>
       <td>
-        <label for="chkSubareaContent"><b>Show subarea content on index</b></label>
-        <br />This will display subarea content on the index page for this area.
-      </td>
-      <td>
-        <input type="checkbox" id="chkSubareaContent" name="chkSubareaContent" $strSubareaContentOnIndexChecked />
-      </td>
-    </tr>
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b><abbr title="Really Simple Syndication">RSS</abbr> Settings</b></td>
-    </tr>
-    <tr>
-      <td>
-        <label for="chkIncludeInRSSFeed"><b>Include in site feed</b></label>
-        <br />If this option is checked, all content in this area will appear in the site-wide articles feed.
+        <label for="chkIncludeInRSSFeed"><b>Include in main site feed</b></label>
       </td>
       <td>
         <input type="checkbox" id="chkIncludeInRSSFeed" name="chkIncludeInRSSFeed" $strIncludeInRSSFeedChecked />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="chkSubareaContent"><b>Show subarea content on index</b></label>
+      </td>
+      <td>
+        <input type="checkbox" id="chkSubareaContent" name="chkSubareaContent" $strSubareaContentOnIndexChecked />
       </td>
     </tr>
 
@@ -660,13 +643,12 @@ IncludeInRSSFeed;
     if (!$blnLinkedArea) {
       $strThemeDD = $CMS->DD->ThemeList($strAreaTheme);
       $strHTML .= <<<AreaTheme
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>Design</b></td>
+    <tr class="separator-row">
+      <td colspan="2">Design</td>
     </tr>
     <tr>
       <td>
-        <label for="optAreaTheme"><b>Theme:</b></label>
-        <br />Either use the default theme, or choose a specific theme for this area.
+        <label for="optAreaTheme"><b>Theme override</b></label>
       </td>
       <td>
         <select id="optAreaTheme" name="optAreaTheme">
@@ -677,17 +659,7 @@ IncludeInRSSFeed;
     </tr>
     <tr>
       <td>
-        <label for="txtLayoutStyle"><b>Layout Style</b>:</label>
-        <br />This is for themes that support multiple styles. Consult the theme help files for more information.
-      </td>
-      <td>
-        <input type="text" id="txtLayoutStyle" name="txtLayoutStyle" size="20" maxlength="50" value="$strLayoutStyle" />
-      </td>
-    </tr>
-    <tr>
-      <td>
         <label for="txtAreaGraphicID"><b>Graphic ID</b>:</label>
-        <br />Optionally, enter the ID of an image stored under Site Files and the image can be displayed in your theme.
       </td>
       <td>
         <input type="text" id="txtAreaGraphicID" name="txtAreaGraphicID" maxlength="5" size="5" value="$intAreaGraphicID" />
@@ -702,13 +674,12 @@ AreaTheme;
     if ($blnContentArea) {
       $strPerProfileDD = $CMS->DD->PermissionProfile($intPerProfileID);
       $strHTML .= <<<PermissionProfile
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>Override permissions</b></td>
+    <tr class="separator-row">
+      <td colspan="2">Override permissions</td>
     </tr>
     <tr>
       <td>
-        <label for="optPerProfile"><b>Permission Profile</b>:</label>
-        <br />If you have area-specific permission profiles, you can select them here.
+        <label for="optPerProfile"><b>Permissions</b>:</label>
       </td>
       <td>
         <select id="optPerProfile" name="optPerProfile">
@@ -737,7 +708,7 @@ PermissionProfile;
 SubmitCancel;
 
   // ** END FORM HTML ** //
-  $strHTML .= "</table>\n</form>\n";
+  $strHTML .= "</table>\n</div>\n</form>\n";
   
   // ** SCRIPT ** //
   $strHTML .= <<<FooterScript

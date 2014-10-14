@@ -30,9 +30,9 @@
   $arrSessions = $CMS->USess->GetAll();
   
   $strHTML = <<<MainContentStart
-<h1>$strPageTitle</h1>
-<p>This page displays a list of all currently logged in users. Users with multiple entries may have logged in at several locations or on different computers.</p>
-<p>If you delete a session, the user will no longer be logged in at that location. You cannot delete your own session on this screen as it would log you out. If you wish to log out, please use the Logout link at the bottom of the page.</p>
+<h1 class="page-header">$strPageTitle</h1>
+<p>This page shows a list of users who have logged in.
+Deleting a session will require the user to login again at that location.</p>
 <p><a href="{FN_ADMIN_TOOLS}?action=deleteexpiredsessions&amp;back={FN_ADM_TOOLS_USER_SESSIONS}">Delete all expired sessions</a>.</p>
 
 MainContentStart;
@@ -52,23 +52,16 @@ MainContentStart;
     $strUserAgent  = $arrSessions[$i]['user_agent'];
     if ($i==0) {
       $strHTML .= <<<TableHeader
-<table id="tblUserSessions" class="DefaultTable PageTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour WideCell" />
-    <col class="BaseColour TinyCell" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <thead>
-    <tr>
-      <th>Username</th>
-      <th>IP</th>
-      <th>Login Date</th>
-      <th>Expiry Date</th>
-      <th>User Agent</th>
-      <th>Options</th>
+    <tr class="separator-row">
+      <td>Username</td>
+      <td>IP</td>
+      <td>Login Date</td>
+      <td>Expiry Date</td>
+      <td>User Agent</td>
+      <td>Options</td>
     </tr>
   </thead>
   <tbody>
@@ -99,4 +92,3 @@ TableRow;
 	}
   $strHTML .= "  </tbody>\n</table>\n";
   $CMS->AP->Display($strHTML);
-?>

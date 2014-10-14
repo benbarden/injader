@@ -32,12 +32,12 @@
 
   $strAction = $_GET['action'];
   switch ($strAction) {
-    case "setavatar":     $strPageTitle = "Set avatar";     $blnCheckAvatar = true; break;
-    case "clearavatar":   $strPageTitle = "Clear avatar";   $blnCheckID = false; $blnCheckAvatar = false; break;
-    case "deleteavatar":  $strPageTitle = "Delete avatar";  $blnCheckAvatar = true; break;
-    case "deletearticle": $strPageTitle = "Delete article"; $blnDeleteArticle = true; break;
-    case "lockarticle":   $strPageTitle = "Lock article";   $blnLockArticle = true; break;
-    case "unlockarticle": $strPageTitle = "Unlock article"; $blnUnlockArticle = true; break;
+    case "setavatar":     $strPageTitle = "Set Avatar";     $blnCheckAvatar = true; break;
+    case "clearavatar":   $strPageTitle = "Clear Avatar";   $blnCheckID = false; $blnCheckAvatar = false; break;
+    case "deleteavatar":  $strPageTitle = "Delete Avatar";  $blnCheckAvatar = true; break;
+    case "deletearticle": $strPageTitle = "Delete Article"; $blnDeleteArticle = true; break;
+    case "lockarticle":   $strPageTitle = "Lock Article";   $blnLockArticle = true; break;
+    case "unlockarticle": $strPageTitle = "Unlock Article"; $blnUnlockArticle = true; break;
     default: $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "strAction"); break;
   }
   
@@ -107,7 +107,7 @@
     case "deleteavatar":
       if ($_POST) {
         $CMS->FL->Delete($intItemID, $intUserID, "");
-        $strHTML = "<div id=\"mPage\">\n<h1>$strPageTitle</h1>\n<p>Avatar deleted. <a href=\"$strReturnURL\">Return</a></p>\n</div>\n";
+        $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Avatar deleted. <a href=\"$strReturnURL\">Return</a></p>\n";
       } else {
         $strFormMsg = "<p>You are about to delete your avatar with file ID: $intItemID.</p>";
       }
@@ -115,7 +115,7 @@
     case "deletearticle":
       if ($_POST) {
         $CMS->ART->Mark($intItemID);
-        $strHTML = "<div id=\"mPage\">\n<h1>$strPageTitle</h1>\n<p>Article deleted. <a href=\"$strReturnURL\">Return</a></p>\n</div>\n";
+        $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Article deleted. <a href=\"$strReturnURL\">Return</a></p>\n";
       } else {
         $strArticleTitle = $CMS->ART->GetTitle($intItemID);
         $strFormMsg = <<<DeleteArticle
@@ -131,7 +131,7 @@ DeleteArticle;
     case "lockarticle":
       if ($_POST) {
         $CMS->ART->Lock($intItemID);
-        $strHTML = "<div id=\"mPage\">\n<h1>$strPageTitle</h1>\n<p>Article locked. <a href=\"$strReturnURL\">Return</a></p>\n</div>\n";
+        $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Article locked. <a href=\"$strReturnURL\">Return</a></p>\n";
       } else {
         $strArticleTitle = $CMS->ART->GetTitle($intItemID);
         $strFormMsg = <<<LockArticle
@@ -147,7 +147,7 @@ LockArticle;
     case "unlockarticle":
       if ($_POST) {
         $CMS->ART->Unlock($intItemID);
-        $strHTML = "<div id=\"mPage\">\n<h1>$strPageTitle</h1>\n<p>Article unlocked. <a href=\"$strReturnURL\">Return</a></p>\n</div>\n";
+        $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Article unlocked. <a href=\"$strReturnURL\">Return</a></p>\n";
       } else {
         $strArticleTitle = $CMS->ART->GetTitle($intItemID);
         $strFormMsg = <<<UnlockArticle
@@ -170,8 +170,7 @@ UnlockArticle;
 
   if (!$_POST) {
     $strHTML = <<<END
-<div id="UserCP-UserTools">
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strFormMsg
 <form action="{FN_USER_TOOLS}$strFormAction" method="post">
 <p><input type="hidden" name="dummy" value="$intItemID" /></p>
@@ -183,4 +182,3 @@ END;
   }
 
   $CMS->AP->Display($strHTML);
-?>

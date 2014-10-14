@@ -210,12 +210,20 @@
     $strWhereClause .= " AND $strTagClause";
   }
   
-  $strTagOptions = <<<TagOptions
-<input id="tags1" name="tags" type="radio" value="1" $strTagSelect1 /><label for="tags1">All content</label>
-<input id="tags2" name="tags" type="radio" value="2" $strTagSelect2 /><label for="tags2">Content with tags</label>
-<input id="tags3" name="tags" type="radio" value="3" $strTagSelect3 /><label for="tags3">Content without tags</label>
+  $strTagOptions1 = <<<TagOptions1
+<input id="tags1" name="tags" type="radio" value="1" $strTagSelect1 /> <label for="tags1">All content</label>
 
-TagOptions;
+TagOptions1;
+
+  $strTagOptions2 = <<<TagOptions2
+<input id="tags2" name="tags" type="radio" value="2" $strTagSelect2 /> <label for="tags2">Content with tags</label>
+
+TagOptions2;
+
+  $strTagOptions3 = <<<TagOptions3
+<input id="tags3" name="tags" type="radio" value="3" $strTagSelect3 /> <label for="tags3">Content without tags</label>
+
+TagOptions3;
 
   $strNavType1Checked = "";
   $strNavType2Checked = "";
@@ -252,33 +260,26 @@ TagOptions;
   $strSearchButton = $CMS->AC->SearchButton();
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <form action="{FN_ADM_CONTENT_MANAGE}" method="get">
-<table class="DefaultTable WideTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <th colspan="4">Search for content</th>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="4">Search for content</td>
   </tr>
   <tr>
     <td>
-      <b>Nav Type</b>
+      <label><b>Navigation</b></label>
     </td>
-    <td colspan="3">
-      <input type="radio" id="navtype1" name="navtype" onclick="SwitchDropDown('area1');" value="1"$strNavType1Checked /><label for="navtype1">Primary</label>
-      <input type="radio" id="navtype2" name="navtype" onclick="SwitchDropDown('area2');" value="2"$strNavType2Checked /><label for="navtype2">Secondary</label>
-      <input type="radio" id="navtype3" name="navtype" onclick="SwitchDropDown('area3');" value="3"$strNavType3Checked /><label for="navtype3">Tertiary</label>
-    </td>
-  </tr>
-  <tr>
     <td>
-      <b>Area</b>
+      <input type="radio" id="navtype1" name="navtype" onclick="SwitchDropDown('area1');" value="1"$strNavType1Checked /> <label for="navtype1">Primary</label>
+      <input type="radio" id="navtype2" name="navtype" onclick="SwitchDropDown('area2');" value="2"$strNavType2Checked /> <label for="navtype2">Secondary</label>
+      <input type="radio" id="navtype3" name="navtype" onclick="SwitchDropDown('area3');" value="3"$strNavType3Checked /> <label for="navtype3">Tertiary</label>
     </td>
-    <td colspan="3">
+    <td>
+      <label><b>Area</b></label>
+    </td>
+    <td>
       <select id="area1" name="area1">
 $strAreaListPrimary
       </select>
@@ -305,14 +306,22 @@ $strAreaListTertiary
       <input type="text" id="user" name="user" size="20" maxlength="100" value="$strUser" />
     </td>
   </tr>
+  <!--
   <tr>
     <td>
       <b>Tag Options</b>
     </td>
-    <td colspan="3">
-$strTagOptions
+    <td>
+$strTagOptions1
+    </td>
+    <td>
+$strTagOptions2
+    </td>
+    <td>
+$strTagOptions3
     </td>
   </tr>
+  -->
   <tr>
     <td class="FootColour Centre" colspan="4">
       $strSearchButton
@@ -399,31 +408,21 @@ $strPageNumbers
   <!--<form action="{FN_ADM_CONTENT_MANAGE}" method="post">-->
   <!--</form>-->
 <form action="{FN_ADM_CONTENT_BULK}" method="post">
-<table id="tblArticles" class="DefaultTable PageTable" cellspacing="1">
-    <colgroup>
-      <col class="BaseColour TinyCell" />
-      <col class="BaseColour WideCell" />
-      <col class="BaseColour MediumCell" />
-      <col class="BaseColour MediumCell" />
-      <col class="BaseColour NarrowCell" />
-      <col class="BaseColour TinyCell" />
-      <col class="BaseColour TinyCell" />
-      <col class="BaseColour NarrowCell" />
-      <col class="BaseColour TinyCell" />
-    </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
     <thead>
-      <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Area</th>
-        <th>Created</th>
-        <th>Status</th>
-        <th>Comments</th>
-        <th>Hits</th>
-        <th>Options</th>
-        <th>
+      <tr class="separator-row">
+        <td>ID</td>
+        <td>Title</td>
+        <td>Area</td>
+        <td>Created</td>
+        <td>Status</td>
+        <td>Comments</td>
+        <td>Hits</td>
+        <td>Options</td>
+        <td>
           <a href="#FooterRow1" id="js-manage-content-check-all" style="color: #fff; text-decoration: none;" title="Toggle All">+</a>
-        </th>
+        </td>
       </tr>
     </thead>
     <tfoot>
@@ -484,6 +483,7 @@ AreaContent;
         $strHTML .= <<<TableFooter
     </tbody>
 </table>
+</div>
 </form>
 
 TableFooter;

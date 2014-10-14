@@ -35,7 +35,7 @@
 
   $CMS->AP->SetTitle($strPageTitle);
 
-  $strHTML = "<h1>$strPageTitle</h1>\n";
+  $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n";
 
   $blnFirstMatch = true;
   $arrUsers = $CMS->US->GetAllWithUserGroup($intGroupID);
@@ -44,17 +44,13 @@
       if ($blnFirstMatch) {
         $blnFirstMatch = false;
         $strHTML .= <<<GroupHeader
-<p>To change a user's role membership, click on the Edit link. Suspended user accounts are not displayed. <a href="{FN_ADM_USER_ROLES}">Back to User Roles</a></p>
-<table id="tblSysResults" class="OptionTable MediumTable" cellspacing="1">
-  <colgroup>
-   <col class="BaseColour TinyCell" />
-   <col class="BaseColour" />
-   <col class="BaseColour NarrowCell" />
-  </colgroup>
-  <tr>
-    <th>ID</th>
-    <th>Username</th>
-    <th>Maintain</th>
+<p><a href="{FN_ADM_USER_ROLES}">Back to User Roles</a></p>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 400px;">
+  <tr class="separator-row">
+    <td>ID</td>
+    <td>Username</td>
+    <td>Maintain</td>
   </tr>
 
 GroupHeader;
@@ -76,7 +72,7 @@ GroupHeader;
 TableRow;
       }
     }
-    $strHTML .= "</table>\n";
+    $strHTML .= "</table></div>\n";
   } else {
     $strHTML .= "<p>There are no users with this role.</p>";
   }

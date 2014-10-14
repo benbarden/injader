@@ -44,23 +44,25 @@
   $strFileData = $CMS->DoEntities($strFileData);
   
   $strHTML = <<<EditForm
-<h1>$strPageTitle</h1>
-<table class="DefaultTable PageTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour" />
-  </colgroup> 
-  <tr>
-    <td class="HeadColour">Viewing file: <b>$strFile</b></td>
+<h1 class="page-header">$strPageTitle</h1>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td>
+    Viewing file: $strFile |
+    <a href="{FN_ADM_ERROR_LOG}">Go back</a>
+    </td>
   </tr>
   <tr>
     <td>
-      <textarea id="txtContent" name="txtContent" cols="100" rows="30">$strFileData</textarea>
+      <textarea id="txtContent" name="txtContent" style="width: 100%; height: 400px; font-family: 'Courier New', monospace; font-size: 12px;">$strFileData</textarea>
     </td>
   </tr>
   <tr>
     <td class="FootColour"><a href="{FN_ADM_ERROR_LOG}">Go back to the list of error logs.</a></td>
   </tr>
 </table>
+</div>
 
 EditForm;
 

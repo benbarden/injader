@@ -47,7 +47,7 @@
       $strPageTitle .= " - Results";
       $CMS->AP->SetTitle($strPageTitle);
       $CMS->US->EditPassword($intUserID, $strPassword);
-      $strHTML = "<h1>$strPageTitle</h1>\n<p>Password was updated successfully. <a href=\"{FN_ADM_USERS}\">View Users</a></p>";
+      $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Password was updated successfully. <a href=\"{FN_ADM_USERS}\">View Users</a></p>";
       $CMS->AP->Display($strHTML);
     }
   }
@@ -59,13 +59,10 @@
   $strHTML = <<<END
 <h1>$strPageTitle</h1>
 <form action="{FN_ADM_USER_EDIT_PASSWORD}?id=$intUserID" method="post">
-<table class="OptionTable NarrowTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <tr>
-    <td>Username:</td>
+    <td><strong>Username:</strong></td>
     <td>$strUserName</td>
   </tr>
   <tr>
@@ -81,8 +78,8 @@
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;
   $CMS->AP->Display($strHTML);
-?>

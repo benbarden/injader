@@ -75,28 +75,23 @@
     
     // Main form
     $strHTML = <<<END
-<p>Settings: <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> | 
-<a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> | 
-<a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> | <b>URLs</b></p>
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strConfirmMsg
-<p>This screen allows you to choose the style to use for your links.</p>
-<p>If you initially use one link style and you wish to change to a different style in 
-the future, Injader will ensure that your old links do not break. Any requests for the 
-old links will automatically redirect to the new links.</p>
 <form id="frmSystemPrefs" action="{FN_ADM_URL_SETTINGS}" method="post">
-<table class="DefaultTable PageTable" cellspacing="1">
-    <colgroup>
-        <col class="InfoColour MediumCell" />
-        <col class="BaseColour" />
-    </colgroup> 
-    <tr>
-        <th class="HeadColour SpanCell Left" colspan="2">URL Settings</th>
-    </tr>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="2">
+    Settings:
+    <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> |
+    <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> |
+    <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> |
+    URLs
+    </td>
+  </tr>
     <tr>
         <td>
             <b>Link Style</b>
-            <br />This will change the style of the links used on your site.
         </td>
         <td>
             <input type="radio" id="optLink1" name="optLink" value="1"$strLinkStyle1Checked />
@@ -121,6 +116,7 @@ old links will automatically redirect to the new links.</p>
         </td>
     </tr>
 </table>
+</div>
 </form>
 
 END;

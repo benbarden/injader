@@ -131,7 +131,7 @@ AdminNotice;
 <li><a href="{FN_ADM_THEMES}" title="Manage your themes">Themes</a></li>
 <li><a href="{FN_ADM_TOOLS}" title="Plugins and more">Tools</a></li>
 <li><a href="{FN_ADM_GENERAL_SETTINGS}" title="Configure website settings">Settings</a></li>
-<li><a href="{FN_ADM_USERS}" title="Manage user accounts, roles, and permissions">Access</a></li>
+<li><a href="{FN_ADM_USERS}?action=showall" title="Manage user accounts, roles, and permissions">Access</a></li>
 
 AdminLinks;
       }
@@ -174,7 +174,7 @@ AdminLinks;
 
 </head>
 
-  <body id="abc">
+  <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">

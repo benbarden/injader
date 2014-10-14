@@ -71,9 +71,9 @@
       $strBodyConf = "A copy of your message is displayed below.\r\n\r\n$strBody";
       $intReturnB = $CMS->SendEmail($strAdminEmail, $strSubjectConf, $strBodyConf, $strAdminEmail);
       if (($intReturnA == 1) || ($intReturnB == 1)) {
-        $strHTML  = "<h1>$strPageTitle</h1>\n<p>The message has been sent. <a href=\"{FN_ADM_INDEX}\">Control Panel Index</a></p>";
+        $strHTML  = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>The message has been sent. <a href=\"{FN_ADM_INDEX}\">Control Panel Index</a></p>";
       } else {
-        $strHTML  = "<h1>$strPageTitle</h1>\n<p>Error: The message could not be delivered. <a href=\"{FN_ADM_INDEX}\">Control Panel Index</a></p>";
+        $strHTML  = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Error: The message could not be delivered. <a href=\"{FN_ADM_INDEX}\">Control Panel Index</a></p>";
       }
       $CMS->AP->Display($strHTML);
     }
@@ -88,14 +88,16 @@
   $strCancelButton = $CMS->AC->CancelButton();
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <form id="frmMajesticForm" action="{FN_ADM_USER_ROLE_MESSAGE}" method="post">
-<p>Use this screen to contact all users with a certain role.<br />The messages will be sent from: $strAdminEmail</p>
-<table class="OptionTable" cellspacing="1" style="width: 550px;">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr>
+    <td><strong>From:</strong></td>
+    <td>
+      $strAdminEmail
+    </td>
+  </tr>
   <tr>
     <td><label for="optUserGroup">Send to role:</label></td>
     <td>
@@ -115,7 +117,7 @@
     <td><label for="txtMessageBody">Message:</label></td>
     <td>
       $strMissingBody
-      <textarea id="txtMessageBody" name="txtMessageBody" rows="10" cols="40">$strBody</textarea>
+      <textarea id="txtMessageBody" name="txtMessageBody" style="width: 400px; height: 200px;">$strBody</textarea>
     </td>
   </tr>
   <tr>
@@ -124,6 +126,7 @@
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;

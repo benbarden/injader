@@ -149,7 +149,7 @@
   $dteBack[7] = mktime(date("H")+$intOffset, date("i"), date("s"), date("m", $now),  date("d", $now)-7,  date("Y", $now));
   $dteBack[7] = date('Y-m-d', $dteBack[7]);
   
-  $strDateFilterHTML  = "<select id=\"date\" name=\"date\">\n";
+  $strDateFilterHTML  = "<select id=\"date\" name=\"date\" class=\"ij-dropdown\">\n";
   $strDateFilterHTML .= "<option value=\"\">(Display all)</option>\n";
   for ($i=0; $i<8; $i++) {
     if ($dteBack[$i] == $dteDateParam) {
@@ -177,67 +177,29 @@
   $strSearchButton = $CMS->AC->SearchButton();
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
-<p>The access log provides information on what people are doing on your site.</p>
-<p>A maximum number of log entries can be stored at any one time. You can change this in <a href="{FN_ADM_GENERAL_SETTINGS}">General Settings</a>. If the maximum is exceeded, the oldest entries will be deleted. If you wish to keep your log entries for longer, you should schedule a daily backup.</p>
-<p>Article views are only logged if the article is accessed by a registered user. If a guest views an article, it will not appear in the access log, but it will increase the hit count for the article.</p>
+<h1 class="page-header">$strPageTitle</h1>
 <form action="{FN_ADM_ACCESS_LOG}" method="get">
-<table class="OptionTable MediumTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <th colspan="2">Search the log</th>
-  </tr>
+<div class="table-responsive">
+<table class="table table-striped">
   <tr>
     <td>
-      <label for="tag">Tag filter:</label> 
+      <label for="q">Detail:</label>
+      <input class="ij-text" type="text" size="18" id="q" name="q" value="$strSearchParams" />
     </td>
     <td>
+      <label for="tag">Tag:</label>
       $strTagFilterHTML
     </td>
-  </tr>
-  <tr>
     <td>
-      <label for="date">Date filter:</label> 
+      <label for="ip">IP:</label>
+      <input type="text" size="12" id="ip" name="ip" value="$strIP" />
     </td>
     <td>
-      $strDateFilterHTML
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <label for="q">Detail search:</label> 
-    </td>
-    <td>
-      <input type="text" size="25" id="q" name="q" value="$strSearchParams" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <label for="ip">IP address:</label> 
-    </td>
-    <td>
-      <input type="text" size="25" id="ip" name="ip" value="$strIP" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <label for="user">User:</label>
-    </td>
-    <td>
-      $strInvalidUsername
-      <input type="text" id="user" name="user" size="25" maxlength="100" value="$strUser" />
-      <input type="checkbox" id="excludeuser" name="excludeuser" $strExcludeChecked/><label for="excludeuser">Exclude</label>
-    </td>
-  </tr>
-  <tr>
-    <td class="FootColour Centre" colspan="2">
       $strSearchButton
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;
@@ -266,7 +228,9 @@ END;
         $strHTML .= <<<TableHeader
 <div class="spacer">&nbsp;</div>
 $strPageNumbers
-<table class="DefaultTable PageTable" cellspacing="1">
+<div class="table-responsive">
+<table class="table table-striped">
+  <!--
   <colgroup>
     <col class="BaseColour TinyCell" />
     <col class="BaseColour MediumCell" />
@@ -275,6 +239,7 @@ $strPageNumbers
     <col class="BaseColour" />
     <col class="BaseColour NarrowCell" />
   </colgroup>
+  -->
   <tr>
     <th>ID</th>
     <th>Date</th>
@@ -285,11 +250,6 @@ $strPageNumbers
   </tr>
 
 TableHeader;
-      }
-      if (($i % 2) == 0) {
-        $strRowClass = "even";
-      } else {
-        $strRowClass = "odd";
       }
       $intLogID    = $arrLogs[$i]['id'];
       $strDetail   = $arrLogs[$i]['detail'];
@@ -310,18 +270,18 @@ TableHeader;
         $intUserIP = "<i>Unknown</i>";
       }
       $strHTML .= <<<TableRow
-  <tr class="$strRowClass">
-    <td class="Centre">$intLogID</td>
-    <td class="Centre">$dteLogDate</td>
-    <td class="Centre">$strUserMsg</td>
-    <td class="Centre">$strTag</td>
+  <tr>
+    <td>$intLogID</td>
+    <td>$dteLogDate</td>
+    <td>$strUserMsg</td>
+    <td>$strTag</td>
     <td>$strDetail</td>
-    <td class="Centre">$intUserIP</td>
+    <td>$intUserIP</td>
   </tr>
 
 TableRow;
     }
-    $strHTML .= "</table>\n";
+    $strHTML .= "</table>\n</div>\n";
   }
 
   $CMS->AP->Display($strHTML);

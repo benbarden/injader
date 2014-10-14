@@ -66,7 +66,7 @@
 	  	}
 	  	
 	  	$strHTML = <<<ConfPage
-<h1>$strPageTitle - Results</h1>
+<h1 class="page-header">$strPageTitle - Results</h1>
 <p>Spam rule $strDidWhat. <a href="{FN_ADM_SPAM_RULES}">Spam Rules</a></p>
 
 ConfPage;
@@ -103,7 +103,7 @@ ConfPage;
   if ($blnDelete) {
   	
   	$strHTML = <<<PageBody
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>You are about to delete the following Spam Rule: $strBlockRule (ID: $intRuleID)</p>
 <form action="{FN_ADM_SPAM_RULE}?action=$strAction&amp;id=$intRuleID" method="post">
 <input type="hidden" name="dummy" value="dummy" />
@@ -115,21 +115,10 @@ PageBody;
   } else {
   
   $strHTML = <<<PageBody
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <form action="{FN_ADM_SPAM_RULE}?action=$strAction&amp;id=$intRuleID" method="post">
-<table class="DefaultTable WideTable FixedTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup> 
-  <tr>
-    <td><label for="txtBlockRule">Block Rule:</label></td>
-    <td>
-      $strMissingRule
-      <input type="text" id="txtBlockRule" name="txtBlockRule" maxlength="255" 
-       size="60" value="$strBlockRule" />
-    </td>
-  </tr>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 500px;">
   <tr>
     <td>
       <label for="optBlockType">Block Type:</label>
@@ -141,11 +130,20 @@ $strTypeList
     </td>
   </tr>
   <tr>
+    <td><label for="txtBlockRule">Block Rule:</label></td>
+    <td>
+      $strMissingRule
+      <input type="text" id="txtBlockRule" name="txtBlockRule" maxlength="255" 
+       size="40" value="$strBlockRule" />
+    </td>
+  </tr>
+  <tr>
     <td class="FootColour SpanCell Centre" colspan="2">
       $strSubmitButton $strCancelButton
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 PageBody;
@@ -153,4 +151,3 @@ PageBody;
   }
   
   $CMS->AP->Display($strHTML);
-?>

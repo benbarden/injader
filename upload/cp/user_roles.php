@@ -32,29 +32,17 @@
 
   $strHTML = <<<MainContentStart
 <p><a href="{FN_ADM_USERS}" title="Manage user accounts">Users</a> | <b>User Roles</b> | <a href="{FN_ADM_PERMISSIONS}" title="Assign privileges to user roles">Permissions</a></p>
-<h1>$strPageTitle</h1>
-<ul>
-<li>Where "Default" = "Y", this is the default userlevel for new users.</li>
-<li>Be careful when adding users to the group with "Admin" shown as "Y", as they will be able to access all functions in the AdminCP.</li>
-</ul>
-
-<table id="tblSysResults" class="DefaultTable WideTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour" />
-    <col class="BaseColour NarrowCell" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour NarrowCell" />
-    <col class="BaseColour NarrowCell" />
-  </colgroup> 
+<h1 class="page-header">$strPageTitle</h1>
+<div class="table-responsive">
+<table class="table table-striped">
   <thead>
-    <tr>
-      <th>Name</th>
-      <th>Options</th>
-      <th>Default</th>
-      <th>Admin</th>
-      <th>Membership</th>
-      <th>Messaging</th>
+    <tr class="separator-row">
+      <td>Name</td>
+      <td>New user default</td>
+      <td>Admin</td>
+      <td>Membership</td>
+      <td>Messaging</td>
+      <td>Options</td>
     </tr>
   </thead>
   <tbody id="tblUserGroupsBody">
@@ -86,11 +74,11 @@ MainContentStart;
     $strHTML .= <<<TableRow
     <tr class="$strRowClass">
       <td class="Left">$strGroupName</td>
-      <td><a href="{FN_ADM_USER_ROLE}?id=$intGroupID&amp;action=edit">Edit</a> : $strDelete</td>
       <td>$strIsDefault</td>
       <td>$strIsAdmin</td>
       <td>$strGroupUsers</td>
       <td>$strGroupMsg</td>
+      <td><a href="{FN_ADM_USER_ROLE}?id=$intGroupID&amp;action=edit">Edit</a> : $strDelete</td>
     </tr>
 
 TableRow;
@@ -102,8 +90,8 @@ TableRow;
   </tr>
   </tbody>
 </table>
+</div>
 
 MainContentEnd;
 
   $CMS->AP->Display($strHTML);
-?>

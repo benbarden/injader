@@ -99,7 +99,7 @@ PostButtons;
           for ($j=0; $j<count($arrSelectedGroups); $j++) {
             $intSelectedGroupID = $arrSelectedGroups[$j];
             if ($intGroupID == $intSelectedGroupID) {
-              $strHTML .= "<span style=\"white-space: nowrap;\"><input type=\"checkbox\" name=\"chk".$strName."[]\" id=\"chk$strName$intGroupID\" value=\"chk$strName$intGroupID\" checked=\"checked\" /><label id=\"lblchk$strName$intGroupID\" for=\"chk$strName$intGroupID\">$strGroupName</label></span> \n";
+              $strHTML .= "<span style=\"white-space: nowrap;\"><input type=\"checkbox\" name=\"chk".$strName."[]\" id=\"chk$strName$intGroupID\" value=\"chk$strName$intGroupID\" checked=\"checked\" /> <label id=\"lblchk$strName$intGroupID\" for=\"chk$strName$intGroupID\">$strGroupName</label></span> \n";
               $blnFlag = true;
             }
           }
@@ -108,7 +108,7 @@ PostButtons;
           $blnFlag = true; // Don't do admin checkbox for per-file permissions
         }
         if (!$blnFlag) {
-          $strHTML .= "<span style=\"white-space: nowrap;\"><input type=\"checkbox\" name=\"chk".$strName."[]\" id=\"chk$strName$intGroupID\" value=\"chk$strName$intGroupID\" /><label id=\"lblchk$strName$intGroupID\" for=\"chk$strName$intGroupID\">$strGroupName</label></span> \n";
+          $strHTML .= "<span style=\"white-space: nowrap;\"><input type=\"checkbox\" name=\"chk".$strName."[]\" id=\"chk$strName$intGroupID\" value=\"chk$strName$intGroupID\" /> <label id=\"lblchk$strName$intGroupID\" for=\"chk$strName$intGroupID\">$strGroupName</label></span> \n";
         }
       }
       if (($strName == "ViewArea") ||
@@ -120,7 +120,7 @@ PostButtons;
         } else {
           $strGuestChecked = "";
         }
-        $strGuestHTML = "<span style=\"white-space: nowrap;\"><input type=\"checkbox\" name=\"chk".$strName."[]\" id=\"$strFieldName\" value=\"$strFieldName\" $strGuestChecked /><label id=\"lbl$strFieldName\" for=\"$strFieldName\">Guest</label></span> \n";
+        $strGuestHTML = "<span style=\"white-space: nowrap;\"><input type=\"checkbox\" name=\"chk".$strName."[]\" id=\"$strFieldName\" value=\"$strFieldName\" $strGuestChecked /> <label id=\"lbl$strFieldName\" for=\"$strFieldName\">Guest</label></span> \n";
       } else {
         $strGuestHTML = "";
       }

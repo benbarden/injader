@@ -193,60 +193,58 @@
 
   // Main form
   $strHTML = <<<END
-<p>Settings: <b>General</b> | <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> | <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> | <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a></p>
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strConfMsg
 <form id="frmSystemPrefs" action="{FN_ADM_GENERAL_SETTINGS}" method="post">
-<table class="DefaultTable WideTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour MediumCell" />
-    <col class="BaseColour" />
-  </colgroup> 
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Site Settings</th>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="2">
+    Settings:
+    General |
+    <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> |
+    <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> |
+    <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a>
+    </td>
   </tr>
   <tr>
     <td>
       <b><label for="txtSiteTitle">Site Title</label></b>
-      <br />Enter the name of your site.
     </td>
     <td>
       $strMissingTitleText
-      <input id="txtSiteTitle" name="txtSiteTitle" type="text" size="40" maxlength="100" value="$strSiteTitle" />
+      <input id="txtSiteTitle" name="txtSiteTitle" type="text" size="50" maxlength="100" value="$strSiteTitle" />
     </td>
   </tr>
   <tr>
     <td>
       <b><label for="txtSiteDescription">Site Description</label></b>
-      <br />Enter a description of your site.
     </td>
     <td>
       $strMissingDescText
-      <textarea id="txtSiteDescription" name="txtSiteDescription" rows="5" cols="40">$strSiteDesc</textarea>
+      <textarea id="txtSiteDescription" name="txtSiteDescription" style="width: 400px; height: 100px;">$strSiteDesc</textarea>
     </td>
   </tr>
   <tr>
     <td>
       <b><label for="txtSiteKeywords">Site Keywords</label></b>
-      <br />These are the words or phrases that people will search for in order to locate your site. Separate each keyword with a comma. e.g. injader, content management, blogging
     </td>
     <td>
-      <textarea id="txtSiteKeywords" name="txtSiteKeywords" rows="5" cols="40">$strSiteKeywords</textarea>
+      <textarea id="txtSiteKeywords" name="txtSiteKeywords" style="width: 400px; height: 100px;">$strSiteKeywords</textarea>
+      <br />Separate with commas. E.g. weather, blue sky, clouds
     </td>
   </tr>
   <tr>
     <td>
-      <b><label for="txtSiteHeader">Site Header</label></b>
-      <br />HTML that will be included in the &lt;head&gt; tag of your site.
+      <b><label for="txtSiteHeader">Custom header (&lt;head&gt; tag)</label></b>
     </td>
     <td>
-      <textarea id="txtSiteHeader" name="txtSiteHeader" rows="5" cols="40">$strSiteHeader</textarea>
+      <textarea id="txtSiteHeader" name="txtSiteHeader" style="width: 400px; height: 200px; font-family: 'Courier New', monospace; font-size: 12px;">$strSiteHeader</textarea>
     </td>
   </tr>
   <tr>
     <td>
       <b><label for="txtSiteEmail">Site Email</label></b>
-      <br />The contact email address for your web site.
     </td>
     <td>
       $strMissingEmailText
@@ -256,56 +254,21 @@ $strConfMsg
   <tr>
     <td>
       <b><label for="txtSiteFavicon">Favicon</label></b>
-      <br />A direct link to your favicon, if you wish to use one.
     </td>
     <td>
       <input id="txtSiteFavicon" name="txtSiteFavicon" type="text" size="40" maxlength="100" value="$strSiteFavicon" />
     </td>
   </tr>
   <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Feed Settings</th>
-  </tr>
-  <tr>
     <td>
-      <b><label for="txtRSSArticlesURL">Feedburner Site Feed</label></b>
-      <br />If you use <a href="http://www.feedburner.com">Feedburner</a> for your site feed, enter the URL here.
+      <b><label for="txtRSSArticlesURL">Feedburner URL</label></b>
     </td>
     <td>
       <input id="txtRSSArticlesURL" name="txtRSSArticlesURL" type="text" size="50" maxlength="100" value="$strRSSArticlesURL" />
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">System Settings</th>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="txtSystemPageCount">System Page Count</label></b>
-      <br />The number of items per page within the Control Panel.
-    </td>
-    <td>
-      <input id="txtSystemPageCount" name="txtSystemPageCount" type="text" size="4" maxlength="4" value="$intSystemPageCount" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="txtMaxLogEntries">Maximum Log Entries</label></b>
-      <br />The maximum number of rows that will be saved in the Access Log.
-    </td>
-    <td>
-      <input id="txtMaxLogEntries" name="txtMaxLogEntries" type="text" size="5" maxlength="5" value="$intMaxLogEntries" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="chkSystemLock">System Lock</label></b>
-      <br />Block everyone except admins from accessing the system.
-    </td>
-    <td>
-      <input id="chkSystemLock" name="chkSystemLock" type="checkbox"$strSystemLockChecked />
-    </td>
-  </tr>
-  <tr id="mRow_DateAndTime">
-    <th class="HeadColour SpanCell Left" colspan="2">Date and Time</th>
+  <tr class="separator-row">
+    <td colspan="2">Date and Time</td>
   </tr>
   <tr>
     <td>
@@ -330,17 +293,14 @@ $strConfMsg
   <tr>
     <td>
       <b><label for="txtServerTimeOffset">Server Time Offset</label></b>
-      <br />Use positive/negative numbers to change the time. Existing content will be unaffected.
-      <br /><i>Current server time: $dteCurrentServerTime
-      <br />Time with current offset: $dteOffsetServerTime</i>
     </td>
     <td>
       $strMissingServerTimeText
       <input id="txtServerTimeOffset" name="txtServerTimeOffset" type="text" size="3" maxlength="3" value="$intServerTimeOffset" />
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">User Settings</th>
+  <tr class="separator-row">
+    <td colspan="2">User Settings</td>
   </tr>
   <tr>
     <td>
@@ -374,12 +334,40 @@ $strConfMsg
       <input id="txtCookieDays" name="txtCookieDays" type="text" size="3" maxlength="3" value="$intCookieDays" /> days
     </td>
   </tr>
+  <tr class="separator-row">
+    <td colspan="2">System Settings</td>
+  </tr>
+  <tr>
+    <td>
+      <b><label for="txtSystemPageCount">Control Panel page count</label></b>
+    </td>
+    <td>
+      <input id="txtSystemPageCount" name="txtSystemPageCount" type="text" size="4" maxlength="4" value="$intSystemPageCount" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b><label for="txtMaxLogEntries">Log file row limit</label></b>
+    </td>
+    <td>
+      <input id="txtMaxLogEntries" name="txtMaxLogEntries" type="text" size="5" maxlength="5" value="$intMaxLogEntries" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b><label for="chkSystemLock">Lock system</label></b>
+    </td>
+    <td>
+      <input id="chkSystemLock" name="chkSystemLock" type="checkbox"$strSystemLockChecked />
+    </td>
+  </tr>
   <tr>
     <td class="FootColour SpanCell Centre" colspan="2">
       $strSubmitButton $strCancelButton
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;

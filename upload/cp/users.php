@@ -75,38 +75,29 @@
 
   $strHTML = <<<END
 <p><b>Users</b> | <a href="{FN_ADM_USER_ROLES}" title="Set up roles to use with permission profiles">User Roles</a> | <a href="{FN_ADM_PERMISSIONS}" title="Assign privileges to user roles">Permissions</a></p>
-<h1>$strPageTitle</h1>
-<p>This page displays all of the registered users on your site.</p>
-<p>Suspending a user will hide their profile, prevent them from logging in, and block 
-comments under their username. This can be reversed by reinstating their account.</p>
-<p><a href="{FN_ADM_USER}?action=create">Add a new user</a>.</p>
+<h1 class="page-header">$strPageTitle</h1>
+<button onclick="top.location.href = '{FN_ADM_USER}?action=create';">Add a new user</button>
+<br><br>
 <form action="{FN_ADM_USERS}" method="get">
 $strMissingSearchParams
-<table class="OptionTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <td class="HeadColour SpanCell Left" colspan="2"><b>Search for users</b></td>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="7">Search for users</td>
   </tr>
   <tr>
     <td>
       <label for="un">Username</label>
     </td>
     <td>
-      <input id="un" name="un" type="text" size="30" maxlength="100" value="$strUsername" />
+      <input id="un" name="un" type="text" size="20" maxlength="100" value="$strUsername" />
     </td>
-  </tr>
-  <tr>
     <td>
       <label for="ip">IP Address</label>
     </td>
     <td>
-      <input id="ip" name="ip" type="text" size="20" maxlength="20" value="$strIPAddress" />
+      <input id="ip" name="ip" type="text" size="12" maxlength="20" value="$strIPAddress" />
     </td>
-  </tr>
-  <tr>
     <td>
       <label for="order">Order by:</label>
     </td>
@@ -118,23 +109,19 @@ $strMissingSearchParams
       $strDropDownOBD
       </select>
     </td>
-  </tr>
-  <tr>
-    <td class="FootColour SpanCell Centre" colspan="2">
+    <td>
       $strSearchButton
     </td>
   </tr>
 </table>
+</div>
 </form>
 <br />
 <form action="{FN_ADM_USERS}" method="get">
-<table class="OptionTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <td class="HeadColour SpanCell Left" colspan="2"><b>Show all users</b></td>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="3">Show all users</td>
   </tr>
   <tr>
     <td>
@@ -149,13 +136,12 @@ $strMissingSearchParams
       $strDropDownOBD
       </select>
     </td>
-  </tr>
-  <tr>
-    <td class="FootColour SpanCell Centre" colspan="2">
+    <td>
       $strSearchButton
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;
@@ -211,21 +197,15 @@ END;
       if ($i==0) {
         $strHTML .= <<<TableHeader
 $strPageNumbers
-<table id="tblSysResults" class="DefaultTable PageTable" cellspacing="1">
-  <colgroup>
-   <col class="BaseColour TinyCell" />
-   <col class="BaseColour" />
-   <col class="BaseColour MediumCell" />
-   <col class="BaseColour MediumCell" />
-   <col class="BaseColour NarrowCell" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <thead>
-    <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th>IP Address</th>
-      <th>Maintain</th>
-      <th>Email</th>
+    <tr class="separator-row">
+      <td>ID</td>
+      <td>Username</td>
+      <td>IP Address</td>
+      <td>Maintain</td>
+      <td>Email</td>
     </tr>
   </thead>
   <tbody id="tblUsersBody">
@@ -266,7 +246,7 @@ TableHeader;
 TableRow;
     }
     if (count($arrUsers) > 0) {
-      $strHTML .= "  </tbody>\n</table>\n";
+      $strHTML .= "  </tbody>\n</table></div>\n";
     } else {
       $strHTML .= "<p>No users found matching your search criteria.</p>\n";
     }

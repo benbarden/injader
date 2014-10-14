@@ -24,27 +24,9 @@
     $CMS->Err_MFail(M_ERR_NOT_LOGGED_IN, "");
   }
   $strSiteTitle = $CMS->SYS->GetSysPref(C_PREF_SITE_TITLE);
-  $strPageTitle = $strSiteTitle." - Control Panel";
+  $strPageTitle = "Dashboard";
 
   $CMS->AP->SetTitle($strPageTitle);
-  
-  // ** Settings ** //
-  // Profile links
-  $intUserID = $CMS->RES->GetCurrentUserID();
-  $strViewMyProfile = $CMS->PL->ViewUser($intUserID);
-  
-  // Are avatars allowed?
-  if ($CMS->SYS->GetSysPref(C_PREF_AVATARS_PER_USER) > 0) {
-    $strManageAvatars = "<div class=\"btn-primary\"><a href=\"{FN_ADM_MANAGE_AVATARS}\"><span><span><span>Manage Avatars</span></span></span></a></div>";
-  } else {
-    $strManageAvatars = "";
-  }
-  // Can users change their password?
-  if ($CMS->SYS->GetSysPref(C_PREF_USER_CHANGE_PASS) == "Y") {
-    $strChangePass = "<div class=\"btn-primary\"><a href=\"{FN_ADM_CHANGE_PASSWORD}\"><span><span><span>Change Password</span></span></span></a></div>";
-  } else {
-    $strChangePass = "";
-  }
   
   // ** Quick Stats ** //
   $CMS->RES->Admin();
@@ -110,8 +92,8 @@
     $strSpamComments     = "Spam";
     $strActiveUsers      = "Active Users";
   } else {
-    $strApprovedComments = "<a href=\"{FN_ADM_COMMENTS}\">Approved Comments</a>";
-    $strPendingComments  = "<a href=\"{FN_ADM_COMMENTS}?type=pending\">Pending Comments</a>";
+    $strApprovedComments = "<a href=\"{FN_ADM_COMMENTS}\">Approved</a>";
+    $strPendingComments  = "<a href=\"{FN_ADM_COMMENTS}?type=pending\">Pending</a>";
     $strSpamComments     = "<a href=\"{FN_ADM_COMMENTS}?type=spam\">Spam</a>";
     $strActiveUsers      = "<a href=\"{FN_ADM_USERS}\">Active Users</a>";
   }
@@ -185,106 +167,104 @@ RecentDrafts;
 
   // Columns
   $htmlColumn1 = <<<column1
-<h2>Overview</h2>
-<table class="DefaultTable">
-    <colgroup>
-        <col class="InfoColour MediumCell">
-        <col class="BaseColour MediumCell">
-    </colgroup>
-    <tr>
-        <td>$strArticleLink</td>
-        <td>$intArticleCount</td>
-    </tr>
-    <tr>
-        <td>Site Files</td>
-        <td>$intSiteFileCount</td>
-    </tr>
-    <tr>
-        <td>$strActiveUsers</td>
-        <td>$intUserCount</td>
-    </tr>
-    <tr>
-        <td>$strApprovedComments</td>
-        <td>$intApprovedComments</td>
-    </tr>
-    <tr>
-        <td>$strPendingComments</td>
-        <td>$intPendingComments</td>
-    </tr>
-    <tr>
-        <td>$strSpamComments</td>
-        <td>$intSpamComments</td>
-    </tr>
+<h2 class="sub-header">Recent Comments</h2>
+<div class="table-responsive">
+<table class="table table-striped">
+$strRecentCommentsHTML
 </table>
-
-<h2>Options</h2>
-
-<table class="DefaultTable">
-    <colgroup>
-        <col class="BaseColour MediumCell">
-        <col class="BaseColour MediumCell">
-    </colgroup>
-    <tr>
-        <td>
-            <a href="{FN_ADM_EDIT_PROFILE}">Edit Profile</a>
-        </td>
-        <td>
-            <a href="$strViewMyProfile">View Profile</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            $strChangePass
-        </td>
-        <td>
-            $strManageAvatars
-        </td>
-    </tr>
-</table>
+</div>
 
 column1;
 
 
   $htmlColumn2 = <<<column2
-<h2>Recent Comments</h2>
-<table class="DefaultTable">
-    <colgroup>
-        <col class="InfoColour MediumCell">
-        <col class="BaseColour MediumCell">
-    </colgroup>
-$strRecentCommentsHTML
-</table>
-
-<h2>Recent Drafts</h2>
-<table class="DefaultTable">
-    <colgroup>
-        <col class="InfoColour MediumCell">
-        <col class="BaseColour MediumCell">
-    </colgroup>
+<h2 class="sub-header">Recent Drafts</h2>
+<div class="table-responsive">
+<table class="table table-striped">
 $strRecentDraftsHTML
 </table>
+</div>
 
 column2;
 
-  // Build the page
-  $strHTML = <<<END
-<h1>Injader Control Panel</h1>
+    // Build the page
+    $sitemapUrl = "http://".SVR_HOST.FN_SITEMAPINDEX;
+    $strVersion   = $CMS->SYS->GetSysPref(C_PREF_CMS_VERSION);
+    $intYear = date('Y'); // Current year
 
-<div id="cp">
+    $strHTML = <<<END
+<h1 class="page-header">Dashboard</h1>
 
 <table width="100%;">
     <tr>
-        <td style="vertical-align: top; width: 50%;">
+        <td style="vertical-align: top; width: 40%;">
+            <h2 class="sub-header">Overview</h2>
+            <div class="table-responsive">
+            <table class="table table-striped">
+                <tr class="separator-row">
+                    <td colspan="2">Content</td>
+                    <td colspan="2">Comments</td>
+                </tr>
+                <tr>
+                    <td>$strArticleLink</td>
+                    <td>$intArticleCount</td>
+                    <td>$strPendingComments</td>
+                    <td>$intPendingComments</td>
+                </tr>
+                <tr>
+                    <td>$strActiveUsers</td>
+                    <td>$intUserCount</td>
+                    <td>$strApprovedComments</td>
+                    <td>$intApprovedComments</td>
+                </tr>
+                <tr>
+                    <td>Site Files</td>
+                    <td>$intSiteFileCount</td>
+                    <td>$strSpamComments</td>
+                    <td>$intSpamComments</td>
+                </tr>
+            </table>
+            </div>
+        </td>
+        <td style="vertical-align: top; width: 55%;">
+            <h2 class="sub-header">Useful info</h2>
+            <div class="table-responsive">
+            <table class="table table-striped">
+                <tr class="separator-row">
+                    <td>Field</td>
+                    <td>Details</td>
+                </tr>
+                <tr>
+                    <td>Sitemap URL</td>
+                    <td>
+                        <a href="$sitemapUrl">$sitemapUrl</a>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<table width="100%;">
+    <tr>
+        <td style="vertical-align: top; width: 48%;">
         $htmlColumn1
         </td>
-        <td style="vertical-align: top; width: 50%;">
+        <td style="vertical-align: top; width: 48%;">
         $htmlColumn2
         </td>
     </tr>
 </table>
 
-</div>
+<p>
+Powered by <a href="http://www.injader.com/">Injader</a> $strVersion |
+<a href="https://github.com/benbarden/injader" title="Github">Github</a>
+<br>
+Injader is free software released under the
+<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a> (v3).
+Copyright &copy; 2005-$intYear <a href="http://www.benbarden.com/">Ben Barden</a>.
+</p>
 
 END;
   $CMS->AP->Display($strHTML);
-?>

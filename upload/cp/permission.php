@@ -87,7 +87,7 @@
       }
       // Display message
       $strHTML = <<<ConfirmHTML
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>Permission profile $strMsg. <a href="{FN_ADM_PERMISSIONS}">Permission Profiles</a></p>
 
 ConfirmHTML;
@@ -147,15 +147,12 @@ ConfirmHTML;
   $strSelectGroups = $CMS->AC->PermissionQuickLinks();
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strSelectGroups
 $strFormTag
-<table class="DefaultTable FixedTable WideTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup> 
-  <tr>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
     <td><label for="txtProfileName">Name</label></td>
     <td>
       $strMissingName
@@ -169,8 +166,8 @@ $strFormTag
     <td>View Area</td>
     <td>$strViewAreaHTML</td>
   </tr>
-  <tr>
-    <td class="HeadColour SpanCell Bold" colspan="2">Articles</td>
+  <tr class="separator-row">
+    <td colspan="2">Articles</td>
   </tr>
   <tr>
     <td>Create article and edit own articles</td>
@@ -192,8 +189,8 @@ $strFormTag
     <td>Attach File</td>
     <td>$strAttachFileHTML</td>
   </tr>
-  <tr>
-    <td class="HeadColour SpanCell Bold" colspan="2">Comments</td>
+  <tr class="separator-row">
+    <td colspan="2">Comments</td>
   </tr>
   <tr>
     <td>Add comment and edit own comments</td>
@@ -217,6 +214,7 @@ $strFormTag
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;

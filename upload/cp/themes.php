@@ -32,15 +32,12 @@
   $arrDirList = glob(ABS_SYS_THEMES.'*');
 
   $strHTML = <<<MainContentStart
-<h1>$strPageTitle</h1>
-<table id="tblSysResults" class="DefaultTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour MediumCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <th>Theme</th>
-    <th>Usage</th>
+<h1 class="page-header">$strPageTitle</h1>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 400px;">
+  <tr class="separator-row">
+    <td>Theme</td>
+    <td>Usage</td>
   </tr>
 
 MainContentStart;
@@ -65,7 +62,6 @@ MainContentStart;
 TableRow;
     }
   }
-  $strHTML .= "</table>\n";
+  $strHTML .= "</table></div>\n";
 
   $CMS->AP->Display($strHTML);
-?>

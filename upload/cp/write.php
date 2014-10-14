@@ -370,20 +370,18 @@
         $strViewArea    = $CMS->PL->ViewArea($intAreaID);
         $strConfLinks = "\n<br /><a href=\"$strViewArticle\">View the article</a> :$strAddAnother <a href=\"$strViewArea\">View other content in this area</a>";
       } elseif ($strContStatus == C_CONT_DRAFT) {
-        $strItemMsg = "Draft saved. Please note, this article is <i>unpublished</i>, which means it cannot be viewed. You must publish the post to make it visible to your readers.";
+        $strItemMsg = "Draft saved.";
         $strConfLinks = "<a href=\"{FN_ADM_WRITE}?id=$intContentID&amp;action=edit\">Keep editing</a> : <a href=\"{FN_ADM_CONTENT_MANAGE}\">Return to Manage Content</a>";
       } elseif ($strContStatus == C_CONT_SCHEDULED) {
-        $strItemMsg = "Article saved. As the creation date is in the future, this article is <b>scheduled</b>. When the creation date passes, this article will become published. Until then, it cannot be viewed. If you wish to publish this post sooner, change the date and time.";
+        $strItemMsg = "Article has been scheduled.";
         $strConfLinks = "<a href=\"{FN_ADM_WRITE}?id=$intContentID&amp;action=edit\">Keep editing</a> : <a href=\"{FN_ADM_CONTENT_MANAGE}\">Return to Manage Content</a>";
       } elseif ($strContStatus == C_CONT_REVIEW) {
         $strItemMsg = "Article submitted for review. An administrator will need to approve it before it goes live.";
         $strConfLinks = "<a href=\"{FN_ADM_CONTENT_MANAGE}\">Return to Manage Content</a>";
       }
       $strHTML = <<<PostArticleHTML
-<div id="pagecontent">
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>$strItemMsg $strConfLinks</p>
-</div>
 PostArticleHTML;
       $CMS->AP->Display($strHTML);
   	}
@@ -518,12 +516,12 @@ PostArticleHTML;
     mode : "exact",
     elements : "txtFormContent",
     plugins : "contextmenu, emotions, fullscreen, inlinepopups, media, paste, preview, print, safari, spellchecker, table, visualchars",
-    plugin_preview_width : "1024",
-    plugin_preview_height : "768",
-    plugin_preview_pageurl : "http://{SVR_HOST}{URL_ROOT}assets/js/tinymce/plugins/preview/injader.php",
+    //plugin_preview_width : "1024",
+    //plugin_preview_height : "768",
+    //plugin_preview_pageurl : "http://{SVR_HOST}{URL_ROOT}assets/js/tinymce/plugins/preview/injader.php",
     // Theme options
     theme_advanced_buttons1 : "bold, italic, underline, strikethrough, |, bullist, numlist, blockquote, |, justifyleft, justifycenter, justifyright, justifyfull, |, formatselect, fontselect, fontsizeselect, forecolor",
-    theme_advanced_buttons2 : "table, |, more, |, cut, copy, paste, pastetext, pasteword, |, outdent, indent, undo, redo, |, link, unlink, image, media, emotions, charmap, |, removeformat, code, |, preview, help",
+    theme_advanced_buttons2 : "table, |, more, |, cut, copy, paste, pastetext, pasteword, |, outdent, indent, undo, redo, |, link, unlink, image, media, emotions, charmap, |, removeformat, code, |, help",
     theme_advanced_buttons3 : "",
     theme_advanced_buttons4 : "",
     theme_advanced_toolbar_location : "top",
@@ -551,34 +549,22 @@ PostArticleHTML;
         }, 500);
     }
   });
-  function SwitchTab(intTabID) {
-    intTabCount = 2;
-    for (i=0; i<intTabCount; i++) {
-      document.getElementById('tabOptions'+i).style.display = 'none';
-    }
-    document.getElementById('tabOptions' + intTabID).style.display = 'block';
-  }
 //]]>
 </script>
-<div id="pagecontent">
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strModifiedAuthor
 $strFormTag
 $strDraftSaved
 
-<div id="tabbar">
-  <div class="tab"><a href="javascript:SwitchTab('0');">Edit Content</a></div>
-  <div class="tab"><a href="javascript:SwitchTab('1');">Post Settings</a></div>
-</div>
+<div id="tabs">
+    <ul>
+    <li><a href="#tab-main">Content</a></li>
+    <li><a href="#tab-settings">Settings</a></li>
+    </ul>
+    <div id="tab-main">
 
-<div id="tabOptions0" style="display: block; clear: both; float: none;">
-  <table class="DefaultTable PageTable FixedTable" cellspacing="1">
-    <colgroup>
-      <col class="InfoColour NarrowCell" />
-      <col class="BaseColour" />
-      <col class="InfoColour NarrowCell" />
-      <col class="BaseColour" />
-    </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
     <tr>
       <td><label for="txtTitle"><b>Title</b>:</label></td>
       <td colspan="3">
@@ -591,9 +577,9 @@ $strDraftSaved
         <b>Navigation:</b>
       </td>
       <td>
-        <input type="radio" id="optNavType1" name="optNavType" onclick="SwitchDropDown('Primary');" value="1"$strNavType1Checked /><label for="optNavType1">Primary</label>
-        <input type="radio" id="optNavType2" name="optNavType" onclick="SwitchDropDown('Secondary');" value="2"$strNavType2Checked /><label for="optNavType2">Secondary</label>
-        <input type="radio" id="optNavType3" name="optNavType" onclick="SwitchDropDown('Tertiary');" value="3"$strNavType3Checked /><label for="optNavType3">Tertiary</label>
+        <input type="radio" id="optNavType1" name="optNavType" onclick="SwitchDropDown('Primary');" value="1"$strNavType1Checked /> <label for="optNavType1">Primary</label>
+        <input type="radio" id="optNavType2" name="optNavType" onclick="SwitchDropDown('Secondary');" value="2"$strNavType2Checked /> <label for="optNavType2">Secondary</label>
+        <input type="radio" id="optNavType3" name="optNavType" onclick="SwitchDropDown('Tertiary');" value="3"$strNavType3Checked /> <label for="optNavType3">Tertiary</label>
       </td>
       <td><b>Area</b>:</td>
       <td>
@@ -611,20 +597,19 @@ $strAreaListTertiary
     <tr>
       <td class="BaseColour" colspan="4">
         $strMissingContent
-        <textarea id="txtFormContent" name="txtFormContent" rows="24" cols="90"></textarea>
+        <textarea id="txtFormContent" name="txtFormContent" style="width: 100%; height: 400px;"></textarea>
       </td>
     </tr>
   </table>
 </div>
+</div> <!-- /tab-main -->
 
-<div id="tabOptions1" style="display: none; clear: both; float: none;">
-  <table class="DefaultTable PageTable" cellspacing="1">
-    <colgroup>
-      <col class="InfoColour MediumCell" />
-      <col class="BaseColour" />
-    </colgroup>
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>Basic Information</b></td>
+<div id="tab-settings">
+
+<div class="table-responsive">
+<table class="table table-striped">
+    <tr class="separator-row">
+      <td colspan="2">Basic Information</td>
     </tr>
     <tr>
       <td>Author:</td>
@@ -639,7 +624,6 @@ $strAreaListTertiary
       </td>
       <td>
         <textarea id="txtArticleTags" name="txtArticleTags" rows="3" cols="50">$strArticleTags</textarea>
-        <br />Keywords to help visitors search for this page.
         <br />Separate tags with commas. e.g. weather, blue sky, clouds
       </td>
     </tr>
@@ -649,36 +633,29 @@ $strAreaListTertiary
   $strDateLists
       </td>
     </tr>
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>Additional Information</b></td>
+    <tr class="separator-row">
+      <td colspan="2">Additional Information</td>
     </tr>
     <tr>
       <td><label for="txtExcerpt">Custom Excerpt</label></td>
       <td>
-        <textarea id="txtExcerpt" name="txtExcerpt" rows="5" cols="40">$strExcerpt</textarea>
-        <br />Enter an optional excerpt for this article. It will override the 
-        <br />automatic excerpt if your theme uses excerpts on the index page.
+        <textarea id="txtExcerpt" name="txtExcerpt" rows="4" cols="50">$strExcerpt</textarea>
       </td>
     </tr>
     <tr>
       <td><label for="txtCustomOrder">Custom Order</label></td>
       <td>
         <input type="text" id="txtCustomOrder" name="txtCustomOrder" value="$intCustomOrder" maxlength="10" size="5" />
-        <br />If you choose the "Custom" ordering option for the area this article 
-        <br />sits under, this setting will determine the order for the area.
       </td>
     </tr>
     <tr>
       <td><label for="txtURL"><abbr title="Uniform Resource Locator">URL</abbr>:</label></td>
       <td>
         <input type="text" id="txtURL" name="txtURL" value="$strContURL" maxlength="150" size="60" />
-        <br />Useful for reviews, link directories or other content where the focus is on 
-        an external link.
-        <br />You can modify the URL placement and style in your theme.
       </td>
     </tr>
-    <tr>
-      <td class="HeadColour SpanCell" colspan="2"><b>File Attachment</b></td>
+    <tr class="separator-row">
+      <td colspan="2">File Attachment</td>
     </tr>
     <tr>
       <td><label for="txtFile">$strFileUploadText</label></td>
@@ -692,7 +669,6 @@ $strAreaListTertiary
     <tr>
       <td><label for="txtFileLocation">Direct URL:</label></td>
       <td>
-        If you are uploading or replacing a file above, this field will be ignored<br />
         <input type="text" id="txtFileLocation" name="txtFileLocation" size="50" value="$strFileLocation" />
         <input type="hidden" id="txtFileLocationOrig" name="txtFileLocationOrig" size="50" value="$strFileLocation" />
         <input type="hidden" id="txtCanAttachFile" name="txtCanAttachFile" />
@@ -700,6 +676,8 @@ $strAreaListTertiary
     </tr>
   </table>
 </div>
+
+</div> <!-- /tabs -->
 
 <table class="DefaultTable PageTable FixedTable" style="margin-top: 2px;" cellspacing="1">
   <tr>
@@ -711,7 +689,6 @@ $strAreaListTertiary
 </table>
 
 </form>
-</div>
 
 END;
 
@@ -763,8 +740,12 @@ FooterScript;
   ValidateAttachArea('$strNavType', arrAttachAreas$strNavType); // do on startup
 /* ]]> */
 </script>
+<script>
+    $(document).ready(function() {
+        $("#tabs").tabs();
+    });
+</script>
 
 FooterScriptClose;
 
   $CMS->AP->Display($strHTML);
-?>

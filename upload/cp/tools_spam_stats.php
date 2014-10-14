@@ -29,7 +29,7 @@
   $CMS->AP->SetTitle($strPageTitle);
 
   $strHTML = <<<PageHeader
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>This page can be used if you have a lot of spam comments and you want to isolate certain IP addresses. These can be banned within your website control panel. Deleted comments will not be included in these stats.</p>
 
 PageHeader;
@@ -38,14 +38,11 @@ PageHeader;
   $arrSpamStats = $CMS->ResultQuery("SELECT ip_address, count(*) AS count FROM {IFW_TBL_COMMENTS} WHERE comment_status = 'Spam' GROUP BY ip_address ORDER BY ip_address ASC", basename(__FILE__), __LINE__);
   if (is_array($arrSpamStats)) {
     $strHTML .= <<<GroupHeader
-<table id="tblSysResults" class="OptionTable NarrowTable" cellspacing="1">
-  <colgroup>
-   <col class="BaseColour" />
-   <col class="BaseColour NarrowCell" />
-  </colgroup>
-  <tr>
-    <th>IP Address</th>
-    <th>Count</th>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 400px;">
+  <tr class="separator-row">
+    <td>IP Address</td>
+    <td>Count</td>
   </tr>
 
 GroupHeader;
@@ -62,8 +59,7 @@ TableRow;
     }
     $strHTML .= "</table>\n";
   } else {
-    $strHTML .= "<p>There are no spam comments.</p>";
+    $strHTML .= "<p><em>There are no spam comments.</em></p>";
   }
 
   $CMS->AP->Display($strHTML);
-?>

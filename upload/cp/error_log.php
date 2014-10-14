@@ -27,8 +27,7 @@
   $CMS->AP->SetTitle($strPageTitle);
   
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
-<p>The error log provides information on recent error messages that have appeared on your site. The most common errors occur when someone tries to view a page that has been deleted, or view a page they do not have access to. These are not usually system errors.</p>
+<h1 class="page-header">$strPageTitle</h1>
 
 END;
   
@@ -44,22 +43,17 @@ END;
           $blnFirstItem  = false;
           $blnFoundItems = true;
           $strHTML .= <<<MainContentStart
-<table id="tblSysResults" class="DefaultTable MediumTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour" />
-    <col class="BaseColour MediumCell" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 400px;">
   <tr>
     <th>Log File</th>
-    <th>Options</th>
   </tr>
 
 MainContentStart;
         }
         $strHTML .= <<<TableRow
   <tr>
-    <td>$strDir</td>
-    <td><a href="{FN_ADM_ERROR_LOG_FILE}?file=$strDir">View Log</a></td>
+    <td><a href="{FN_ADM_ERROR_LOG_FILE}?file=$strDir">$strDir</a></td>
   </tr>
 
 TableRow;
@@ -67,10 +61,9 @@ TableRow;
     }
   }
   if ($blnFoundItems) {
-    $strHTML .= "</table>";
+    $strHTML .= "</table></div>";
   } else {
     $strHTML .= "<p><i>No error logs found.</i></p>\n";
   }
   
   $CMS->AP->Display($strHTML);
-?>

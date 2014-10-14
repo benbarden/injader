@@ -30,17 +30,13 @@
 
   $strHTML = <<<MainContentStart
 <p><a href="{FN_ADM_USERS}" title="Manage user accounts">Users</a> | <a href="{FN_ADM_USER_ROLES}" title="Set up roles to use with permission profiles">User Roles</a> | <b>Permissions</b></p>
-<h1>$strPageTitle</h1>
-<table id="tblSysResults" class="DefaultTable MediumTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour" />
-    <col class="BaseColour" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <th>Type</th>
-    <th>Profile Name</th>
-    <th>Options</th>
+<h1 class="page-header">$strPageTitle</h1>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 500px;">
+  <tr class="separator-row">
+    <td>Type</td>
+    <td>Profile Name</td>
+    <td>Options</td>
   </tr>
 
 MainContentStart;
@@ -76,6 +72,7 @@ TableRow;
     </td>
   </tr>
 </table>
+</div>
 <div id="ajaxStatus"></div>
 
 MainContentEnd;

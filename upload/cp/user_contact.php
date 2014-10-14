@@ -84,21 +84,17 @@
   $strHTML = <<<END
 <h1>$strPageTitle</h1>
 <form action="{FN_ADM_USER_CONTACT}?id=$intUserID" method="post">
-<p>Please note: if the user&apos;s e-mail is invalid, the message will not be delivered.</p>
-<table class="OptionTable WideTable FixedTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <tr>
-    <td>Username:</td>
+    <td><strong>Username:</strong></td>
     <td>
       $strUsername
       <input type="hidden" name="txtUsername" value="$strUsername" />
     </td>
   </tr>
   <tr>
-    <td>Email:</td>
+    <td><strong>Email:</strong></td>
     <td>
       $strEmail
       <input type="hidden" name="txtEmail" value="$strEmail" />
@@ -124,6 +120,7 @@
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;

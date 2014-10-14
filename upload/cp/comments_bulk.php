@@ -100,7 +100,7 @@
       $strCommentURL = "";
     }
     $strHTML = <<<ConfPage
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>$intCommentCount $strCommentText $strDidWhat. <a href="{FN_ADM_COMMENTS}$strCommentURL">Manage Comments</a></p>
 
 ConfPage;
@@ -162,7 +162,7 @@ ConfPage;
 
   // Build form
   $strHTML = <<<FormContent
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>$strActionMsg</p>
 <form action="{FN_ADM_COMMENTS_BULK}" method="post">
 <div>
@@ -179,4 +179,3 @@ ConfPage;
 FormContent;
   $strHTML = str_replace('$intCommentCount', $intCommentCount, $strHTML);
   $CMS->AP->Display($strHTML);
-?>

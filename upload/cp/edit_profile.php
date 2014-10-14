@@ -48,7 +48,7 @@
     $strHomeText   = $CMS->AddSlashesIFW($strHomeText);
     $CMS->US->EditProfile($intUserID, $strForename, $strSurname, $strEmail, $strLocation, $strOccupation, $strInterests, $strHomeLink, $strHomeText);
     $strViewUser = $CMS->PL->ViewUser($intUserID);
-    $strHTML = "<h1>$strPageTitle</h1>\n<p>Profile updated successfully. <a href=\"{FN_ADM_INDEX}\">Control Panel</a> : <a href=\"$strViewUser\">View your profile</a></p>\n";
+    $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Profile updated successfully. <a href=\"{FN_ADM_INDEX}\">Control Panel</a> : <a href=\"$strViewUser\">View your profile</a></p>\n";
     $CMS->AP->Display($strHTML);
   }
   $CMS->AP->SetTitle($strPageTitle);
@@ -68,15 +68,12 @@
   $strCancelButton = $CMS->AC->CancelButton();
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <form action="{FN_ADM_EDIT_PROFILE}" method="post">
-<table class="OptionTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <tr>
-    <td>Username:</td>
+    <td><strong>Username:</strong></td>
     <td>
       $userName
       <input type="hidden" name="txtUserID" value="$intUserID" />
@@ -120,8 +117,8 @@
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;
   $CMS->AP->Display($strHTML);
-?>

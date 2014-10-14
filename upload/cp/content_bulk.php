@@ -89,7 +89,7 @@
     }
     $strArticleText = $intArticleCount == 1 ? "article" : "articles";
     $strHTML = <<<ConfPage
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>$intArticleCount $strArticleText $strDidWhat. <a href="{FN_ADM_CONTENT_MANAGE}">Manage Content</a></p>
 
 ConfPage;
@@ -139,6 +139,7 @@ ConfPage;
 <select id="optArea" name="optArea">
 $strAreaList
 </select>
+<br><br>
 </div>
 
 AreaList;
@@ -156,6 +157,7 @@ AreaList;
 <select id="optUser" name="optUser">
 $strListUsers
 </select>
+<br><br>
 </div>
 
 AreaList;
@@ -176,7 +178,7 @@ AreaList;
 
   // Build form
   $strHTML = <<<FormContent
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>You are about to $strActionMsg the following articles:</p>
 $strArticleTitles
 <form action="{FN_ADM_CONTENT_BULK}" method="post">
@@ -191,4 +193,3 @@ $strFormContent
 
 FormContent;
   $CMS->AP->Display($strHTML);
-?>

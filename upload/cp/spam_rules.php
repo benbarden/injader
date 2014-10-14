@@ -28,8 +28,7 @@
   $CMS->AP->SetTitle($strPageTitle);
   
   $strHTML = <<<PageBody
-<h1>$strPageTitle</h1>
-<p>Spam Rules are used to help move unwanted comments into the spam queue.</p>
+<h1 class="page-header">$strPageTitle</h1>
 <p><a href="spam_rule.php?action=create">Add Spam Rule</a></p>
 
 PageBody;
@@ -37,16 +36,12 @@ PageBody;
   $arrSpamRules = $CMS->SR->GetAll();
   
   $strHTML .= <<<TableHeader
-<table id="tblSysResults" class="DefaultTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour MediumCell" />
-    <col class="BaseColour MediumCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <th>Rule</th>
-    <th>Type</th>
-    <th>Options</th>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 600px;">
+  <tr class="separator-row">
+    <td>Rule</td>
+    <td>Type</td>
+    <td>Options</td>
   </tr>
 
 TableHeader;
@@ -73,8 +68,8 @@ TableData;
   
   $strHTML .= <<<TableFooter
 </table>
+</div>
 
 TableFooter;
   
   $CMS->AP->Display($strHTML);
-?>

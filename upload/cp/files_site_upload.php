@@ -160,7 +160,7 @@
         $strUploadAnother = "";
       }
       // Confirmation page
-      $strHTML = "<h1>$strPageTitle</h1>\n\n$strWarnings<p>The file was successfully $strDidWhat.$strUploadAnother <a href=\"{FN_ADM_FILES}?type=site\">View Site Files</a></p>";
+      $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n\n$strWarnings<p>The file was successfully $strDidWhat.$strUploadAnother <a href=\"{FN_ADM_FILES}?type=site\">View Site Files</a></p>";
       $CMS->AP->SetTitle($strPageTitle." - Results");
       $CMS->AP->Display($strHTML);
     }
@@ -187,15 +187,12 @@
   $CMS->AP->SetTitle($strPageTitle);
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strFormTag
-<table class="DefaultTable MediumTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <td class="HeadColour SpanCell" colspan="2"><b>Site File</b></td>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="2">Site File</td>
   </tr>
   <tr>
     <td><label for="txtTitle">Title:</label></td>
@@ -213,8 +210,6 @@ $strFormTag
   <tr>
     <td><label for="txtFileLocation">Direct URL:</label></td>
     <td>
-      If you are uploading or replacing a file above,
-      <br />this field will be ignored.<br />
       <input type="text" id="txtFileLocation" name="txtFileLocation" size="35" value="$strFileLocation" />
     </td>
   </tr>

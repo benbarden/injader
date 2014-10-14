@@ -80,7 +80,7 @@ OpeningLinks;
   $strHTML .= <<<END
  | <a href="{FN_ADM_TOOLS_SPAM_STATS}">Spam Stats</a>
 </p>
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <p>This screen allows you to manage the comments on your site. Bulk actions can be used to approve or deny comments.</p>
 
 END;
@@ -150,17 +150,13 @@ BulkOptions;
       $strHTML .= <<<TableHeader
 $strPageNumbers
 <form action="{FN_ADM_COMMENTS_BULK}" method="post">
-<table id="tblArticles" class="DefaultTable PageTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour" />
-    <col class="BaseColour MediumCell" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <thead>
-    <tr>
-      <th>&nbsp;</th>
-      <th>Content</th>
-      <th>Article</th>
+    <tr class="separator-row">
+      <td>&nbsp;</td>
+      <td>Content</td>
+      <td>Article</td>
     </tr>
   </thead>
   <tfoot>
@@ -241,6 +237,7 @@ AreaContent;
     $strHTML .= <<<TableFooter
   </tbody>
 </table>
+</div>
 </form>
 
 TableFooter;
@@ -249,4 +246,3 @@ TableFooter;
   }
 
   $CMS->AP->Display($strHTML);
-?>

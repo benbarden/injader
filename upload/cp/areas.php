@@ -78,28 +78,20 @@
   $strSubmitButton = $CMS->AC->SubmitButton();
   
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strReorderOutput
 
 <p><a href="{FN_ADM_AREAS}?navtype={C_NAV_PRIMARY}">Primary</a> : <a href="{FN_ADM_AREAS}?navtype={C_NAV_SECONDARY}">Secondary</a> : <a href="{FN_ADM_AREAS}?navtype={C_NAV_TERTIARY}">Tertiary</a></p>
 
+<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=content&amp;navtype=$strNavType';">New Content Area</button>
+<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=linked&amp;navtype=$strNavType';">New Linked Area</button>
+<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=smart&amp;navtype=$strNavType';">New Smart Area</button>
+
 <div style="clear: both; float: none;">&nbsp;</div>
 
-<div style="background-color: #ccc; color: #000; float: right; margin: 0 5px 0 5px; padding: 10px; width: 130px;">
-<p><a href="{FN_ADM_AREA}?action=create&amp;type=content&amp;navtype=$strNavType">New Content Area</a></p>
-<p><a href="{FN_ADM_AREA}?action=create&amp;type=linked&amp;navtype=$strNavType">New Linked Area</a></p>
-<p><a href="{FN_ADM_AREA}?action=create&amp;type=smart&amp;navtype=$strNavType">New Smart Area</a></p>
-</div>
-
 <form id="frmAdminReorderAreas" action="{FN_ADM_AREAS}?navtype=$strNavType" method="post">
-<table id="tblSysResults" class="DefaultTable WideTable CentreTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour" />
-    <col class="BaseColour TinyCell" />
-    <col class="BaseColour TinyCell" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Level</th>
@@ -193,6 +185,7 @@ TableRow;
     </tr>
   </tbody>
 </table>
+</div>
 </form>
 
 END2;

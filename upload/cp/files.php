@@ -115,27 +115,21 @@ OpeningLinks;
   $strSearchButton  = $CMS->AC->SearchButton();
 
   $strHTML .= <<<MainContentStart
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <form action="{FN_ADM_FILES}" method="get">
-<table class="OptionTable MediumTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour NarrowCell" />
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <td class="HeadColour SpanCell Left" colspan="2"><b>Search Files</b></td>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="5">Search Files</td>
   </tr>
   <tr>
     <td>
       <label for="user"><b>User</b></label>
-      <br />Enter a username to find content created by that user
     </td>
     <td>
       $strInvalidUsername
-      <input type="text" id="user" name="user" size="30" maxlength="100" value="$strUser" />
+      <input type="text" id="user" name="user" size="20" maxlength="100" value="$strUser" />
     </td>
-  </tr>
-  <tr>
     <td>
       <label for="order">Order by:</label>
     </td>
@@ -148,9 +142,7 @@ OpeningLinks;
       $strDropDownOBD
       </select>
     </td>
-  </tr>
-  <tr>
-    <td class="FootColour SpanCell Centre" colspan="2">
+    <td>
       $strSearchButton
     </td>
   </tr>
@@ -208,19 +200,14 @@ MainContentStart;
     if ($i == 0) {
       $strHTML .= <<<TableHeader
 $strPageNumbers
-<table id="tblSiteFiles" class="OptionTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour MediumCell" />
-    <col class="BaseColour" />
-    <col class="BaseColour" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <thead>
-    <tr>
-      <th>Info</th>
-      <th>Thumbnail</th>
-      <th>Links</th>
-      <th>HTML</th>
+    <tr class="separator-row">
+      <td>Info</td>
+      <td>Thumbnail</td>
+      <td>Links</td>
+      <td>HTML</td>
     </tr>
   </thead>
   <tbody id="tblSiteFilesBody">
@@ -352,7 +339,7 @@ Thumb;
 CloseRow;
 	}
   if (count($arrImages) > 0) {
-    $strHTML .= "  </tbody>\n</table>\n$strPageNumbers\n";
+    $strHTML .= "  </tbody>\n</table>\n</div>\n$strPageNumbers\n";
   } else {
     $strHTML .= "<p>No files found.</p>\n";
   }

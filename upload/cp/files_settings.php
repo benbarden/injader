@@ -126,17 +126,22 @@
 
   // Main form
   $strHTML = <<<END
-<p>Settings: <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> | <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> | <b>Files</b> | <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a></p>
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strConfMsg
 <form id="frmSystemPrefs" action="{FN_ADM_FILES_SETTINGS}" method="post">
-<table class="DefaultTable FixedTable WideTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour HalfCell" />
-    <col class="BaseColour HalfCell" />
-  </colgroup> 
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Thumbnail Sizes</th>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="2">
+    Settings:
+    <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> |
+    <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> |
+    Files |
+    <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a>
+    </td>
+  </tr>
+  <tr class="separator-row">
+    <td colspan="2">Thumbnail Sizes</td>
   </tr>
   <tr>
     <td>
@@ -170,24 +175,23 @@ $strConfMsg
       <input id="chkKeepAspect" name="chkKeepAspect" type="checkbox"$strKeepAspectChecked />
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Attachment Settings</th>
+  <tr class="separator-row">
+    <td colspan="2">Attachment Settings</td>
   </tr>
   <tr>
     <td>
-      <b><label for="txtAttachMaxSize">Attachment Limit (File size)</label></b>
+      <b><label for="txtAttachMaxSize">File size limit</label></b>
     </td>
     <td>
       <input id="txtAttachMaxSize" name="txtAttachMaxSize" type="text" size="5" maxlength="5" value="$intAttachMaxSize" /> MB
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Avatar Settings</th>
+  <tr class="separator-row">
+    <td colspan="2">Avatar Settings</td>
   </tr>
   <tr>
     <td>
       <b><label for="txtAvatarsPerUser">Avatars Per User</label></b>
-      <br /><i>To disable avatars, set this to 0</i>
     </td>
     <td>
       <input id="txtAvatarsPerUser" name="txtAvatarsPerUser" type="text" size="2" maxlength="2" value="$intAvatarsPerUser" />
@@ -195,7 +199,7 @@ $strConfMsg
   </tr>
   <tr>
     <td>
-      <b><label for="txtAvatarSize">Avatar Limit (Height/width)</label></b>
+      <b><label for="txtAvatarSize">Height/width limit</label></b>
     </td>
     <td>
       <input id="txtAvatarSize" name="txtAvatarSize" type="text" size="4" maxlength="4" value="$intAvatarSize" /> pixels
@@ -203,18 +207,18 @@ $strConfMsg
   </tr>
   <tr>
     <td>
-      <b><label for="txtAvatarMaxSize">Avatar Limit (File size)</label></b>
+      <b><label for="txtAvatarMaxSize">File size limit</label></b>
     </td>
     <td>
       <input id="txtAvatarMaxSize" name="txtAvatarMaxSize" type="text" size="5" maxlength="5" value="$intAvatarMaxSize" /> MB
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Directories - Must end with a /</th>
+  <tr class="separator-row">
+    <td colspan="2">Directories - Must end with a /</td>
   </tr>
   <tr>
     <td>
-      <b><label for="txtDirAvatars">Avatar Directory</label></b>
+      <b><label for="txtDirAvatars">Avatars</label></b>
     </td>
     <td>
       <input id="txtDirAvatars" name="txtDirAvatars" type="text" size="40" maxlength="100" value="$strDirAvatars" />
@@ -222,7 +226,7 @@ $strConfMsg
   </tr>
   <tr>
     <td>
-      <b><label for="txtDirSiteImages">Site Image Directory</label></b>
+      <b><label for="txtDirSiteImages">Site Images</label></b>
     </td>
     <td>
       <input id="txtDirSiteImages" name="txtDirSiteImages" type="text" size="40" maxlength="100" value="$strDirSiteImages" />
@@ -230,7 +234,7 @@ $strConfMsg
   </tr>
   <tr>
     <td>
-      <b><label for="txtDirMisc">Miscellaneous File Directory</label></b>
+      <b><label for="txtDirMisc">Other Files</label></b>
     </td>
     <td>
       <input id="txtDirMisc" name="txtDirMisc" type="text" size="40" maxlength="100" value="$strDirMisc" />
@@ -242,6 +246,7 @@ $strConfMsg
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;

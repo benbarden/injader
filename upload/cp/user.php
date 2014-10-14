@@ -206,7 +206,7 @@
 PasswordField;
   } elseif ($blnEdit) {
     $strPasswordField = <<<PasswordField
-    <td>Password:</td>
+    <td><strong>Password:</strong></td>
     <td>
       <input type="button" value="Reset password" onclick="top.location.href = '{FN_ADM_USER_EDIT_PASSWORD}?id=$intUserID';" />
     </td>
@@ -215,14 +215,11 @@ PasswordField;
   }
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
-<p>An asterisk (*) denotes a required field.</p>
+<h1 class="page-header">$strPageTitle</h1>
+<p>* denotes a required field</p>
 $strFormTag
-<table class="DefaultTable WideTable FixedTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour MediumCell" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped">
   <tr>
     <td>* <label for="txtUsername">Username</label>:</td>
     <td>
@@ -247,7 +244,7 @@ $strFormTag
     </td>
   </tr>
   <tr>
-    <td>User Roles:</td>
+    <td><strong>User Roles:</strong></td>
     <td>
       $strUserGroupHTML
     </td>
@@ -288,7 +285,6 @@ $strFormTag
     <td><label for="txtJoinDate">Join Date:</label><br /><i>(YYYY-MM-DD HH:MM:SS)</i></td>
     <td>
       <input type="text" id="txtJoinDate" name="txtJoinDate" size="20" value="$dteJoinDate" />
-      <br />If you leave this field blank, it will be automatically populated with today's date (even if you are editing an existing user).
     </td>
   </tr>
   <tr>
@@ -306,4 +302,3 @@ $strFormTag
 END;
 
   $CMS->AP->Display($strHTML);
-?>

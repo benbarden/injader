@@ -80,15 +80,12 @@
   $strCancelButton = $CMS->AC->CancelButton();
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strMissingPassword
 $strDifferentPasswords
 <form action="{FN_ADM_CHANGE_PASSWORD}" method="post">
-<table class="OptionTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour" />
-    <col class="BaseColour" />
-  </colgroup>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 400px;">
   <tr>
     <td><label for="txtOldPass">Old Password:</label></td>
     <td><input type="password" id="txtOldPass" name="txtOldPass" maxlength="45" size="25" /></td>
@@ -107,6 +104,7 @@ $strDifferentPasswords
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;

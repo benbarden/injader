@@ -97,7 +97,7 @@
       $CMS->Query("UPDATE {IFW_TBL_USERS} SET avatar_id = $intFileID WHERE id = $intUserID", basename(__FILE__), __LINE__);
       $CMS->SYS->CreateAccessLog("Set avatar (File ID: $intFileID)", AL_TAG_AVATAR_SET, $intUserID);
       // Confirmation page
-      $strHTML = "<h1>$strPageTitle</h1>\n\n<p>The file was uploaded and set as your avatar. <a href=\"{FN_ADM_MANAGE_AVATARS}\">Manage Avatars</a></p>";
+      $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n\n<p>The file was uploaded and set as your avatar. <a href=\"{FN_ADM_MANAGE_AVATARS}\">Manage Avatars</a></p>";
       $CMS->AP->SetTitle($strPageTitle .= " - Results");
       $CMS->AP->Display($strHTML);
     }
@@ -112,19 +112,17 @@
   $CMS->AP->SetTitle($strPageTitle);
 
   $strHTML = <<<END
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 <ul>
 <li>Only JPG and PNG files are permitted.</li>
 <li>Avatars will be resized if the height or width is greater than $intAvatarSize pixels.</li>
 <li>Files greater than $strFileSizeMB / $strFileSizeKB will not upload. This is to reduce server load and processing time.</li>
 </ul>
 <form enctype="multipart/form-data" action="{FN_ADM_UPLOAD_AVATAR}" method="post">
-<table class="DefaultTable NarrowTable" cellspacing="1">
-  <colgroup>
-    <col class="BaseColour" />
-  </colgroup>
-  <tr>
-    <td class="HeadColour SpanCell Centre"><b>Select a file to upload:</b></td>
+<div class="table-responsive">
+<table class="table table-striped" style="width: 400px;">
+  <tr class="separator-row">
+    <td>Select a file to upload:</td>
   </tr>
   <tr>
     <td>$strFileError
@@ -138,9 +136,9 @@
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;
 
   $CMS->AP->Display($strHTML);
-?>

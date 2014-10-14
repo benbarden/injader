@@ -26,21 +26,18 @@
   $strPageTitle = "Tools";
 
   $CMS->AP->SetTitle($strPageTitle);
-  
+
   $strHTML = <<<END
-<h1>Tools</h1>
+<h1 class="page-header">Tools</h1>
+
 <ul>
-<li><a href="{FN_ADM_USER_VARIABLES}" title="Manage user variables">User Variables</a></li>
-<li><a href="{FN_ADM_TOOLS_SITEMAP}" title="Information about your Sitemap">Sitemap</a></li>
 <li><a href="{FN_ADM_SPAM_RULES}" title="Spam Rules">Spam Rules</a></li>
 <li><a href="{FN_ADM_TOOLS_SPAM_STATS}" title="Comment Spam Stats">Comment Spam Stats</a></li>
 <li><a href="{FN_ADM_TOOLS_USER_SESSIONS}" title="View logged in users, force a logout">User Sessions</a></li>
 <li><a href="{FN_ADM_ACCESS_LOG}" title="View recent activity on your site">Access Log</a></li>
 <li><a href="{FN_ADM_ERROR_LOG}" title="View errors that have occurred on your site">Error Log</a></li>
-<li><a href="{FN_ADM_IMPORT_WP}" title="Import WordPress data">WordPress Import</a></li>
 </ul>
 
 END;
   
   $CMS->AP->Display($strHTML);
-?>

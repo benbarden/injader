@@ -128,21 +128,23 @@
 
   // Main form
   $strHTML = <<<END
-<p>Settings: <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> | <b>Content</b> | <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> | <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a></p>
-<h1>$strPageTitle</h1>
+<h1 class="page-header">$strPageTitle</h1>
 $strConfirmMsg
 <form id="frmSystemPrefs" action="{FN_ADM_CONTENT_SETTINGS}" method="post">
-<table class="DefaultTable WideTable" cellspacing="1">
-  <colgroup>
-    <col class="InfoColour" />
-    <col class="BaseColour NarrowCell" />
-  </colgroup> 
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Content Settings</th>
+<div class="table-responsive">
+<table class="table table-striped">
+  <tr class="separator-row">
+    <td colspan="2">
+    Settings:
+    <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> |
+    Content |
+    <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> |
+    <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a>
+    </td>
   </tr>
   <tr>
     <td>
-      <b><label for="txtRSSCount">Number of items in your feeds</label></b>
+      <b><label for="txtRSSCount">Feed item count</label></b>
       <br /><i>Must be between 5 and 30 items</i>
     </td>
     <td>
@@ -152,19 +154,19 @@ $strConfirmMsg
   </tr>
   <tr>
     <td>
-      <b><label for="txtTagThreshold">Show tags on the Tag Map if they have been used this often</label></b>
+      <b><label for="txtTagThreshold">Minimum usage count to show on the Tag Map</label></b>
     </td>
     <td>
       <input id="txtTagThreshold" name="txtTagThreshold" type="text" size="2" maxlength="2" value="$intTagThreshold" />
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Comment Settings</th>
+  <tr class="separator-row">
+    <td colspan="2">Comment Settings</td>
   </tr>
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkUseCAPTCHA">Use CAPTCHA for comments</label></b>
+      <b><label for="chkUseCAPTCHA">Use CAPTCHA</label></b>
     </td>
     <td>
       <input id="chkUseCAPTCHA" name="chkUseCAPTCHA" type="checkbox"$strUseCAPTCHAChecked />
@@ -173,7 +175,7 @@ $strConfirmMsg
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkUseNoFollow">Use nofollow for comment URLs</label></b>
+      <b><label for="chkUseNoFollow">Use nofollow for URLs</label></b>
     </td>
     <td>
       <input id="chkUseNoFollow" name="chkUseNoFollow" type="checkbox"$strUseNoFollowChecked />
@@ -182,19 +184,20 @@ $strConfirmMsg
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="txtNoFollowLimit">Don't use nofollow for commenters with at least this many comments</label></b>
+      <b><label for="txtNoFollowLimit">Disable nofollow for commenters with under</label></b>
     </td>
     <td>
       <input id="txtNoFollowLimit" name="txtNoFollowLimit" type="text" size="4" maxlength="3" value="$intNoFollowLimit" />
+      comment(s)
     </td>
   </tr>
-  <tr>
-    <th class="HeadColour SpanCell Left" colspan="2">Notification Settings</th>
+  <tr class="separator-row">
+    <td colspan="2">Email site admin when:</td>
   </tr>
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkArticleReviewEmail">Email site admin when an article requires approval</label></b>
+      <b><label for="chkArticleReviewEmail">an article requires approval</label></b>
     </td>
     <td>
       <input id="chkArticleReviewEmail" name="chkArticleReviewEmail" type="checkbox"$strArticleReviewEmailChecked />
@@ -203,8 +206,7 @@ $strConfirmMsg
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkArticleNotifyAdmin">Email site admin when a new article is published</label></b>
-      <br /><i>Articles created using the site admin email will not send a notification</i>
+      <b><label for="chkArticleNotifyAdmin">a new article is published</label></b>
     </td>
     <td>
       <input id="chkArticleNotifyAdmin" name="chkArticleNotifyAdmin" type="checkbox"$strArticleNotifyAdminChecked />
@@ -213,7 +215,7 @@ $strConfirmMsg
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkReviewEmail">Email site admin when a comment is in moderation</label></b>
+      <b><label for="chkReviewEmail">a comment enters moderation</label></b>
     </td>
     <td>
       <input id="chkReviewEmail" name="chkReviewEmail" type="checkbox"$strReviewEmailChecked />
@@ -222,18 +224,19 @@ $strConfirmMsg
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkCommentNotification">Email site admin when a new comment is posted</label></b>
-      <br /><i>Comments posted using the site admin email will not send a notification</i>
+      <b><label for="chkCommentNotification">a new comment is posted</label></b>
     </td>
     <td>
       <input id="chkCommentNotification" name="chkCommentNotification" type="checkbox"$strCommentNotifyChecked />
     </td>
   </tr>
+  <tr class="separator-row">
+    <td colspan="2">Email article author when:</td>
+  </tr>
   <tr>
     <td>
       <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkCommentNotifyAuthor">Email article author when a comment is posted</label></b>
-      <br /><i>The author's own comments will not be emailed to them</i>
+      <b><label for="chkCommentNotifyAuthor">a comment is posted</label></b>
     </td>
     <td>
       <input id="chkCommentNotifyAuthor" name="chkCommentNotifyAuthor" type="checkbox"$strCommentNotifyAuthorChecked />
@@ -245,6 +248,7 @@ $strConfirmMsg
     </td>
   </tr>
 </table>
+</div>
 </form>
 
 END;
