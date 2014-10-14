@@ -127,12 +127,6 @@
           $strLogDesc = "Deleted comment"; break;
         case AL_TAG_COMMENT_EDIT:
           $strLogDesc = "Edited comment"; break;
-        case AL_TAG_FORM_RECIPIENT_CREATE:
-          $strLogDesc = "Created form recipient"; break;
-        case AL_TAG_FORM_RECIPIENT_DELETE:
-          $strLogDesc = "Deleted form recipient"; break;
-        case AL_TAG_FORM_RECIPIENT_EDIT:
-          $strLogDesc = "Edited form recipient"; break;
         case AL_TAG_PLUGIN_CREATE:
           $strLogDesc = "Created plugin"; break;
         case AL_TAG_PLUGIN_EDIT:
