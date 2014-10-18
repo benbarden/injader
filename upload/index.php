@@ -24,88 +24,80 @@
     }
     
     require 'sys/header.php';
-    
-    // ** Load the site index ** //
-    if (($_SERVER['REQUEST_URI'] == URL_ROOT) || 
-        ($_SERVER['REQUEST_URI'] == URL_ROOT."index.php")) {
-        if (!empty($_GET['area'])) {
-            $intAreaID = $CMS->FilterNumeric($_GET['area']);
-        }
-        // Use first area if none specified
-        if (empty($intAreaID)) {
-            $intAreaID = $CMS->AR->GetDefaultAreaID("");
-        }
-        $CMS->MV->Area($intAreaID, "");
-        exit;
+
+    // If there's a subfolder in the URL, don't treat this as part of the URL array
+    $currentUrl = $_SERVER['REQUEST_URI'];
+    $posFolder = strpos($currentUrl, URL_ROOT);
+    if ($posFolder !== false) {
+        $currentUrl = substr($currentUrl, $posFolder + strlen(URL_ROOT));
     }
-    
-    // ** Load system-generated pages ** //
-    $pos = strpos($_SERVER['REQUEST_URI'], URL_ROOT);
-    if ($pos !== false) {
-        $currentUrl = substr($_SERVER['REQUEST_URI'], $pos + strlen(URL_ROOT));
-    } else {
-        $currentUrl = $_SERVER['REQUEST_URI'];
-    }
-    
+
+    // Load special CMS pages
     $currentUrlArray = explode("/", $currentUrl);
     $urlBit1 = array_key_exists(0, $currentUrlArray) ? $currentUrlArray[0] : "";
     $urlBit2 = array_key_exists(1, $currentUrlArray) ? $currentUrlArray[1] : "";
     $urlBit3 = array_key_exists(2, $currentUrlArray) ? $currentUrlArray[2] : "";
     $urlBit4 = array_key_exists(3, $currentUrlArray) ? $currentUrlArray[3] : "";
-    
-    switch ($urlBit1) {
-        case "cms":
-            switch ($urlBit2) {
-                case "archives":
-                    $strHTML = $CMS->pages_Archives->build($urlBit3, $urlBit4);
-                    $archivesWrapper = '<div id="archives-page" class="archives-page">'."\n";
-                    $CMS->TH->SetSysWrapperStart($archivesWrapper);
-                    $CMS->MV->DefaultPageAllowRobots("Archives", $strHTML);
-                    exit;
-                    break;
+    if (($urlBit1 == 'cms') && ($urlBit2 == 'archives')) {
+        $strHTML = $CMS->pages_Archives->build($urlBit3, $urlBit4);
+        $archivesWrapper = '<div id="archives-page" class="archives-page">'."\n";
+        $CMS->TH->SetSysWrapperStart($archivesWrapper);
+        $CMS->MV->DefaultPageAllowRobots("Archives", $strHTML);
+        exit;
+    }
+
+    // Homepage
+    $homeUrlArray = array('', 'index.php');
+    $isHomePage = in_array($currentUrl, $homeUrlArray);
+
+    if ($isHomePage) {
+
+        $strObject = 'area';
+        $intItemID = $CMS->AR->GetDefaultAreaID("");
+
+    } else {
+
+        // ** Find this page in the database ** //
+        $arrPageObject = $CMS->UM->getByUrl($_SERVER['REQUEST_URI']);
+
+        // ** Does it exist? ** //
+        if (!is_array($arrPageObject)) {
+            $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "Not found: ".$_SERVER['REQUEST_URI']);
+        }
+
+        // ** Verify whether this is a valid URL ** //
+        if ($arrPageObject[0]['is_active'] == "N") {
+
+            // Nope, not active. Do we have any others?
+            if (!empty($arrPageObject[0]['article_id'])) {
+                $strErrText       = "Article ".$arrPageObject[0]['article_id'];
+                $arrNewPageObject = $CMS->UM->getActiveArticle($arrPageObject[0]['article_id']);
+                $blnRedirected    = true;
+            } elseif (!empty($arrPageObject[0]['area_id'])) {
+                $strErrText       = "Area ".$arrPageObject[0]['area_id'];
+                $arrNewPageObject = $CMS->UM->getActiveArea($arrPageObject[0]['area_id']);
+                $blnRedirected    = true;
+            } else {
+                $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
             }
-            break;
-    }
-    
-    // ** Find this page in the database ** //
-    $arrPageObject = $CMS->UM->getByUrl($_SERVER['REQUEST_URI']);
-    
-    // ** Does it exist? ** //
-    if (!is_array($arrPageObject)) {
-        $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "Not found: ".$_SERVER['REQUEST_URI']);
-    }
-    
-    // ** Verify whether this is a valid URL ** //
-    if ($arrPageObject[0]['is_active'] == "N") {
-        
-        // Nope, not active. Do we have any others?
+            if ($blnRedirected) {
+                if (!is_array($arrNewPageObject)) {
+                    $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No active entry for item: $strErrText");
+                }
+                httpRedirectPerm($arrNewPageObject[0]['relative_url']);
+            }
+
+        }
+
+        // We have an active URL, so off we go!
         if (!empty($arrPageObject[0]['article_id'])) {
-            $strErrText       = "Article ".$arrPageObject[0]['article_id'];
-            $arrNewPageObject = $CMS->UM->getActiveArticle($arrPageObject[0]['article_id']);
-            $blnRedirected    = true;
+            $strObject = "article"; $intItemID = $arrPageObject[0]['article_id'];
         } elseif (!empty($arrPageObject[0]['area_id'])) {
-            $strErrText       = "Area ".$arrPageObject[0]['area_id'];
-            $arrNewPageObject = $CMS->UM->getActiveArea($arrPageObject[0]['area_id']);
-            $blnRedirected    = true;
+            $strObject = "area"; $intItemID = $arrPageObject[0]['area_id'];
         } else {
             $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
         }
-        if ($blnRedirected) {
-            if (!is_array($arrNewPageObject)) {
-                $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No active entry for item: $strErrText");
-            }
-            httpRedirectPerm($arrNewPageObject[0]['relative_url']);
-        }
-        
-    }
-    
-    // We have an active URL, so off we go!
-    if (!empty($arrPageObject[0]['article_id'])) {
-        $strObject = "article"; $intItemID = $arrPageObject[0]['article_id'];
-    } elseif (!empty($arrPageObject[0]['area_id'])) {
-        $strObject = "area"; $intItemID = $arrPageObject[0]['area_id'];
-    } else {
-        $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
+
     }
     
     // ** Caching ** //
@@ -130,46 +122,32 @@
             break;
     }
 
-    // ** Twig engine ** //
-    if ($twigEngineEnabled == 1) {
-
-        $themeRenderer = new \Cms\Theme\Renderer($cmsContainer);
-        switch ($strObject) {
-            case "area":
-            case "category":
-                $themeRenderer->setObjectCategory();
-                // Pagination
-                $pageNo = null;
-                if (isset($_GET['page'])) {
-                    $pageNo = (int) $_GET['page'];
-                }
-                if (!$pageNo) {
-                    $pageNo = 1;
-                }
-                $themeRenderer->setPageNo($pageNo);
-                break;
-            case "article":
-                $themeRenderer->setObjectArticle();
-                break;
-            case "file":
-                $themeRenderer->setObjectFile();
-                break;
-            case "user":
-                $themeRenderer->setObjectUser();
-                break;
-        }
-        $themeRenderer->setItemId($intItemID);
-        $themeRenderer->render();
-
-    } else {
-
-        // ** Object selection ** //
-        switch ($strObject) {
-            case "area":    $CMS->MV->Area($intItemID);    break;
-            case "article": $CMS->MV->Article($intItemID); break;
-            case "file":    $CMS->MV->File($intItemID);    break;
-            case "user":    $CMS->MV->User($intItemID);    break;
-        }
-
+    // Theme renderer
+    $themeRenderer = new \Cms\Theme\Renderer($cmsContainer);
+    switch ($strObject) {
+        case "area":
+        case "category":
+            $themeRenderer->setObjectCategory();
+            // Pagination
+            $pageNo = null;
+            if (isset($_GET['page'])) {
+                $pageNo = (int) $_GET['page'];
+            }
+            if (!$pageNo) {
+                $pageNo = 1;
+            }
+            $themeRenderer->setPageNo($pageNo);
+            break;
+        case "article":
+            $themeRenderer->setObjectArticle();
+            break;
+        case "file":
+            $themeRenderer->setObjectFile();
+            break;
+        case "user":
+            $themeRenderer->setObjectUser();
+            break;
     }
+    $themeRenderer->setItemId($intItemID);
+    $themeRenderer->render();
 

@@ -71,16 +71,13 @@
     // inj Framework v3: Autoloader
     require ABS_ROOT.'/lib/Cms/Core/Autoloader/Base.php';
 
-    // Twig - experimental!
-    $twigEngineEnabled = 1; // 1 = enabled
+    // Twig setup
     $twigCacheEnabled  = 0; // 1 = enabled; disable for dev purposes
 
     // Third-party
-    if ($twigEngineEnabled == 1) {
-        $config = new \Cms\Core\Di\Config(ABS_ROOT.'data/secure/config.ini');
-        $factory = new \Cms\Core\Di\Factory();
-        $cmsContainer = $factory->buildContainer($config);
-    }
+    $config = new \Cms\Core\Di\Config(ABS_ROOT.'data/secure/config.ini');
+    $factory = new \Cms\Core\Di\Factory();
+    $cmsContainer = $factory->buildContainer($config);
 
     // Framework - must be loaded before any classes
     require ABS_SYS_IFW.'IFWCore.php';
@@ -149,4 +146,3 @@
     
     // Connect to database
     $CMS->IQ->Connect($strDBHost, $strDBSchema, $strDBAdminUser, $strDBAdminPass);
-?>
