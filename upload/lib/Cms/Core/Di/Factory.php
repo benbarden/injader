@@ -71,6 +71,9 @@ class Factory
         $cmsThemeEngine->setRepoArea($repoArea);
         $cmsThemeEngine->setRepoArticle($repoArticle);
         $cmsThemeEngine->setRepoUser($repoUser);
+        if ($this->loggedInUser) {
+            $cmsThemeEngine->setLoggedInUser($this->loggedInUser);
+        }
         $themeEngine   = $cmsThemeEngine->getEngine();
         $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
 

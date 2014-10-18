@@ -9,6 +9,7 @@ use Cms\Ia\Link\AreaLink,
     Cms\Data\Area\AreaRepository,
     Cms\Data\Article\ArticleRepository,
     Cms\Data\User\UserRepository,
+    Cms\Data\User\User,
     Cms\Exception\Theme\EngineException;
 
 
@@ -58,6 +59,11 @@ class Engine
      * @var UserRepository
      */
     private $repoUser;
+
+    /**
+     * @var User
+     */
+    private $loggedInUser;
 
     /**
      * @param string $current
@@ -124,6 +130,11 @@ class Engine
         $this->repoUser = $repoUser;
     }
 
+    public function setLoggedInUser(User $user)
+    {
+        $this->loggedInUser = $user;
+    }
+
     /**
      * @return string
      */
@@ -156,8 +167,13 @@ class Engine
         $funcLinkUser = new \Twig_SimpleFunction('cmsLinkUser',
             array($this, 'cmsLinkUser'),
             array('is_safe' => array('html')
-            ));
+        ));
         $twig->addFunction($funcLinkUser);
+        $funcLinkPage = new \Twig_SimpleFunction('cmsLinkPage',
+            array($this, 'cmsLinkPage'),
+            array('is_safe' => array('html')
+        ));
+        $twig->addFunction($funcLinkPage);
         return $twig;
     }
 
@@ -198,6 +214,69 @@ class Engine
         $user = $this->repoUser->getById($itemId);
         $this->iaLinkUser->setUser($user);
         $outputHtml = $this->iaLinkUser->generate();
+        return $outputHtml;
+    }
+
+    public function cmsLinkPage($link, $title = '', $tagOpen = 'li', $tagClose = 'li')
+    {
+        $outputHtml = ''; $url = '';
+
+        $supportedLinkTypes = array('archives', 'register', 'login', 'logout', 'tagmap', 'cp');
+
+        if (!in_array($link, $supportedLinkTypes)) {
+            return sprintf('Unknown link: %s', $link);
+        }
+
+        switch ($link) {
+            case 'archives':
+                if (!$title) {
+                    $title = 'Archives';
+                }
+                $url = URL_ROOT.'cms/archives';
+                break;
+            case 'register':
+                if (!$title) {
+                    $title = 'Register';
+                }
+                if (!$this->loggedInUser) {
+                    $url = URL_ROOT.'register.php';
+                }
+                break;
+            case 'login':
+                if (!$title) {
+                    $title = 'Login';
+                }
+                if (!$this->loggedInUser) {
+                    $url = URL_ROOT.'login.php';
+                }
+                break;
+            case 'logout':
+                if (!$title) {
+                    $title = 'Logout';
+                }
+                if ($this->loggedInUser) {
+                    $url = URL_ROOT.'logout.php';
+                }
+                break;
+            case 'tagmap':
+                if (!$title) {
+                    $title = 'Tag Map';
+                }
+                $url = URL_ROOT.'tagmap.php';
+                break;
+            case 'cp':
+                if (!$title) {
+                    $title = 'Control Panel';
+                }
+                if ($this->loggedInUser) {
+                    $url = URL_ROOT.'cp/index.php';
+                }
+                break;
+        }
+
+        if ($url) {
+            $outputHtml = sprintf('<%s><a href="%s">%s</a></%s>', $tagOpen, $url, $title, $tagClose);
+        }
         return $outputHtml;
     }
 

@@ -11,10 +11,6 @@
 </head>
 <body>
 
-{#
-<div id="{{ Page.WrapperId }}" class="{{ Page.WrapperClass }}">
-#}
-
 <div class="blog-masthead">
     <div class="container">
         <nav class="blog-nav">
@@ -23,7 +19,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" class="{{ Page.WrapperClass }}">
 
     <div class="blog-header">
         <h1 class="blog-title">{{ Page.Title }}</h1>
@@ -64,12 +60,12 @@
             <div class="sidebar-module sidebar-module-inset">
                 <h4>Welcome {{ Login.User.Name }}!</h4>
                 <ul>
-                    <li><a href="{{ URL.SiteRoot }}cms/archives">Archives</a></li>
-                    <li><a href="{{ URL.SiteRoot }}register.php">Register</a></li>
-                    <li><a href="{{ URL.SiteRoot }}login.php">Login</a></li>
-                    <li><a href="{{ URL.SiteRoot }}cp/index.php">Control Panel</a></li>
-                    <li><a href="{{ URL.SiteRoot }}logout.php">Logout</a></li>
-                    <li><a href="{{ URL.SiteRoot }}tagmap.php">Tag Map</a></li>
+                    {{ cmsLinkPage('archives') }}
+                    {{ cmsLinkPage('register') }}
+                    {{ cmsLinkPage('login') }}
+                    {{ cmsLinkPage('cp') }}
+                    {{ cmsLinkPage('logout') }}
+                    {{ cmsLinkPage('tagmap') }}
                 </ul>
             </div>
         </div><!-- /.blog-sidebar -->
