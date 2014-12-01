@@ -649,9 +649,11 @@ $strAreaListTertiary
       </td>
     </tr>
     <tr>
-      <td><label for="txtURL"><abbr title="Uniform Resource Locator">URL</abbr>:</label></td>
+      <td><label for="txtURL">Custom Link:</label></td>
       <td>
         <input type="text" id="txtURL" name="txtURL" value="$strContURL" maxlength="150" size="60" />
+        <br>
+        <em>Good for e.g. third-party links.</em>
       </td>
     </tr>
     <tr class="separator-row">
