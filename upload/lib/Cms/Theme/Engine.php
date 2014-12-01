@@ -23,6 +23,11 @@ class Engine
     /**
      * @var array
      */
+    private $cPanelPathsArray;
+
+    /**
+     * @var array
+     */
     private $envArray;
 
     /**
@@ -83,6 +88,9 @@ class Engine
         $this->pathsArray = array(
             $userThemePath,
             ABS_ROOT.'themes/system',
+        );
+        $this->cPanelPathsArray = array(
+            ABS_ROOT.'themes/cpanel/injader'
         );
 
         // Set up caching
@@ -174,6 +182,17 @@ class Engine
             array('is_safe' => array('html')
         ));
         $twig->addFunction($funcLinkPage);
+        return $twig;
+    }
+
+    private function setupCPanelFunctions($twig)
+    {
+        // cpLink
+        $funcLink = new \Twig_SimpleFunction('cpLink',
+            array($this, 'cpLink'),
+            array('is_safe' => array('html'))
+        );
+        $twig->addFunction($funcLink);
         return $twig;
     }
 
@@ -280,6 +299,68 @@ class Engine
         return $outputHtml;
     }
 
+    public function cpLink($link, $params = array())
+    {
+        $url = '';
+
+        if (array_key_exists('action', $params)) {
+            $action = $params['action'];
+        } else {
+            $action = "";
+        }
+        if (array_key_exists('id', $params)) {
+            $id = $params['id'];
+        } else {
+            $id = "";
+        }
+        if (array_key_exists('type', $params)) {
+            $type = $params['type'];
+        } else {
+            $type = "";
+        }
+
+        switch ($link) {
+            case 'index':
+                $url = URL_ROOT.'cp/index.php';
+                break;
+            case 'write':
+                $url = sprintf(URL_ROOT.'cp/write.php?action=%s&id=%s', $action, $id);
+                break;
+            case 'comments':
+                $url = sprintf(URL_ROOT.'cp/comments.php?type=%s', $type);
+                break;
+            case 'users':
+                $url = sprintf(URL_ROOT.'cp/users.php?action=%s', $action);
+                break;
+            case 'content_manage':
+                $url = URL_ROOT.'cp/content_manage.php?navtype=1&area1=0&area2=0&area3=0';
+                break;
+            case 'my_settings':
+                $url = URL_ROOT.'cp/my_settings.php';
+                break;
+            case 'areas':
+                $url = URL_ROOT.'cp/areas.php';
+                break;
+            case 'files':
+                $url = URL_ROOT.'cp/files.php';
+                break;
+            case 'themes':
+                $url = URL_ROOT.'cp/themes.php';
+                break;
+            case 'tools':
+                $url = URL_ROOT.'cp/tools.php';
+                break;
+            case 'general_settings':
+                $url = URL_ROOT.'cp/general_settings.php';
+                break;
+            default:
+                $url = sprintf('Unknown link: %s', $link);
+                break;
+        }
+
+        return $url;
+    }
+
     /**
      * @return \Twig_Environment
      */
@@ -288,6 +369,18 @@ class Engine
         $loader = new \Twig_Loader_Filesystem($this->pathsArray);
         $twig = new \Twig_Environment($loader, $this->envArray);
         $twig = $this->setupFunctions($twig);
+        return $twig;
+    }
+
+    /**
+     * @return \Twig_Environment
+     */
+    public function getEngineCPanel()
+    {
+        $loader = new \Twig_Loader_Filesystem($this->cPanelPathsArray);
+        $twig = new \Twig_Environment($loader, $this->envArray);
+        $twig = $this->setupFunctions($twig);
+        $twig = $this->setupCPanelFunctions($twig);
         return $twig;
     }
 

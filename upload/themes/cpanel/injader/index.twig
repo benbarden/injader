@@ -1,0 +1,147 @@
+{% extends "core/base.twig" %}
+
+{% block cp_content %}
+
+    <h1 class="page-header">Dashboard</h1>
+
+    <table width="100%;">
+        <tr>
+            <td style="vertical-align: top; width: 40%;">
+                <h2 class="sub-header">Overview</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr class="separator-row">
+                            <td colspan="2">Content</td>
+                            <td colspan="2">Comments</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if Auth.CanWriteContent %}
+                                    <a href="{{ cpLink('content_manage') }}">Articles</a>
+                                {% else %}
+                                    Articles
+                                {% endif %}
+                            </td>
+                            <td>{{ Page.ArticleCount }}</td>
+                            <td>
+                                {% if Auth.IsAdmin %}
+                                    <a href="{{ cpLink('comments', {'type': 'pending'}) }}">Pending</a>
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </td>
+                            <td>{{ Page.PendingCommentCount }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if Auth.IsAdmin %}
+                                    <a href="{{ cpLink('users') }}">Active Users</a>
+                                {% else %}
+                                    Active Users
+                                {% endif %}
+                            </td>
+                            <td>{{ Page.UserCount }}</td>
+                            <td>
+                                {% if Auth.IsAdmin %}
+                                    <a href="{{ cpLink('comments', {'type': 'approved'}) }}">Approved</a>
+                                {% else %}
+                                    Approved
+                                {% endif %}
+                            </td>
+                            <td>{{ Page.ApprovedCommentCount }}</td>
+                        </tr>
+                        <tr>
+                            <td>Site Files</td>
+                            <td>{{ Page.SiteFileCount }}</td>
+                            <td>
+                                {% if Auth.IsAdmin %}
+                                    <a href="{{ cpLink('comments', {'type': 'spam'}) }}">Spam</a>
+                                {% else %}
+                                    Spam
+                                {% endif %}
+                            </td>
+                            <td>{{ Page.SpamCommentCount }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td style="vertical-align: top; width: 55%;">
+                <h2 class="sub-header">Useful info</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr class="separator-row">
+                            <td>Field</td>
+                            <td>Details</td>
+                        </tr>
+                        <tr>
+                            <td>Sitemap URL</td>
+                            <td>
+                                <a href="{{ Page.SitemapUrl }}">{{ Page.SitemapUrl }}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%">
+        <tr>
+            <td style="vertical-align: top; width: 48%;">
+                <h2 class="sub-header">Recent Comments</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        {% if Page.RecentComments %}
+                            {% for Item in Page.RecentComments %}
+                                <tr>
+                                    <td><a href="{{ cmsLinkArticle(Item.story_id) }}#c{{ Item.id }}">{{ Item.title }}</a></td>
+                                    <td>{{ Item.create_date|date('d M Y H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {{ Item.content }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td class="column1 comments"><em>No recent comments</em></td>
+                                <td class="column2">-</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </td>
+            <td style="vertical-align: top; width: 48%;">
+                <h2 class="sub-header">Recent Drafts</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        {% if Page.RecentDrafts %}
+                            {% for Item in Page.RecentDrafts %}
+                                <tr>
+                                    <td><a href="{{ cpLink('write', {'action': 'edit', 'id': Item.id}) }}">{{ Item.title }}</a></td>
+                                    <td>{{ Item.create_date|date('d M Y H:i') }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td><em>No drafts</em></td>
+                                <td>-</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        Powered by <a href="http://www.injader.com/">Injader</a> {{ Page.CmsVersion }} |
+        <a href="https://github.com/benbarden/injader" title="Github">Github</a>
+        <br>
+        Injader is free software released under the
+        <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a> (v3).
+        Copyright &copy; 2005-{{ Page.ThisYear }} <a href="http://www.benbarden.com/">Ben Barden</a>.
+    </p>
+
+{% endblock cp_content %}

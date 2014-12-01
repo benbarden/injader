@@ -74,8 +74,9 @@ class Factory
         if ($this->loggedInUser) {
             $cmsThemeEngine->setLoggedInUser($this->loggedInUser);
         }
-        $themeEngine   = $cmsThemeEngine->getEngine();
-        $themeEngineUT = $cmsThemeEngine->getEngineUnitTesting();
+        $themeEngine       = $cmsThemeEngine->getEngine();
+        $themeEngineCPanel = $cmsThemeEngine->getEngineCPanel();
+        $themeEngineUT     = $cmsThemeEngine->getEngineUnitTesting();
 
         $serviceLocator = new ServiceLocator();
         if ($this->loggedInUser) {
@@ -90,6 +91,7 @@ class Factory
         $serviceLocator->set('Repo.User', $repoUser);
         $serviceLocator->set('Repo.UserSession', $repoUserSession);
         $serviceLocator->set('Theme.Engine', $themeEngine);
+        $serviceLocator->set('Theme.EngineCPanel', $themeEngineCPanel);
         $serviceLocator->set('Theme.EngineUT', $themeEngineUT);
         $serviceLocator->set('Theme.Binding', $themeBinding);
 

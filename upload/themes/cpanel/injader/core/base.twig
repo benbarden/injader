@@ -1,0 +1,113 @@
+{% set SiteRoot  = '/' %}
+{% set ThemeRoot = '/themes/cpanel/injader/' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ CP.Title }}</title>
+
+{#<script type="text/javascript" src="/scripts.js"></script>#}
+    <script type="text/javascript" src="/assets/js/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/assets/js/jqueryui/jquery-ui.min.js"></script>
+    <link href="/assets/css/jqueryui/jquery-ui.min.css" rel="stylesheet">
+    <link href="/assets/css/jqueryui/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/assets/css/jqueryui/jquery-ui.theme.min.css" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/bootstrap/dashboard.css" rel="stylesheet">
+
+    <!-- Custom Injader styles -->
+    <link href="/assets/css/injader-cp/injader-cp.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <!-- 3.7.2 -->
+    <script src="/assets/js/bootstrap/html5shiv.min.js"></script>
+    <!-- 1.4.2 -->
+    <script src="/assets/js/bootstrap/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ SiteRoot }}">&lt; back to: {{ Page.SiteTitle }}</a>
+        </div> <!-- /navbar-header -->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ cpLink('index') }}">Dashboard</a></li>
+                {% if Auth.CanWriteContent %}
+                    <li><a href="{{ cpLink('write', {'action': 'create'}) }}">New Article</a></li>
+                {% endif %}
+                <li><a href="{{ cpLink('my_settings') }}">My Settings</a></li>
+                <!--
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Help</a></li>
+                -->
+            </ul>
+            <!--
+            <form class="navbar-form navbar-right">
+              <input type="text" class="form-control" placeholder="Search...">
+            </form>
+            -->
+        </div> <!-- /navbar-collapse -->
+    </div> <!-- /container-fluid -->
+</div> <!-- /navbar -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="{{ cpLink('index') }}">Dashboard</a></li>
+                {% if Auth.IsAdmin %}
+                <li><a href="{{ cpLink('areas') }}" title="Manage your site areas">Areas</a></li>
+                <li><a href="{{ cpLink('content_manage') }}" title="Manage Content">Content</a></li>
+                <li><a href="{{ cpLink('files') }}" title="Manage site files, attachments and avatars">Files</a></li>
+                <li><a href="{{ cpLink('comments') }}" title="Manage comments">Comments</a></li>
+                <li><a href="{{ cpLink('themes') }}" title="Manage your themes">Themes</a></li>
+                <li><a href="{{ cpLink('tools') }}" title="Plugins and more">Tools</a></li>
+                <li><a href="{{ cpLink('general_settings') }}" title="Configure website settings">Settings</a></li>
+                <li><a href="{{ cpLink('users', {'action': 'showall'}) }}" title="Manage user accounts, roles, and permissions">Access</a></li>
+                {% endif %}
+            </ul>
+            <!--
+            <ul class="nav nav-sidebar">
+              <li class="active"><a href="#">Overview</a></li>
+              <li><a href="#">Reports</a></li>
+              <li><a href="#">Analytics</a></li>
+              <li><a href="#">Export</a></li>
+            </ul>
+            -->
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% block cp_content %}{% endblock cp_content %}
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/assets/js/bootstrap/bootstrap.min.js"></script>
+<script src="/assets/js/bootstrap/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/assets/js/bootstrap/ie10-viewport-bug-workaround.js"></script>
+
+</body>
+</html>
