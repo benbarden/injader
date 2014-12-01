@@ -110,22 +110,7 @@
 		if (!isset($intCustomOrder) || ($intCustomOrder == '')) $intCustomOrder = 0;
     $strArticleTags = $CMS->StripSlashesIFW($_POST['txtArticleTags']);
     // Validate area
-    $strNavType   = empty($_POST['optNavType']) ? C_NAV_PRIMARY : $_POST['optNavType'];
-    switch ($strNavType) {
-      case "1":
-        $strNavType  = C_NAV_PRIMARY;
-        break;
-      case "2":
-        $strNavType = C_NAV_SECONDARY;
-        break;
-      case "3":
-        $strNavType = C_NAV_TERTIARY;
-        break;
-      default:
-        $strNavType = C_NAV_PRIMARY;
-        break;
-    }
-    $intAreaID = empty($_POST['optParent'.$strNavType]) ? "" : $_POST['optParent'.$strNavType];
+    $intAreaID = empty($_POST['optParent']) ? "" : $_POST['optParent'];
     // Validate content
     if (!$strContBody) {
       $blnSubmitForm = false;
@@ -404,12 +389,10 @@ PostArticleHTML;
       $strContBody  = "";
       $strContURL   = "";
       $strFileLocation = "";
-      $strNavType = C_NAV_PRIMARY; // Default
       if (!empty($_GET['area'])) {
         $intAreaID = $CMS->FilterNumeric($_GET['area']);
         if ($intAreaID) {
           $arrTempArea = $CMS->AR->GetArea($intAreaID);
-          $strNavType  = $arrTempArea['nav_type'];
         }
       } else {
         $intAreaID = 0;
@@ -418,7 +401,6 @@ PostArticleHTML;
       $strContTitle = $CMS->StripSlashesIFW($arrContent['title']);
       //$strContTitle = $CMS->DoEntities($strContTitle);
       $intAreaID = $arrContent['content_area_id'];
-      $strNavType = $arrContent['nav_type'];
       $dteArticleCreated = $arrContent['create_date_raw'];
       
       $strContBody = $arrContent['content'];
@@ -470,32 +452,8 @@ PostArticleHTML;
 
   // Areas
   $CMS->AT->arrAreaData = array();
-  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", false, false, C_NAV_PRIMARY);
-  $CMS->AT->arrAreaData = array();
-  $strAreaListSecondary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", false, false, C_NAV_SECONDARY);
-  $CMS->AT->arrAreaData = array();
-  $strAreaListTertiary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", false, false, C_NAV_TERTIARY);
+  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", false, false);
   
-  // Nav options
-  $strNavType1Checked = "";
-  $strNavType2Checked = "";
-  $strNavType3Checked = "";
-  switch ($strNavType) {
-    case C_NAV_PRIMARY:
-      $strNavType1Checked = " checked=\"checked\"";
-      break;
-    case C_NAV_SECONDARY:
-      $strNavType2Checked = " checked=\"checked\"";
-      break;
-    case C_NAV_TERTIARY:
-      $strNavType3Checked = " checked=\"checked\"";
-      break;
-    default:
-      $strNavType = C_NAV_PRIMARY;
-      $strNavType1Checked = " checked=\"checked\"";
-      break;
-  }
-
   // Date
   $strDateLists = $CMS->AC->DateListsShort($dteArticleCreated);
   
@@ -567,30 +525,14 @@ $strDraftSaved
 <table class="table table-striped">
     <tr>
       <td><label for="txtTitle"><b>Title</b>:</label></td>
-      <td colspan="3">
+      <td>
         $strMissingTitle
-        <input type="text" id="txtTitle" name="txtTitle" value="$strContTitle" maxlength="125" size="60" />
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <b>Navigation:</b>
-      </td>
-      <td>
-        <input type="radio" id="optNavType1" name="optNavType" onclick="SwitchDropDown('Primary');" value="1"$strNavType1Checked /> <label for="optNavType1">Primary</label>
-        <input type="radio" id="optNavType2" name="optNavType" onclick="SwitchDropDown('Secondary');" value="2"$strNavType2Checked /> <label for="optNavType2">Secondary</label>
-        <input type="radio" id="optNavType3" name="optNavType" onclick="SwitchDropDown('Tertiary');" value="3"$strNavType3Checked /> <label for="optNavType3">Tertiary</label>
+        <input type="text" id="txtTitle" name="txtTitle" value="$strContTitle" maxlength="125" size="50" />
       </td>
       <td><b>Area</b>:</td>
       <td>
-        <select id="optParentPrimary" name="optParentPrimary" onchange="ValidateAttachArea('Primary', arrAttachAreasPrimary);">
+        <select id="optParent" name="optParent" onchange="ValidateAttachArea(arrAttachAreasPrimary);">
 $strAreaListPrimary
-        </select>
-        <select id="optParentSecondary" name="optParentSecondary" onchange="ValidateAttachArea('Secondary', arrAttachAreasSecondary);">
-$strAreaListSecondary
-        </select>
-        <select id="optParentTertiary" name="optParentTertiary" onchange="ValidateAttachArea('Tertiary', arrAttachAreasTertiary);">
-$strAreaListTertiary
         </select>
       </td>
     </tr>
@@ -698,14 +640,8 @@ END;
   $strHTML .= <<<FooterScript
 <script type="text/javascript">
 /* <![CDATA[ */
-  function SwitchDropDown(strWhich) {
-    document.getElementById('optParentPrimary').style.display     = 'none';
-    document.getElementById('optParentSecondary').style.display   = 'none';
-    document.getElementById('optParentTertiary').style.display    = 'none';
-    document.getElementById('optParent' + strWhich).style.display = 'block';
-  }
-  function ValidateAttachArea(strNavType, arrAttachAreas) {
-    elem = document.getElementById('optParent' + strNavType);
+  function ValidateAttachArea(arrAttachAreas) {
+    elem = document.getElementById('optParent');
     intAreaID = parseInt(elem.value);
     intProceed = 0;
     for (i=0; i<arrAttachAreas.length; i++) {
@@ -724,22 +660,15 @@ END;
       document.getElementById('txtFileLocation').disabled = 'yes';
     }
   }
-  SwitchDropDown('$strNavType'); // do on startup
 
 FooterScript;
 
   // Attach access
   $CMS->AT->arrAreaData = array();
-  $arrAttachAreasPrimary   = $CMS->DD->AreaHierarchyAttachJS(C_NAV_PRIMARY);
-  $CMS->AT->arrAreaData = array();
-  $arrAttachAreasSecondary = $CMS->DD->AreaHierarchyAttachJS(C_NAV_SECONDARY);
-  $CMS->AT->arrAreaData = array();
-  $arrAttachAreasTertiary  = $CMS->DD->AreaHierarchyAttachJS(C_NAV_TERTIARY);
-  $strHTML .= $CMS->DD->GetAttachArrayJS($arrAttachAreasPrimary, C_NAV_PRIMARY);
-  $strHTML .= $CMS->DD->GetAttachArrayJS($arrAttachAreasSecondary, C_NAV_SECONDARY);
-  $strHTML .= $CMS->DD->GetAttachArrayJS($arrAttachAreasTertiary, C_NAV_TERTIARY);
+  $arrAttachAreasPrimary   = $CMS->DD->AreaHierarchyAttachJS();
+  $strHTML .= $CMS->DD->GetAttachArrayJS($arrAttachAreasPrimary, '');
   $strHTML .= <<<FooterScriptClose
-  ValidateAttachArea('$strNavType', arrAttachAreas$strNavType); // do on startup
+  ValidateAttachArea(arrAttachAreas); // do on startup
 /* ]]> */
 </script>
 <script>

@@ -139,12 +139,6 @@ class Area extends IModel
     private $layoutStyle;
 
     /**
-     * varchar(20)
-     * @var string
-     */
-    private $navType;
-
-    /**
      * varchar(1)
      * @var string
      */
@@ -175,7 +169,6 @@ class Area extends IModel
         $this->areaType              = $this->getFieldSafe('area_type');
         $this->themePath             = $this->getFieldSafe('theme_path');
         $this->layoutStyle           = $this->getFieldSafe('layout_style');
-        $this->navType               = $this->getFieldSafe('nav_type');
         $this->subareaContentOnIndex = $this->getFieldSafe('subarea_content_on_index');
 
         if ($this->sortRule) {
@@ -316,11 +309,6 @@ class Area extends IModel
     public function getLayoutStyle()
     {
         return $this->layoutStyle;
-    }
-
-    public function getNavType()
-    {
-        return $this->navType;
     }
 
     public function getSubareaContentOnIndex()

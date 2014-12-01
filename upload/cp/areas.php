@@ -25,17 +25,6 @@
   }
   $strPageTitle = "Manage Areas";
   
-  $strNavType = empty($_GET['navtype']) ? "" : $_GET['navtype'];
-  switch ($strNavType) {
-    case C_NAV_PRIMARY:
-    case C_NAV_SECONDARY:
-    case C_NAV_TERTIARY:
-      break;
-    default:
-      $strNavType = C_NAV_PRIMARY;
-      break;
-  }
-  $strPageTitle .= " - ".$strNavType;
   $CMS->AP->SetTitle($strPageTitle);
   
   $strReorderOutput = "";
@@ -43,7 +32,7 @@
   if ($_POST) {
     //$strHTML = "<h1>$strPageTitle</h1>\n\n";
 		$intArrayCounter = 0;
-    $arrAreas = $CMS->ResultQuery("SELECT id, area_order FROM {IFW_TBL_AREAS} WHERE nav_type = '$strNavType'", basename(__FILE__), __LINE__);
+    $arrAreas = $CMS->ResultQuery("SELECT id, area_order FROM {IFW_TBL_AREAS}", basename(__FILE__), __LINE__);
 		for ($i=0; $i<count($arrAreas); $i++) {
 			$intID    = $arrAreas[$i]['id'];
 			$intOrder = $arrAreas[$i]['area_order'];
@@ -63,7 +52,7 @@
         $CMS->AR->ReorderArea($intItemID, $intNewOrder);
 			}
       $strReorderOutput .= "<li>Rebuilding site hierarchy...</li>\n";
-      $CMS->AT->RebuildAreaArray($strNavType);
+      $CMS->AT->RebuildAreaArray();
       $intUserID = $CMS->RES->GetCurrentUserID();
       $CMS->SYS->CreateAccessLog("Reordered areas", AL_TAG_AREA_REORDER, $intUserID, "");
 			$strReorderOutput .= "</ul>\n<p><b>Areas reordered successfully</b>.</p>\n";
@@ -81,15 +70,13 @@
 <h1 class="page-header">$strPageTitle</h1>
 $strReorderOutput
 
-<p><a href="{FN_ADM_AREAS}?navtype={C_NAV_PRIMARY}">Primary</a> : <a href="{FN_ADM_AREAS}?navtype={C_NAV_SECONDARY}">Secondary</a> : <a href="{FN_ADM_AREAS}?navtype={C_NAV_TERTIARY}">Tertiary</a></p>
-
-<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=content&amp;navtype=$strNavType';">New Content Area</button>
-<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=linked&amp;navtype=$strNavType';">New Linked Area</button>
-<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=smart&amp;navtype=$strNavType';">New Smart Area</button>
+<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=content';">New Content Area</button>
+<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=linked';">New Linked Area</button>
+<button onclick="top.location.href = '{FN_ADM_AREA}?action=create&amp;type=smart';">New Smart Area</button>
 
 <div style="clear: both; float: none;">&nbsp;</div>
 
-<form id="frmAdminReorderAreas" action="{FN_ADM_AREAS}?navtype=$strNavType" method="post">
+<form id="frmAdminReorderAreas" action="{FN_ADM_AREAS}" method="post">
 <div class="table-responsive">
 <table class="table table-striped">
   <thead>
@@ -110,7 +97,7 @@ END;
     $arrAreas = $CMS->AT->arrAreaData;
   } else {
     // Retrieve area data
-    $arrAreas = $CMS->AT->BuildAreaArray(1, $strNavType);
+    $arrAreas = $CMS->AT->BuildAreaArray(1);
   }
   for ($i=0; $i<count($arrAreas); $i++) {
     $intID    = $arrAreas[$i]['id'];

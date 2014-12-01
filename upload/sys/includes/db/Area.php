@@ -28,20 +28,20 @@
       $intHierLeft, $intHierRight, $intParentID, $intPerProfileID, $intGraphicID, 
       $intContPerPage, $strSortRule, $strIncludeInRSSFeed, 
       $strMaxFileSize, $intMaxFilesPerUser, $strAreaURL, $strSmartTags, $strAreaDesc, 
-      $strType, $strThemePath, $strLayoutStyle, $strNavType, $strSubareaContent) {
+      $strType, $strThemePath, $strLayoutStyle, $strSubareaContent) {
       global $CMS;
       $strSEOName = $this->MakeSEOTitle($strName);
       $intID = $this->Query("
         INSERT INTO {IFW_TBL_AREAS}(name, area_level, area_order, hier_left, hier_right, 
         parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, 
         include_in_rss_feed, max_file_size, max_files_per_user, area_url, smart_tags, 
-        seo_name, area_description, area_type, theme_path, layout_style, nav_type, 
+        seo_name, area_description, area_type, theme_path, layout_style,
         subarea_content_on_index)
         VALUES('$strName', $intAreaLevel, $intAreaOrder, $intHierLeft, $intHierRight, 
         $intParentID, $intPerProfileID, $intGraphicID, $intContPerPage, '$strSortRule', 
         '$strIncludeInRSSFeed', '$strMaxFileSize', $intMaxFilesPerUser, '$strAreaURL', 
         '$strSmartTags', '$strSEOName', '$strAreaDesc', '$strType', '$strThemePath', 
-        '$strLayoutStyle', '$strNavType', '$strSubareaContent'
+        '$strLayoutStyle', '$strSubareaContent'
         )
       ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $CMS->AL->Build(AL_TAG_AREA_CREATE, $intID, $strName);
@@ -59,7 +59,7 @@
       $intHierLeft, $intHierRight, $intParentID, $intPerProfileID, $intGraphicID, 
       $intContPerPage, $strSortRule, $strIncludeInRSSFeed, 
       $strMaxFileSize, $intMaxFilesPerUser, $strAreaURL, $strSmartTags, $strAreaDesc, 
-      $strType, $strThemePath, $strLayoutStyle, $strNavType, $blnRebuild, $strSubareaContent) {
+      $strType, $strThemePath, $strLayoutStyle, $blnRebuild, $strSubareaContent) {
       global $CMS;
       if ($blnRebuild) {
         $strHierClause = "hier_left = $intHierLeft, hier_right = $intHierRight, ";
@@ -77,7 +77,7 @@
         area_url = '$strAreaURL', smart_tags = '$strSmartTags', seo_name = '$strSEOName', 
         area_description = '$strAreaDesc', area_type = '$strType', 
         theme_path = '$strThemePath', layout_style = '$strLayoutStyle', 
-        nav_type = '$strNavType', subarea_content_on_index = '$strSubareaContent' 
+        subarea_content_on_index = '$strSubareaContent'
         WHERE id = $intAreaID
       ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $CMS->AL->Build(AL_TAG_AREA_EDIT, $intAreaID, $strName);
@@ -209,24 +209,7 @@
         $strWhereClause, __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $arrAreaCount[0]['count'];
     }
-    
-    /**
-     * Counts the number of areas with a particular navigation type
-     * @param $strNavType
-     * @return integer
-     */
-    function CountAreasByNavType($strNavType) {
-    	if (empty($strNavType)) {
-    		return "0";
-    	} else {
-    		$strWhereClause = " WHERE nav_type = '$strNavType' ";
-    	}
-      $arrAreaCount = $this->ResultQuery("
-        SELECT count(*) AS count FROM {IFW_TBL_AREAS} $strWhereClause
-      ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $arrAreaCount[0]['count'];
-    }
-    
+
     /**
      * Counts the number of articles that exist in a comma-delimeted list of IDs.
      * Only articles that actually exist will be counted.  
@@ -324,13 +307,9 @@
     }
     
     // ** Misc area selection methods ** //
-    function GetDefaultAreaID($strNavType) {
-      if (!$strNavType) {
-        $strNavType = C_NAV_PRIMARY;
-      }
+    function GetDefaultAreaID() {
       $arrDefault = $this->ResultQuery("
-        SELECT id FROM {IFW_TBL_AREAS}
-        WHERE nav_type = '$strNavType' ORDER BY hier_left LIMIT 1
+        SELECT id FROM {IFW_TBL_AREAS} ORDER BY hier_left LIMIT 1
       ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $arrDefault[0]['id'];
     }

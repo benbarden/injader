@@ -80,17 +80,6 @@
       $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "strAreaType");
     }
     $strFormAction .= "&amp;type=$strAreaType";
-    $strNavType = empty($_GET['navtype']) ? "" : $_GET['navtype'];
-    switch ($strNavType) {
-      case C_NAV_PRIMARY:
-      case C_NAV_SECONDARY:
-      case C_NAV_TERTIARY:
-        break;
-      default:
-        $strNavType = C_NAV_PRIMARY;
-        break;
-    }
-    $strFormAction .= "&amp;navtype=$strNavType";
   }
   
   $strAreaName = ""; $strAreaDesc = "";
@@ -116,22 +105,7 @@
       $blnSubmitForm = true;
     } else {
       $strAreaDesc  = $CMS->PrepareTemplateForSaving($_POST['txtAreaDesc']);
-      $strNavType   = empty($_POST['optNavType']) ? C_NAV_PRIMARY : $_POST['optNavType'];
-      switch ($strNavType) {
-        case "1":
-          $strNavType  = C_NAV_PRIMARY;
-          break;
-        case "2":
-          $strNavType = C_NAV_SECONDARY;
-          break;
-        case "3":
-          $strNavType = C_NAV_TERTIARY;
-          break;
-        default:
-          $strNavType = C_NAV_PRIMARY;
-          break;
-      }
-      $intParentID  = $CMS->FilterNumeric($arrPostData['optParent'.$strNavType]);
+      $intParentID  = $CMS->FilterNumeric($arrPostData['optParent']);
       $intAreaOrder = $CMS->FilterNumeric($arrPostData['txtAreaOrder']);
       if ($blnLinkedArea) {
         $strAreaURL = $arrPostData['txtAreaURL'];
@@ -293,21 +267,21 @@
           $intParentID, $intPerProfileID, $intAreaGraphicID, $intItemsPerPage, 
           $strSortRule, $strIncludeInFeed, $intMaxFileSizeBytes, $intMaxFilesPerUser, 
           $strAreaURL, $strSmartTags, $strAreaDesc, $strAreaTypeName, $strAreaTheme, 
-          $strLayoutStyle, $strNavType, $strSubareaContent);
+          $strLayoutStyle, $strSubareaContent);
         $strMsg = "created";
       } elseif ($blnEdit) {
         $CMS->AR->EditArea($intAreaID, $strAreaName, $intLevel, $intAreaOrder, 0, 0, 
           $intParentID, $intPerProfileID, $intAreaGraphicID, $intItemsPerPage, 
           $strSortRule, $strIncludeInFeed, $intMaxFileSizeBytes, $intMaxFilesPerUser, 
           $strAreaURL, $strSmartTags, $strAreaDesc, $strAreaTypeName, $strAreaTheme, 
-          $strLayoutStyle, $strNavType, $blnRebuild, $strSubareaContent);
+          $strLayoutStyle, $blnRebuild, $strSubareaContent);
         $strMsg = "edited";
       } elseif ($blnDelete) {
         $CMS->AR->DeleteArea($intAreaID);
         $strMsg = "deleted";
       }
       $CMS->AT->RebuildAreaArray("");
-      $strHTML = "<h1>$strPageTitle</h1>\n<p>Area was successfully $strMsg. <a href=\"{FN_ADM_AREAS}?navtype=$strNavType\">Manage Areas</a></p>";
+      $strHTML = "<h1>$strPageTitle</h1>\n<p>Area was successfully $strMsg. <a href=\"{FN_ADM_AREAS}\">Manage Areas</a></p>";
       $strPageTitle .= " - Results";
       $CMS->AP->SetTitle($strPageTitle);
       $CMS->AP->Display($strHTML);
@@ -347,7 +321,6 @@
     } elseif ($blnEdit) {
       $intParentID  = $arrArea['parent_id'];
       $intAreaOrder = $arrArea['area_order'];
-      $strNavType   = $arrArea['nav_type'];
       if ($blnLinkedArea) {
         $strAreaURL = str_replace("{", "{".ZZZ_TEMP, $arrArea['area_url']);
         $strAreaURL = str_replace("}", ZZZ_TEMP."}", $strAreaURL);
@@ -403,36 +376,10 @@ END;
   } else {
   
     // ** BUILD FORM HTML ** // -- General settings
-    $strNavType1Checked = "";
-    $strNavType2Checked = "";
-    $strNavType3Checked = "";
-    switch ($strNavType) {
-      case C_NAV_PRIMARY:
-        $strNavType1Checked = " checked=\"checked\"";
-        break;
-      case C_NAV_SECONDARY:
-        $strNavType2Checked = " checked=\"checked\"";
-        break;
-      case C_NAV_TERTIARY:
-        $strNavType3Checked = " checked=\"checked\"";
-        break;
-      default:
-        $strNavType = C_NAV_PRIMARY;
-        $strNavType1Checked = " checked=\"checked\"";
-        break;
-    }
     
     $CMS->AT->arrAreaData = array();
     $CMS->DD->strEmptyItem = "None";
-    $strAreaListPrimary = $CMS->DD->AreaHierarchy($intParentID, $intAreaID, "All", true, false, C_NAV_PRIMARY);
-    
-    $CMS->AT->arrAreaData = array();
-    $CMS->DD->strEmptyItem = "None";
-    $strAreaListSecondary = $CMS->DD->AreaHierarchy($intParentID, $intAreaID, "All", true, false, C_NAV_SECONDARY);
-    
-    $CMS->AT->arrAreaData = array();
-    $CMS->DD->strEmptyItem = "None";
-    $strAreaListTertiary = $CMS->DD->AreaHierarchy($intParentID, $intAreaID, "All", true, false, C_NAV_TERTIARY);
+    $strAreaListPrimary = $CMS->DD->AreaHierarchy($intParentID, $intAreaID, "All", true, false);
     
     $strHTML = <<<END
 <h1 class="page-header">$strPageTitle</h1>
@@ -471,29 +418,11 @@ END;
   </tr>
   <tr>
     <td>
-      <b>Navigation Type</b>
-    </td>
-    <td>
-      <input type="radio" id="optNavType1" name="optNavType" onclick="SwitchDropDown('Primary');" value="1"$strNavType1Checked /> <label for="optNavType1">Primary</label>
-      <br />
-      <input type="radio" id="optNavType2" name="optNavType" onclick="SwitchDropDown('Secondary');" value="2"$strNavType2Checked /> <label for="optNavType2">Secondary</label>
-      <br />
-      <input type="radio" id="optNavType3" name="optNavType" onclick="SwitchDropDown('Tertiary');" value="3"$strNavType3Checked /> <label for="optNavType3">Tertiary</label>
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b>Parent</b>
     </td>
     <td>
-      <select id="optParentPrimary" name="optParentPrimary">
+      <select id="optParent" name="optParent">
 $strAreaListPrimary
-      </select>
-      <select id="optParentSecondary" name="optParentSecondary">
-$strAreaListSecondary
-      </select>
-      <select id="optParentTertiary" name="optParentTertiary">
-$strAreaListTertiary
       </select>
     </td>
   </tr>
@@ -709,21 +638,6 @@ SubmitCancel;
 
   // ** END FORM HTML ** //
   $strHTML .= "</table>\n</div>\n</form>\n";
-  
-  // ** SCRIPT ** //
-  $strHTML .= <<<FooterScript
-<script type="text/javascript">
-  function SwitchDropDown(strWhich) {
-    document.getElementById('optParentPrimary').style.display     = 'none';
-    document.getElementById('optParentSecondary').style.display   = 'none';
-    document.getElementById('optParentTertiary').style.display    = 'none';
-    document.getElementById('optParent' + strWhich).style.display = 'block';
-  }
-  SwitchDropDown('$strNavType'); // do on startup
-</script>
 
-FooterScript;
-  
   // ** DISPLAY ** //
   $CMS->AP->Display($strHTML);
-?>

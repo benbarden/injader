@@ -53,7 +53,7 @@
     if ($isHomePage) {
 
         $strObject = 'area';
-        $intItemID = $CMS->AR->GetDefaultAreaID("");
+        $intItemID = $CMS->AR->GetDefaultAreaID();
 
     } else {
 

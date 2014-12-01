@@ -31,6 +31,8 @@
     var $intAreasBeneathMe;
     var $blnRebuild;
     var $arrAreasBeneathMe;
+
+    const AT_CACHE_KEY = 'AreaTraverse_Areas';
     
     /**
      * Used to create the cache in the event it doesn't exist
@@ -40,16 +42,8 @@
       
       global $CMS;
       
-      if (!$CMS->CacheFile->Exists("AreaTraverse_".C_NAV_PRIMARY)) {
-        $this->RebuildCache(C_NAV_PRIMARY);
-      }
-      
-      if (!$CMS->CacheFile->Exists("AreaTraverse_".C_NAV_SECONDARY)) {
-        $this->RebuildCache(C_NAV_SECONDARY);
-      }
-      
-      if (!$CMS->CacheFile->Exists("AreaTraverse_".C_NAV_TERTIARY)) {
-        $this->RebuildCache(C_NAV_TERTIARY);
+      if (!$CMS->CacheFile->Exists(self::AT_CACHE_KEY)) {
+        $this->RebuildCache();
       }
       
     }
@@ -58,13 +52,13 @@
      * Used to forcefully rebuild the AreaTraverse class cache from the database
      * @return void
      */
-    function RebuildCache($strNavType) {
+    function RebuildCache() {
       
       global $CMS;
       
       $this->arrAreaData = array();
       
-      $this->RebuildAreaArray($strNavType);
+      $this->RebuildAreaArray();
       
       //$CMS->CacheBuild->ArrayBuild("AreaTraverse_".$strNavType, $this->arrAreaData);
       
@@ -72,33 +66,15 @@
     
     /**
      * Quick method for updating the area hierarchy
-     * @param $strNavType
      * @return void
      */
-    function RebuildAreaArray($strNavType) {
+    function RebuildAreaArray() {
     	
-    	if (empty($strNavType)) {
-    		
-    		$arrAreas = $this->BuildAreaArray(2, C_NAV_PRIMARY);
-	      $this->DoRebuildLoop($arrAreas);
-	      
-	      $arrAreas = $this->BuildAreaArray(2, C_NAV_SECONDARY);
-	      $this->DoRebuildLoop($arrAreas);
-	      
-	      $arrAreas = $this->BuildAreaArray(2, C_NAV_TERTIARY);
-	      $this->DoRebuildLoop($arrAreas);
-	      
+        $arrAreas = $this->BuildAreaArray(2);
+        $this->DoRebuildLoop($arrAreas);
+
         $this->arrAreaData = array();
 	      
-    	} else {
-    		
-    		$arrAreas = $this->BuildAreaArray(2, $strNavType);
-    		$this->DoRebuildLoop($arrAreas);
-    		
-        $this->arrAreaData = array();
-    		
-    	}
-    	
     }
     
     /**
@@ -130,10 +106,9 @@
      * Used to build an array of all areas.
      * It can also regenerate the hier_left and hier_right values.
      * @param $intMode (1 = get, 2 = rebuild)
-     * @param $strNavType
      * @return array
      */
-    function BuildAreaArray($intMode, $strNavType) {
+    function BuildAreaArray($intMode) {
     	
     	global $CMS;
     	
@@ -147,27 +122,23 @@
       // Load from the cache
       if ($this->blnRebuild) {
         $this->arrAreaData = array(); // Clear the array
-      	$CMS->CacheFile->Delete("AreaTraverse_".$strNavType);
+      	$CMS->CacheFile->Delete(self::AT_CACHE_KEY);
       } else {
-      	if ($CMS->CacheFile->Exists("AreaTraverse_".$strNavType)) {
-      		return $CMS->CacheBuild->ArrayGet("AreaTraverse_".$strNavType);
+      	if ($CMS->CacheFile->Exists(self::AT_CACHE_KEY)) {
+      		return $CMS->CacheBuild->ArrayGet(self::AT_CACHE_KEY);
       	} else {
       		$this->FirstCacheBuild();
       	}
       }
       
       // Continue
-      if ($strNavType) {
-      	$this->intNumAreas = $CMS->AR->CountAreasByNavType($strNavType);
-      } else {
       	$this->intNumAreas = $CMS->AR->CountAreas();
-      }
-      
+
       $this->intLeft = 1;
       $this->intRight = ($this->intNumAreas) * 2;
       
       // Get top level areas
-      $arrTopLevelAreas = $this->GetParentedAreas("", "All", $strNavType);
+      $arrTopLevelAreas = $this->GetParentedAreas("", "All");
       
       // Exit if we have no areas with this nav type
       if (count($arrTopLevelAreas) == 0) {
@@ -207,7 +178,7 @@
           $this->arrAreaData[$j]['right'] = $arrTopLevelAreas[$i]['hier_right'];
         }
         if ($arrParentedAreas[0]['count'] > 0) {
-          $this->AppendParented($intID, $strNavType);
+          $this->AppendParented($intID);
         }
         if ($this->blnRebuild) {
           $this->intLeft++;
@@ -215,7 +186,7 @@
         
       }
       
-      $CMS->CacheBuild->ArrayBuild("AreaTraverse_".$strNavType, $this->arrAreaData);
+      $CMS->CacheBuild->ArrayBuild(self::AT_CACHE_KEY, $this->arrAreaData);
       return $this->arrAreaData;
       
     }
@@ -225,11 +196,10 @@
      * the specified area to the area array. It is also a recursive method,
      * which will loop until all areas have been accounted for.
      * @param $intParentID - the ID of the area whose children we want to retrieve
-     * @param $strNavType - the navigation type
      * @return void
      */
-    function AppendParented($intParentID, $strNavType) {
-      $arrParentedAreas = $this->GetParentedAreas($intParentID, "All", $strNavType);
+    function AppendParented($intParentID) {
+      $arrParentedAreas = $this->GetParentedAreas($intParentID, "All");
       for ($i=0; $i<count($arrParentedAreas); $i++) {
         $j = $this->GetNextArrayIndex(); // Only used for $this->arrAreaData
         $intID = $arrParentedAreas[$i]['id'];
@@ -262,7 +232,7 @@
           $this->arrAreaData[$j]['right'] = $arrParentedAreas[$i]['hier_right'];
         }
         if ($arrChildAreas[0]['count'] > 0) {
-          $this->AppendParented($intID, $strNavType);
+          $this->AppendParented($intID);
         }
         if ($this->blnRebuild) {
           $this->intLeft++;
@@ -356,25 +326,19 @@
       return $arrDepth[0]['depth'];
     }
     
-    function GetParentedAreas($intParentID, $strAreaType, $strNavType) {
+    function GetParentedAreas($intParentID, $strAreaType) {
       // Top level areas don't have a parent
       if (!$intParentID) {
         $intParentID = 0;
       }
-      // Nav type clause
-      if ($strNavType) {
-        $strNavClause = " AND nav_type = '$strNavType' ";
-      } else {
-        $strNavClause = "";
-      }
       // Build area type clause
       $arrAreas = $this->ResultQuery("SELECT a.* FROM {IFW_TBL_AREAS} a ".
-        "WHERE parent_id = $intParentID $strNavClause ORDER BY area_order",
+        "WHERE parent_id = $intParentID ORDER BY area_order",
         __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $arrAreas;
     }
     
-    function GetAllParentedAreas($intParentID, $strAreaType, $strNavType) {
+    function GetAllParentedAreas($intParentID, $strAreaType) {
       // Used for determining access to areas
       if ($strAreaType == C_AREA_CONTENT) {
         $strWhereClause = "AND node.area_type = '{C_AREA_CONTENT}'";
@@ -383,17 +347,11 @@
       } else {
         $strWhereClause = "";
       }
-      // Nav type clause
-      if ($strNavType) {
-        $strNavClause = " AND nav_type = '$strNavType' ";
-      } else {
-        $strNavClause = "";
-      }
       // SQL
       $strSQL = "SELECT node.id, node.name FROM ".
         "({IFW_TBL_AREAS} AS node, {IFW_TBL_AREAS} AS parent) ".
         "WHERE node.hier_left BETWEEN parent.hier_left AND parent.hier_right ".
-        "AND parent.id = $intParentID $strWhereClause $strNavClause ".
+        "AND parent.id = $intParentID $strWhereClause ".
         "ORDER BY node.hier_left";
       $arrAreas = $this->ResultQuery($strSQL, __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $arrAreas;
@@ -405,13 +363,12 @@
       global $CMS;
       
       $arrArea = $CMS->AR->GetArea($intAreaID);
-      $strNavType = $arrArea['nav_type'];
-      
+
       $strAreaInfo = "";
       $strSQL = "SELECT parent.name, parent.id, parent.seo_name ".
         "FROM {IFW_TBL_AREAS} AS node, {IFW_TBL_AREAS} AS parent ".
         "WHERE node.hier_left BETWEEN parent.hier_left AND parent.hier_right ".
-        "AND node.id = $intAreaID AND parent.nav_type = '$strNavType' ".
+        "AND node.id = $intAreaID ".
         "ORDER BY parent.hier_left";
       //print($strSQL);
       $arrAreaPath = $this->ResultQuery($strSQL, __CLASS__ . "::" . __FUNCTION__, __LINE__);

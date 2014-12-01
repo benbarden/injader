@@ -217,9 +217,7 @@ class Renderer
 
         $repoArea = $this->container->getService('Repo.Area');
         /* @var \Cms\Data\Area\AreaRepository $repoArea */
-        $navPrimary = $repoArea->getNavigation('Primary');
-        $navSecondary = $repoArea->getNavigation('Secondary');
-        $navTertiary = $repoArea->getNavigation('Tertiary');
+        $areasTopLevel = $repoArea->getTopLevel();
 
         // Default RSS URL
         if (!$siteRSSArticlesUrl) {
@@ -248,9 +246,7 @@ class Renderer
         $bindings['URL']['SiteRoot'] = URL_ROOT;
         $bindings['URL']['ThemeRoot'] = $publicThemePath;
 
-        $bindings['Nav']['Primary'] = $this->processAreaData($navPrimary);
-        $bindings['Nav']['Secondary'] = $this->processAreaData($navSecondary);
-        $bindings['Nav']['Tertiary'] = $this->processAreaData($navTertiary);
+        $bindings['Nav']['TopLevelAreas'] = $this->processAreaData($areasTopLevel);
 
         // User access
         if ($this->container->hasService('Auth.CurrentUser')) {

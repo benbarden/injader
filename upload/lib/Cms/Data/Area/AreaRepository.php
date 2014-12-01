@@ -62,17 +62,15 @@ class AreaRepository implements IRepository
         }
     }
 
-    public function getNavigation($navType)
+    public function getTopLevel()
     {
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT * FROM maj_areas
-                WHERE nav_type = :nav_type
-                AND parent_id = 0
+                WHERE parent_id = 0
                 ORDER BY hier_left
             ");
-            $pdoStatement->bindParam(':nav_type', $navType);
             $pdoStatement->execute();
             $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
             return $dbData;

@@ -274,7 +274,7 @@ class Article extends Helper {
         $strDateFormat = $CMS->SYS->GetDateFormat();
         $arrArticle = $this->ResultQuery("
           SELECT con.*, u.username, u.email, 
-          u.avatar_id, a.name AS area_name, a.nav_type, 
+          u.avatar_id, a.name AS area_name,
           DATE_FORMAT(con.create_date, '$strDateFormat') AS create_date, 
           con.create_date AS create_date_raw, 
           DATE_FORMAT(con.edit_date, '$strDateFormat') AS edit_date, 
@@ -366,8 +366,7 @@ class Article extends Helper {
       global $CMS;
       if ($arrArea['subarea_content_on_index'] == "Y") {
           $strAreaClause = 
-            " AND a.hier_left BETWEEN ".$arrArea['hier_left']." AND ".$arrArea['hier_right'].
-            " AND a.nav_type = '".$arrArea['nav_type']."'";
+            " AND a.hier_left BETWEEN ".$arrArea['hier_left']." AND ".$arrArea['hier_right'];
       } else {
           $strAreaClause = "AND content_area_id = $intAreaID";
       }

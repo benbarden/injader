@@ -34,18 +34,16 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_AREAS} (
   area_type VARCHAR(45) NOT NULL,
   theme_path TEXT NOT NULL,
   layout_style VARCHAR(50) NOT NULL DEFAULT '',
-  nav_type VARCHAR(20) NOT NULL DEFAULT '',
   subarea_content_on_index CHAR( 1 ) NOT NULL DEFAULT 'N',
   PRIMARY KEY(id),
   INDEX parent_id(parent_id),
   INDEX permission_profile_id(permission_profile_id),
   INDEX area_graphic_id(area_graphic_id),
-  INDEX area_type(area_type),
-  INDEX nav_type(nav_type)
+  INDEX area_type(area_type)
 );
 
-INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style, nav_type) VALUES (1, 'Home', 1, 1, 1, 2, 0, 0, 0, 10, 'create_date|desc', 'Y', '0', 0, 'home', '', 'This is your front page.', '{C_AREA_CONTENT}', '', '', '{C_NAV_PRIMARY}');
-INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style, nav_type) VALUES (2, 'Forum', 1, 1, 3, 4, 0, 0, 0, 25, 'last_updated|desc', 'N', '0', 0, 'forum', '', 'This is a discussion forum.', '{C_AREA_CONTENT}', '', 'forum', '{C_NAV_PRIMARY}');
+INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style) VALUES (1, 'Home', 1, 1, 1, 2, 0, 0, 0, 10, 'create_date|desc', 'Y', '0', 0, 'home', '', '', '{C_AREA_CONTENT}', '', '');
+INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style) VALUES (2, 'Test', 1, 1, 3, 4, 0, 0, 0, 25, 'last_updated|desc', 'N', '0', 0, 'test', '', '', '{C_AREA_CONTENT}', '', '');
 
 DROP TABLE IF EXISTS {IFW_TBL_COMMENTS};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_COMMENTS} (

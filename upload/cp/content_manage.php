@@ -57,76 +57,17 @@
 
   $blnInvalidSearch = false;
   $strAddArticle = "<br />";
-  $strStartupList = "area1";
-  $blnNavOK = false;
-  if (isset($_GET['navtype'])) {
-    switch ($_GET['navtype']) {
-      case "1":
-        $strGetURL = "?navtype=1";
-        if (isset($_GET['area1'])) {
-          $intAreaID = $_GET['area1'];
-          $strStartupList = "area1";
-          $blnNavOK = true;
-        }
-        break;
-      case "2":
-        $strGetURL = "?navtype=2";
-        if (isset($_GET['area2'])) {
-          $intAreaID = $_GET['area2'];
-          $strStartupList = "area2";
-          $blnNavOK = true;
-        }
-        break;
-      case "3":
-        $strGetURL = "?navtype=3";
-        if (isset($_GET['area3'])) {
-          $intAreaID = $_GET['area3'];
-          $strStartupList = "area3";
-          $blnNavOK = true;
-        }
-        break;
+
+  if (isset($_GET['area'])) {
+      $intAreaID = $CMS->FilterNumeric($_GET['area']);
+    if ($strGetURL) {
+      $strGetURL .= "&amp;area=".$_GET['area'];
+    } else {
+      $strGetURL = "?area=".$_GET['area'];
     }
-  } else {
-    $strGetURL = "?navtype=";
   }
 
-  if (!$blnNavOK) {
-    if (isset($_GET['area1'])) {
-      $intAreaID = $_GET['area1'];
-      $strStartupList = "area1";
-    } elseif (isset($_GET['area2'])) {
-      $intAreaID = $_GET['area2'];
-      $strStartupList = "area2";
-    } elseif (isset($_GET['area3'])) {
-      $intAreaID = $_GET['area3'];
-      $strStartupList = "area3";
-    }
-  }
-  
-  if (isset($_GET['area1'])) {
-    if ($strGetURL) {
-      $strGetURL .= "&amp;area1=".$_GET['area1'];
-    } else {
-      $strGetURL = "?area1=".$_GET['area1'];
-    }
-  }
-  if (isset($_GET['area2'])) {
-    if ($strGetURL) {
-      $strGetURL .= "&amp;area2=".$_GET['area2'];
-    } else {
-      $strGetURL = "?area2=".$_GET['area2'];
-    }
-  }
-  if (isset($_GET['area3'])) {
-    if ($strGetURL) {
-      $strGetURL .= "&amp;area3=".$_GET['area3'];
-    } else {
-      $strGetURL = "?area3=".$_GET['area3'];
-    }
-  }
-  
   if ($intAreaID) {
-    $intAreaID = $CMS->FilterNumeric($intAreaID);
     if ($intAreaID == 0) {
       if ($blnAllowEmpty) {
         $strWhereClause = "";
@@ -225,37 +166,10 @@ TagOptions2;
 
 TagOptions3;
 
-  $strNavType1Checked = "";
-  $strNavType2Checked = "";
-  $strNavType3Checked = "";
-  switch ($strStartupList) {
-    case "area1":
-      $strNavType1Checked = " checked=\"checked\"";
-      break;
-    case "area2":
-      $strNavType2Checked = " checked=\"checked\"";
-      break;
-    case "area3":
-      $strNavType3Checked = " checked=\"checked\"";
-      break;
-    default:
-      $strStartupList = "area1";
-      $strNavType1Checked = " checked=\"checked\"";
-      break;
-  }
+  $CMS->AT->arrAreaData = array();
+  $CMS->DD->strEmptyItem = "All";
+  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, 0, "Content", $blnAllowEmpty, false);
 
-  $CMS->AT->arrAreaData = array();
-  $CMS->DD->strEmptyItem = "All";
-  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, 0, "Content", $blnAllowEmpty, false, C_NAV_PRIMARY);
-  
-  $CMS->AT->arrAreaData = array();
-  $CMS->DD->strEmptyItem = "All";
-  $strAreaListSecondary = $CMS->DD->AreaHierarchy($intAreaID, 0, "Content", $blnAllowEmpty, false, C_NAV_SECONDARY);
-  
-  $CMS->AT->arrAreaData = array();
-  $CMS->DD->strEmptyItem = "All";
-  $strAreaListTertiary = $CMS->DD->AreaHierarchy($intAreaID, 0, "Content", $blnAllowEmpty, false, C_NAV_TERTIARY);
-    
   $strStatusList   = $CMS->DD->ContentStatus($strStatus);
   $strSearchButton = $CMS->AC->SearchButton();
 
@@ -265,33 +179,17 @@ TagOptions3;
 <div class="table-responsive">
 <table class="table table-striped">
   <tr class="separator-row">
-    <td colspan="4">Search for content</td>
+    <td colspan="6">Search for content</td>
   </tr>
   <tr>
-    <td>
-      <label><b>Navigation</b></label>
-    </td>
-    <td>
-      <input type="radio" id="navtype1" name="navtype" onclick="SwitchDropDown('area1');" value="1"$strNavType1Checked /> <label for="navtype1">Primary</label>
-      <input type="radio" id="navtype2" name="navtype" onclick="SwitchDropDown('area2');" value="2"$strNavType2Checked /> <label for="navtype2">Secondary</label>
-      <input type="radio" id="navtype3" name="navtype" onclick="SwitchDropDown('area3');" value="3"$strNavType3Checked /> <label for="navtype3">Tertiary</label>
-    </td>
     <td>
       <label><b>Area</b></label>
     </td>
     <td>
-      <select id="area1" name="area1">
+      <select id="area" name="area">
 $strAreaListPrimary
       </select>
-      <select id="area2" name="area2">
-$strAreaListSecondary
-      </select>
-      <select id="area3" name="area3">
-$strAreaListTertiary
-      </select>
     </td>
-  </tr>
-  <tr>
     <td>
       <label for="status"><b>Status</b></label>
     </td>
@@ -323,7 +221,7 @@ $strTagOptions3
   </tr>
   -->
   <tr>
-    <td class="FootColour Centre" colspan="4">
+    <td class="FootColour Centre" colspan="6">
       $strSearchButton
     </td>
   </tr>
@@ -496,13 +394,6 @@ TableFooter;
   // ** SCRIPT ** //
   $strHTML .= <<<FooterScript
 <script type="text/javascript">
-  function SwitchDropDown(strWhich) {
-    document.getElementById('area1').style.display  = 'none';
-    document.getElementById('area2').style.display  = 'none';
-    document.getElementById('area3').style.display  = 'none';
-    document.getElementById(strWhich).style.display = 'block';
-  }
-  SwitchDropDown('$strStartupList'); // do on startup
 
     var checkAll = true;
     $('#js-manage-content-check-all').on('click', function() {

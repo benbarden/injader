@@ -178,26 +178,22 @@
         $CMS->TH->SetHeaderCustomTags($strCustomHeadTags);
       }
     }
-    function DoTopLevelNavBar($intAreaID, $strNavType) {
+    function DoTopLevelNavBar($intAreaID) {
       global $CMS;
-      if (!$strNavType) {
-        $strNavType = C_NAV_PRIMARY;
-      }
-      $strNavClause = " AND parent.nav_type = '$strNavType' ";
       if ($intAreaID) {
         $blnDefaultPage = false;
       } else {
         $blnDefaultPage = true;
-        $intAreaID = $CMS->AR->GetDefaultAreaID($strNavType);
+        $intAreaID = $CMS->AR->GetDefaultAreaID();
       }
       $arrAreas = $this->ResultQuery("SELECT parent.id, parent.name, parent.seo_name ".
         "FROM ({IFW_TBL_AREAS} AS node, {IFW_TBL_AREAS} AS parent) ".
         "WHERE node.hier_left BETWEEN parent.hier_left AND parent.hier_right ".
-        "AND node.id = $intAreaID $strNavClause ORDER BY node.hier_left", 
+        "AND node.id = $intAreaID ORDER BY node.hier_left",
         __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $intTopLevelAreaID = $arrAreas[0]['id'];
       // Primary navigation - Top-level areas
-      $arrAreas = $CMS->AT->GetParentedAreas(0, "All", $strNavType);
+      $arrAreas = $CMS->AT->GetParentedAreas(0, "All");
       $strNavData = "";
       $j = 0;
       $intNavCount = 0;
@@ -218,13 +214,10 @@
       $CMS->TH->SetNavigationItems($arrNavigationItems);
       $CMS->TH->StartNavigationItems();
     }
-    function DoAllLevelNavBar($strNavType) {
+    function DoAllLevelNavBar() {
       global $CMS;
-      if (!$strNavType) {
-        $strNavType = C_NAV_PRIMARY;
-      }
       $CMS->AT->arrAreaData = array(); // Reset
-      $arrDDLAreas = $CMS->AT->BuildAreaArray(1, $strNavType);
+      $arrDDLAreas = $CMS->AT->BuildAreaArray(1);
       $j = 0; // List count
       $arrNavigationItems = array();
       if (is_array($arrDDLAreas)) {

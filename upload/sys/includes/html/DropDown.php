@@ -53,7 +53,7 @@
       return $strOutput;
     }
     // ** Area list ** //
-    function AreaHierarchy($strSelValue, $intExcludeAreaID, $strAreaType, $blnAllowEmpty, $blnIsSearch, $strNavType) {
+    function AreaHierarchy($strSelValue, $intExcludeAreaID, $strAreaType, $blnAllowEmpty, $blnIsSearch) {
       global $CMS;
       $dteStartTime = $this->MicrotimeFloat();
       $this->blnAllowEmpty = $blnAllowEmpty;
@@ -61,7 +61,7 @@
         $this->strEmptyItem = "All";
       }
       $this->blnIsSearch = $blnIsSearch;
-      $arrDDLAreas = $CMS->AT->BuildAreaArray(1, $strNavType); // Just get the values
+      $arrDDLAreas = $CMS->AT->BuildAreaArray(1); // Just get the values
       $j = 0; // List count
       for ($i=0; $i<count($arrDDLAreas); $i++) {
         $intDDLID    = $arrDDLAreas[$i]['id'];
@@ -105,10 +105,10 @@
       return $strHTML;
     }
     // ** Attach File JS ** //
-    function AreaHierarchyAttachJS($strNavType) {
+    function AreaHierarchyAttachJS() {
       global $CMS;
       $dteStartTime = $this->MicrotimeFloat();
-      $arrAreas = $CMS->AT->BuildAreaArray(1, $strNavType); // Just get the values
+      $arrAreas = $CMS->AT->BuildAreaArray(1); // Just get the values
       $arrListData = "";
       $j = 0; // List count
       for ($i=0; $i<count($arrAreas); $i++) {
