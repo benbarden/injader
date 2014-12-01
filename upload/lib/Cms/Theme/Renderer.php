@@ -161,7 +161,7 @@ class Renderer
                 $iaPagesOffset->setPageNo($this->pageNo);
                 $iaPagesOffset->setPerPage($perPage);
                 $offset = $iaPagesOffset->calculate();
-                $areaContent = $articleRepo->getByArea(
+                $areaContent = $articleRepo->getByAreaPublic(
                     $this->itemId, $perPage, $offset, $sortField, $sortDirection
                 );
 

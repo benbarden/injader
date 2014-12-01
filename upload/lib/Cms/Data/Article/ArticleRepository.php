@@ -57,7 +57,17 @@ class ArticleRepository extends BaseRepository
         }
     }
 
-    public function getByArea($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    public function getByAreaPublic($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    {
+        return $this->getByArea('public', $areaId, $limit, $offset, $sortField, $sortDirection);
+    }
+
+    public function getByAreaAll($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    {
+        return $this->getByArea('all', $areaId, $limit, $offset, $sortField, $sortDirection);
+    }
+
+    private function getByArea($mode, $areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
         try {
 
@@ -75,11 +85,17 @@ class ArticleRepository extends BaseRepository
                 case "desc": $pdoSortDirection = "DESC"; break;
                 default:     $pdoSortDirection = "DESC"; break;
             }
+            switch (strtolower($mode)) {
+                case "public": $pdoAccessSql = "AND content_status = 'Published'"; break;
+                case "all":    $pdoAccessSql = ""; break;
+                default:       $pdoAccessSql = "AND content_status = 'Published'"; break;
+            }
 
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT * FROM maj_content
                 WHERE content_area_id = :areaId
+                $pdoAccessSql
                 ORDER BY $pdoSortField $pdoSortDirection
                 LIMIT :limit OFFSET :offset
             ");
