@@ -116,16 +116,23 @@
                 <h2 class="sub-header">Recent Drafts</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        {% if Page.RecentDrafts %}
-                            {% for Item in Page.RecentDrafts %}
+                        {% if Auth.CanWriteContent %}
+                            {% if Page.RecentDrafts %}
+                                {% for Item in Page.RecentDrafts %}
+                                    <tr>
+                                        <td><a href="{{ cpLink('write', {'action': 'edit', 'id': Item.id}) }}">{{ Item.title }}</a></td>
+                                        <td>{{ Item.create_date|date('d M Y H:i') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
                                 <tr>
-                                    <td><a href="{{ cpLink('write', {'action': 'edit', 'id': Item.id}) }}">{{ Item.title }}</a></td>
-                                    <td>{{ Item.create_date|date('d M Y H:i') }}</td>
+                                    <td><em>No drafts</em></td>
+                                    <td>-</td>
                                 </tr>
-                            {% endfor %}
+                            {% endif %}
                         {% else %}
                             <tr>
-                                <td><em>No drafts</em></td>
+                                <td><em>Not authorised</em></td>
                                 <td>-</td>
                             </tr>
                         {% endif %}
