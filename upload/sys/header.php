@@ -112,7 +112,6 @@
     require ABS_SYS_DB.'AreaTraverse.php';
     require ABS_SYS_DB.'Article.php';
     require ABS_SYS_DB.'Comment.php';
-    require ABS_SYS_DB.'Connection.php';
     require ABS_SYS_DB.'File.php';
     require ABS_SYS_DB.'PermissionProfile.php';
     require ABS_SYS_DB.'SpamRule.php';
@@ -134,7 +133,6 @@
     require ABS_SYS_HTML.'FeedTemplate.php';
     require ABS_SYS_HTML.'LoginPage.php';
     require ABS_SYS_HTML.'PageNumberNavigation.php';
-    require ABS_SYS_HTML.'PluginDisplay.php';
     require ABS_SYS_HTML.'RSSBuilder.php';
     require ABS_SYS_HTML.'Theme.php';
     require ABS_SYS_HTML.'ThemeSetting.php';

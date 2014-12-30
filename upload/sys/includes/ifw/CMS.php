@@ -42,7 +42,6 @@ class CMS extends Helper {
     var $CHA; // Challenge
     var $CK; // Cookie
     var $COM; // Comment
-    var $CON; // Connection
     var $DD; // DropDown
     var $FL; // File
     var $FMT; // Formatting
@@ -89,7 +88,6 @@ class CMS extends Helper {
         $this->CHA   = new Challenge;
         $this->CK    = new Cookie;
         $this->COM   = new Comment;
-        $this->CON   = new Connection;
         $this->DD    = new DropDown;
         $this->FL    = new File;
         $this->FMT   = new Formatting;
@@ -116,4 +114,3 @@ class CMS extends Helper {
     }
     
 }
-?>
