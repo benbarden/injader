@@ -1024,15 +1024,6 @@ ExecTime;
       }
       return $blnArticleIsUnread;
     }
-    // ** Re-implementation of older customisation options ** //
-    function GetPlugin($strPluginVar) {
-      $PLD = new PluginDisplay;
-      return $PLD->BuildNamedPlugin($strPluginVar);
-    }
-    function GetUserVar($strUserVar) {
-      global $CMS;
-      return $CMS->UV->GetContentByVar($strUserVar);
-    }
     // ** Profile - Set ** //
     var $arrUserProfile;
     function SetUser($arrUserProfile) {

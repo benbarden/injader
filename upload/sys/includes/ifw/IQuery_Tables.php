@@ -25,11 +25,8 @@
     define('IFW_TBL_ACCESS_LOG',          IFW_TBL_PFX."access_log");
     define('IFW_TBL_AREAS',               IFW_TBL_PFX."areas");
     define('IFW_TBL_COMMENTS',            IFW_TBL_PFX."comments");
-    define('IFW_TBL_CONNECTIONS',         IFW_TBL_PFX."connections");
     define('IFW_TBL_CONTENT',             IFW_TBL_PFX."content");
-    define('IFW_TBL_EXTENSIONS',          IFW_TBL_PFX."extensions");
     define('IFW_TBL_PERMISSION_PROFILES', IFW_TBL_PFX."permission_profiles");
-    define('IFW_TBL_RATINGS',             IFW_TBL_PFX."ratings");
     define('IFW_TBL_SPAM_RULES',          IFW_TBL_PFX."spam_rules");
     define('IFW_TBL_SYS_PREFERENCES',     IFW_TBL_PFX."sys_preferences");
     define('IFW_TBL_TAGS',                IFW_TBL_PFX."tags");
@@ -39,7 +36,4 @@
     define('IFW_TBL_USER_GROUPS',         IFW_TBL_PFX."user_groups");
     define('IFW_TBL_USER_SESSIONS',       IFW_TBL_PFX."user_sessions");
     define('IFW_TBL_USER_STATS',          IFW_TBL_PFX."user_stats");
-    define('IFW_TBL_USER_VARIABLES',      IFW_TBL_PFX."user_variables");
-    define('IFW_TBL_WIDGETS',             IFW_TBL_PFX."widgets");
 
-?>

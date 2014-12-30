@@ -62,9 +62,6 @@
   define('C_NAV_SECONDARY', 'Secondary');
   define('C_NAV_TERTIARY',  'Tertiary');
   
-  // Widget types
-  define('C_WIDGET_DATA', 'Data');
-
   // Theme files
   define('C_TH_HEADER',     'header.php');
   define('C_TH_FOOTER',     'footer.php');

@@ -62,8 +62,6 @@ class CMS extends Helper {
     var $US; // User
     var $USess; // UserSession
     var $UST; // UserStat
-    var $UV; // UserVariable
-    var $WGT; // Widget
     
     function InitClasses() {
         
@@ -76,41 +74,45 @@ class CMS extends Helper {
         $this->RES   = new Restriction;
         $this->SYS   = new System;
         
-        $this->pages_Archives = new pages_Archives;
-        
-        $this->AC    = new Autocode;
-        $this->AL    = new AccessLog;
-        $this->AP    = new AdminPage;
-        $this->AR    = new Area;
-        $this->ARCO  = new AreaContent;
-        $this->ART   = new Article;
-        $this->AT    = new AreaTraverse;
+        // Top level
         $this->CHA   = new Challenge;
         $this->CK    = new Cookie;
-        $this->COM   = new Comment;
-        $this->DD    = new DropDown;
-        $this->FL    = new File;
         $this->FMT   = new Formatting;
-        $this->LP    = new LoginPage;
         $this->MV    = new View;
         $this->MSG   = new Messaging;
         $this->PL    = new PageLink;
         $this->PN    = new PageNumber;
-        $this->PNN   = new PageNumberNavigation;
-        $this->PP    = new PermissionProfile;
         $this->RC    = new ReplaceConstants;
+
+        // DB
+        $this->AL    = new AccessLog;
+        $this->AR    = new Area;
+        $this->AT    = new AreaTraverse;
+        $this->ART   = new Article;
+        $this->COM   = new Comment;
+        $this->FL    = new File;
+        $this->PP    = new PermissionProfile;
         $this->SR    = new SpamRule;
         $this->TG    = new Tags;
-        $this->TH    = new Theme;
-        $this->TS    = new ThemeSetting;
-        $this->UG    = new UserGroup;
         $this->UM    = new URLMapping;
         $this->US    = new User;
+        $this->UG    = new UserGroup;
         $this->USess = new UserSession;
         $this->UST   = new UserStats;
-        $this->UV    = new UserVariable;
-        $this->WGT   = new Widget;
-        
+
+        // HTML
+        $this->AP    = new AdminPage;
+        $this->ARCO  = new AreaContent;
+        $this->AC    = new Autocode;
+        $this->DD    = new DropDown;
+        $this->LP    = new LoginPage;
+        $this->PNN   = new PageNumberNavigation;
+        $this->TH    = new Theme;
+        $this->TS    = new ThemeSetting;
+
+        // Pages
+        $this->pages_Archives = new pages_Archives;
+
     }
     
 }

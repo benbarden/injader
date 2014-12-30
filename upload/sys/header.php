@@ -122,8 +122,6 @@
     require ABS_SYS_DB.'UserGroup.php';
     require ABS_SYS_DB.'UserSession.php';
     require ABS_SYS_DB.'UserStats.php';
-    require ABS_SYS_DB.'UserVariable.php';
-    require ABS_SYS_DB.'Widget.php';
     
     // HTML
     require ABS_SYS_HTML.'AdminPage.php';
@@ -136,7 +134,6 @@
     require ABS_SYS_HTML.'RSSBuilder.php';
     require ABS_SYS_HTML.'Theme.php';
     require ABS_SYS_HTML.'ThemeSetting.php';
-    require ABS_SYS_HTML.'UserVariableDisplay.php';
 
     // Instantiate core classes
     $CMS = new CMS;

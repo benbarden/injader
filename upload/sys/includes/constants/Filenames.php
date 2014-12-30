@@ -45,13 +45,9 @@
   define('FN_ADM_ACCESS_LOG',          URL_CP_ROOT.'access_log'.F_EXT_PHP);
   define('FN_ADM_AREAS',               URL_CP_ROOT.'areas'.F_EXT_PHP);
   define('FN_ADM_AREA',                URL_CP_ROOT.'area'.F_EXT_PHP);
-  define('FN_ADM_AREA_REORDER',        URL_CP_ROOT.'area_reorder'.F_EXT_PHP);
   define('FN_ADM_CHANGE_PASSWORD',     URL_CP_ROOT.'change_password'.F_EXT_PHP);
   define('FN_ADM_COMMENTS',            URL_CP_ROOT.'comments'.F_EXT_PHP);
   define('FN_ADM_COMMENTS_BULK',       URL_CP_ROOT.'comments_bulk'.F_EXT_PHP);
-  define('FN_ADM_CONNECTION',          URL_CP_ROOT.'connection'.F_EXT_PHP);
-  define('FN_ADM_CONNECTIONS',         URL_CP_ROOT.'connections'.F_EXT_PHP);
-  define('FN_ADM_CONTACT_ADMIN',       URL_CP_ROOT.'contact_admin'.F_EXT_PHP);
   define('FN_ADM_CONTENT_BULK',        URL_CP_ROOT.'content_bulk'.F_EXT_PHP);
   define('FN_ADM_CONTENT_EDITTAGS',    URL_CP_ROOT.'content_edittags'.F_EXT_PHP);
   define('FN_ADM_CONTENT_MANAGE',      URL_CP_ROOT.'content_manage'.F_EXT_PHP);
@@ -59,29 +55,19 @@
   define('FN_ADM_EDIT_PROFILE',        URL_CP_ROOT.'edit_profile'.F_EXT_PHP);
   define('FN_ADM_ERROR_LOG',           URL_CP_ROOT.'error_log'.F_EXT_PHP);
   define('FN_ADM_ERROR_LOG_FILE',      URL_CP_ROOT.'error_log_file'.F_EXT_PHP);
-  define('FN_ADM_EXPORT',              URL_CP_ROOT.'export'.F_EXT_PHP);
-  define('FN_ADM_EXTENSION',           URL_CP_ROOT.'extension'.F_EXT_PHP);
-  define('FN_ADM_EXTENSIONS',          URL_CP_ROOT.'extensions'.F_EXT_PHP);
   define('FN_ADM_FILES',               URL_CP_ROOT.'files'.F_EXT_PHP);
   define('FN_ADM_FILES_SETTINGS',      URL_CP_ROOT.'files_settings'.F_EXT_PHP);
   define('FN_ADM_FILES_SITE_UPLOAD',   URL_CP_ROOT.'files_site_upload'.F_EXT_PHP);
   define('FN_ADM_GENERAL_SETTINGS',    URL_CP_ROOT.'general_settings'.F_EXT_PHP);
-  define('FN_ADM_IMPORT_WP',           URL_CP_ROOT.'import_wp'.F_EXT_PHP);
   define('FN_ADM_MANAGE_AVATARS',      URL_CP_ROOT.'manage_avatars'.F_EXT_PHP);
   define('FN_ADM_MY_SETTINGS',         URL_CP_ROOT.'my_settings'.F_EXT_PHP);
   define('FN_ADM_PERMISSION',          URL_CP_ROOT.'permission'.F_EXT_PHP);
   define('FN_ADM_PERMISSIONS',         URL_CP_ROOT.'permissions'.F_EXT_PHP);
   define('FN_ADM_SPAM_RULE',           URL_CP_ROOT.'spam_rule'.F_EXT_PHP);
   define('FN_ADM_SPAM_RULES',          URL_CP_ROOT.'spam_rules'.F_EXT_PHP);
-  define('FN_ADM_THEME',               URL_CP_ROOT.'theme'.F_EXT_PHP);
-  define('FN_ADM_THEME_PREVIEW',       URL_CP_ROOT.'theme_preview'.F_EXT_PHP);
-  define('FN_ADM_THEME_SETTINGS',      URL_CP_ROOT.'theme_settings'.F_EXT_PHP);
   define('FN_ADM_THEMES',              URL_CP_ROOT.'themes'.F_EXT_PHP);
-  define('FN_ADM_THEME_FILE',          URL_CP_ROOT.'theme_file'.F_EXT_PHP);
   define('FN_ADM_TOOLS',               URL_CP_ROOT.'tools'.F_EXT_PHP);
-  define('FN_ADM_TOOLS_SITEMAP',       URL_CP_ROOT.'tools_sitemap'.F_EXT_PHP);
   define('FN_ADM_TOOLS_SPAM_STATS',    URL_CP_ROOT.'tools_spam_stats'.F_EXT_PHP);
-  define('FN_ADM_TOOLS_SQL_QUERY',     URL_CP_ROOT.'tools_sql_query'.F_EXT_PHP);
   define('FN_ADM_TOOLS_USER_SESSIONS', URL_CP_ROOT.'tools_user_sessions'.F_EXT_PHP);
   define('FN_ADM_UPLOAD_AVATAR',       URL_CP_ROOT.'upload_avatar'.F_EXT_PHP);
   define('FN_ADM_URL_SETTINGS',        URL_CP_ROOT.'url_settings'.F_EXT_PHP);
@@ -92,11 +78,7 @@
   define('FN_ADM_USER_ROLE_MESSAGE',   URL_CP_ROOT.'user_role_message'.F_EXT_PHP);
   define('FN_ADM_USER_ROLE_USAGE',     URL_CP_ROOT.'user_role_usage'.F_EXT_PHP);
   define('FN_ADM_USER_ROLES',          URL_CP_ROOT.'user_roles'.F_EXT_PHP);
-  define('FN_ADM_USER_VARIABLE',       URL_CP_ROOT.'user_variable'.F_EXT_PHP);
-  define('FN_ADM_USER_VARIABLES',      URL_CP_ROOT.'user_variables'.F_EXT_PHP);
   define('FN_ADM_USERS',               URL_CP_ROOT.'users'.F_EXT_PHP);
-  define('FN_ADM_WIDGET',              URL_CP_ROOT.'widget'.F_EXT_PHP);
-  define('FN_ADM_WIDGETS',             URL_CP_ROOT.'widgets'.F_EXT_PHP);
   define('FN_ADM_WRITE',               URL_CP_ROOT.'write'.F_EXT_PHP);
   define('FN_ADM_INDEX',               URL_CP_ROOT.'index'.F_EXT_PHP);
   define('FN_ADMIN_TOOLS',             URL_CP_ROOT.'admin_tools'.F_EXT_PHP);
@@ -106,6 +88,3 @@
   define('FN_INF_COOKIES',       URL_INFO_ROOT.'cookies'.F_EXT_PHP);
   // Special
   define('FN_SYS_CHLOADER',      URL_SYS_IFW.'chloader'.F_EXT_PHP);
-  // Custom
-  define('FN_CST_CONTACT', URL_CUSTOM.'contact'.F_EXT_PHP);
-?>
