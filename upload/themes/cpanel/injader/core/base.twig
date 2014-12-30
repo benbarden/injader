@@ -46,16 +46,27 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ SiteRoot }}">&lt; back to: {{ Page.SiteTitle }}</a>
+            <p class="navbar-text"><a href="{{ SiteRoot }}">&lt; view site</a></p>
         </div> <!-- /navbar-header -->
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ cpLink('index') }}">Dashboard</a></li>
+                <li>
+                    <a href="{{ cpLink('index') }}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
+                </li>
                 {% if Auth.CanWriteContent %}
-                    <li><a href="{{ cpLink('write', {'action': 'create'}) }}">New Article</a></li>
+                    <li><a href="{{ cpLink('write', {'action': 'create'}) }}">+ Article</a></li>
                 {% endif %}
                 <li><a href="{{ cpLink('my_settings') }}">My Settings</a></li>
-                <li><a href="http://www.injader.com/" target="_blank">Injader.com</a></li>
+                {% if Auth.IsAdmin %}
+                    <li><a href="{{ cpLink('areas') }}" title="Manage your site areas">Areas</a></li>
+                    <li><a href="{{ cpLink('content_manage') }}" title="Manage Content">Content</a></li>
+                    <li><a href="{{ cpLink('files') }}" title="Manage site files, attachments and avatars">Files</a></li>
+                    <li><a href="{{ cpLink('comments') }}" title="Manage comments">Comments</a></li>
+                    <li><a href="{{ cpLink('themes') }}" title="Manage your themes">Themes</a></li>
+                    <li><a href="{{ cpLink('tools') }}" title="Plugins and more">Tools</a></li>
+                    <li><a href="{{ cpLink('general_settings') }}" title="Configure website settings">Settings</a></li>
+                    <li><a href="{{ cpLink('users', {'action': 'showall'}) }}" title="Manage user accounts, roles, and permissions">Users</a></li>
+                {% endif %}
                 <!--
                 <li><a href="#">Settings</a></li>
                 <li><a href="#">Profile</a></li>
@@ -68,35 +79,12 @@
             </form>
             -->
         </div> <!-- /navbar-collapse -->
-    </div> <!-- /container-fluid -->
+    </div>
 </div> <!-- /navbar -->
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li><a href="{{ cpLink('index') }}">Dashboard</a></li>
-                {% if Auth.IsAdmin %}
-                <li><a href="{{ cpLink('areas') }}" title="Manage your site areas">Areas</a></li>
-                <li><a href="{{ cpLink('content_manage') }}" title="Manage Content">Content</a></li>
-                <li><a href="{{ cpLink('files') }}" title="Manage site files, attachments and avatars">Files</a></li>
-                <li><a href="{{ cpLink('comments') }}" title="Manage comments">Comments</a></li>
-                <li><a href="{{ cpLink('themes') }}" title="Manage your themes">Themes</a></li>
-                <li><a href="{{ cpLink('tools') }}" title="Plugins and more">Tools</a></li>
-                <li><a href="{{ cpLink('general_settings') }}" title="Configure website settings">Settings</a></li>
-                <li><a href="{{ cpLink('users', {'action': 'showall'}) }}" title="Manage user accounts, roles, and permissions">Access</a></li>
-                {% endif %}
-            </ul>
-            <!--
-            <ul class="nav nav-sidebar">
-              <li class="active"><a href="#">Overview</a></li>
-              <li><a href="#">Reports</a></li>
-              <li><a href="#">Analytics</a></li>
-              <li><a href="#">Export</a></li>
-            </ul>
-            -->
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="main">
             {% block cp_content %}{% endblock cp_content %}
         </div>
     </div>

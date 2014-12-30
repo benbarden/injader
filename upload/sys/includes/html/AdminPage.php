@@ -108,7 +108,7 @@ AdminNotice;
               'Text' => 'New Article'
           );
           */
-          $strNewArticleLink = "<li><a href=\"{FN_ADM_WRITE}?action=create\" title=\"Add new content to the site\">New Article</a></li>";
+          $strNewArticleLink = "<li><a href=\"{FN_ADM_WRITE}?action=create\" title=\"Add new content to the site\">+ Article</a></li>";
           $controlPanelLinks[] = array(
               'URL' => '{FN_ADM_CONTENT_MANAGE}',
               'Title' => 'Manage Content',
@@ -131,7 +131,7 @@ AdminNotice;
 <li><a href="{FN_ADM_THEMES}" title="Manage your themes">Themes</a></li>
 <li><a href="{FN_ADM_TOOLS}" title="Plugins and more">Tools</a></li>
 <li><a href="{FN_ADM_GENERAL_SETTINGS}" title="Configure website settings">Settings</a></li>
-<li><a href="{FN_ADM_USERS}?action=showall" title="Manage user accounts, roles, and permissions">Access</a></li>
+<li><a href="{FN_ADM_USERS}?action=showall" title="Manage user accounts, roles, and permissions">Users</a></li>
 
 AdminLinks;
       }
@@ -174,56 +174,33 @@ AdminLinks;
 
 </head>
 
-  <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="$strIndexURL">&lt; back to: $strSiteTitle</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <p class="navbar-text"><a href="$strIndexURL">&lt; view site</a></p>
         </div> <!-- /navbar-header -->
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="{FN_ADM_INDEX}">Dashboard</a></li>
-            $strNewArticleLink
-            <li><a href="{FN_ADM_MY_SETTINGS}">My Settings</a></li>
-            <!--
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
-            -->
-          </ul>
-          <!--
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-          -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                <a href="{FN_ADM_INDEX}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
+                </li>
+                $strNewArticleLink
+                <li><a href="{FN_ADM_MY_SETTINGS}">My Settings</a></li>
+                $strAdminLinks
+            </ul>
         </div> <!-- /navbar-collapse -->
-      </div> <!-- /container-fluid -->
-    </div> <!-- /navbar -->
+    </div>
+</div> <!-- /navbar -->
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li><a href="{FN_ADM_INDEX}">Dashboard</a></li>
-            $strAdminLinks
-          </ul>
-          <!--
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          -->
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="container-fluid">
+    <div class="row">
+        <div class="main">
 
 CMSHeader;
       $dteEndTime = $this->MicrotimeFloat();
@@ -249,6 +226,7 @@ CMSHeader;
 
 </body>
 </html>
+
 Footer;
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
