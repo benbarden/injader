@@ -103,7 +103,7 @@
 </tr>
 <tr>
 <td id="tplMajFooter" class="footer" style="padding: 4px; text-align: center;" colspan="3">
-Copyright &copy; <?php print(date('Y')); ?> <?php print($CMS->TH->GetHeaderSiteTitle()); ?> : Powered by <a href="http://www.injader.com" title="Injader - Content management for everyone">Injader</a>
+Copyright &copy; <?php print(date('Y')); ?> <?php print($CMS->TH->GetHeaderSiteTitle()); ?> : Powered by <a href="http://www.injader.com" title="Injader">Injader</a>
 </td>
 </tr>
 </table>

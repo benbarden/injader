@@ -1,8 +1,8 @@
 <?php
 /*
-    Injader - Content management for everyone
+    Injader
     Copyright (c) 2005-2010 Ben Barden
-    Please go to http://www.injader.com if you have questions or need help.
+
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
