@@ -18,9 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-  // Admin - SQL Query
-  define('AL_TAG_ADM_SQL_QUERY',       "AdminSQLQuery");
-
   // Articles
   define('AL_TAG_ARTICLE_VIEW',        "ArticleView");
   define('AL_TAG_ARTICLE_CREATE',      "ArticleCreate");
@@ -99,10 +96,3 @@
   // User Sessions
   define('AL_TAG_USER_SESSION_DELETE',         "UserSessionDelete");
   define('AL_TAG_USER_SESSION_DELETE_EXPIRED', "UserSessionDeleteExpired");
-  
-  // User-defined variables
-  define('AL_TAG_USER_VARIABLE_CREATE', "UserVariableCreate");
-  define('AL_TAG_USER_VARIABLE_DELETE', "UserVariableDelete");
-  define('AL_TAG_USER_VARIABLE_EDIT',   "UserVariableEdit");
-  
-?>

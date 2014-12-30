@@ -161,12 +161,6 @@
           $strLogDesc = "Deleted all expired user sessions"; break;
         case AL_TAG_USER_SUSPEND:
           $strLogDesc = "Suspended user"; break; // Name
-        case AL_TAG_USER_VARIABLE_CREATE:
-          $strLogDesc = "Created user variable"; break;
-        case AL_TAG_USER_VARIABLE_DELETE:
-          $strLogDesc = "Deleted user variable"; break;
-        case AL_TAG_USER_VARIABLE_EDIT:
-          $strLogDesc = "Edited user variable"; break;
         case AL_TAG_USERGROUP_CREATE:
           $strLogDesc = "Created user group"; break;
         case AL_TAG_USERGROUP_EDIT:
