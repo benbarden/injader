@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="blog-masthead">
+<div id="blog-masthead" class="blog-masthead">
     <div class="container">
         <nav class="blog-nav">
             {{ cmsBlock('nav.primary')|raw }}
@@ -68,10 +68,9 @@
 
 <div class="blog-footer">
     <p>
-        Copyright &copy; 2014 {{ CMS.Settings.SiteTitle }} |
-        Blog template by <a href="https://twitter.com/mdo">@mdo</a> |
+        Copyright &copy; {{ "now"|date("Y") }} {{ CMS.Settings.SiteTitle }} |
         Powered by <a href="http://www.injader.com" title="Injader">Injader</a> |
-        <a href="#">Back to top</a>
+        <a href="#blog-masthead">Back to top</a>
     </p>
 </div>
 
