@@ -50,7 +50,6 @@
       $CMS->PL->SetTitle($strSEOName);
       $strLink = $CMS->PL->ViewArea($intID);
       $CMS->PL->SetTitle("");
-      $strLink = str_replace("?loggedin=1", "", $strLink);
       $CMS->UM->addLink($strLink, 0, $intID);
       
       return $intID;
@@ -86,7 +85,6 @@
       $CMS->PL->SetTitle($strSEOName);
       $strLink = $CMS->PL->ViewArea($intAreaID);
       $CMS->PL->SetTitle("");
-      $strLink = str_replace("?loggedin=1", "", $strLink);
       $CMS->UM->addLink($strLink, 0, $intAreaID);
       
     }

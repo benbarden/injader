@@ -54,7 +54,6 @@
     function NewCommentNotification($intCommentID, $intArticleID, $strAuthorName, $strCommentAuthorEmail, $strItemDesc, $strTitle, $strContent, $strViewLink) {
       global $CMS;
       $strPageURL            = "http://".SVR_HOST.$strViewLink."#c".$intCommentID;
-      $strPageURL            = str_replace("?loggedin=1", "", $strPageURL);
       $intNotifyAdmin        = $CMS->SYS->GetSysPref(C_PREF_COMMENT_NOTIFICATION);
       $intNotifyAuthor       = $CMS->SYS->GetSysPref(C_PREF_COMMENT_NOTIFY_AUTHOR);
       $strAdminEmail         = $CMS->SYS->GetSysPref(C_PREF_SITE_EMAIL);
@@ -123,7 +122,6 @@
     function NewArticleNotification($intArticleID, $arrArticleData) {
       global $CMS;
       $strPageURL            = "http://".SVR_HOST.$CMS->PL->ViewArticle($intArticleID);
-      $strPageURL            = str_replace("?loggedin=1", "", $strPageURL);
       $intNotifyAdmin        = $CMS->SYS->GetSysPref(C_PREF_ARTICLE_NOTIFY_ADMIN);
       $strAdminEmail         = $CMS->SYS->GetSysPref(C_PREF_SITE_EMAIL);
       $strArticleAuthorEmail = $arrArticleData['email'];

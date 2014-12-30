@@ -85,7 +85,6 @@ class Article extends Helper {
         $CMS->PL->SetTitle($strSEOTitle);
         $strLink = $CMS->PL->ViewArticle($intID, $intAreaID);
         $CMS->PL->SetTitle("");
-        $strLink = str_replace("?loggedin=1", "", $strLink);
         $CMS->UM->addLink($strLink, $intID, 0);
         
         // The end!
@@ -156,7 +155,6 @@ class Article extends Helper {
         $CMS->PL->SetTitle($strSEOTitle);
         $strLink = $CMS->PL->ViewArticle($intID, $intAreaID);
         $CMS->PL->SetTitle("");
-        $strLink = str_replace("?loggedin=1", "", $strLink);
         $CMS->UM->addLink($strLink, $intID, 0);
     }
     

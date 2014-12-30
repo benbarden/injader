@@ -26,19 +26,6 @@
     function GetTitle() {
       return $this->strCachedTitle;
     }
-    // Data Recache
-    function DRC($strMode, $intLinkStyle) {
-      global $CMS;
-      $strRecache = "";
-      if ($CMS->RES->GetCurrentUserID()) {
-        if ($strMode == "area") {
-          $strRecache = "?loggedin=1";
-        } elseif ($strMode == "article") {
-          $strRecache = "?loggedin=1";
-        }
-      }
-      return $strRecache;
-    }
     function ViewArea($intID) {
       global $CMS;
       $strTitle = $CMS->PL->GetTitle();
@@ -50,12 +37,12 @@
         $intLinkStyle = "1";
       }
       switch ($intLinkStyle) {
-        case "1": $strLink = FN_VIEW."/area/".$intID."/".$strTitle.$this->DRC("area", $intLinkStyle); break;
-        case "2": $strLink = URL_ROOT."area/".$intID."/".$strTitle.$this->DRC("area", $intLinkStyle); break;
+        case "1": $strLink = FN_VIEW."/area/".$intID."/".$strTitle; break;
+        case "2": $strLink = URL_ROOT."area/".$intID."/".$strTitle; break;
         case "3":
         case "4":
         case "5":
-            $strLink = URL_ROOT.$strTitle."/".$this->DRC("area", $intLinkStyle); break;
+            $strLink = URL_ROOT.$strTitle."/"; break;
       }
       // Reset
       $CMS->PL->SetTitle("");
@@ -76,10 +63,10 @@
         $intLinkStyle = "1";
       }
       switch ($intLinkStyle) {
-        case "1": $strLink = FN_VIEW."/article/".$intID."/".$strTitle.$this->DRC("article", $intLinkStyle); break;
-        case "2": $strLink = URL_ROOT."article/".$intID."/".$strTitle.$this->DRC("article", $intLinkStyle); break;
-        case "3": $strLink = URL_ROOT.$strTitle.$this->DRC("article", $intLinkStyle); break;
-        case "4": $strLink = URL_ROOT.$strAreaTitle."/".$strTitle."/".$this->DRC("article", $intLinkStyle); break;
+        case "1": $strLink = FN_VIEW."/article/".$intID."/".$strTitle; break;
+        case "2": $strLink = URL_ROOT."article/".$intID."/".$strTitle; break;
+        case "3": $strLink = URL_ROOT.$strTitle; break;
+        case "4": $strLink = URL_ROOT.$strAreaTitle."/".$strTitle."/"; break;
         case "5":
             $arrArticle  = $CMS->ART->GetArticle($intID);
             $arrDate     = explode(" ", $arrArticle['create_date_raw']);
@@ -87,10 +74,7 @@
             $intYear     = $arrDateBits[0];
             $intMonth    = $arrDateBits[1];
             $intDay      = $arrDateBits[2];
-            $strLink = URL_ROOT.$intYear."/".
-                                $intMonth."/".
-                                $intDay."/".
-                                $strTitle.$this->DRC("article", $intLinkStyle);
+            $strLink     = sprintf(URL_ROOT.'%s/%s/%s/%s', $intYear, $intMonth, $intDay, $strTitle);
             break;
       }
       // Reset

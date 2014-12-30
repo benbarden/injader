@@ -93,15 +93,6 @@
       }
       // ** Go back link ** //
       if ($strReferrer) {
-        // Check logged in flag doesn't already exist
-        if (strpos($strReferrer, "loggedin=1") === false) {
-          // Add the flag to force a recache
-          if (strpos($strReferrer, "?") !== false) {
-            $strReferrer .= "&amp;loggedin=1";
-          } else {
-            $strReferrer .= "?loggedin=1";
-          }
-        }
         $strGoBack = "<li><a href=\"$strReferrer\">Go back to the page you were just viewing</a></li>";
       } else {
         $strGoBack = "";

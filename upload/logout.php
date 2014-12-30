@@ -26,12 +26,6 @@
   $CMS->US->Logout($CMS->RES->GetCurrentUserID());
   $strReferrer = empty($_SERVER['HTTP_REFERER']) ? "" : $_SERVER['HTTP_REFERER'];
   if ($strReferrer) {
-    // Remove logged in flag
-    if (strpos($strReferrer, "?loggedin=1") !== false) {
-      $strReferrer = str_replace("?loggedin=1", "", $strReferrer);
-    } elseif (strpos($strReferrer, "&loggedin=1") !== false) {
-      $strReferrer = str_replace("&loggedin=1", "", $strReferrer);
-    }
     // Fix broken page number links
     if ((strpos($strReferrer, "?") === false) && (strpos($strReferrer, "&") !== false)) {
       $strReferrer = str_replace("&", "?", $strReferrer);

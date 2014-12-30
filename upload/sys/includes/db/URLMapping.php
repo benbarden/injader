@@ -57,7 +57,6 @@ class URLMapping extends Helper {
             $CMS->PL->SetTitle($strSEOName);
             $strLink    = $CMS->PL->ViewArea($intAreaID);
             $CMS->PL->SetTitle("");
-            $strLink = str_replace("?loggedin=1", "", $strLink);
             $this->addLink($strLink, 0, $intAreaID);
         }
         
@@ -73,7 +72,6 @@ class URLMapping extends Helper {
             $CMS->PL->SetTitle($strSEOName);
             $strLink    = $CMS->PL->ViewArticle($intArticleID);
             $CMS->PL->SetTitle("");
-            $strLink = str_replace("?loggedin=1", "", $strLink);
             $this->addLink($strLink, $intArticleID, 0);
         }
         
@@ -158,7 +156,6 @@ class URLMapping extends Helper {
         global $CMS;
         
         $arrURL = explode("?", $strURL);
-        //$strURL = str_replace("?loggedin=1", "", $strURL);
         $strURL = $arrURL[0];
         $strQuery = sprintf("
             SELECT *

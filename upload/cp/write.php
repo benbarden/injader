@@ -151,7 +151,6 @@
             $CMS->PL->SetTitle($strSEOTitle);
             $strLink = $CMS->PL->ViewArticle($intCheckArticleID, $intAreaID);
             $CMS->PL->SetTitle("");
-            $strLink = str_replace("?loggedin=1", "", $strLink);
             $blnInvalid = $CMS->UM->isUrlInUse($strLink, $intCheckArticleID, "");
             // Tell the user if it's invalid
             if ($blnInvalid) {
