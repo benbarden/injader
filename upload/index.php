@@ -100,28 +100,6 @@
 
     }
     
-    // ** Caching ** //
-    switch ($strObject) {
-        case "area":
-        case "article":
-        case "file":
-        case "user":
-            if ($CMS->RES->GetCurrentUserID()) {
-                // Don't cache for logged-in users
-                header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-                header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");   // Date in the past
-            } else {
-                // Expires in 1 day
-                $dteDate = mktime(date("H"), date("i"), date("s"), date("m"), date("d")+1, date("Y"));
-                $dteExpiryDate = date('r', $dteDate);
-                header("Expires: ".$dteExpiryDate);
-            }
-            break;
-        default:
-            $CMS->Err_MFail(M_ERR_INVALID_VIEW_PARAM, $strObject);
-            break;
-    }
-
     // Theme renderer
     $themeRenderer = new \Cms\Theme\Renderer($cmsContainer);
     switch ($strObject) {
@@ -146,6 +124,9 @@
             break;
         case "user":
             $themeRenderer->setObjectUser();
+            break;
+        default:
+            $CMS->Err_MFail(M_ERR_INVALID_VIEW_PARAM, $strObject);
             break;
     }
     $themeRenderer->setItemId($intItemID);
