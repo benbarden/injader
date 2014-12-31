@@ -26,10 +26,6 @@
   $intUserID = $CMS->RES->GetCurrentUserID();
   $strPageTitle = "Change Password";
 
-  if ($CMS->SYS->GetSysPref(C_PREF_USER_CHANGE_PASS) != "Y") {
-    $CMS->Err_MFail(M_ERR_CHANGEPASS_DISABLED, "");
-  }
-  
   $strMissingPassword = "";
   $strDifferentPasswords = "";
 

@@ -52,7 +52,6 @@
     }
     $strSystemLock       = !empty($_POST['chkSystemLock']) ? "Y" : "N";
     $strUserReg          = !empty($_POST['chkUserRegistration']) ? 1 : 0;
-    $strChangePass       = !empty($_POST['chkUserChangePass']) ? "Y" : "N";
     $strAllowPasswordResets = !empty($_POST['chkAllowPasswordResets']) ? "Y" : "N";
     $intCookieDays       = $CMS->FilterNumeric($_POST['txtCookieDays']);
     if ((!$intCookieDays) || ($intCookieDays <= 0)) {
@@ -115,9 +114,6 @@
       if ($CMS->SYS->GetSysPref(C_PREF_USER_REGISTRATION) != $strUserReg) {
         $CMS->SYS->WriteSysPref(C_PREF_USER_REGISTRATION, $strUserReg);
       }
-      if ($CMS->SYS->GetSysPref(C_PREF_USER_CHANGE_PASS) != $strChangePass) {
-        $CMS->SYS->WriteSysPref(C_PREF_USER_CHANGE_PASS, $strChangePass);
-      }
       if ($CMS->SYS->GetSysPref(C_PREF_COOKIE_DAYS) != $intCookieDays) {
         $CMS->SYS->WriteSysPref(C_PREF_COOKIE_DAYS, $intCookieDays);
       }
@@ -159,7 +155,6 @@
         case C_PREF_MAX_LOG_ENTRIES:       $intMaxLogEntries = $strValue; break;
         case C_PREF_SYSTEM_LOCK:           $strSystemLock = $strValue; break;
         case C_PREF_USER_REGISTRATION:     $strUserReg = $strValue; break;
-        case C_PREF_USER_CHANGE_PASS:      $strChangePass = $strValue; break;
         case C_PREF_ALLOW_PASSWORD_RESETS: $strAllowPasswordResets = $strValue; break;
         case C_PREF_COOKIE_DAYS:           $intCookieDays = $strValue; break;
         case C_PREF_DATE_FORMAT:           $intDateFormat = $strValue; break;
@@ -185,7 +180,6 @@
   
   $strSystemLock == "Y" ? $strSystemLockChecked = " checked=\"checked\"" : $strSystemLockChecked = "";
   $strUserReg == 1 ? $strUserRegChecked = " checked=\"checked\"" : $strUserRegChecked = "";
-  $strChangePass == "Y" ? $strUserPassChecked = " checked=\"checked\"" : $strUserPassChecked = "";
   $strAllowPasswordResets == "Y" ? $strAllowPWResetChecked = " checked=\"checked\"" : $strAllowPWResetChecked = "";
   
   $strSubmitButton = $CMS->AC->SubmitButton();
@@ -303,14 +297,6 @@ $strConfMsg
   </tr>
   <tr>
     <td>
-      <b><label for="chkUserChangePass">Allow password changes</label></b>
-    </td>
-    <td>
-      <input id="chkUserChangePass" name="chkUserChangePass" type="checkbox"$strUserPassChecked />
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b><label for="chkAllowPasswordResets">Allow password resets</label></b>
     </td>
     <td>
@@ -363,4 +349,3 @@ $strConfMsg
 
 END;
   $CMS->AP->Display($strHTML);
-?>

@@ -101,7 +101,6 @@
   define('M_ERR_ENTER_PW_TWICE', "You must enter your old password, and enter your new password twice.");
   define('M_ERR_DIFF_PASSWORDS', "The passwords do not match.");
   define('M_ERR_OLD_PW_WRONG', "The old password is incorrect.");
-  define('M_ERR_CHANGEPASS_DISABLED', "Password changes have been disabled by the site admin.");
   define('M_ERR_AVATAR_LIMIT', "You cannot upload any more avatars. To upload a new avatar, first remove an existing one.");
   define('M_ERR_AVATAR_DIMENSIONS', "This image is either too wide or too tall to be an avatar. Please resize the file and try again.");
   define('M_ERR_AVATAR_NOT_YOURS', "This avatar belongs to another user. You are not allowed to use it.");
