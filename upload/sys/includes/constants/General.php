@@ -86,7 +86,6 @@
   define('C_PREF_SITE_KEYWORDS',         'prefSiteKeywords');
   define('C_PREF_SITE_EMAIL',            'prefSiteEmail');
   define('C_PREF_SITE_HEADER',           'prefSiteHeader');
-  define('C_PREF_SITE_FAVICON',          'prefSiteFavicon');
   define('C_PREF_SYSTEM_PAGE_COUNT',     'prefSystemPageCount');
   define('C_PREF_MAX_LOG_ENTRIES',       'prefMaxLogEntries');
   define('C_PREF_DATE_FORMAT',           'prefDateFormat');

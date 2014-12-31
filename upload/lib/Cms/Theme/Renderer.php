@@ -211,7 +211,6 @@ class Renderer
         $siteTitle = $repoSetting->getSettingSiteTitle();
         $siteDesc = $repoSetting->getSettingSiteDesc();
         $siteKeywords = $repoSetting->getSettingSiteKeywords();
-        $siteFavicon = $repoSetting->getSettingSiteFavicon();
         $siteRSSArticlesUrl = $repoSetting->getSettingRSSArticlesURL();
         $siteCustomHeader = $repoSetting->getSettingSiteHeader();
 
@@ -233,7 +232,6 @@ class Renderer
             'SiteTitle' => $siteTitle,
             'SiteDesc' => $siteDesc,
             'SiteKeywords' => $siteKeywords,
-            'SiteFavicon' => $siteFavicon,
             'SiteRSSArticlesUrl' => $siteRSSArticlesUrl,
             'SiteStylesCoreUrl' => $siteStylesCoreUrl,
             'SiteScriptsCoreUrl' => $siteScriptsCoreUrl,

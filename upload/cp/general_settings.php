@@ -39,7 +39,6 @@
     $strSiteKeywords     = $CMS->AddSlashesIFW($_POST['txtSiteKeywords']);
     $strSiteEmail        = $_POST['txtSiteEmail'];
     $strSiteHeader       = $CMS->AddSlashesIFW($_POST['txtSiteHeader']);
-    $strSiteFavicon      = $CMS->AddSlashesIFW($_POST['txtSiteFavicon']);
     $intServerTimeOffset = $_POST['txtServerTimeOffset'];
     $intSystemPageCount  = $CMS->FilterNumeric($_POST['txtSystemPageCount']);
     if ((!$intSystemPageCount) || ($intSystemPageCount <= 0)) {
@@ -86,9 +85,6 @@
       if ($CMS->SYS->GetSysPref(C_PREF_SITE_HEADER) != $strSiteHeader) {
         $CMS->SYS->WriteSysPref(C_PREF_SITE_HEADER, $strSiteHeader);
       }
-      if ($CMS->SYS->GetSysPref(C_PREF_SITE_FAVICON) != $strSiteFavicon) {
-        $CMS->SYS->WriteSysPref(C_PREF_SITE_FAVICON, $strSiteFavicon);
-      }
       if ($CMS->SYS->GetSysPref(C_PREF_SERVER_TIME_OFFSET) != $intServerTimeOffset) {
         $CMS->SYS->WriteSysPref(C_PREF_SERVER_TIME_OFFSET, $intServerTimeOffset);
       }
@@ -120,7 +116,6 @@
     $strSiteDesc     = $CMS->StripSlashesIFW($strSiteDesc);
     $strSiteKeywords = $CMS->StripSlashesIFW($strSiteKeywords);
     $strSiteHeader   = $CMS->StripSlashesIFW($strSiteHeader);
-    $strSiteFavicon  = $CMS->StripSlashesIFW($strSiteFavicon);
   } else {
     if (!isset($CMS->SYS->arrSysPrefs[C_PREF_SITE_TITLE])) {
       $CMS->SYS->GetAllSysPrefs();
@@ -133,7 +128,6 @@
         case C_PREF_SITE_KEYWORDS:         $strSiteKeywords = $strValue; break;
         case C_PREF_SITE_EMAIL:            $strSiteEmail = $strValue; break;
         case C_PREF_SITE_HEADER:           $strSiteHeader = $strValue; break;
-        case C_PREF_SITE_FAVICON:          $strSiteFavicon = $strValue; break;
         case C_PREF_SERVER_TIME_OFFSET:    $intServerTimeOffset = $strValue; break;
         case C_PREF_SYSTEM_PAGE_COUNT:     $intSystemPageCount = $strValue; break;
         case C_PREF_MAX_LOG_ENTRIES:       $intMaxLogEntries = $strValue; break;
@@ -213,14 +207,6 @@ $strConfMsg
     <td>
       $strMissingEmailText
       <input id="txtSiteEmail" name="txtSiteEmail" type="text" size="40" maxlength="100" value="$strSiteEmail" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="txtSiteFavicon">Favicon</label></b>
-    </td>
-    <td>
-      <input id="txtSiteFavicon" name="txtSiteFavicon" type="text" size="40" maxlength="100" value="$strSiteFavicon" />
     </td>
   </tr>
   <tr class="separator-row">

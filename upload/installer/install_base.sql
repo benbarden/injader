@@ -142,7 +142,6 @@ INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_DESCRIP
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_KEYWORDS}', '');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_HEADER}', '');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_EMAIL}', 'you@yoursite.com');
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_FAVICON}', '');
 
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_DEFAULT_THEME}', 'injader');
 

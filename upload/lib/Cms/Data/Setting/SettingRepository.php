@@ -70,11 +70,6 @@ class SettingRepository implements ISettingRepository
         return $this->getSettingValue(Setting::SETTING_SITE_KEYWORDS);
     }
 
-    public function getSettingSiteFavicon()
-    {
-        return $this->getSettingValue(Setting::SETTING_SITE_FAVICON);
-    }
-
     public function getSettingRSSArticlesURL()
     {
         return $this->getSettingValue(Setting::SETTING_RSS_ARTICLES_URL);

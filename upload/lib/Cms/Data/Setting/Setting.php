@@ -43,7 +43,6 @@ class Setting
     const SETTING_SITE_EMAIL = 'prefSiteEmail';
     const SETTING_SITE_HEADER = 'prefSiteHeader';
     const SETTING_RSS_ARTICLES_URL = 'prefRSSArticlesURL';
-    const SETTING_SITE_FAVICON = 'prefSiteFavicon';
     const SETTING_SYSTEM_PAGE_COUNT = 'prefSystemPageCount';
     const SETTING_MAX_LOG_ENTRIES = 'prefMaxLogEntries';
     const SETTING_SYSTEM_LOCK = 'prefSystemLock';

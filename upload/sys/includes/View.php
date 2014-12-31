@@ -159,13 +159,7 @@
       $CMS->TH->SetHeaderMetaGenerator($strMetaGenerator);
       $strSiteKeywords = $CMS->SYS->GetSysPref(C_PREF_SITE_KEYWORDS);
       $strKeywords = "<meta name=\"keywords\" content=\"$strSiteKeywords\" />\n";
-      $strSiteFavicon  = $CMS->SYS->GetSysPref(C_PREF_SITE_FAVICON);
-      if ($strSiteFavicon) {
-        $strFavicon = "<link rel=\"icon\" href=\"$strSiteFavicon\" type=\"image/x-icon\" />\n<link rel=\"shortcut icon\" href=\"$strSiteFavicon\" type=\"image/x-icon\" />\n";
-      } else {
-        $strFavicon = "";
-      }
-      $strMetaTags = $strKeywords.$strFavicon;
+      $strMetaTags = $strKeywords;
       $CMS->TH->SetHeaderMetaKeywords($strMetaTags);
       $strHeaderCoreStyles = "<link href=\"".URL_SYS_ROOT."core.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
       $CMS->TH->SetHeaderCoreStyles($strHeaderCoreStyles);
