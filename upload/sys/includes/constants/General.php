@@ -19,7 +19,7 @@
 */
 
   // Latest version of Injader
-  define('C_SYS_LATEST_VERSION', '2.5.0');
+  define('C_SYS_LATEST_VERSION', '3.0.0');
 
   // Product
   define('PRD_PRODUCT_NAME', 'Injader');
@@ -130,4 +130,3 @@
   // Link Settings
   define('C_PREF_LINK_STYLE',       'prefLinkStyle');
 
-?>
