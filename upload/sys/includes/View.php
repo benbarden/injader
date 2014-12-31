@@ -294,8 +294,6 @@
 
       // Release scheduled content
       $CMS->ART->ReleaseScheduledContent();
-      // Purge old access logs
-      $CMS->AL->Purge();
       // Can't view linked areas
       $strAreaType = $CMS->AR->GetAreaType($intID);
       if ($strAreaType == "Linked") {
@@ -538,8 +536,6 @@
       }
       // Release scheduled content
       $CMS->ART->ReleaseScheduledContent();
-      // Purge old access logs
-      $CMS->AL->Purge();
       // ** Article Content ** //
       $strContTitle  = $arrContent['title'];
       $strContBody   = $arrContent['content'];

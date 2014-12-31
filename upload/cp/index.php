@@ -26,6 +26,12 @@
   $strSiteTitle = $CMS->SYS->GetSysPref(C_PREF_SITE_TITLE);
   $strPageTitle = "Dashboard";
 
+// Purge access log
+// @todo move this to a cron
+$cpLogLimit = $cmsContainer->getService('Cms.Config')->getByKey('CP.LogLimit');
+$repoAccessLog = $cmsContainer->getService('Repo.AccessLog');
+$repoAccessLog->purgeEntries($cpLogLimit);
+
 // Twig templating for CPanel
 $cpBindings = array(); //array_merge($globalBindings, $userBindings);
 $themeFile = 'index.twig';

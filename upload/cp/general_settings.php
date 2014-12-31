@@ -29,7 +29,6 @@
   
   $blnSubmitForm = false;
   $strMissingTitleText  = "";
-  $strMissingDescText   = "";
   $strMissingEmailText  = "";
   $strMissingServerTimeText = "";
 
@@ -43,10 +42,6 @@
     $intSystemPageCount  = $CMS->FilterNumeric($_POST['txtSystemPageCount']);
     if ((!$intSystemPageCount) || ($intSystemPageCount <= 0)) {
       $intSystemPageCount = 25;
-    }
-    $intMaxLogEntries    = $CMS->FilterNumeric($_POST['txtMaxLogEntries']);
-    if ((!$intMaxLogEntries) || ($intMaxLogEntries <= 0)) {
-      $intMaxLogEntries = 3000;
     }
     $strUserReg          = !empty($_POST['chkUserRegistration']) ? 1 : 0;
     $intCookieDays       = $CMS->FilterNumeric($_POST['txtCookieDays']);
@@ -91,9 +86,6 @@
       if ($CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT) != $intSystemPageCount) {
         $CMS->SYS->WriteSysPref(C_PREF_SYSTEM_PAGE_COUNT, $intSystemPageCount);
       }
-      if ($CMS->SYS->GetSysPref(C_PREF_MAX_LOG_ENTRIES) != $intMaxLogEntries) {
-        $CMS->SYS->WriteSysPref(C_PREF_MAX_LOG_ENTRIES, $intMaxLogEntries);
-      }
       if ($CMS->SYS->GetSysPref(C_PREF_USER_REGISTRATION) != $strUserReg) {
         $CMS->SYS->WriteSysPref(C_PREF_USER_REGISTRATION, $strUserReg);
       }
@@ -130,7 +122,6 @@
         case C_PREF_SITE_HEADER:           $strSiteHeader = $strValue; break;
         case C_PREF_SERVER_TIME_OFFSET:    $intServerTimeOffset = $strValue; break;
         case C_PREF_SYSTEM_PAGE_COUNT:     $intSystemPageCount = $strValue; break;
-        case C_PREF_MAX_LOG_ENTRIES:       $intMaxLogEntries = $strValue; break;
         case C_PREF_USER_REGISTRATION:     $strUserReg = $strValue; break;
         case C_PREF_COOKIE_DAYS:           $intCookieDays = $strValue; break;
         case C_PREF_DATE_FORMAT:           $intDateFormat = $strValue; break;
@@ -269,14 +260,6 @@ $strConfMsg
     </td>
     <td>
       <input id="txtSystemPageCount" name="txtSystemPageCount" type="text" size="4" maxlength="4" value="$intSystemPageCount" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="txtMaxLogEntries">Log file row limit</label></b>
-    </td>
-    <td>
-      <input id="txtMaxLogEntries" name="txtMaxLogEntries" type="text" size="5" maxlength="5" value="$intMaxLogEntries" />
     </td>
   </tr>
   <tr>

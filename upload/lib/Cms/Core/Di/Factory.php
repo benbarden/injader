@@ -3,11 +3,12 @@
 
 namespace Cms\Core\Di;
 
-use Cms\Data\Area\AreaRepository,
+use Cms\Data\AccessLog\AccessLogRepository,
+    Cms\Data\Area\AreaRepository,
+    Cms\Data\Article\ArticleRepository,
     Cms\Data\Setting\SettingRepository,
     Cms\Data\User\UserRepository,
     Cms\Data\UserSession\UserSessionRepository;
-use Cms\Data\Article\ArticleRepository;
 
 
 class Factory
@@ -46,8 +47,11 @@ class Factory
         $themeCache   = $config->getByKey('Theme.Cache');
         $engineCache  = ($themeCache == 'On') ? 1 : 0;
 
+        $cpItemsPerPage = $config->getByKey('CP.ItemsPerPage');
+
         $pdo = new \PDO($dsn, $user, $pw);
 
+        $repoAccessLog = new AccessLogRepository($pdo);
         $repoArea = new AreaRepository($pdo);
         $repoArticle = new ArticleRepository($pdo);
         $repoSetting = new SettingRepository($pdo);
@@ -82,9 +86,11 @@ class Factory
         if ($this->loggedInUser) {
             $serviceLocator->set('Auth.CurrentUser', $this->loggedInUser);
         }
+        $serviceLocator->set('Cms.Config', $config);
         $serviceLocator->set('Cms.ThemeEngine', $cmsThemeEngine);
         $serviceLocator->set('IA.LinkArea', $iaLinkArea);
         $serviceLocator->set('IA.LinkArticle', $iaLinkArticle);
+        $serviceLocator->set('Repo.AccessLog', $repoAccessLog);
         $serviceLocator->set('Repo.Area', $repoArea);
         $serviceLocator->set('Repo.Article', $repoArticle);
         $serviceLocator->set('Repo.Setting', $repoSetting);

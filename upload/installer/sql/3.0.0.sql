@@ -11,6 +11,7 @@ DELETE FROM maj_sys_preferences WHERE preference = 'prefAllowPasswordResets';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefSystemLock';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefRSSArticlesURL';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefSiteFavicon';
+DELETE FROM maj_sys_preferences WHERE preference = 'prefMaxLogEntries';
 
 UPDATE maj_sys_preferences SET content = 'injader' WHERE preference = 'prefDefaultTheme';
 UPDATE maj_sys_preferences SET content = '3.0.0' WHERE preference = 'prefCMSVersion';

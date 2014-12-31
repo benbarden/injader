@@ -186,23 +186,4 @@
         $this->Create($strLogDesc, $strTag);
       }
     }
-    // ** Purge old access log entries ** //
-    function Purge() {
-      global $CMS;
-      $dteStartTime = $this->MicrotimeFloat();
-      $intLogLimit = $CMS->SYS->GetSysPref(C_PREF_MAX_LOG_ENTRIES);
-      $arrLogData = $CMS->ResultQuery("SELECT id FROM {IFW_TBL_ACCESS_LOG} ORDER BY id DESC LIMIT $intLogLimit,1", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $intLogID = $arrLogData[0]['id'];
-      if ($intLogID) {
-        $arrExcess = $CMS->ResultQuery("SELECT count(*) AS count FROM {IFW_TBL_ACCESS_LOG} WHERE id < $intLogID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-        $intExcessRowCount = $arrExcess[0]['count'];
-        if ($intExcessRowCount > 50) {
-          $CMS->Query("DELETE FROM {IFW_TBL_ACCESS_LOG} WHERE id < $intLogID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-        }
-      }
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
   }
-
-?>

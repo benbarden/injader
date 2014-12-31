@@ -119,7 +119,6 @@
         $intUserIP = $_SERVER['REMOTE_ADDR'];
       }
       $this->Query("INSERT INTO {IFW_TBL_ACCESS_LOG}(user_id, detail, tag, log_date, ip_address) VALUES($intUserID, '$strDetail', '$strTag', '$dteLogDate', '$intUserIP')", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $CMS->AL->Purge();
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
     }
