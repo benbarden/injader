@@ -67,17 +67,6 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_COMMENTS} (
   INDEX comment_status(comment_status)
 );
 
-DROP TABLE IF EXISTS {IFW_TBL_CONNECTIONS};
-CREATE TABLE IF NOT EXISTS {IFW_TBL_CONNECTIONS} (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  conn_host VARCHAR(100) NOT NULL,
-  conn_schema VARCHAR(100) NOT NULL,
-  conn_user VARCHAR(100) NOT NULL,
-  conn_pass VARCHAR(100) NOT NULL,
-  conn_name VARCHAR(100) NOT NULL,
-  PRIMARY KEY(id)
-);
-
 DROP TABLE IF EXISTS {IFW_TBL_CONTENT};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
   id int(10) unsigned NOT NULL auto_increment,
@@ -129,21 +118,6 @@ CREATE TABLE {IFW_TBL_PERMISSION_PROFILES} (
 );
 INSERT INTO {IFW_TBL_PERMISSION_PROFILES}(name, is_system, view_area, create_article, publish_article, edit_article, delete_article, add_comment, edit_comment, delete_comment, lock_article, attach_file) VALUES('System', 'Y', '0|1|2', '2', '2', '2', '2', '0|1|2', '2', '2', '2', '2');
 
-DROP TABLE IF EXISTS {IFW_TBL_RATINGS};
-CREATE TABLE IF NOT EXISTS {IFW_TBL_RATINGS} (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  article_id INTEGER UNSIGNED NOT NULL default 0,
-  comment_id INTEGER UNSIGNED NOT NULL default 0,
-  rating_value INTEGER UNSIGNED NOT NULL default 0,
-  ip_address VARCHAR(20) NOT NULL default '',
-  user_id INTEGER UNSIGNED NOT NULL default 0,
-  PRIMARY KEY (id),
-  INDEX article_id(article_id),
-  INDEX comment_id(comment_id),
-  INDEX ip_address(ip_address),
-  INDEX user_id(user_id)
-);
-
 DROP TABLE IF EXISTS {IFW_TBL_SPAM_RULES};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_SPAM_RULES} (
   id int(10) unsigned NOT NULL auto_increment, 
@@ -163,15 +137,15 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_SYS_PREFERENCES} (
 );
 
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_CMS_VERSION}', '{C_SYS_LATEST_VERSION}');
-INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_TITLE}', 'Your site title');
-INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_DESCRIPTION}', 'Your site description');
-INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_KEYWORDS}', 'Injader, CMS, content management system');
+INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_TITLE}', 'Injader test site');
+INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_DESCRIPTION}', '');
+INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_KEYWORDS}', '');
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_HEADER}', '');
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_EMAIL}', 'you@yoursite.com');
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SITE_FAVICON}', '');
 
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_RSS_ARTICLES_URL}', '');
-INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_DEFAULT_THEME}', "injader");
+INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_DEFAULT_THEME}', 'injader');
 
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_SYSTEM_PAGE_COUNT}', '25');
 INSERT INTO {IFW_TBL_SYS_PREFERENCES}(preference, content) VALUES('{C_PREF_MAX_LOG_ENTRIES}', '3000');
