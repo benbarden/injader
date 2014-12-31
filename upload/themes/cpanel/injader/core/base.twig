@@ -53,31 +53,79 @@
                 <li>
                     <a href="{{ cpLink('index') }}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
                 </li>
+                <!-- My Settings -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Settings <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ cpLink('edit_profile') }}">Edit Profile</a></li>
+                        {% if Login.User %}
+                        <li><a href="{{ cmsLinkUser(Login.User.Id) }}">View Profile</a></li>
+                        {% endif %}
+                        <li><a href="{{ cpLink('change_password') }}">Change Password</a></li>
+                        <li><a href="{{ cpLink('manage_avatars') }}">Manage Avatars</a></li>
+                    </ul>
+                </li>
                 {% if Auth.CanWriteContent %}
                     <li><a href="{{ cpLink('write', {'action': 'create'}) }}">+ Article</a></li>
                 {% endif %}
-                <li><a href="{{ cpLink('my_settings') }}">My Settings</a></li>
                 {% if Auth.IsAdmin %}
-                    <li><a href="{{ cpLink('areas') }}" title="Manage your site areas">Areas</a></li>
+                    <!-- Content -->
                     <li><a href="{{ cpLink('content_manage') }}" title="Manage Content">Content</a></li>
-                    <li><a href="{{ cpLink('files') }}" title="Manage site files, attachments and avatars">Files</a></li>
-                    <li><a href="{{ cpLink('comments') }}" title="Manage comments">Comments</a></li>
-                    <li><a href="{{ cpLink('themes') }}" title="Manage your themes">Themes</a></li>
-                    <li><a href="{{ cpLink('tools') }}" title="Plugins and more">Tools</a></li>
-                    <li><a href="{{ cpLink('general_settings') }}" title="Configure website settings">Settings</a></li>
+                    <!-- Areas -->
+                    <li><a href="{{ cpLink('areas') }}" title="Manage your site areas">Areas</a></li>
+                    <!-- Files -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Files <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ cpLink('files', {'type': 'site'}) }}">Site Files</a></li>
+                            <li><a href="{{ cpLink('files', {'type': 'attach'}) }}">Attachments</a></li>
+                            <li><a href="{{ cpLink('files', {'type': 'avatar'}) }}">Avatars</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ cpLink('file_add') }}">+ Add New File</a></li>
+                        </ul>
+                    </li>
+                    <!-- Comments -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ cpLink('comments') }}">Manage Comments</a></li>
+                            <li><a href="{{ cpLink('comments', {'type': 'approved'}) }}">Approved</a></li>
+                            <li><a href="{{ cpLink('comments', {'type': 'pending'}) }}">Pending</a></li>
+                            <li><a href="{{ cpLink('comments', {'type': 'spam'}) }}">Spam</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ cpLink('tools_spam_stats') }}">Spam Stats</a></li>
+                        </ul>
+                    </li>
+                    <!-- Users -->
                     <li><a href="{{ cpLink('users', {'action': 'showall'}) }}" title="Manage user accounts, roles, and permissions">Users</a></li>
+                    <!-- Tools -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ cpLink('tools_spam_rules') }}">Spam Rules</a></li>
+                            <li><a href="{{ cpLink('tools_spam_stats') }}">Comment Spam Stats</a></li>
+                            <li><a href="{{ cpLink('tools_user_sessions') }}">User Sessions</a></li>
+                            <li><a href="{{ cpLink('tools_access_log') }}">Access Log</a></li>
+                            <li><a href="{{ cpLink('tools_error_log') }}">Error Log</a></li>
+                        </ul>
+                    </li>
+                    <!-- Settings -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ cpLink('settings_general') }}">General Settings</a></li>
+                            <li><a href="{{ cpLink('settings_content') }}">Content Settings</a></li>
+                            <li><a href="{{ cpLink('settings_file') }}">File Settings</a></li>
+                            <li><a href="{{ cpLink('settings_url') }}">URL Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ cpLink('themes') }}">Themes</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ cpLink('permissions') }}">Permissions</a></li>
+                            <li><a href="{{ cpLink('user_roles') }}">User Roles</a></li>
+                        </ul>
+                    </li>
                 {% endif %}
-                <!--
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Help</a></li>
-                -->
             </ul>
-            <!--
-            <form class="navbar-form navbar-right">
-              <input type="text" class="form-control" placeholder="Search...">
-            </form>
-            -->
         </div> <!-- /navbar-collapse -->
     </div>
 </div> <!-- /navbar -->

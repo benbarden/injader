@@ -31,7 +31,6 @@
 	$intNumGroups = count($arrGroups);
 
   $strHTML = <<<MainContentStart
-<p><a href="{FN_ADM_USERS}" title="Manage user accounts">Users</a> | <b>User Roles</b> | <a href="{FN_ADM_PERMISSIONS}" title="Assign privileges to user roles">Permissions</a></p>
 <h1 class="page-header">$strPageTitle</h1>
 <div class="table-responsive">
 <table class="table table-striped">

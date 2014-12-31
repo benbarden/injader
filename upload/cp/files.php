@@ -91,30 +91,11 @@
     $intUserID = "";
   }
   
-  // Switch links
-  $strHTML = "<p><a href=\"{FN_ADM_FILES_SITE_UPLOAD}?action=create\">New Site File</a>";
-  if ($blnSite) {
-    $strHTML .= <<<OpeningLinks
- | <b>Site Files</b> | <a href="{FN_ADM_FILES}?type=attach">Attachments</a> | <a href="{FN_ADM_FILES}?type=avatar">Avatars</a></p>
-
-OpeningLinks;
-  } elseif ($blnAttach) {
-    $strHTML .= <<<OpeningLinks
- | <a href="{FN_ADM_FILES}?type=site">Site Files</a> | <b>Attachments</b> | <a href="{FN_ADM_FILES}?type=avatar">Avatars</a></p>
-
-OpeningLinks;
-  } elseif ($blnAvatar) {
-    $strHTML .= <<<OpeningLinks
- | <a href="{FN_ADM_FILES}?type=site">Site Files</a> | <a href="{FN_ADM_FILES}?type=attach">Attachments</a> | <b>Avatars</b></p>
-
-OpeningLinks;
-  }
-  
   // Search button
 
   $strSearchButton  = $CMS->AC->SearchButton();
 
-  $strHTML .= <<<MainContentStart
+  $strHTML = <<<MainContentStart
 <h1 class="page-header">$strPageTitle</h1>
 <form action="{FN_ADM_FILES}" method="get">
 <div class="table-responsive">

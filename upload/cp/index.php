@@ -32,6 +32,15 @@ $themeFile = 'index.twig';
 
 $cpBindings['CP']['Title'] = $strPageTitle;
 
+// User access
+if ($cmsContainer->hasService('Auth.CurrentUser')) {
+    $authCurrentUser = $cmsContainer->getService('Auth.CurrentUser');
+    $userArray = array(
+        'Id' => $authCurrentUser->getUserId(),
+        'Name' => $authCurrentUser->getUsername()
+    );
+    $cpBindings['Login']['User'] = $userArray;
+}
 
 $CMS->RES->Admin();
 if ($CMS->RES->IsError()) {

@@ -80,15 +80,6 @@ $strConfirmMsg
 <form id="frmSystemPrefs" action="{FN_ADM_URL_SETTINGS}" method="post">
 <div class="table-responsive">
 <table class="table table-striped">
-  <tr class="separator-row">
-    <td colspan="2">
-    Settings:
-    <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> |
-    <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> |
-    <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> |
-    URLs
-    </td>
-  </tr>
     <tr>
         <td>
             <b>Link Style</b>

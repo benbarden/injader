@@ -198,15 +198,6 @@ $strConfMsg
 <form id="frmSystemPrefs" action="{FN_ADM_GENERAL_SETTINGS}" method="post">
 <div class="table-responsive">
 <table class="table table-striped">
-  <tr class="separator-row">
-    <td colspan="2">
-    Settings:
-    General |
-    <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> |
-    <a href="{FN_ADM_FILES_SETTINGS}" title="File Settings">Files</a> |
-    <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a>
-    </td>
-  </tr>
   <tr>
     <td>
       <b><label for="txtSiteTitle">Site Title</label></b>

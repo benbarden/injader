@@ -29,7 +29,6 @@
   $arrPermissions = $CMS->PP->GetAll();
 
   $strHTML = <<<MainContentStart
-<p><a href="{FN_ADM_USERS}" title="Manage user accounts">Users</a> | <a href="{FN_ADM_USER_ROLES}" title="Set up roles to use with permission profiles">User Roles</a> | <b>Permissions</b></p>
 <h1 class="page-header">$strPageTitle</h1>
 <div class="table-responsive">
 <table class="table table-striped" style="width: 500px;">

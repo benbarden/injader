@@ -47,28 +47,6 @@
     $intPageNumber = 1;
   }
   
-  // Switch links
-  $strHTML = "<p>";
-  if ($blnApproved) {
-    $strWhereClause = "AND comment_status = 'Approved'";
-    $strHTML .= <<<OpeningLinks
-<b>Approved</b> | <a href="{FN_ADM_COMMENTS}?type=pending">Pending</a> | <a href="{FN_ADM_COMMENTS}?type=spam">Spam</a>
-
-OpeningLinks;
-  } elseif ($blnPending) {
-    $strWhereClause = "AND comment_status = 'Pending'";
-    $strHTML .= <<<OpeningLinks
-<a href="{FN_ADM_COMMENTS}?type=approved">Approved</a> | <b>Pending</b> | <a href="{FN_ADM_COMMENTS}?type=spam">Spam</a>
-
-OpeningLinks;
-  } elseif ($blnSpam) {
-    $strWhereClause = "AND comment_status = 'Spam'";
-    $strHTML .= <<<OpeningLinks
-<a href="{FN_ADM_COMMENTS}?type=approved">Approved</a> | <a href="{FN_ADM_COMMENTS}?type=pending">Pending</a> | <b>Spam</b>
-
-OpeningLinks;
-  }
-  
   /* to be reinstated later
 <ul>
 <li>Approve and trust: Approve the selected comments. Future comments from all of the selected users will be automatically approved</li>
@@ -77,15 +55,21 @@ OpeningLinks;
   */
   
   // Build page
-  $strHTML .= <<<END
- | <a href="{FN_ADM_TOOLS_SPAM_STATS}">Spam Stats</a>
-</p>
+  $strHTML = <<<END
 <h1 class="page-header">$strPageTitle</h1>
-<p>This screen allows you to manage the comments on your site. Bulk actions can be used to approve or deny comments.</p>
 
 END;
 
-  // Page numbers
+// Switch links
+if ($blnApproved) {
+    $strWhereClause = "AND comment_status = 'Approved'";
+} elseif ($blnPending) {
+    $strWhereClause = "AND comment_status = 'Pending'";
+} elseif ($blnSpam) {
+    $strWhereClause = "AND comment_status = 'Spam'";
+}
+
+// Page numbers
   $intContentPerPage = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT);
   $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
   // Get comments

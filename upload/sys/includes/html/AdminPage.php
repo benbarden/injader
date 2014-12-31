@@ -91,6 +91,9 @@ AdminNotice;
       // CP LINKS
       $controlPanelLinks = array();
 
+      $currentUserId = $CMS->RES->GetCurrentUserID();
+      $viewProfileLink = $CMS->PL->ViewUser($currentUserId);
+
       // New article
       // Content
         $strNewArticleLink = "";
@@ -123,6 +126,65 @@ AdminNotice;
       if ($CMS->RES->IsError()) {
         $strAdminLinks = $strManageContent;
       } else {
+          $strAdminLinks = <<<AdminLinks
+                    <!-- Content -->
+                    <li><a href="/cp/content_manage.php?navtype=1&area1=0&area2=0&area3=0" title="Manage Content">Content</a></li>
+                    <!-- Areas -->
+                    <li><a href="/cp/areas.php" title="Manage your site areas">Areas</a></li>
+                    <!-- Files -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Files <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/cp/files.php?type=site">Site Files</a></li>
+                            <li><a href="/cp/files.php?type=attach">Attachments</a></li>
+                            <li><a href="/cp/files.php?type=avatar">Avatars</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/cp/files_site_upload.php?action=create">+ Add New File</a></li>
+                        </ul>
+                    </li>
+                    <!-- Comments -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/cp/comments.php?type=">Manage Comments</a></li>
+                            <li><a href="/cp/comments.php?type=approved">Approved</a></li>
+                            <li><a href="/cp/comments.php?type=pending">Pending</a></li>
+                            <li><a href="/cp/comments.php?type=spam">Spam</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/cp/tools_spam_stats.php">Spam Stats</a></li>
+                        </ul>
+                    </li>
+                    <!-- Users -->
+                    <li><a href="/cp/users.php?action=showall" title="Manage user accounts, roles, and permissions">Users</a></li>
+                    <!-- Tools -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/cp/spam_rules.php">Spam Rules</a></li>
+                            <li><a href="/cp/tools_spam_stats.php">Comment Spam Stats</a></li>
+                            <li><a href="/cp/tools_user_sessions.php">User Sessions</a></li>
+                            <li><a href="/cp/access_log.php">Access Log</a></li>
+                            <li><a href="/cp/error_log.php">Error Log</a></li>
+                        </ul>
+                    </li>
+                    <!-- Settings -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/cp/general_settings.php">General Settings</a></li>
+                            <li><a href="/cp/content_settings.php">Content Settings</a></li>
+                            <li><a href="/cp/files_settings.php">File Settings</a></li>
+                            <li><a href="/cp/url_settings.php">URL Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/cp/themes.php">Themes</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/cp/permissions.php">Permissions</a></li>
+                            <li><a href="/cp/user_roles.php">User Roles</a></li>
+                        </ul>
+                    </li>
+
+AdminLinks;
+          /*
         $strAdminLinks = <<<AdminLinks
 <li><a href="{FN_ADM_AREAS}" title="Manage your site areas">Areas</a></li>
 <li><a href="{FN_ADM_CONTENT_MANAGE}" title="Manage Content">Content</a></li>
@@ -134,6 +196,7 @@ AdminNotice;
 <li><a href="{FN_ADM_USERS}?action=showall" title="Manage user accounts, roles, and permissions">Users</a></li>
 
 AdminLinks;
+          */
       }
       // Meta generator
       $strMetaGenerator = "<meta name=\"generator\" content=\"".PRD_PRODUCT_NAME." - ".PRD_PRODUCT_URL."\" />";
@@ -190,8 +253,16 @@ AdminLinks;
                 <li>
                 <a href="{FN_ADM_INDEX}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Settings <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/cp/edit_profile.php">Edit Profile</a></li>
+                        <li><a href="$viewProfileLink">View Profile</a></li>
+                        <li><a href="/cp/change_password.php">Change Password</a></li>
+                        <li><a href="/cp/manage_avatars.php">Manage Avatars</a></li>
+                    </ul>
+                </li>
                 $strNewArticleLink
-                <li><a href="{FN_ADM_MY_SETTINGS}">My Settings</a></li>
                 $strAdminLinks
             </ul>
         </div> <!-- /navbar-collapse -->

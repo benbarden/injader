@@ -335,26 +335,65 @@ class Engine
             case 'content_manage':
                 $url = URL_ROOT.'cp/content_manage.php?navtype=1&area1=0&area2=0&area3=0';
                 break;
-            case 'my_settings':
-                $url = URL_ROOT.'cp/my_settings.php';
+            case 'edit_profile':
+                $url = URL_ROOT.'cp/edit_profile.php';
+                break;
+            case 'change_password':
+                $url = URL_ROOT.'cp/change_password.php';
+                break;
+            case 'manage_avatars':
+                $url = URL_ROOT.'cp/manage_avatars.php';
                 break;
             case 'areas':
                 $url = URL_ROOT.'cp/areas.php';
                 break;
             case 'files':
-                $url = URL_ROOT.'cp/files.php';
+                $url = sprintf(URL_ROOT.'cp/files.php?type=%s', $type);
+                break;
+            case 'file_add':
+                $url = URL_ROOT.'cp/files_site_upload.php?action=create';
+                break;
+            // Settings
+            case 'settings_general':
+                $url = URL_ROOT.'cp/general_settings.php';
+                break;
+            case 'settings_content':
+                $url = URL_ROOT.'cp/content_settings.php';
+                break;
+            case 'settings_file':
+                $url = URL_ROOT.'cp/files_settings.php';
+                break;
+            case 'settings_url':
+                $url = URL_ROOT.'cp/url_settings.php';
                 break;
             case 'themes':
                 $url = URL_ROOT.'cp/themes.php';
                 break;
-            case 'tools':
-                $url = URL_ROOT.'cp/tools.php';
+            case 'permissions':
+                $url = URL_ROOT.'cp/permissions.php';
                 break;
-            case 'general_settings':
-                $url = URL_ROOT.'cp/general_settings.php';
+            case 'user_roles':
+                $url = URL_ROOT.'cp/user_roles.php';
                 break;
+            // Tools
+            case 'tools_spam_rules':
+                $url = URL_ROOT.'cp/spam_rules.php';
+                break;
+            case 'tools_spam_stats':
+                $url = URL_ROOT.'cp/tools_spam_stats.php';
+                break;
+            case 'tools_user_sessions':
+                $url = URL_ROOT.'cp/tools_user_sessions.php';
+                break;
+            case 'tools_access_log':
+                $url = URL_ROOT.'cp/access_log.php';
+                break;
+            case 'tools_error_log':
+                $url = URL_ROOT.'cp/error_log.php';
+                break;
+            // Catchall
             default:
-                $url = sprintf('Unknown link: %s', $link);
+                $url = 'ERROR::'.$link;
                 break;
         }
 

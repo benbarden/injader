@@ -74,7 +74,6 @@
   $strSearchButton = $CMS->AC->SearchButton();
 
   $strHTML = <<<END
-<p><b>Users</b> | <a href="{FN_ADM_USER_ROLES}" title="Set up roles to use with permission profiles">User Roles</a> | <a href="{FN_ADM_PERMISSIONS}" title="Assign privileges to user roles">Permissions</a></p>
 <h1 class="page-header">$strPageTitle</h1>
 <button onclick="top.location.href = '{FN_ADM_USER}?action=create';">Add a new user</button>
 <br><br>

@@ -132,15 +132,6 @@ $strConfMsg
 <div class="table-responsive">
 <table class="table table-striped">
   <tr class="separator-row">
-    <td colspan="2">
-    Settings:
-    <a href="{FN_ADM_GENERAL_SETTINGS}" title="General Settings">General</a> |
-    <a href="{FN_ADM_CONTENT_SETTINGS}" title="Content Settings">Content</a> |
-    Files |
-    <a href="{FN_ADM_URL_SETTINGS}" title="URLs">URLs</a>
-    </td>
-  </tr>
-  <tr class="separator-row">
     <td colspan="2">Thumbnail Sizes</td>
   </tr>
   <tr>
