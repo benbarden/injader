@@ -48,7 +48,7 @@
 
 MainContentStart;
 
-  $strNewGroupButton = $CMS->AC->LocationButton(M_BTN_ADD_GROUP, "{FN_ADM_USER_ROLE}?action=create");
+  $strNewGroupButton = $CMS->AC->LocationButton('Add New Role', "{FN_ADM_USER_ROLE}?action=create");
 
 	for ($i=0; $i<$intNumGroups; $i++) {
     $intGroupID   = $arrGroups[$i]['id'];
