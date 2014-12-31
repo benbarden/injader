@@ -184,19 +184,6 @@ AdminNotice;
                     </li>
 
 AdminLinks;
-          /*
-        $strAdminLinks = <<<AdminLinks
-<li><a href="{FN_ADM_AREAS}" title="Manage your site areas">Areas</a></li>
-<li><a href="{FN_ADM_CONTENT_MANAGE}" title="Manage Content">Content</a></li>
-<li><a href="{FN_ADM_FILES}" title="Manage site files, attachments and avatars">Files</a></li>
-<li><a href="{FN_ADM_COMMENTS}" title="Manage comments">Comments</a></li>
-<li><a href="{FN_ADM_THEMES}" title="Manage your themes">Themes</a></li>
-<li><a href="{FN_ADM_TOOLS}" title="Plugins and more">Tools</a></li>
-<li><a href="{FN_ADM_GENERAL_SETTINGS}" title="Configure website settings">Settings</a></li>
-<li><a href="{FN_ADM_USERS}?action=showall" title="Manage user accounts, roles, and permissions">Users</a></li>
-
-AdminLinks;
-          */
       }
       // Meta generator
       $strMetaGenerator = "<meta name=\"generator\" content=\"".PRD_PRODUCT_NAME." - ".PRD_PRODUCT_URL."\" />";
