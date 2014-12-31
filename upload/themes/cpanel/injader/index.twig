@@ -35,7 +35,7 @@
                         <tr>
                             <td>
                                 {% if Auth.IsAdmin %}
-                                    <a href="{{ cpLink('users') }}">Active Users</a>
+                                    <a href="{{ cpLink('users', {'action': 'showall'}) }}">Active Users</a>
                                 {% else %}
                                     Active Users
                                 {% endif %}
