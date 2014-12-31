@@ -333,7 +333,7 @@ class Engine
                 $url = sprintf(URL_ROOT.'cp/users.php?action=%s', $action);
                 break;
             case 'content_manage':
-                $url = URL_ROOT.'cp/content_manage.php?navtype=1&area1=0&area2=0&area3=0';
+                $url = URL_ROOT.'cp/content_manage.php?area=0&status=0&user=';
                 break;
             case 'edit_profile':
                 $url = URL_ROOT.'cp/edit_profile.php';

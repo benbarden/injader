@@ -19,6 +19,7 @@
 */
 
   require '../sys/header.php';
+  $cpItemsPerPage = $cmsContainer->getService('Cms.Config')->getByKey('CP.ItemsPerPage');
   $CMS->RES->Admin();
   if ($CMS->RES->IsError()) {
     $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
@@ -205,7 +206,7 @@
 END;
 
   // Page numbers
-  $intContentPerPage = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT);
+  $intContentPerPage = $cpItemsPerPage;
   $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
   // Get log items
   $strSQL = "SELECT al.*, u.username, u.seo_username FROM {IFW_TBL_ACCESS_LOG} al LEFT JOIN {IFW_TBL_USERS} u ON al.user_id = u.id $strWhereClause ORDER BY al.id DESC LIMIT $intStart, $intContentPerPage";

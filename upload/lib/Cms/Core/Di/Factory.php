@@ -47,8 +47,6 @@ class Factory
         $themeCache   = $config->getByKey('Theme.Cache');
         $engineCache  = ($themeCache == 'On') ? 1 : 0;
 
-        $cpItemsPerPage = $config->getByKey('CP.ItemsPerPage');
-
         $pdo = new \PDO($dsn, $user, $pw);
 
         $repoAccessLog = new AccessLogRepository($pdo);

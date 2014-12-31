@@ -19,6 +19,7 @@
 */
 
   require '../sys/header.php';
+  $cpItemsPerPage = $cmsContainer->getService('Cms.Config')->getByKey('CP.ItemsPerPage');
   $CMS->RES->ViewManageContent();
   if ($CMS->RES->IsError()) {
     $CMS->Err_MFail(M_ERR_UNAUTHORISED, "ViewManageContent");
@@ -234,7 +235,7 @@ END;
   if (!$blnInvalidSearch) {
     if (isset($intAreaID) && ($intAreaID <> "")) {
       // Page numbers
-      $intContentPerPage = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT);
+      $intContentPerPage = $cpItemsPerPage;
       $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
       // Get content
       $strDateFormat = $CMS->SYS->GetDateFormat();

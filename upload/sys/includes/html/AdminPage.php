@@ -117,7 +117,7 @@ ExecTime;
       } else {
           $strAdminLinks = <<<AdminLinks
                     <!-- Content -->
-                    <li><a href="/cp/content_manage.php?navtype=1&area1=0&area2=0&area3=0" title="Manage Content">Content</a></li>
+                    <li><a href="/cp/content_manage.php?area=0&amp;status=0&amp;user=" title="Manage Content">Content</a></li>
                     <!-- Areas -->
                     <li><a href="/cp/areas.php" title="Manage your site areas">Areas</a></li>
                     <!-- Files -->

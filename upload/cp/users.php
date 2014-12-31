@@ -19,6 +19,7 @@
 */
 
   require '../sys/header.php';
+  $cpItemsPerPage = $cmsContainer->getService('Cms.Config')->getByKey('CP.ItemsPerPage');
   $CMS->RES->Admin();
   if ($CMS->RES->IsError()) {
     $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
@@ -178,7 +179,7 @@ END;
       $strOrderBy = "";
     }
     // Page numbers
-    $intContentPerPage = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT);
+    $intContentPerPage = $cpItemsPerPage;
     $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
     // Query
     if ($blnShowAll) {

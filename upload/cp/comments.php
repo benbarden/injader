@@ -19,6 +19,7 @@
 */
 
   require '../sys/header.php';
+  $cpItemsPerPage = $cmsContainer->getService('Cms.Config')->getByKey('CP.ItemsPerPage');
   $CMS->RES->Admin();
   if ($CMS->RES->IsError()) {
     $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
@@ -70,7 +71,7 @@ if ($blnApproved) {
 }
 
 // Page numbers
-  $intContentPerPage = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT);
+  $intContentPerPage = $cpItemsPerPage;
   $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
   // Get comments
   $arrComments = $CMS->ResultQuery("SELECT c.*, con.title, con.seo_title, u.username, u.seo_username, u.email, u.id AS user_id FROM ({IFW_TBL_COMMENTS} c, {IFW_TBL_CONTENT} con) LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id WHERE con.id = c.story_id $strWhereClause ORDER BY c.id DESC LIMIT $intStart, $intContentPerPage", basename(__FILE__), __LINE__);

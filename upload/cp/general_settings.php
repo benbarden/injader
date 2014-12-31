@@ -39,10 +39,6 @@
     $strSiteEmail        = $_POST['txtSiteEmail'];
     $strSiteHeader       = $CMS->AddSlashesIFW($_POST['txtSiteHeader']);
     $intServerTimeOffset = $_POST['txtServerTimeOffset'];
-    $intSystemPageCount  = $CMS->FilterNumeric($_POST['txtSystemPageCount']);
-    if ((!$intSystemPageCount) || ($intSystemPageCount <= 0)) {
-      $intSystemPageCount = 25;
-    }
     $strUserReg          = !empty($_POST['chkUserRegistration']) ? 1 : 0;
     $intCookieDays       = $CMS->FilterNumeric($_POST['txtCookieDays']);
     if ((!$intCookieDays) || ($intCookieDays <= 0)) {
@@ -83,9 +79,6 @@
       if ($CMS->SYS->GetSysPref(C_PREF_SERVER_TIME_OFFSET) != $intServerTimeOffset) {
         $CMS->SYS->WriteSysPref(C_PREF_SERVER_TIME_OFFSET, $intServerTimeOffset);
       }
-      if ($CMS->SYS->GetSysPref(C_PREF_SYSTEM_PAGE_COUNT) != $intSystemPageCount) {
-        $CMS->SYS->WriteSysPref(C_PREF_SYSTEM_PAGE_COUNT, $intSystemPageCount);
-      }
       if ($CMS->SYS->GetSysPref(C_PREF_USER_REGISTRATION) != $strUserReg) {
         $CMS->SYS->WriteSysPref(C_PREF_USER_REGISTRATION, $strUserReg);
       }
@@ -115,17 +108,16 @@
     $arrSysPrefs = $CMS->SYS->arrSysPrefs;
     foreach ($arrSysPrefs as $strKey => $strValue) {
       switch ($strKey) {
-        case C_PREF_SITE_TITLE:            $strSiteTitle = $strValue; break;
-        case C_PREF_SITE_DESCRIPTION:      $strSiteDesc = $strValue; break;
-        case C_PREF_SITE_KEYWORDS:         $strSiteKeywords = $strValue; break;
-        case C_PREF_SITE_EMAIL:            $strSiteEmail = $strValue; break;
-        case C_PREF_SITE_HEADER:           $strSiteHeader = $strValue; break;
-        case C_PREF_SERVER_TIME_OFFSET:    $intServerTimeOffset = $strValue; break;
-        case C_PREF_SYSTEM_PAGE_COUNT:     $intSystemPageCount = $strValue; break;
-        case C_PREF_USER_REGISTRATION:     $strUserReg = $strValue; break;
-        case C_PREF_COOKIE_DAYS:           $intCookieDays = $strValue; break;
-        case C_PREF_DATE_FORMAT:           $intDateFormat = $strValue; break;
-        case C_PREF_TIME_FORMAT:           $intTimeFormat = $strValue; break;
+        case C_PREF_SITE_TITLE:         $strSiteTitle = $strValue; break;
+        case C_PREF_SITE_DESCRIPTION:   $strSiteDesc = $strValue; break;
+        case C_PREF_SITE_KEYWORDS:      $strSiteKeywords = $strValue; break;
+        case C_PREF_SITE_EMAIL:         $strSiteEmail = $strValue; break;
+        case C_PREF_SITE_HEADER:        $strSiteHeader = $strValue; break;
+        case C_PREF_SERVER_TIME_OFFSET: $intServerTimeOffset = $strValue; break;
+        case C_PREF_USER_REGISTRATION:  $strUserReg = $strValue; break;
+        case C_PREF_COOKIE_DAYS:        $intCookieDays = $strValue; break;
+        case C_PREF_DATE_FORMAT:        $intDateFormat = $strValue; break;
+        case C_PREF_TIME_FORMAT:        $intTimeFormat = $strValue; break;
       }
     }
   }
@@ -170,8 +162,7 @@ $strConfMsg
       <b><label for="txtSiteDescription">Site Description</label></b>
     </td>
     <td>
-      $strMissingDescText
-      <textarea id="txtSiteDescription" name="txtSiteDescription" style="width: 400px; height: 100px;">$strSiteDesc</textarea>
+      <textarea id="txtSiteDescription" name="txtSiteDescription" style="width: 400px; height: 50px;">$strSiteDesc</textarea>
     </td>
   </tr>
   <tr>
@@ -179,16 +170,8 @@ $strConfMsg
       <b><label for="txtSiteKeywords">Site Keywords</label></b>
     </td>
     <td>
-      <textarea id="txtSiteKeywords" name="txtSiteKeywords" style="width: 400px; height: 100px;">$strSiteKeywords</textarea>
+      <textarea id="txtSiteKeywords" name="txtSiteKeywords" style="width: 400px; height: 50px;">$strSiteKeywords</textarea>
       <br />Separate with commas. E.g. weather, blue sky, clouds
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="txtSiteHeader">Custom header (&lt;head&gt; tag)</label></b>
-    </td>
-    <td>
-      <textarea id="txtSiteHeader" name="txtSiteHeader" style="width: 400px; height: 200px; font-family: 'Courier New', monospace; font-size: 12px;">$strSiteHeader</textarea>
     </td>
   </tr>
   <tr>
@@ -199,9 +182,6 @@ $strConfMsg
       $strMissingEmailText
       <input id="txtSiteEmail" name="txtSiteEmail" type="text" size="40" maxlength="100" value="$strSiteEmail" />
     </td>
-  </tr>
-  <tr class="separator-row">
-    <td colspan="2">Date and Time</td>
   </tr>
   <tr>
     <td>
@@ -232,9 +212,6 @@ $strConfMsg
       <input id="txtServerTimeOffset" name="txtServerTimeOffset" type="text" size="3" maxlength="3" value="$intServerTimeOffset" />
     </td>
   </tr>
-  <tr class="separator-row">
-    <td colspan="2">User Settings</td>
-  </tr>
   <tr>
     <td>
       <b><label for="chkUserRegistration">Allow user registrations</label></b>
@@ -251,15 +228,12 @@ $strConfMsg
       <input id="txtCookieDays" name="txtCookieDays" type="text" size="3" maxlength="3" value="$intCookieDays" /> days
     </td>
   </tr>
-  <tr class="separator-row">
-    <td colspan="2">System Settings</td>
-  </tr>
   <tr>
     <td>
-      <b><label for="txtSystemPageCount">Control Panel page count</label></b>
+      <b><label for="txtSiteHeader">Custom header (&lt;head&gt; tag)</label></b>
     </td>
     <td>
-      <input id="txtSystemPageCount" name="txtSystemPageCount" type="text" size="4" maxlength="4" value="$intSystemPageCount" />
+      <textarea id="txtSiteHeader" name="txtSiteHeader" style="width: 400px; height: 200px; font-family: 'Courier New', monospace; font-size: 12px;">$strSiteHeader</textarea>
     </td>
   </tr>
   <tr>
