@@ -211,7 +211,6 @@ class Renderer
         $siteTitle = $repoSetting->getSettingSiteTitle();
         $siteDesc = $repoSetting->getSettingSiteDesc();
         $siteKeywords = $repoSetting->getSettingSiteKeywords();
-        $siteRSSArticlesUrl = $repoSetting->getSettingRSSArticlesURL();
         $siteCustomHeader = $repoSetting->getSettingSiteHeader();
 
         $repoArea = $this->container->getService('Repo.Area');
@@ -219,9 +218,7 @@ class Renderer
         $areasTopLevel = $repoArea->getTopLevel();
 
         // Default RSS URL
-        if (!$siteRSSArticlesUrl) {
-            $siteRSSArticlesUrl = FN_FEEDS."?name=articles";
-        }
+        $siteRSSArticlesUrl = FN_FEEDS."?name=articles";
 
         // Core styles URL
         $siteStylesCoreUrl = URL_SYS_ROOT."core.css";
