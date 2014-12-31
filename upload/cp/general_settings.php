@@ -64,10 +64,6 @@
       $blnSubmitForm = false;
       $strMissingTitleText = $CMS->AC->InvalidFormData("");
     }
-    if (!$strSiteDesc) {
-      $blnSubmitForm = false;
-      $strMissingDescText = $CMS->AC->InvalidFormData("");
-    }
     if (!$strSiteEmail) {
       $blnSubmitForm = false;
       $strMissingEmailText = $CMS->AC->InvalidFormData("");
