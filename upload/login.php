@@ -123,11 +123,6 @@ END;
   $strLoginButton = $CMS->AC->LoginButton();
   $strCancelButton = $CMS->AC->CancelButton();
   
-  if ($CMS->SYS->GetSysPref(C_PREF_ALLOW_PASSWORD_RESETS) == "Y") {
-    $strResetPWLink = "<p>Help, <a href=\"{FN_FORGOT_PW}\">I forgot my password</a>!</p>";
-  } else {
-    $strResetPWLink = "";
-  }
   $strHTML = <<<END
 <h1>$strPageTitle</h1>
 <form action="{FN_LOGIN}" method="post">
@@ -156,11 +151,12 @@ END;
   </tr>
 </table>
 </form>
-$strResetPWLink
-<p><b>Privacy Alert</b>: By logging in you accept that a cookie will be used to remember your details. You can clear the cookie at any time by logging out. Most web browsers will allow the cookie automatically, but if you have cookies disabled, you will not be able to log in. <a href="{FN_INF_COOKIES}">How to enable cookies</a></p>
+<p>Help, <a href="{FN_FORGOT_PW}">I forgot my password</a>!</p>
+<p><b>Privacy Alert</b>: By logging in you accept that a cookie will be used to remember your details. You can clear
+the cookie at any time by logging out. Most web browsers will allow the cookie automatically, but if you have cookies
+disabled, you will not be able to log in. <a href="{FN_INF_COOKIES}">How to enable cookies</a></p>
 
 END;
 
   $CMS->LP->SetTitle($strPageTitle);
   $CMS->LP->Display($strHTML);
-?>

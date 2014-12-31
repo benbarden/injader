@@ -95,7 +95,6 @@
   define('C_PREF_TIME_FORMAT',           'prefTimeFormat');
   define('C_PREF_SERVER_TIME_OFFSET',    'prefServerTimeOffset');
   define('C_PREF_USER_REGISTRATION',     'prefUserRegistration');
-  define('C_PREF_ALLOW_PASSWORD_RESETS', 'prefAllowPasswordResets');
   define('C_PREF_COOKIE_DAYS',           'prefCookieDays');
   define('C_PREF_DEFAULT_THEME',         'prefDefaultTheme');
 

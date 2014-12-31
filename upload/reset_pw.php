@@ -19,9 +19,6 @@
 */
 
   require 'sys/header.php';
-  if ($CMS->SYS->GetSysPref(C_PREF_ALLOW_PASSWORD_RESETS) != "Y") {
-    $CMS->Err_MFail(M_ERR_RESETPW_DISABLED, "");
-  }
   $CMS->RES->ValidateLoggedIn();
   if (!$CMS->RES->IsError()) {
     $CMS->Err_MFail(M_ERR_ALREADY_LOGGED_IN, "");

@@ -52,7 +52,6 @@
     }
     $strSystemLock       = !empty($_POST['chkSystemLock']) ? "Y" : "N";
     $strUserReg          = !empty($_POST['chkUserRegistration']) ? 1 : 0;
-    $strAllowPasswordResets = !empty($_POST['chkAllowPasswordResets']) ? "Y" : "N";
     $intCookieDays       = $CMS->FilterNumeric($_POST['txtCookieDays']);
     if ((!$intCookieDays) || ($intCookieDays <= 0)) {
       $intCookieDays = 1;
@@ -123,9 +122,6 @@
       if ($CMS->SYS->GetSysPref(C_PREF_TIME_FORMAT) != $intTimeFormat) {
         $CMS->SYS->WriteSysPref(C_PREF_TIME_FORMAT, $intTimeFormat);
       }
-      if ($CMS->SYS->GetSysPref(C_PREF_ALLOW_PASSWORD_RESETS) != $strAllowPasswordResets) {
-        $CMS->SYS->WriteSysPref(C_PREF_ALLOW_PASSWORD_RESETS, $strAllowPasswordResets);
-      }
       // Rebuild the cache
       $CMS->SYS->RebuildCache();
     }
@@ -155,7 +151,6 @@
         case C_PREF_MAX_LOG_ENTRIES:       $intMaxLogEntries = $strValue; break;
         case C_PREF_SYSTEM_LOCK:           $strSystemLock = $strValue; break;
         case C_PREF_USER_REGISTRATION:     $strUserReg = $strValue; break;
-        case C_PREF_ALLOW_PASSWORD_RESETS: $strAllowPasswordResets = $strValue; break;
         case C_PREF_COOKIE_DAYS:           $intCookieDays = $strValue; break;
         case C_PREF_DATE_FORMAT:           $intDateFormat = $strValue; break;
         case C_PREF_TIME_FORMAT:           $intTimeFormat = $strValue; break;
@@ -180,8 +175,7 @@
   
   $strSystemLock == "Y" ? $strSystemLockChecked = " checked=\"checked\"" : $strSystemLockChecked = "";
   $strUserReg == 1 ? $strUserRegChecked = " checked=\"checked\"" : $strUserRegChecked = "";
-  $strAllowPasswordResets == "Y" ? $strAllowPWResetChecked = " checked=\"checked\"" : $strAllowPWResetChecked = "";
-  
+
   $strSubmitButton = $CMS->AC->SubmitButton();
   $strCancelButton = $CMS->AC->CancelButton();
 
@@ -293,14 +287,6 @@ $strConfMsg
     </td>
     <td>
       <input id="chkUserRegistration" name="chkUserRegistration" type="checkbox"$strUserRegChecked />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="chkAllowPasswordResets">Allow password resets</label></b>
-    </td>
-    <td>
-      <input id="chkAllowPasswordResets" name="chkAllowPasswordResets" type="checkbox"$strAllowPWResetChecked />
     </td>
   </tr>
   <tr>

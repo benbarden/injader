@@ -95,7 +95,6 @@
   // ** Forgot Password ** //
   define('M_ERR_USERNAME_NOT_FOUND', "Username or email not found.");
   define('M_ERR_INVALID_ACTIVATION_KEY', "Invalid activation key.");
-  define('M_ERR_RESETPW_DISABLED', "This page has been disabled by the site admin.");
 
   // ** Users ** //
   define('M_ERR_ENTER_PW_TWICE', "You must enter your old password, and enter your new password twice.");
