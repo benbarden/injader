@@ -12,7 +12,7 @@ class UserRepository extends BaseRepository
     public function exists($id)
     {
         try {
-            $pdoQuery = ('SELECT count(1) FROM maj_users WHERE id = :uid');
+            $pdoQuery = ('SELECT count(1) FROM Cms_Users WHERE id = :uid');
             $pdoStatement = $this->db->prepare($pdoQuery);
             $pdoStatement->bindParam(':uid', $id);
             $pdoStatement->execute();
@@ -26,7 +26,7 @@ class UserRepository extends BaseRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_users
+                SELECT * FROM Cms_Users
                 WHERE id = :id
             ");
             $pdoStatement->bindParam(':id', $id);

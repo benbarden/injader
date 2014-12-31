@@ -12,7 +12,7 @@ class UserSessionRepository extends BaseRepository
     public function exists($id)
     {
         try {
-            $pdoQuery = ('SELECT count(1) FROM maj_user_sessions WHERE session_id = :id');
+            $pdoQuery = ('SELECT count(1) FROM Cms_UserSessions WHERE session_id = :id');
             $pdoStatement = $this->db->prepare($pdoQuery);
             $pdoStatement->bindParam(':id', $id);
             $pdoStatement->execute();
@@ -26,7 +26,7 @@ class UserSessionRepository extends BaseRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_user_sessions
+                SELECT * FROM Cms_UserSessions
                 WHERE session_id = :id
             ");
             $pdoStatement->bindParam(':id', $id);

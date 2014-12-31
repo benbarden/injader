@@ -126,7 +126,7 @@ htaccess;
   
   // Update to latest version
   if ($strUpgradeTo) {
-    $CMS->Query("UPDATE {IFW_TBL_SYS_PREFERENCES} SET content = '$strUpgradeTo' 
+    $CMS->Query("UPDATE {IFW_TBL_SETTINGS} SET content = '$strUpgradeTo'
     WHERE preference = '{C_PREF_CMS_VERSION}'", basename(__FILE__), __LINE__);
   }
 

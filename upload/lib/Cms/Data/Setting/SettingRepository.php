@@ -20,7 +20,7 @@ class SettingRepository implements ISettingRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT count(1) FROM maj_sys_preferences
+                SELECT count(1) FROM Cms_Settings
                 WHERE preference = :setting
             ");
             $pdoStatement->bindParam(':setting', $settingName);
@@ -36,7 +36,7 @@ class SettingRepository implements ISettingRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_sys_preferences
+                SELECT * FROM Cms_Settings
                 WHERE preference = :setting
             ");
             $pdoStatement->bindParam(':setting', $settingName);

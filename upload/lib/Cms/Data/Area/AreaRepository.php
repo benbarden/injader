@@ -20,7 +20,7 @@ class AreaRepository implements IRepository
     {
         try {
             /* @var \PDOStatement $pdoStatement */
-            $pdoStatement = $this->db->prepare("SELECT count(1) FROM maj_areas WHERE id = :id");
+            $pdoStatement = $this->db->prepare("SELECT count(1) FROM Cms_Areas WHERE id = :id");
             $pdoStatement->bindParam(':id', $id);
             $pdoStatement->execute();
             return $pdoStatement->fetchColumn() > 0;
@@ -33,7 +33,7 @@ class AreaRepository implements IRepository
     {
         try {
             /* @var \PDOStatement $pdoStatement */
-            $pdoStatement = $this->db->prepare("SELECT * FROM maj_areas WHERE id = :id");
+            $pdoStatement = $this->db->prepare("SELECT * FROM Cms_Areas WHERE id = :id");
             $pdoStatement->bindParam(':id', $id);
             $pdoStatement->execute();
             $dbData = $pdoStatement->fetch();
@@ -49,7 +49,7 @@ class AreaRepository implements IRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_areas
+                SELECT * FROM Cms_Areas
                 WHERE parent_id = :id
                 ORDER BY hier_left
             ");
@@ -67,7 +67,7 @@ class AreaRepository implements IRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_areas
+                SELECT * FROM Cms_Areas
                 WHERE parent_id = 0
                 ORDER BY hier_left
             ");

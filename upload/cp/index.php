@@ -115,8 +115,8 @@ $cpBindings['Auth']['CanWriteContent'] = $canWriteContent;
   // Recent Comments
   $recentComments = $CMS->ResultQuery("
     SELECT com.id, com.content, com.create_date, con.title
-    FROM maj_comments com
-    JOIN maj_content con ON com.story_id = con.id
+    FROM Cms_Comments com
+    JOIN Cms_Content con ON com.story_id = con.id
     WHERE com.comment_status = 'Approved'
     ORDER BY com.id DESC LIMIT 5
   ", basename(__FILE__), __LINE__);
@@ -124,7 +124,7 @@ $cpBindings['Auth']['CanWriteContent'] = $canWriteContent;
 
   // Recent Drafts
   $recentDrafts = $CMS->ResultQuery("
-    SELECT id, title, create_date FROM maj_content WHERE content_status = 'Draft'
+    SELECT id, title, create_date FROM Cms_Content WHERE content_status = 'Draft'
     ORDER BY id DESC LIMIT 5
   ", basename(__FILE__), __LINE__);
   $cpBindings['Page']['RecentDrafts'] = $recentDrafts;

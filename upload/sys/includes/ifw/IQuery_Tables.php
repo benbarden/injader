@@ -18,22 +18,18 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-    // Application prefix
-    define('IFW_TBL_PFX', "maj_");
-    
-    // Application tables
-    define('IFW_TBL_ACCESS_LOG',          IFW_TBL_PFX."access_log");
-    define('IFW_TBL_AREAS',               IFW_TBL_PFX."areas");
-    define('IFW_TBL_COMMENTS',            IFW_TBL_PFX."comments");
-    define('IFW_TBL_CONTENT',             IFW_TBL_PFX."content");
-    define('IFW_TBL_PERMISSION_PROFILES', IFW_TBL_PFX."permission_profiles");
-    define('IFW_TBL_SPAM_RULES',          IFW_TBL_PFX."spam_rules");
-    define('IFW_TBL_SYS_PREFERENCES',     IFW_TBL_PFX."sys_preferences");
-    define('IFW_TBL_TAGS',                IFW_TBL_PFX."tags");
-    define('IFW_TBL_UPLOADS',             IFW_TBL_PFX."uploads");
-    define('IFW_TBL_URL_MAPPING',         IFW_TBL_PFX."url_mapping");
-    define('IFW_TBL_USERS',               IFW_TBL_PFX."users");
-    define('IFW_TBL_USER_GROUPS',         IFW_TBL_PFX."user_groups");
-    define('IFW_TBL_USER_SESSIONS',       IFW_TBL_PFX."user_sessions");
-    define('IFW_TBL_USER_STATS',          IFW_TBL_PFX."user_stats");
+    define('IFW_TBL_ACCESS_LOG',          "Cms_AccessLog");
+    define('IFW_TBL_AREAS',               "Cms_Areas");
+    define('IFW_TBL_COMMENTS',            "Cms_Comments");
+    define('IFW_TBL_CONTENT',             "Cms_Content");
+    define('IFW_TBL_PERMISSION_PROFILES', "Cms_PermissionProfile");
+    define('IFW_TBL_SPAM_RULES',          "Cms_SpamRules");
+    define('IFW_TBL_SETTINGS',            "Cms_Settings");
+    define('IFW_TBL_TAGS',                "Cms_Tags");
+    define('IFW_TBL_UPLOADS',             "Cms_Uploads");
+    define('IFW_TBL_URL_MAPPING',         "Cms_UrlMapping");
+    define('IFW_TBL_USERS',               "Cms_Users");
+    define('IFW_TBL_USER_GROUPS',         "Cms_UserRoles");
+    define('IFW_TBL_USER_SESSIONS',       "Cms_UserSessions");
+    define('IFW_TBL_USER_STATS',          "Cms_UserStats");
 

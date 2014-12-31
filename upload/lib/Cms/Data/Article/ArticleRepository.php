@@ -12,7 +12,7 @@ class ArticleRepository extends BaseRepository
     public function exists($id)
     {
         try {
-            $pdoQuery = ('SELECT count(1) FROM maj_content WHERE id = :id');
+            $pdoQuery = ('SELECT count(1) FROM Cms_Content WHERE id = :id');
             $pdoStatement = $this->db->prepare($pdoQuery);
             $pdoStatement->bindParam(':id', $id);
             $pdoStatement->execute();
@@ -26,7 +26,7 @@ class ArticleRepository extends BaseRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_content
+                SELECT * FROM Cms_Content
                 WHERE id = :id
             ");
             $pdoStatement->bindParam(':id', $id);
@@ -44,7 +44,7 @@ class ArticleRepository extends BaseRepository
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT count(*) FROM maj_content
+                SELECT count(*) FROM Cms_Content
                 WHERE content_area_id = :areaId
                 AND content_status = 'Published'
             ");
@@ -93,7 +93,7 @@ class ArticleRepository extends BaseRepository
 
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
-                SELECT * FROM maj_content
+                SELECT * FROM Cms_Content
                 WHERE content_area_id = :areaId
                 $pdoAccessSql
                 ORDER BY $pdoSortField $pdoSortDirection
