@@ -42,16 +42,10 @@ class Setting
     const SETTING_SITE_KEYWORDS = 'prefSiteKeywords';
     const SETTING_SITE_EMAIL = 'prefSiteEmail';
     const SETTING_SITE_HEADER = 'prefSiteHeader';
-    const SETTING_RSS_ARTICLES_URL = 'prefRSSArticlesURL';
-    const SETTING_SYSTEM_PAGE_COUNT = 'prefSystemPageCount';
-    const SETTING_MAX_LOG_ENTRIES = 'prefMaxLogEntries';
-    const SETTING_SYSTEM_LOCK = 'prefSystemLock';
     const SETTING_DATE_FORMAT = 'prefDateFormat';
     const SETTING_TIME_FORMAT = 'prefTimeFormat';
     const SETTING_SERVER_TIME_OFFSET = 'prefServerTimeOffset';
     const SETTING_USER_REGISTRATION = 'prefUserRegistration';
-    const SETTING_USER_CHANGE_PASS = 'prefUserChangePass';
-    const SETTING_ALLOW_PASSWORD_RESETS = 'prefAllowPasswordResets';
     const SETTING_COOKIE_DAYS = 'prefCookieDays';
     const SETTING_DEFAULT_THEME = 'prefDefaultTheme';
 

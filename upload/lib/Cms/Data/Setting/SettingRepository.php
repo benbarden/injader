@@ -70,11 +70,6 @@ class SettingRepository implements ISettingRepository
         return $this->getSettingValue(Setting::SETTING_SITE_KEYWORDS);
     }
 
-    public function getSettingRSSArticlesURL()
-    {
-        return $this->getSettingValue(Setting::SETTING_RSS_ARTICLES_URL);
-    }
-
     public function getSettingSiteHeader()
     {
         return $this->getSettingValue(Setting::SETTING_SITE_HEADER);
