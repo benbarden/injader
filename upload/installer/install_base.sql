@@ -144,7 +144,6 @@ INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_HEADER}
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_EMAIL}', 'you@yoursite.com');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SITE_FAVICON}', '');
 
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_RSS_ARTICLES_URL}', '');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_DEFAULT_THEME}', 'injader');
 
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_SYSTEM_PAGE_COUNT}', '25');

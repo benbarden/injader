@@ -39,7 +39,6 @@
     $strSiteKeywords     = $CMS->AddSlashesIFW($_POST['txtSiteKeywords']);
     $strSiteEmail        = $_POST['txtSiteEmail'];
     $strSiteHeader       = $CMS->AddSlashesIFW($_POST['txtSiteHeader']);
-    $strRSSArticlesURL   = $_POST['txtRSSArticlesURL'];
     $strSiteFavicon      = $CMS->AddSlashesIFW($_POST['txtSiteFavicon']);
     $intServerTimeOffset = $_POST['txtServerTimeOffset'];
     $intSystemPageCount  = $CMS->FilterNumeric($_POST['txtSystemPageCount']);
@@ -86,9 +85,6 @@
       }
       if ($CMS->SYS->GetSysPref(C_PREF_SITE_HEADER) != $strSiteHeader) {
         $CMS->SYS->WriteSysPref(C_PREF_SITE_HEADER, $strSiteHeader);
-      }
-      if ($CMS->SYS->GetSysPref(C_PREF_RSS_ARTICLES_URL) != $strRSSArticlesURL) {
-        $CMS->SYS->WriteSysPref(C_PREF_RSS_ARTICLES_URL, $strRSSArticlesURL);
       }
       if ($CMS->SYS->GetSysPref(C_PREF_SITE_FAVICON) != $strSiteFavicon) {
         $CMS->SYS->WriteSysPref(C_PREF_SITE_FAVICON, $strSiteFavicon);
@@ -145,7 +141,6 @@
         case C_PREF_COOKIE_DAYS:           $intCookieDays = $strValue; break;
         case C_PREF_DATE_FORMAT:           $intDateFormat = $strValue; break;
         case C_PREF_TIME_FORMAT:           $intTimeFormat = $strValue; break;
-        case C_PREF_RSS_ARTICLES_URL:      $strRSSArticlesURL = $strValue; break;
       }
     }
   }
@@ -226,14 +221,6 @@ $strConfMsg
     </td>
     <td>
       <input id="txtSiteFavicon" name="txtSiteFavicon" type="text" size="40" maxlength="100" value="$strSiteFavicon" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b><label for="txtRSSArticlesURL">Feedburner URL</label></b>
-    </td>
-    <td>
-      <input id="txtRSSArticlesURL" name="txtRSSArticlesURL" type="text" size="50" maxlength="100" value="$strRSSArticlesURL" />
     </td>
   </tr>
   <tr class="separator-row">

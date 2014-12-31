@@ -350,10 +350,7 @@
       /* ********************************************** */
       /* *              Header - Site Feed              */
       /* ********************************************** */
-      $strRSSArticlesURL = $CMS->SYS->GetSysPref(C_PREF_RSS_ARTICLES_URL);
-      if (!$strRSSArticlesURL) {
-        $strRSSArticlesURL = FN_FEEDS."?name=articles";
-      }
+      $strRSSArticlesURL = FN_FEEDS."?name=articles";
       $strHeaderSiteFeed = "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"Site Feed - ".$CMS->TH->GetHeaderSiteTitle()."\" href=\"$strRSSArticlesURL\" />\n";
       $CMS->TH->SetHeaderSiteFeed($strHeaderSiteFeed);
       /* ********************************************** */
@@ -653,10 +650,7 @@
       /* ********************************************** */
       /* *              Header - Site Feed              */
       /* ********************************************** */
-      $strRSSArticlesURL = $CMS->SYS->GetSysPref(C_PREF_RSS_ARTICLES_URL);
-      if (!$strRSSArticlesURL) {
-        $strRSSArticlesURL = FN_FEEDS."?name=articles";
-      }
+      $strRSSArticlesURL = FN_FEEDS."?name=articles";
       $strHeaderSiteFeed = "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"Site Feed - ".$CMS->TH->GetHeaderSiteTitle()."\" href=\"$strRSSArticlesURL\" />\n";
       $CMS->TH->SetHeaderSiteFeed($strHeaderSiteFeed);
       /* ********************************************** */

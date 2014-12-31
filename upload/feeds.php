@@ -24,18 +24,6 @@
   switch ($strFeed) {
     case "articles":
       $intAreaID = empty($_GET['id']) ? "" : $CMS->FilterNumeric($_GET['id']);
-      if (!$intAreaID) {
-        $strFeedburnerURL = $CMS->SYS->GetSysPref(C_PREF_RSS_ARTICLES_URL);
-        if ($strFeedburnerURL) {
-          $strUserAgent = empty($_SERVER['HTTP_USER_AGENT']) ? "" : $_SERVER['HTTP_USER_AGENT'];
-          if (strpos(strtoupper($strUserAgent), "FEEDBURNER") !== false) {
-            // Feedburner is OK to access this URL
-          } else {
-            httpRedirect($strFeedburnerURL);
-            exit;
-          }
-        }
-      }
       header('Content-type: text/xml');
       print($RSS->GetArticleRSS($intAreaID));
       exit;
@@ -49,4 +37,3 @@
     default: $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "name");
   }
   
-?>
