@@ -268,16 +268,7 @@
       $dteStartTime = $this->MicrotimeFloat();
       
       $CMS->TH->SetCurrentLocation(C_TL_INDEX);
-      
-      // System lock
-      $strSystemLock = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_LOCK);
-      if ($strSystemLock == "Y") {
-        $CMS->RES->Admin();
-        $blnIsSystemLocked = $CMS->RES->IsError() ? true : false;
-        $CMS->RES->ClearErrors();
-      } else {
-        $blnIsSystemLocked = false;
-      }
+
       // Multi-paging
       if (!empty($_GET['page'])) {
         $intPageNumber = $_GET['page'];

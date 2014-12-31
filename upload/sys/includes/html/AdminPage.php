@@ -72,21 +72,10 @@ ExecTime;
       global $CMS;
       $dteStartTime = $this->MicrotimeFloat();
       $strPageTitle = $this->GetTitle();
-      $strSystemLock = $CMS->SYS->GetSysPref(C_PREF_SYSTEM_LOCK);
-      if ($strSystemLock == "Y") {
-        $strSystemLocked = <<<AdminNotice
-<div id="notice-locked">
-ADMIN NOTICE: SITE LOCKED - Currently, only administrators can view this web site. You must unlock the system to remove this alert.
-</div>
 
-AdminNotice;
-      } else {
-        $strSystemLocked = "";
-      }
       // Index
       $strSiteTitle  = $CMS->SYS->GetSysPref(C_PREF_SITE_TITLE);
       $strIndexURL   = str_replace("index".F_EXT_PHP, "", FN_INDEX);
-
 
       // CP LINKS
       $controlPanelLinks = array();

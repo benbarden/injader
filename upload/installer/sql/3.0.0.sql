@@ -8,6 +8,7 @@ ALTER TABLE maj_areas DROP COLUMN nav_type, DROP INDEX nav_type;
 
 DELETE FROM maj_sys_preferences WHERE preference = 'prefUserChangePass';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefAllowPasswordResets';
+DELETE FROM maj_sys_preferences WHERE preference = 'prefSystemLock';
 
 UPDATE maj_sys_preferences SET content = 'injader' WHERE preference = 'prefDefaultTheme';
 UPDATE maj_sys_preferences SET content = '3.0.0' WHERE preference = 'prefCMSVersion';
