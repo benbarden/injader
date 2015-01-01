@@ -10,6 +10,7 @@ Note: This version breaks compatibility with previous versions. Upgrades to 3.0.
 * New: Ability to theme the Control Panel (work-in-progress)
 * New: Introduced many new helper functions for themes
 * New: My Settings screen
+* Security: Replacing MD5 with BCRYPT
 * Maintenance: Moved sitemap URL to the Control Panel dashboard
 * Maintenance: Replaced in-page navigation and linking screens with dropdown menus in the Control Panel
 * Maintenance: Removed navigation types - areas now have one level only
