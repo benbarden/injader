@@ -27,19 +27,14 @@
       if (empty($_COOKIE[$strName])) {
 	    $cv = "";
 	  } else {
-		$cv = $CMS->FilterAlphanumeric($_COOKIE[$strName], "\-");
+		$cv = $_COOKIE[$strName];
 	  }
 	  return $cv;
     }
     function Set($strName, $strValue, $intDuration) {
-	  global $CMS;
-	  $strName = $CMS->FilterAlphanumeric($strName, "\-");
-      $strValue = $CMS->FilterAlphanumeric($strValue, "\-");
 	  $blnValidate = setcookie($strName, $strValue, $intDuration);
       if (!$blnValidate) {
         exit("Error: Cannot set cookie.");
       }
     }
   }
-
-?>

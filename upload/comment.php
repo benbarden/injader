@@ -140,9 +140,10 @@
         session_start();
         $strAnswer  = empty($_SESSION['txtAnswer']) ? "" : $_SESSION['txtAnswer'];
         $strCAPTCHA = empty($_POST['txtCAPTCHA']) ? "" : $_POST['txtCAPTCHA'];
+        $captchaHash = password_hash($strCAPTCHA, PASSWORD_BCRYPT);
         if (!$strAnswer || !$strCAPTCHA) {
           $blnValidCAPTCHA = false;
-        } elseif ($strAnswer == md5($strCAPTCHA)) {
+        } elseif ($strAnswer == $captchaHash) {
           $blnValidCAPTCHA = true;
         } else {
           $blnValidCAPTCHA = false;

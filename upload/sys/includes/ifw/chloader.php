@@ -21,8 +21,7 @@
     require '../../header.php';
     global $CMS;
     $strMessage = $CMS->BuildRandomText(6);
-    $strAnswer  = md5($strMessage);
+    $strAnswer  = password_hash($strMessage, PASSWORD_BCRYPT);
     $CMS->CHA->SetMessage($strMessage);
     $CMS->CHA->BuildMessage();
 
-?>

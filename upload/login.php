@@ -20,7 +20,6 @@
 
   require 'sys/header.php';
 
-  $blnGet = false;
   $blnSubmitForm = false;
   $strMissingUsername = "";
   $strMissingPassword = "";
@@ -67,9 +66,6 @@
   }
 
   if ($blnSubmitForm) {
-    if (!$blnGet) {
-      $strPassword = md5($strPassword);
-    }
     $intUserID = $CMS->US->ValidateLogin($strUsername, $strPassword);
     if ($intUserID) {
       if ($CMS->US->IsSuspended($intUserID)) {

@@ -79,6 +79,9 @@
     $factory = new \Cms\Core\Di\Factory();
     $cmsContainer = $factory->buildContainer($config);
 
+    // Passwords
+    require ABS_ROOT.'/lib/Password/password.php';
+
     // Framework - must be loaded before any classes
     require ABS_SYS_IFW.'IFWCore.php';
     require ABS_SYS_IFW.'Helper.php';

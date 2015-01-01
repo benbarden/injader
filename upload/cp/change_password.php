@@ -44,16 +44,12 @@
       $blnSubmitForm = false;
     } else {
       // Validate old password.
-      // ** Build Query ** //
-      $strQuery = sprintf("SELECT count(*) AS count FROM {IFW_TBL_USERS} WHERE id = %s AND userpass = md5('%s')",
-        $CMS->RES->GetCurrentUserID(),
-        mysql_real_escape_string($strOldPass)
-      );
-      // ** Process query ** //
-      $arrUserData = $CMS->ResultQuery($strQuery, basename(__FILE__), __LINE__);
+      $arrUserData = $CMS->ResultQuery(
+        sprintf("SELECT userpass FROM {IFW_TBL_USERS} WHERE id = %s",
+        $CMS->RES->GetCurrentUserID()), basename(__FILE__), __LINE__);
       $blnOldPWIsOK = false;
-      if (is_array($arrUserData)) {
-        if ($arrUserData[0]['count'] == "1") {
+      if ($arrUserData) {
+        if (password_verify($strOldPass, $arrUserData[0]['userpass'])) {
           $blnOldPWIsOK = true;
         }
       }

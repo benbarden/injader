@@ -327,9 +327,12 @@ DBVARS;
       }
       // Store username and password
       $strMajesticUser = addslashes($_POST['txtMajesticUser']);
-      $strMajesticPass = md5(addslashes($_POST['txtMajesticPass']));
+      $pwHash = password_hash($_POST['txtMajesticPass'], PASSWORD_BCRYPT);
       // Create user
-      $intNewUserID = $CMS->Query("INSERT INTO {IFW_TBL_USERS}(username, userpass, forename, surname, email, location, occupation, interests, homepage_link, homepage_text, avatar_id, user_groups, user_moderate) VALUES ('$strMajesticUser', '$strMajesticPass', '', '', 'admin@yoursite.com', '', '', '', '', '', 0, '1|2|3', 'N')", basename(__FILE__), __LINE__);
+      $intNewUserID = $CMS->Query("
+        INSERT INTO {IFW_TBL_USERS}(username, userpass, forename, surname, email, location, occupation, interests, homepage_link, homepage_text, avatar_id, user_groups, user_moderate)
+        VALUES ('$strMajesticUser', '$pwHash', '', '', 'admin@yoursite.com', '', '', '', '', '', 0, '1|2|3', 'N')
+      ", basename(__FILE__), __LINE__);
       // Build link mapping table
       $CMS->UM->rebuildAll();
       // ** Confirm completion ** //
@@ -337,4 +340,3 @@ DBVARS;
 
       break;
   } // end of switch statement
-?>

@@ -45,6 +45,8 @@
 
   if ($_POST) {
     // Prevent multiple usernames being created in a row
+    // Disabled for now.
+    /*
     $intUserIP = $_SERVER['REMOTE_ADDR'];
     $intNewestUserIP = $CMS->US->GetNewestUserIP();
     if (($intNewestUserIP != 0) && ($intNewestUserIP != "")) {
@@ -52,6 +54,7 @@
         $CMS->Err_MFail(M_ERR_REGISTER_MULTIPLE, "");
       }
     }
+    */
     if (!empty($_POST['txtRegisterUsername'])) {
       $strUsername = $CMS->AddSlashesIFW($CMS->FilterAlphanumeric($_POST['txtRegisterUsername'], C_CHARS_USERNAME));
     }
@@ -119,21 +122,6 @@
           $blnSubmitForm = false;
         }
       }
-    }
-    // Process CAPTCHA
-    session_start();
-    $strAnswer  = empty($_SESSION['txtAnswer']) ? "" : $_SESSION['txtAnswer'];
-    $strCAPTCHA = empty($_POST['txtCAPTCHA']) ? "" : $_POST['txtCAPTCHA'];
-    if (!$strAnswer || !$strCAPTCHA) {
-      $blnValidCAPTCHA = false;
-    } elseif ($strAnswer == md5($strCAPTCHA)) {
-      $blnValidCAPTCHA = true;
-    } else {
-      $blnValidCAPTCHA = false;
-    }
-    if (!$blnValidCAPTCHA) {
-      $strInvalidCAPTCHA = $CMS->AC->InvalidFormData("Incorrect verification string. Please try again.");
-      $blnSubmitForm = false;
     }
     // Proceed if there were no errors
     if ($blnSubmitForm) {
@@ -204,17 +192,6 @@
     </td>
   </tr>
   <tr>
-    <td class="InfoColour"><label for="txtCAPTCHA">Verification:</label></td>
-    <td>
-      $strInvalidCAPTCHA
-      <img src="{FN_SYS_CHLOADER}" alt="Verification code" />
-      <br />
-      Type the message into the box below.
-      <br />The letters are case sensitive.
-      <br /><input id="txtCAPTCHA" name="txtCAPTCHA" type="text" size="10" maxlength="8" />
-    </td>
-  </tr>
-  <tr>
     <td class="FootColour" colspan="2">$strRegisterButton $strCancelButton</td>
   </tr>
 </table>
@@ -223,4 +200,3 @@
 END;
 
   $CMS->LP->Display($strHTML);
-?>

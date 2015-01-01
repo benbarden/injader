@@ -23,7 +23,7 @@
     function SetMessage($strMessage) {
       session_start();
       $this->strMessage = $strMessage;
-      $_SESSION['txtAnswer'] = md5($strMessage);
+      $_SESSION['txtAnswer'] = password_hash($strMessage, PASSWORD_BCRYPT);
     }
     function GetMessage() {
       return $this->strMessage;
@@ -48,4 +48,3 @@
     }
   }
 
-?>
