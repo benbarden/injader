@@ -2,7 +2,10 @@
 
 ## 3.0.0
 
-Note: This version breaks compatibility with previous versions. Upgrades to 3.0.0 are not supported.
+Note:
+This version breaks compatibility with previous versions.
+Upgrades to 3.0.0 are not supported.
+It is currently not possible to install Injader in a subfolder.
 
 * New: Themes now use Twig
 * New: Introduced Bootstrap for public-facing themes and for the Control Panel
@@ -23,6 +26,7 @@ Note: This version breaks compatibility with previous versions. Upgrades to 3.0.
 * Maintenance: Allowed site description field to be left blank
 * Maintenance: Moved setting from Control Panel to config file: Log file row limit
 * Maintenance: Moved setting from Control Panel to config file: Control Panel page count
+* Maintenance: Cleaned up path constants and removed SystemDirs.php
 * Code: Major framework changes and code cleanup (ongoing)
 * Code: RSS feeds now use full headers
 * Code: Renamed all database tables
