@@ -125,6 +125,7 @@ class Category
                 $contentRow = array(
                     'Id' => $articleId,
                     'Title' => stripslashes($contentObject->getTitle()),
+                    'Permalink' => $contentObject->getPermalink(),
                     'Body' => $contentArticle->getCategoryBody(),
                     'Date' => date($dateFormat, strtotime($contentObject->getCreateDate())),
                     'AuthorId' => $authorId,

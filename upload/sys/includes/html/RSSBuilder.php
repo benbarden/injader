@@ -34,7 +34,11 @@
       $strRSSPath      = ABS_ROOT.$strRSSURL;
       $strRSSLinkAbout = "http://{SVR_HOST}{URL_ROOT}";
       $strRSSLinkRoot  = "http://{SVR_HOST}";
-      $strSQL = "SELECT c.id, c.title, c.seo_title, c.content, c.author_id, c.content_area_id, DATE_FORMAT(c.create_date,'%d/%m/%y') AS con_created, c.create_date AS rss_date FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) WHERE c.content_area_id = a.id $strAreaClause $strWhereClause ORDER BY c.create_date DESC";
+      $strSQL = "SELECT c.id, c.title, c.permalink, c.content, c.author_id, c.content_area_id,
+      DATE_FORMAT(c.create_date,'%d/%m/%y') AS con_created, c.create_date AS rss_date
+      FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a)
+      WHERE c.content_area_id = a.id $strAreaClause $strWhereClause
+      ORDER BY c.create_date DESC";
       $arrNewContent = $this->ResultQuery($strSQL, __CLASS__ . "::" . __FUNCTION__);
       $arrNewContentCount = count($arrNewContent);
       if ($arrNewContentCount > $intRSSCount) {
@@ -47,7 +51,7 @@
         $intContentID    = $arrNewContent[$i]['id'];
         $strContentTitle = $arrNewContent[$i]['title'];
         //$strContentTitle = $this->DoEntities($strContentTitle);
-        $strSEOTitle     = $arrNewContent[$i]['seo_title'];
+        $permalink       = $arrNewContent[$i]['permalink'];
         $strContentBody  = $arrNewContent[$i]['content'];
         $strContentBody  = strip_tags($strContentBody);
         $strContentBody  = $this->DoEntities($strContentBody);
@@ -64,8 +68,7 @@
         $strAuthorName    = $CMS->US->GetNameFromID($intAuthorID);
         $CMS->RES->ViewArea($intAreaID);
         if (!$CMS->RES->IsError()) {
-          $CMS->PL->SetTitle($strSEOTitle);
-          $strArticleLink = $strRSSLinkRoot.$CMS->PL->ViewArticle($intContentID);
+          $strArticleLink = $strRSSLinkRoot.$permalink;
           $strCommentRSS = $strRSSLinkRoot.FN_FEEDS."?name=comments&amp;id=$intContentID";
           $strRSSFileContents .= <<<RSSFile
     <item>
@@ -131,7 +134,14 @@ RSSFile;
       } else {
         $strAreaClause = " AND include_in_rss_feed = 'Y' ";
       }
-      $arrNewContent = $this->ResultQuery("SELECT con.id, con.author_id, title, seo_title, content, content_area_id, DATE_FORMAT(create_date,'%d/%m/%y') AS con_created, create_date AS rss_date, a.include_in_rss_feed FROM ({IFW_TBL_CONTENT} con, {IFW_TBL_AREAS} a) WHERE con.content_area_id = a.id AND content_status = '{C_CONT_PUBLISHED}' $strAreaClause ORDER BY create_date DESC LIMIT $intRSSCount", __CLASS__ . "::" . __FUNCTION__, __LINE__);
+      $arrNewContent = $this->ResultQuery("
+      SELECT con.id, con.author_id, title, permalink, content, content_area_id,
+      DATE_FORMAT(create_date,'%d/%m/%y') AS con_created, create_date AS rss_date, a.include_in_rss_feed
+      FROM ({IFW_TBL_CONTENT} con, {IFW_TBL_AREAS} a)
+      WHERE con.content_area_id = a.id
+      AND content_status = '{C_CONT_PUBLISHED}' $strAreaClause
+      ORDER BY create_date DESC LIMIT $intRSSCount
+      ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       // Sun, 19 May 2002 15:21:36 GMT
       
       $strRSSFileContents = $CMS->AC->RSSHeader($strAreaName, $strRSSLinkAbout, $strAreaDesc, $dteToday);
@@ -139,7 +149,7 @@ RSSFile;
       for ($i=0; $i<count($arrNewContent); $i++) {
         $intContentID     = $arrNewContent[$i]['id'];
         $strContentTitle  = $arrNewContent[$i]['title'];
-        $strSEOTitle      = $arrNewContent[$i]['seo_title'];
+        $permalink        = $arrNewContent[$i]['permalink'];
         
         $strContentBody   = $arrNewContent[$i]['content'];
         $strContentBody   = str_replace("<br><br>", " ", $strContentBody);
@@ -164,8 +174,7 @@ RSSFile;
         if ($strIncludeInFeed == "Y") {
           $CMS->RES->ViewArea($intAreaID);
           if (!$CMS->RES->IsError()) {
-            $CMS->PL->SetTitle($strSEOTitle);
-            $strArticleLink = $strRSSLinkRoot.$CMS->PL->ViewArticle($intContentID);
+            $strArticleLink = $strRSSLinkRoot.$permalink;
             $strCommentRSS = $strRSSLinkRoot.FN_FEEDS."?name=comments&amp;id=$intContentID";
             $strRSSFileContents .= <<<RSSFile
     <item>
@@ -223,7 +232,14 @@ RSSFile;
       } else {
         $strArticleClause = "";
       }
-      $arrNewComments = $this->ResultQuery("SELECT com.id, com.story_id, com.content, con.content_area_id, con.title AS con_title, con.seo_title AS con_seo_title, com.create_date AS rss_date, content_status FROM {IFW_TBL_COMMENTS} com LEFT JOIN {IFW_TBL_CONTENT} con ON com.story_id = con.id WHERE comment_status = 'Approved' $strArticleClause GROUP BY rss_date DESC LIMIT $intRSSCount", __CLASS__ . "::" . __FUNCTION__, __LINE__);
+      $arrNewComments = $this->ResultQuery("
+        SELECT com.id, com.story_id, com.content, con.content_area_id, con.title AS con_title, con.permalink,
+        com.create_date AS rss_date, content_status
+        FROM {IFW_TBL_COMMENTS} com
+        LEFT JOIN {IFW_TBL_CONTENT} con ON com.story_id = con.id
+        WHERE comment_status = 'Approved' $strArticleClause
+        GROUP BY rss_date DESC LIMIT $intRSSCount
+      ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       
       $strRSSFileContents = $CMS->AC->RSSHeader("Comments Feed - $strContTitle", $strRSSLinkAbout, "", $dteToday);
 
@@ -243,8 +259,8 @@ RSSFile;
         if ($intArticleID > 0) {
           $CMS->RES->ViewArea($intContentAreaID);
           if (!$CMS->RES->IsError()) {
-            $CMS->PL->SetTitle($arrNewComments[$j]['con_seo_title']);
-            $strNewItemURL = $strRSSLinkRoot.$CMS->PL->ViewArticle($intArticleID)."#c".$intCommentID;
+            $permalink = $arrNewComments[$j]['permalink'];
+            $strNewItemURL = $strRSSLinkRoot.$permalink."#c".$intCommentID;
             $strCommentTitle = $arrNewComments[$j]['con_title'];
             //$strCommentTitle = $this->DoEntities($strCommentTitle);
           } else {

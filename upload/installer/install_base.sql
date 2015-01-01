@@ -71,6 +71,7 @@ DROP TABLE IF EXISTS {IFW_TBL_CONTENT};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
   id int(10) unsigned NOT NULL auto_increment,
   title varchar(125) NOT NULL default '',
+  permalink VARCHAR(255) NOT NULL,
   content mediumtext NOT NULL,
   author_id int(10) unsigned NOT NULL default 0,
   content_area_id int(10) unsigned NOT NULL default 0,
@@ -97,6 +98,7 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
 ALTER TABLE {IFW_TBL_CONTENT} ADD FULLTEXT title(title);
 ALTER TABLE {IFW_TBL_CONTENT} ADD FULLTEXT content(content);
 ALTER TABLE {IFW_TBL_CONTENT} ADD FULLTEXT title_content(title, content);
+ALTER TABLE {IFW_TBL_CONTENT} ADD INDEX permalink (permalink ASC);
 
 DROP TABLE IF EXISTS {IFW_TBL_PERMISSION_PROFILES};
 CREATE TABLE {IFW_TBL_PERMISSION_PROFILES} (

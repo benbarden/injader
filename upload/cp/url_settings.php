@@ -41,7 +41,7 @@
             $CMS->SYS->WriteSysPref(C_PREF_LINK_STYLE, $intLinkStyle);
         }
         // Rebuild the URL mappings table
-        $CMS->UM->rebuildAll();
+        //$CMS->UM->rebuildAll();
         // Confirm
         $strConfirmMsg = "<p><b>Settings updated successfully.</b></p>\n\n";
     } else {
@@ -77,6 +77,7 @@
     $strHTML = <<<END
 <h1 class="page-header">$strPageTitle</h1>
 $strConfirmMsg
+<p>This controls the default URL style for new content. Changing this will not affect existing content.</p>
 <form id="frmSystemPrefs" action="{FN_ADM_URL_SETTINGS}" method="post">
 <div class="table-responsive">
 <table class="table table-striped">
@@ -112,4 +113,3 @@ $strConfirmMsg
 
 END;
     $CMS->AP->Display($strHTML);
-?>

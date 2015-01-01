@@ -31,3 +31,6 @@ ALTER TABLE maj_users RENAME TO Cms_Users;
 ALTER TABLE maj_user_groups RENAME TO Cms_UserRoles;
 ALTER TABLE maj_user_sessions RENAME TO Cms_UserSessions;
 ALTER TABLE maj_user_stats RENAME TO Cms_UserStats;
+
+ALTER TABLE Cms_Content ADD COLUMN permalink VARCHAR(255) NOT NULL AFTER title;
+ALTER TABLE Cms_Content ADD INDEX permalink (permalink ASC);

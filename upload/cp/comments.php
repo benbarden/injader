@@ -89,6 +89,7 @@ if ($blnApproved) {
     $dteCreateDate = $arrComments[$i]['create_date'];
     $intContentID  = $arrComments[$i]['story_id'];
     $strTitle      = $arrComments[$i]['title'];
+    $permalink     = $arrComments[$i]['permalink'];
     $strSEOTitle   = $arrComments[$i]['seo_title'];
     $strGuestURL = "";
     // Make user link
@@ -108,9 +109,6 @@ if ($blnApproved) {
         $strGuestURL = "<b>URL:</b> $strURL ";
       }
     }
-    // Make content link
-    $CMS->PL->SetTitle($strSEOTitle);
-    $strArticleLink = $CMS->PL->ViewArticle($intContentID);
     // Table header
     if ($i == 0) {
       // Bulk options
@@ -212,7 +210,7 @@ ItemContent;
         <b>Email</b>: $strEmail <b>IP</b>: $strUserIP</p>
       </td>
       <td class="Centre Title" style="vertical-align: top;">
-        <a href="$strArticleLink" title="View article">$strTitle</a>
+        <a href="$permalink" title="View article">$strTitle</a>
       </td>
     </tr>
 

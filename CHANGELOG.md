@@ -13,6 +13,7 @@ It is currently not possible to install Injader in a subfolder.
 * New: Ability to theme the Control Panel (work-in-progress)
 * New: Introduced many new helper functions for themes
 * New: My Settings screen
+* New: Allow manual editing of content URLs
 * Security: Replacing MD5 with BCRYPT
 * Maintenance: Moved sitemap URL to the Control Panel dashboard
 * Maintenance: Replaced in-page navigation and linking screens with dropdown menus in the Control Panel

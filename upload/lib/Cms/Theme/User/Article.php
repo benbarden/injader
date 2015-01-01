@@ -49,6 +49,7 @@ class Article
     {
         $articleId = $this->article->getId();
         $articleTitle = stripslashes($this->article->getTitle());
+        $articlePermalink = $this->article->getPermalink();
 
         $bindings = array();
 
@@ -69,6 +70,7 @@ class Article
         $contentArticle = new \Cms\Content\Article($this->article, $iaLink);
         $bindings['Article']['Id'] = $articleId;
         $bindings['Article']['Title'] = $articleTitle;
+        $bindings['Article']['Permalink'] = $articlePermalink;
         $bindings['Article']['Body'] = $contentArticle->getFullBody();
         $bindings['Article']['Date'] = date($dateFormat, strtotime($this->article->getCreateDate()));
 

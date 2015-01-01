@@ -62,16 +62,13 @@ class URLMapping extends Helper {
         
         // ** Step 3. Process articles ** //
         $arrArticles = $CMS->ResultQuery("
-            SELECT id, seo_title FROM {IFW_TBL_CONTENT}
+            SELECT id, seo_title, permalink FROM {IFW_TBL_CONTENT}
             WHERE content_status = 'Published'
             ORDER BY id ASC
         ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
         for ($i=0; $i<count($arrArticles); $i++) {
             $intArticleID = $arrArticles[$i]['id'];
-            $strSEOName   = $arrArticles[$i]['seo_title'];
-            $CMS->PL->SetTitle($strSEOName);
-            $strLink    = $CMS->PL->ViewArticle($intArticleID);
-            $CMS->PL->SetTitle("");
+            $strLink      = $arrArticles[$i]['permalink'];
             $this->addLink($strLink, $intArticleID, 0);
         }
         
@@ -189,7 +186,7 @@ class URLMapping extends Helper {
     
     /**
      * Gets the active URL for a given area ID
-     * @param $intArticleID
+     * @param $intAreaID
      * @return string
      */
     function getActiveArea($intAreaID) {
@@ -292,9 +289,9 @@ class URLMapping extends Helper {
     
     /**
      * Stores a cache item using the specified format
-     * @param $strURL
+     * @param $strKey
      * @param $arrData
-     * @return unknown_type
+     * @return void
      */
     function StoreCacheItem($strKey, $arrData) {
         
@@ -355,4 +352,3 @@ class URLMapping extends Helper {
     }
     
 }
-?>

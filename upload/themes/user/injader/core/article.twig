@@ -5,7 +5,7 @@
     <p class="blog-post-meta">
         {{ Article.Date }}
         | By <a href="{{ cmsLinkUser(Article.Author.Id) }}">{{ Article.Author.Username }}</a>
-        | <a href="{{ cmsLinkArticle(Article.Id) }}">Permalink</a>
+        | <a href="{{ Article.Permalink }}">Permalink</a>
     </p>
     {{ Article.Body|raw }}
 </div>

@@ -76,11 +76,11 @@ class pages_Archives extends Helper {
                     $dateYear  = $item['content_yyyy'];
                     $dateMonth = $item['content_mm'];
                     $itemTitle = $item['title'];
-                    $itemLink  = $CMS->PL->ViewArticle($item['id'], $item['content_area_id']);
+                    $permalink = $item['permalink'];
                     if (empty($listHTML)) {
                         $listHTML .= "<ul>\n";
                     }
-                    $listHTML .= '<li>'.$dateDesc.' - <a href="'.$itemLink.'">'.$itemTitle.'</a></li>'."\n";
+                    $listHTML .= '<li>'.$dateDesc.' - <a href="'.$permalink.'">'.$itemTitle.'</a></li>'."\n";
                 }
                 if (!empty($listHTML)) {
                     $listHTML .= "</ul>\n";

@@ -180,8 +180,9 @@
             $strLogDesc .= " (ID: $intItemID)";
           }
         } elseif ($blnPLArticle) {
-          $strViewLink = $CMS->PL->ViewArticle($intItemID);
-          $strLogDesc = $strLogDesc.": <a href=\"$strViewLink\">$strItemTitle</a> (ID: $intItemID)";
+          $dbArticle = $CMS->ART->GetArticle($intItemID);
+          $permalink = $dbArticle['permalink'];
+          $strLogDesc = "$strLogDesc: ".'<a href="'.$permalink.'">'.$strItemTitle.'</a>'." (ID: $intItemID)";
         }
         $this->Create($strLogDesc, $strTag);
       }

@@ -325,8 +325,6 @@
           }
           // ** Update comment count ** //
           $CMS->ART->RefreshArticleCommentCount($intArticleID);
-          // ** Do comment jump ** //
-          $strViewLink .= "#c".$intCommentID;
         }
         // ** Confirmation ** //
         $strHTML = <<<ConfirmPage
@@ -344,14 +342,11 @@ ConfirmPage;
         $strContent = $CMS->AddSlashesIFW($strContent);
         $dteDate = $CMS->SYS->GetCurrentDateAndTime();
         $CMS->COM->Edit($intCommentID, $strContent, $dteDate, "<a href=\"$strViewLink\">comment</a>");
-        // Append comment ID to page link
-        $strViewLink .= "#c".$intCommentID;
-        //$strPageURL = "http://".SVR_HOST.$strViewLink;
         // ** Confirmation ** //
         $strHTML = <<<ConfirmPage
 <div id="pagecontent">
 <h1>Edit Comment - Results</h1>
-<p>Comment successfully updated. <a href="$strViewLink">View updated comment</a>.</p>
+<p>Comment successfully updated.</p>
 </div>
 ConfirmPage;
         $CMS->MV->DefaultPage("Edit Comment - Results", $strHTML);
@@ -372,15 +367,11 @@ ConfirmPage;
         $CMS->COM->Delete($intCommentID, "");
         // ** Update comment count ** //
         $CMS->ART->RefreshArticleCommentCount($intArticleID);
-        // ** Build link ** //
-        if ($blnArticle) {
-          $strViewLink = $CMS->PL->ViewArticle($intItemID);
-        }
         // ** Confirmation ** //
         $strHTML = <<<ConfirmPage
 <div id="pagecontent">
 <h1>Delete Comment - Results</h1>
-<p>Comment successfully deleted. <a href="$strViewLink">View $strItemName</a>.</p>
+<p>Comment successfully deleted.</p>
 </div>
 ConfirmPage;
         $CMS->MV->DefaultPage("Delete Comment - Results", $strHTML);

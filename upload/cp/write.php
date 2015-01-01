@@ -43,7 +43,9 @@
     if (!$intContentID) {
       $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "ID");
     }
-	}
+	} else {
+        $intContentID = '';
+    }
 	
   if ($blnCreate) {
     $intAreaID = empty($_GET['area']) ? "" : $_GET['area'];
@@ -74,6 +76,7 @@
   $strContStatus = empty($_POST['txtStatus']) ? C_CONT_PUBLISHED : $_POST['txtStatus'];
   $strDraftSaved = "";
   $strExcerpt = ""; $intCustomOrder = "";
+  $contentUrl = "";
   
   $intMaxFileSize = $CMS->SYS->GetSysPref(C_PREF_ATTACH_MAX_SIZE);
   $strFileSize = ($intMaxFileSize / 1000000)."MB";
@@ -111,6 +114,8 @@
     $strArticleTags = $CMS->StripSlashesIFW($_POST['txtArticleTags']);
     // Validate area
     $intAreaID = empty($_POST['optParent']) ? "" : $_POST['optParent'];
+    // Link override
+    $contentUrl = empty($_POST['content-url']) ? "" : $_POST['content-url'];
     // Validate content
     if (!$strContBody) {
       $blnSubmitForm = false;
@@ -147,10 +152,14 @@
             $intCheckArticleID = $intContentID;
         }
         if ($blnCheckLink) {
-            $strSEOTitle = $CMS->MakeSEOTitle($strContTitle);
-            $CMS->PL->SetTitle($strSEOTitle);
-            $strLink = $CMS->PL->ViewArticle($intCheckArticleID, $intAreaID);
-            $CMS->PL->SetTitle("");
+            if ($contentUrl) {
+                $strLink = $contentUrl;
+            } else {
+                $strSEOTitle = $CMS->MakeSEOTitle($strContTitle);
+                $CMS->PL->SetTitle($strSEOTitle);
+                $strLink = $CMS->PL->ViewArticle($intCheckArticleID, $intAreaID);
+                $CMS->PL->SetTitle("");
+            }
             $blnInvalid = $CMS->UM->isUrlInUse($strLink, $intCheckArticleID, "");
             // Tell the user if it's invalid
             if ($blnInvalid) {
@@ -248,17 +257,7 @@
       
       $strContBody = str_replace("{".ZZZ_TEMP, "<", $strContBody);
       $strContBody = str_replace(ZZZ_TEMP."}", ">", $strContBody);
-      
-      /*
-      $strContBody = str_replace("<br>", "<br />\n", $strContBody);
-      $strContBody = str_replace("</li>", "</li>\n", $strContBody);
-      $strContBody = str_replace("</h1>", "</h1>\n", $strContBody);
-      $strContBody = str_replace("</h2>", "</h2>\n", $strContBody);
-      $strContBody = str_replace("</h3>", "</h3>\n", $strContBody);
-      $strContBody = str_replace("</h4>", "</h4>\n", $strContBody);
-      $strContBody = str_replace("</h5>", "</h5>\n", $strContBody);
-      $strContBody = str_replace("</h6>", "</h6>\n", $strContBody);
-      */
+
       $strContBody = $CMS->AddSlashesIFW($strContBody);
       // Tags
       $strTagList = "";
@@ -301,7 +300,7 @@
         }
         $intContentID = $CMS->ART->Create($intAuthorID, $dteArticleCreated, $strContTitle, 
             $strContBody, $intAreaID, "", $strContURL, $strContStatus, $strGroupList,
-            $strExcerpt, $intCustomOrder);
+            $strExcerpt, $intCustomOrder, $contentUrl);
         $strTagList = $CMS->TG->BuildIDList($strArticleTags, $intContentID);
         $CMS->ART->SetTags($intContentID, $strTagList);
         $arrCurrentData = $CMS->ART->GetArticle($intContentID);
@@ -321,7 +320,7 @@
         }
         $CMS->ART->Edit($intContentID, $intAuthorID, $strContTitle, $strContBody, 
             $dteArticleCreated, $intAreaID, $strTagList, $strContURL, $strContStatus, 
-            $strGroupList, $strExcerpt, $intCustomOrder);
+            $strGroupList, $strExcerpt, $intCustomOrder, $contentUrl);
         $CMS->ART->ClearUserlist($intContentID);
       }
       // Create file
@@ -350,9 +349,12 @@
         $strSEOTitle = $CMS->MakeSEOTitle($strContTitle);
         $CMS->PL->SetTitle($strSEOTitle);
         $CMS->ART->arrArticle = array(); // force a recache in case the article title changes
-        $strViewArticle = $CMS->PL->ViewArticle($intContentID);
+        // get article data
+        $articleData = $CMS->ART->GetArticle($intContentID);
+        // populate links
+        $strViewArticle = $articleData['permalink'];
         $strViewArea    = $CMS->PL->ViewArea($intAreaID);
-        $strConfLinks = "\n<br /><a href=\"$strViewArticle\">View the article</a> :$strAddAnother <a href=\"$strViewArea\">View other content in this area</a>";
+        $strConfLinks = "\n<br /><a href=\"$strViewArticle\">View the article</a> :$strAddAnother";
       } elseif ($strContStatus == C_CONT_DRAFT) {
         $strItemMsg = "Draft saved.";
         $strConfLinks = "<a href=\"{FN_ADM_WRITE}?id=$intContentID&amp;action=edit\">Keep editing</a> : <a href=\"{FN_ADM_CONTENT_MANAGE}\">Return to Manage Content</a>";
@@ -425,6 +427,11 @@ PostArticleHTML;
       $strFileLocation = $arrExisting[0]['location'];
       $strExcerpt = $arrContent['article_excerpt'];
       $intCustomOrder = $arrContent['article_order'];
+
+      $urlMapping = $CMS->UM->getActiveArticle($intContentID);
+      if ($urlMapping) {
+          $contentUrl = $urlMapping[0]['relative_url'];
+      }
     }
   }
   
@@ -435,10 +442,6 @@ PostArticleHTML;
   } elseif (($blnEdit) && ($arrContent['username'])) {
     $strArticleAuthor = $arrContent['username'];
     $intAuthorID      = $arrContent['author_id'];
-  } elseif (($blnEdit) && (!$arrContent['username'])) {
-    $strArticleAuthor = $CMS->RES->GetCurrentUser();
-    $intAuthorID      = $CMS->RES->GetCurrentUserID();
-    $strModifiedAuthor = "<p><b>Note: The original author's account has been deleted. By editing this story, you will be listed as the author.</b></p>\n\n";
   }
   
   if ($blnCreate) {
@@ -534,6 +537,14 @@ $strDraftSaved
 $strAreaListPrimary
         </select>
       </td>
+    </tr>
+    <tr>
+        <td>
+            <label>URL:</label>
+        </td>
+        <td colspan="3">
+            <input type="text" id="content-url" name="content-url" maxlength="255" size="50" value="$contentUrl">
+        </td>
     </tr>
     <tr>
       <td class="BaseColour" colspan="4">
@@ -672,7 +683,35 @@ FooterScript;
 </script>
 <script>
     $(document).ready(function() {
-        $("#tabs").tabs();
+
+        var articleId = '$intContentID';
+
+        $('#tabs').tabs();
+
+        $('#txtTitle, #content-url').on('blur', function() {
+
+            var articleTitle = $('#txtTitle').val();
+            var currentUrl = $('#content-url').val();
+            if ((articleId != '') && (currentUrl != '')) {
+                return false;
+            }
+
+            $.post('/ajax/article/BuildUrl.php', {
+                'id': articleId,
+                'title': articleTitle,
+                'currentUrl': currentUrl
+            }, function(json) {
+                console.log(json);
+                var urlObject = $.parseJSON(json);
+                if (urlObject.error == '') {
+                    articleUrl = urlObject.url;
+                    $('#content-url').val(articleUrl);
+                } else {
+                    $('#content-url').val('');
+                }
+            });
+
+        });
     });
 </script>
 

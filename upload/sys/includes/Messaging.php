@@ -39,7 +39,11 @@
       $strSiteTitle  = $CMS->SYS->GetSysPref(C_PREF_SITE_TITLE);
       $strAdminEmail = $CMS->SYS->GetSysPref(C_PREF_SITE_EMAIL);
       if ($intNotify == 1) {
-        $strEmailBody = "$strAuthorName just added a comment to the $strItemDesc, $strTitle:\r\n\r\n$strNotifyContent\r\n\r\nThis is a moderated user so the comment must be approved or denied. A link to the review screen is provided below. You must be logged in to view this screen.\r\n\r\n$strReviewURL\r\n\r\nTo disable future e-mail notifications, uncheck the Review Notification option in the Control Panel under Content Settings.";
+        $strEmailBody = "$strAuthorName just added a comment to the $strItemDesc, $strTitle:\r\n\r\n".
+            "$strNotifyContent\r\n\r\nThis is a moderated user so the comment must be approved or denied. ".
+            "A link to the review screen is provided below. You must be logged in to view this screen.\r\n\r\n".
+            "$strReviewURL\r\n\r\nTo disable future e-mail notifications, uncheck the Review Notification option in the ".
+            "Control Panel under Content Settings.";
         $strEmailTitle = "Please moderate: $strSiteTitle";
         $strEmailTitle = str_replace("&quot;", "\"", $strEmailTitle);
         $strEmailBody  = $CMS->RC->DoAll($strEmailBody);
@@ -60,7 +64,8 @@
       $arrArticleData        = $CMS->ART->GetArticle($intArticleID);
       $strArticleAuthorEmail = $arrArticleData['email'];
       $strContent            = $this->SanitiseContent($strContent);
-      $strEmailBody = "$strAuthorName just added the following comment to the $strItemDesc, $strTitle:\r\n\r\n$strContent\r\n\r\nA link to the comment is provided below. You can reply to the comment here.\r\n\r\n$strPageURL";
+      $strEmailBody = "$strAuthorName just added the following comment to the $strItemDesc, $strTitle:\r\n\r\n".
+          "$strContent\r\n\r\nA link to the comment is provided below. You can reply to the comment here.\r\n\r\n$strPageURL";
       $strEmailTitle = "New comment: $strTitle";
       $strEmailTitle = str_replace("&quot;", "\"", $strEmailTitle);
       $strEmailBody  = $CMS->RC->DoAll($strEmailBody);
@@ -68,7 +73,8 @@
       // Notify admin
       if (($intNotifyAdmin == 1) && ($strAdminEmail != $strCommentAuthorEmail)) {
         // Only admins need this section of the email
-        $strAdminEmailBody = $strEmailBody."\r\n\r\nTo disable future e-mail notifications, uncheck the Comment Notification option in the Control Panel under Content Settings.";
+        $strAdminEmailBody = $strEmailBody."\r\n\r\n".
+            "To disable future e-mail notifications, uncheck the Comment Notification option in the Control Panel under Content Settings.";
         @ $intNotifyResult = $CMS->SendEmail($strAdminEmail, $strEmailTitle, $strAdminEmailBody, $strCommentAuthorEmail);
       }
       // Notify author
@@ -94,7 +100,14 @@
     function BulkNewCommentNotification($strCommentIDs) {
       global $CMS;
       if ($strCommentIDs) {
-        $arrComments = $CMS->ResultQuery("SELECT c.*, a.title, u.username, u.email FROM ({IFW_TBL_COMMENTS} c, {IFW_TBL_CONTENT} a) LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id WHERE a.id = c.story_id AND c.id IN $strCommentIDs ORDER BY c.id ASC", basename(__FILE__), __LINE__);
+        $arrComments = $CMS->ResultQuery("
+        SELECT c.*, a.title, a.permalink, u.username, u.email
+        FROM ({IFW_TBL_COMMENTS} c, {IFW_TBL_CONTENT} a)
+        LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id
+        WHERE a.id = c.story_id
+        AND c.id IN $strCommentIDs
+        ORDER BY c.id ASC
+        ", basename(__FILE__), __LINE__);
         for ($i=0; $i<count($arrComments); $i++) {
           $intCommentID = $arrComments[$i]['id'];
           $intArticleID = $arrComments[$i]['story_id'];
@@ -109,7 +122,7 @@
             $strAuthorName  = $arrComments[$i]['guest_name'];
             $strAuthorEmail = $arrComments[$i]['guest_email'];
           }
-          $strViewLink = $CMS->PL->ViewArticle($intArticleID);
+          $strViewLink = $arrComments[$i]['permalink'];
           $strItemDesc = "article";
           $strContent  = $this->SanitiseContent($arrComments[$i]['content']);
           $this->NewCommentNotification($intCommentID, $intArticleID, $strAuthorName, $strAuthorEmail, $strItemDesc, $strTitle, $strContent, $strViewLink);
@@ -121,13 +134,15 @@
     */
     function NewArticleNotification($intArticleID, $arrArticleData) {
       global $CMS;
-      $strPageURL            = "http://".SVR_HOST.$CMS->PL->ViewArticle($intArticleID);
+      $strPageURL            = "http://".SVR_HOST.$arrArticleData['permalink'];
       $intNotifyAdmin        = $CMS->SYS->GetSysPref(C_PREF_ARTICLE_NOTIFY_ADMIN);
       $strAdminEmail         = $CMS->SYS->GetSysPref(C_PREF_SITE_EMAIL);
       $strArticleAuthorEmail = $arrArticleData['email'];
       $strTitle              = $this->SanitiseContent($arrArticleData['title']);
       $strAuthorName         = $this->SanitiseContent($arrArticleData['username']);
-      $strEmailBody = "$strAuthorName just added a new article: $strTitle\r\n\r\nA link to the article is provided below.\r\n\r\n$strPageURL\r\n\r\nTo disable future e-mail notifications, uncheck the Article Notification option in the Control Panel under Content Settings.";
+      $strEmailBody = "$strAuthorName just added a new article: $strTitle\r\n\r\n".
+          "A link to the article is provided below.\r\n\r\n$strPageURL\r\n\r\n".
+          "To disable future e-mail notifications, uncheck the Article Notification option in the Control Panel under Content Settings.";
       $strEmailTitle = "New article: $strTitle";
       $strEmailTitle = str_replace("&quot;", "\"", $strEmailTitle);
       $strEmailBody  = $CMS->RC->DoAll($strEmailBody);
@@ -142,13 +157,15 @@
     */
     function ReviewArticleNotification($intArticleID, $arrArticleData) {
       global $CMS;
-      $strPageURL            = "http://".SVR_HOST.FN_ADM_CONTENT_MANAGE."?navtype=1&area1=0&area2=0&area3=0&status=Review";
+      $strPageURL            = "http://".SVR_HOST.FN_ADM_CONTENT_MANAGE."?area=0&status=Review";
       $intNotifyAdmin        = $CMS->SYS->GetSysPref(C_PREF_ARTICLE_REVIEW_EMAIL);
       $strAdminEmail         = $CMS->SYS->GetSysPref(C_PREF_SITE_EMAIL);
       $strArticleAuthorEmail = $arrArticleData['email'];
       $strTitle              = $this->SanitiseContent($arrArticleData['title']);
       $strAuthorName         = $this->SanitiseContent($arrArticleData['username']);
-      $strEmailBody = "$strAuthorName just added a new article: $strTitle\r\n\r\nThis article requires approval. You can approve or deny the article at the following location:\r\n\r\n$strPageURL\r\n\r\nTo disable future e-mail notifications, go to the Control Panel and click on Settings - Content.";
+      $strEmailBody = "$strAuthorName just added a new article: $strTitle\r\n\r\n".
+          "This article requires approval. You can approve or deny the article at the following location:\r\n\r\n".
+          "$strPageURL\r\n\r\nTo disable future e-mail notifications, go to the Control Panel and click on Settings - Content.";
       $strEmailTitle = "Please review: $strTitle";
       $strEmailTitle = str_replace("&quot;", "\"", $strEmailTitle);
       $strEmailBody  = $CMS->RC->DoAll($strEmailBody);
@@ -160,4 +177,3 @@
     }
   }
 
-?>

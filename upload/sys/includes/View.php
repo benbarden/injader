@@ -507,29 +507,11 @@
       // ** SEO links ** //
       $strContTitle = $arrContent['title'];
       $strSEOTitle  = $arrContent['seo_title'];
-      $CMS->PL->SetTitle($strSEOTitle);
-      $strViewArticle = $CMS->PL->ViewArticle($intID);
-      /*
-      $blnRedirect = false;
-      if ($strTitle) {
-        if ($strTitle != $strSEOTitle) {
-          $blnRedirect = true;
-        }
-      } else {
-        $blnRedirect = true;
-      }
-      if ($blnRedirect) {
-        if ($_SERVER['REQUEST_URI'] == $strViewArticle) {
-          // Do nothing - prevent infinite loop
-        } else {
-          httpRedirectPerm($strViewArticle);
-        }
-      }
-      */
+      $permalink    = $arrContent['permalink'];
       // Log activity - but only for registered users
       $intUserID = $CMS->RES->GetCurrentUserID();
       if ($intUserID) {
-        $CMS->SYS->CreateAccessLog("Viewed article: <a href=\"$strViewArticle\">$strContTitle</a>", AL_TAG_ARTICLE_VIEW, $intUserID, "");
+        $CMS->SYS->CreateAccessLog("Viewed article: <a href=\"$permalink\">$strContTitle</a>", AL_TAG_ARTICLE_VIEW, $intUserID, "");
         $CMS->ART->UpdateUserList($intID, $intUserID);
         $CMS->ART->IncrementHits($intID);
       } else {

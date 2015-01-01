@@ -80,7 +80,11 @@ SubscribeOptions;
         // Update subscriptions
         if ($strNewSubs != $strMySubscriptions) {
           // Manual update to avoid auto-appending of commas
-          $CMS->Query("UPDATE {IFW_TBL_USER_STATS} SET article_subscriptions = '$strNewSubs' WHERE user_email = '$strEmail'", basename(__FILE__), __LINE__);
+          $CMS->Query("
+          UPDATE {IFW_TBL_USER_STATS}
+          SET article_subscriptions = '$strNewSubs'
+          WHERE user_email = '$strEmail'
+          ", basename(__FILE__), __LINE__);
         }
         // Confirm
         $strHTML = <<<SubscribeOptions
@@ -115,31 +119,40 @@ ClearCookies;
         $strHTML = <<<SubscribeOptions
 <h1>$strPageTitle</h1>
 <p>Your email is: <b>$strEmail</b></p>
-<p>If this is not your email address or you wish to check another account, you can <a href="{FN_SUBSCRIBE}?action=clearcookies">clear the comment form cookies for this site</a>.</p>
+<p>If this is not your email address or you wish to check another account, you can
+<a href="{FN_SUBSCRIBE}?action=clearcookies">clear the comment form cookies for this site</a>.</p>
 
 SubscribeOptions;
         // Get user subscriptions
         $blnShowForm = false;
         $strMySubscriptions = $CMS->UST->GetSubscriptions($strEmail);
         if ($strMySubscriptions) {
-          $arrSubArticleData = $CMS->ResultQuery("SELECT id, title, seo_title FROM {IFW_TBL_CONTENT} WHERE id IN ($strMySubscriptions) AND content_status = '{C_CONT_PUBLISHED}' ORDER BY create_date DESC", basename(__FILE__), __LINE__);
+          $arrSubArticleData = $CMS->ResultQuery("
+          SELECT id, title, permalink
+          FROM {IFW_TBL_CONTENT}
+          WHERE id IN ($strMySubscriptions)
+          AND content_status = '{C_CONT_PUBLISHED}'
+          ORDER BY create_date DESC
+          ", basename(__FILE__), __LINE__);
           for ($i=0; $i<count($arrSubArticleData); $i++) {
             if ($i == 0) {
               $blnShowForm = true;
               $strHTML .= <<<UnsubForm
 <h2>Your Subscriptions</h2>
-<p>You are currently subscribed to the content shown below. To unsubscribe, check the item(s) you wish to remove, then click the Unsubscribe button.</p>
+<p>You are currently subscribed to the content shown below. To unsubscribe, check the item(s) you wish to remove,
+then click the Unsubscribe button.</p>
 <form action="{FN_SUBSCRIBE}?action=unsubscribe" method="post">
 
 UnsubForm;
             }
-            $intSubArticleID       = $arrSubArticleData[$i]['id'];
-            $strSubArticleTitle    = $arrSubArticleData[$i]['title'];
-            $strSubArticleSEOTitle = $arrSubArticleData[$i]['seo_title'];
-            $CMS->PL->SetTitle($strSubArticleSEOTitle);
-            $strViewLink = $CMS->PL->ViewArticle($intSubArticleID);
+            $intSubArticleID    = $arrSubArticleData[$i]['id'];
+            $strSubArticleTitle = $arrSubArticleData[$i]['title'];
+            $permalink  = $arrSubArticleData[$i]['permalink'];
             $strHTML .= <<<UnsubItem
-<input type="checkbox" name="chkUnsubList$intSubArticleID" id="chkUnsubList$intSubArticleID" /><label for="chkUnsubList$intSubArticleID">$strSubArticleTitle</label> - <a href="$strViewLink">view article: $strSubArticleTitle</a><br />
+<input type="checkbox" name="chkUnsubList$intSubArticleID" id="chkUnsubList$intSubArticleID" />
+<label for="chkUnsubList$intSubArticleID">$strSubArticleTitle</label> -
+<a href="$permalink">view article: $strSubArticleTitle</a>
+<br />
 
 UnsubItem;
           }

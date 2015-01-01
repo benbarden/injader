@@ -9,7 +9,7 @@
 {% for Item in Area.Content %}
     <div class="blog-post">
         <h2 class="blog-post-title">
-            <a href="{{ cmsLinkArticle(Item.Id) }}">{{ Item.Title }}</a>
+            <a href="{{ Item.Permalink }}">{{ Item.Title }}</a>
         </h2>
         <p class="blog-post-meta">
             {{ Item.Date }} |

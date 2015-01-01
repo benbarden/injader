@@ -162,8 +162,9 @@
       }
       $strLink = "";
       if ($this->intNavID > 0) {
-        $strLinkURL = $CMS->PL->ViewArticle($this->intNavID);
-        $strLink = "<a href=\"$strLinkURL\">".$this->strNavTitle." &gt;</a>";
+        $dbArticle = $CMS->ART->GetArticle($this->intNavID);
+        $permalink = $dbArticle['permalink'];
+        $strLink = "<a href=\"$permalink\">".$this->strNavTitle." &gt;</a>";
       }
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
@@ -179,8 +180,9 @@
       }
       $strLink = "";
       if ($this->intNavID > 0) {
-        $strLinkURL = $CMS->PL->ViewArticle($this->intNavID);
-        $strLink = "<a href=\"$strLinkURL\">&lt; ".$this->strNavTitle."</a>";
+        $dbArticle = $CMS->ART->GetArticle($this->intNavID);
+        $permalink = $dbArticle['permalink'];
+        $strLink = "<a href=\"$permalink\">&lt; ".$this->strNavTitle."</a>";
       }
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
@@ -188,4 +190,3 @@
     }
   }
 
-?>

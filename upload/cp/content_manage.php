@@ -240,7 +240,7 @@ END;
       // Get content
       $strDateFormat = $CMS->SYS->GetDateFormat();
       $strContentSQL = "
-        SELECT c.id, c.title, c.seo_title, c.content_status, c.hits, c.comment_count, c.content_area_id,
+        SELECT c.id, c.title, c.permalink, c.seo_title, c.content_status, c.hits, c.comment_count, c.content_area_id,
         DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw,
         a.name AS area_name, a.seo_name AS area_seo_name
         FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a)
@@ -267,13 +267,11 @@ END;
         $strAreaLink     = $CMS->PL->ViewArea($intAreaID);
         $strCreateDate   = $arrAreaContent[$i]['create_date'];
         $strTitle        = $arrAreaContent[$i]['title'];
+        $permalink       = $arrAreaContent[$i]['permalink'];
         $strStatus       = $arrAreaContent[$i]['content_status'];
         $strSEOTitle     = $arrAreaContent[$i]['seo_title'];
         $intHits         = $arrAreaContent[$i]['hits'];
         $intComments     = $arrAreaContent[$i]['comment_count'];
-        // Make page link
-        $CMS->PL->SetTitle($strSEOTitle);
-        $strViewLink = $CMS->PL->ViewArticle($intID);
         // Table header
         if ($i == 0) {
           // Bulk options
@@ -366,7 +364,7 @@ TableHeader;
         $strHTML .= <<<AreaContent
       <tr id="$strRowID" class="$strRowClass">
         <td class="Centre ID">$intID</td>
-        <td class="Left Title"><a href="$strViewLink" title="View this article">$strTitle</a></td>
+        <td class="Left Title"><a href="$permalink" title="View this article">$strTitle</a></td>
         <td class="Centre Area"><a href="$strAreaLink">$strAreaName</a></td>
         <td class="Centre Created">$strCreateDate</td>
         <td class="Centre Status">$strStatus</td>

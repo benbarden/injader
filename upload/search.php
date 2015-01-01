@@ -333,7 +333,7 @@ END;
     }
     $CMS->RES->ClearErrors();
     // Standard mode
-    $strSQL = "SELECT c.id, c.title, c.content, a.name, a.seo_name, c.content_area_id, c.tags, c.seo_title FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) WHERE c.content_area_id = a.id AND content_status = '{C_CONT_PUBLISHED}' $strAreaClause $strWhereClause $strUserGroupSQL LIMIT $intStart, $intContentPerPage";
+    $strSQL = "SELECT c.id, c.title, c.permalink, c.content, a.name, a.seo_name, c.content_area_id, c.tags, c.seo_title FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) WHERE c.content_area_id = a.id AND content_status = '{C_CONT_PUBLISHED}' $strAreaClause $strWhereClause $strUserGroupSQL LIMIT $intStart, $intContentPerPage";
     $arrResult = $CMS->ResultQuery($strSQL, basename(__FILE__), __LINE__);
     $arrItemCount = $CMS->ResultQuery("SELECT count(*) AS count FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) WHERE c.content_area_id = a.id $strAreaClause $strWhereClause $strUserGroupSQL", basename(__FILE__), __LINE__);
     $intItemCount = $arrItemCount[0]['count'];
@@ -345,6 +345,7 @@ END;
     for ($i=0; $i<count($arrResult); $i++) {
       $intID       = $arrResult[$i]['id'];
       $strTitle    = $arrResult[$i]['title'];
+      $permalink   = $arrResult[$i]['permalink'];
       $strBody     = $arrResult[$i]['content'];
       $strBody     = strip_tags($strBody);
       $strArea     = $arrResult[$i]['name'];
@@ -380,14 +381,12 @@ $strPageNumbers
 ResultHeader;
         }
         // Make page link
-        $CMS->PL->SetTitle($strSEOTitle);
-        $strViewLink = $CMS->PL->ViewArticle($intID);
         $CMS->PL->SetTitle($strSEOAName);
         $strAreaLink = $CMS->PL->ViewArea($intAreaID);
         // Build item HTML
         $strHTML .= <<<SearchItem
 <div class="search-item">
-<div class="title"><a href="$strViewLink">$strTitle</a></div> <div class="area">in area: <a href="$strAreaLink">$strArea</a></div>
+<div class="title"><a href="$permalink">$strTitle</a></div> <div class="area">in area: <a href="$strAreaLink">$strArea</a></div>
 <div class="intro">$strIntro</div>
 </div>
 

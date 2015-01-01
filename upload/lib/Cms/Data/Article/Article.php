@@ -20,6 +20,12 @@ class Article extends IModel
     private $title;
 
     /**
+     * varchar(255)
+     * @var string
+     */
+    private $permalink;
+
+    /**
      * text
      * @var string
      */
@@ -52,6 +58,7 @@ class Article extends IModel
 
         $this->id = $dbData['id'];
         $this->title = $dbData['title'];
+        $this->permalink = $this->getFieldSafe('permalink');
         $this->content = $this->getFieldSafe('content');
         $this->authorId = $this->getFieldSafe('author_id');
         $this->contentAreaId = $this->getFieldSafe('content_area_id');
@@ -67,6 +74,11 @@ class Article extends IModel
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function getPermalink()
+    {
+        return $this->permalink;
     }
 
     public function getContent()

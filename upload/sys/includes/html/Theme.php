@@ -463,7 +463,9 @@ ExecTime;
     }
     function GetContentLinkURL() {
       global $CMS;
-      return $CMS->PL->ViewArticle($this->GetContentID());
+        $dbArticle = $CMS->ART->GetArticle($this->GetContentID());
+        $permalink = $dbArticle['permalink'];
+        return $permalink;
     }
     function GetContentURL() {
       return $this->arrContentItems[$this->intContentIndex]['link_url'];
@@ -491,9 +493,10 @@ ExecTime;
             }
             if ($doReplace) {
                 $arrContBody = explode($strDataToReplace, $strContBody);
-                $strContLink = $CMS->PL->ViewArticle($this->GetContentID());
+                $dbArticle = $CMS->ART->GetArticle($this->GetContentID());
+                $permalink = $dbArticle['permalink'];
                 $strContBody = $arrContBody[0].
-                    '<span class="read-more"><a href="'.$strContLink.'">Read more...</a></span>';
+                    '<span class="read-more"><a href="'.$permalink.'">Read more...</a></span>';
                 if (strpos($strContBody, '<p><span class="read-more">') !== false) {
                     $strContBody .= '</p>';
                 }
@@ -705,7 +708,9 @@ ExecTime;
     }
     function GetRelatedContentLinkURL() {
       global $CMS;
-      return $CMS->PL->ViewArticle($this->GetRelatedContentID());
+        $dbArticle = $CMS->ART->GetArticle($this->GetRelatedContentID());
+        $permalink = $dbArticle['permalink'];
+        return $permalink;
     }
     // ** Related Content - Builder ** //
     function GetRelatedContent($strTagList, $intContentID) {
@@ -873,9 +878,9 @@ ExecTime;
     }
     function GetCommentPermalink() {
       global $CMS;
-      $strLinkURL = $CMS->PL->ViewArticle($this->GetCommentArticleID());
-      $strPermalink = $strLinkURL."#c".$this->GetCommentID();
-      return $strPermalink;
+        $dbArticle = $CMS->ART->GetArticle($this->GetCommentArticleID());
+        $permalink = $dbArticle['permalink']."#c".$this->GetCommentID();
+      return $permalink;
     }
     // ** Comments - Links ** //
     function GetCommentEditLink() {
@@ -994,11 +999,12 @@ ExecTime;
       $strLocked   = $this->GetContentLocked();
       $CMS->RES->LockArticle($intAreaID);
       if (!$CMS->RES->IsError()) {
-        $strViewLink = $CMS->PL->ViewArticle($intContentID);
+          $dbArticle = $CMS->ART->GetArticle($intContentID);
+          $permalink = $dbArticle['permalink'];
         if ($strLocked == "Y") {
-          $strLockLink = "<a href=\"".FN_USER_TOOLS."?action=unlockarticle&amp;id=$intContentID&amp;back=$strViewLink\">Unlock</a>";
+          $strLockLink = "<a href=\"".FN_USER_TOOLS."?action=unlockarticle&amp;id=$intContentID&amp;back=$permalink\">Unlock</a>";
         } else {
-          $strLockLink = "<a href=\"".FN_USER_TOOLS."?action=lockarticle&amp;id=$intContentID&amp;back=$strViewLink\">Lock</a>";
+          $strLockLink = "<a href=\"".FN_USER_TOOLS."?action=lockarticle&amp;id=$intContentID&amp;back=$permalink\">Lock</a>";
         }
       }
       return $strLockLink;
