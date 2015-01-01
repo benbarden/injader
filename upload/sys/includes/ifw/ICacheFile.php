@@ -23,7 +23,12 @@
    * @author Ben Barden
    */
   class ICacheFile extends Helper {
-    
+
+    function getCacheFilePath($name)
+    {
+        return ABS_ROOT.'data/cache/'.$name;
+    }
+
   	/**
   	 * Creates a new file in the cache folder
   	 * @param $strName - the name of the file to be created
@@ -47,8 +52,9 @@
   	 * @return boolean
   	 */
   	function Exists($strName) {
-  		
-      return file_exists(ABS_CACHE.$strName);
+
+      $fullPath = $this->getCacheFilePath($strName);
+      return file_exists($fullPath);
   		
   	}
   	
@@ -62,8 +68,9 @@
   		if (!$this->Exists($strName)) {
   			return "File does not exist: $strName";
   		}
-  		
-  		@ $blnDelete = unlink(ABS_CACHE.$strName);
+
+        $fullPath = $this->getCacheFilePath($strName);
+  		@ $blnDelete = unlink($fullPath);
   		if (!$blnDelete) {
   			return "Error deleting file: $strName";
   		}
@@ -98,11 +105,12 @@
   	 * Writes to a file
   	 * @param $strName
   	 * @param $strContents
-  	 * @return unknown_type
+  	 * @return boolean|string
   	 */
   	function Write($strName, $strContents, $strMode = "w") {
-  		
-      @ $blnTouch = touch(ABS_CACHE.$strName);
+
+      $fullPath = $this->getCacheFilePath($strName);
+      @ $blnTouch = touch($fullPath);
       if (!$blnTouch) {
         return "Unable to touch() file: $strName - check the permissions on the cache folder";
       }
@@ -113,8 +121,9 @@
 	      	$strContents = "\r\n".$strContents;
 	      }
       }
-      
-      @ $objFile = fopen(ABS_CACHE.$strName, $strMode);
+
+      $fullPath = $this->getCacheFilePath($strName);
+      @ $objFile = fopen($fullPath, $strMode);
       if (!$objFile) {
         @ fclose($objFile);
         return "Unable to open file: $strName";
@@ -143,14 +152,14 @@
   	function Load($strName) {
   		
   		if (!$this->Exists($strName)) {
-        return "File does not exist: $strName";
+          return "File does not exist: $strName";
     	}
-    	
-  		@ $strData = file_get_contents(ABS_CACHE.$strName);
+
+        $fullPath = $this->getCacheFilePath($strName);
+  		@ $strData = file_get_contents($fullPath);
   		return $strData;
   		
   	}
   	
   }
 
-?>

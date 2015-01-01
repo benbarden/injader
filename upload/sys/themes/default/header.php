@@ -117,12 +117,6 @@ SubareaWrapperStart;
       $strLocation = "";
       if (($intGraphicID) && ($intGraphicID != '0')) {
         $arrGraphic  = $CMS->FL->GetFile($intGraphicID);
-        /*
-           Remove the slashes from the next line
-           if you wish to display area graphics
-           for your subareas.
-        */
-        //$strLocation = "http://".SVR_HOST.URL_ROOT.$arrGraphic['location'];
         $strTitle    = $arrGraphic['title'];
       } else {
         $strLocation = "";

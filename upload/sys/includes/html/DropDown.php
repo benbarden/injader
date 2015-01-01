@@ -211,7 +211,7 @@
     // ** Themes ** //
     function ThemeList($strSelValue) {
       global $CMS;
-      $arrDirList = $CMS->Dir(ABS_SYS_THEMES, "folders", false);
+      $arrDirList = $CMS->Dir(ABS_ROOT.'themes/user/', "folders", false);
       $strDirList = "";
       if (is_array($arrDirList)) {
         for ($i=0; $i<count($arrDirList); $i++) {

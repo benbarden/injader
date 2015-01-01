@@ -153,37 +153,17 @@ htaccess;
             fwrite($objFile, $strOutput);
             @ fclose($objFile);
             
-            // Get system constants
-            $strFileURL = '../sys/SystemDirs.php';
-            @ $arrFile = file($strFileURL);
-            if ((count($arrFile) == 0) || (!$arrFile)) {
-                $IJP->Display("<h1>Installation Error</h1>
-                <p>SystemDirs.php cannot be found.</p>
-                <p><i>Source: &lt;install.php, step $intStep&gt;</i></p>
-                ", "Error");
-            }
             // Get current directory
             $arrInstallRelURL = explode("installer", $_SERVER['PHP_SELF']);
             $strInstallRelURL = $arrInstallRelURL[0];
-            // Do stuff with the file
-            $strFile = "";
-            foreach ($arrFile as $strKey => $strData) {
-                if (strpos($strData, "define('URL_ROOT',") > -1) {
-                    $strData = "define('URL_ROOT', \"$strInstallRelURL\");\r\n";
-                }
-                $strFile .= $strData;
-            }
-            // Write to file
-            @ $cmsFile = fopen($strFileURL, 'w');
-            if (!$cmsFile) {
+            // Only allow installation into a top-level domain
+            if ($strInstallRelURL != "/") {
                 $IJP->Display("<h1>Installation Error</h1>
-                <p>Cannot write to /sys/SystemDirs.php - 
-                please check the permissions and try again.</p>
+                <p>Injader does not support installation in a subfolder.</p>
                 <p><i>Source: &lt;install.php, step $intStep&gt;</i></p>
                 ", "Error");
             }
-            fwrite($cmsFile, $strFile);
-            fclose($cmsFile);
+            // Confirm folder is ok
             $IJP->Display("<h1>Installation - Step 1</h1>
             <p>The installer has detected where Injader has been uploaded.
             <a href=\"?step=2\">Proceed to step 2</a>.</p>

@@ -75,7 +75,7 @@ ExecTime;
 
       // Index
       $strSiteTitle  = $CMS->SYS->GetSysPref(C_PREF_SITE_TITLE);
-      $strIndexURL   = str_replace("index".F_EXT_PHP, "", FN_INDEX);
+      $strIndexURL   = str_replace("index.php", "", FN_INDEX);
 
       // CP LINKS
       $controlPanelLinks = array();
@@ -186,7 +186,7 @@ AdminLinks;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>$strPageTitle</title>
 
-    <script type="text/javascript" src="{URL_SYS_ROOT}scripts.js"></script>
+    <script type="text/javascript" src="{URL_ROOT}sys/scripts.js"></script>
     <script type="text/javascript" src="{URL_ROOT}assets/js/jquery/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="{URL_ROOT}assets/js/jqueryui/jquery-ui.min.js"></script>
     <link href="{URL_ROOT}assets/css/jqueryui/jquery-ui.min.css" rel="stylesheet">

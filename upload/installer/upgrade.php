@@ -21,35 +21,6 @@
   require 'InjaderPage.php';
   $IJP = new InjaderPage;
   
-  // DETECT INSTALL DIRECTORY in case it has been overwritten
-  $strFileURL = '../sys/SystemDirs.php';
-  @ $arrFile = file($strFileURL);
-  if ((count($arrFile) == 0) || (!$arrFile)) {
-    $IJP->Display("<h1>Upgrade Error</h1>\n\n<p>SystemDirs.php cannot be found.</p>\n\n
-      <p><em>Source: &lt;upgrade.php, version $strUpgradeTo&gt;</em></p>", "Error");
-  }
-  // Get current directory
-  $arrInstallRelURL = explode("installer", $_SERVER['PHP_SELF']);
-  $strInstallRelURL = $arrInstallRelURL[0];
-  // Do stuff with the file
-  $strFile = "";
-  foreach ($arrFile as $strKey => $strData) {
-    if (strpos($strData, "define('URL_ROOT',") > -1) {
-      $strData = "define('URL_ROOT', \"$strInstallRelURL\");\r\n";
-    }
-    $strFile .= $strData;
-  }
-  // Write to file
-  @ $cmsFile = fopen($strFileURL, 'w');
-  if (!$cmsFile) {
-    $IJP->Display("
-      <h1>Upgrade Error</h1>\n\n<p>SystemDirs.php cannot be written to. 
-      Please check the permissions on /sys/SystemDirs.php and try again.</p>\n\n
-      <p><em>Source: &lt;upgrade.php, version $strUpgradeTo&gt;</em></p>", "Error");
-  }
-  fwrite($cmsFile, $strFile);
-  fclose($cmsFile);
-    
     // Default .htaccess data
     $strHtaccessDefault = <<<htaccess
 # BEGIN Injader

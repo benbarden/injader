@@ -59,7 +59,6 @@
     if (!empty($_GET['redir'])) {
       $blnAlreadyLoggedIn = true;
       $intCurrentUserID = $CMS->RES->GetCurrentUserID();
-      //$strRedirectURL = "http://".SVR_HOST.URL_ROOT.$strRedir;
     } else {
       $CMS->Err_MFail(M_ERR_ALREADY_LOGGED_IN, "");
     }
@@ -72,7 +71,7 @@
         $CMS->Err_MFail(M_ERR_USER_SUSPENDED, "");
       }
       if (empty($_GET['redir'])) {
-        $strRedirectURL = ""; //str_replace("index".F_EXT_PHP, "", FN_INDEX);
+        $strRedirectURL = "";
       } else {
         $strRedirectURL = "http://".SVR_HOST.URL_ROOT.$_GET['redir'];
       }

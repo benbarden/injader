@@ -28,8 +28,7 @@
   
   $strDefaultTheme = $CMS->SYS->GetSysPref(C_PREF_DEFAULT_THEME);
 
-  //$arrDirList = $CMS->Dir(ABS_SYS_THEMES, "both", false);
-  $arrDirList = glob(ABS_SYS_THEMES.'*');
+  $arrDirList = glob(ABS_ROOT.'themes/user/*');
 
   $strHTML = <<<MainContentStart
 <h1 class="page-header">$strPageTitle</h1>

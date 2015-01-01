@@ -155,15 +155,16 @@
       $CMS->TH->SetHeaderSiteTitle($strSiteTitle);
       $strSiteDesc = $CMS->SYS->GetSysPref(C_PREF_SITE_DESCRIPTION);
       $CMS->TH->SetHeaderSiteDesc($strSiteDesc);
-      $strMetaGenerator = "<meta name=\"generator\" content=\"".PRD_PRODUCT_NAME." - ".PRD_PRODUCT_URL."\" />\n";
+      $strMetaGenerator = '<meta name="generator" content="'.PRD_PRODUCT_NAME.' - '.PRD_PRODUCT_URL.'">'."\n";
       $CMS->TH->SetHeaderMetaGenerator($strMetaGenerator);
       $strSiteKeywords = $CMS->SYS->GetSysPref(C_PREF_SITE_KEYWORDS);
-      $strKeywords = "<meta name=\"keywords\" content=\"$strSiteKeywords\" />\n";
+      $strKeywords = '<meta name="keywords" content="'.$strSiteKeywords.'">'."\n";
       $strMetaTags = $strKeywords;
       $CMS->TH->SetHeaderMetaKeywords($strMetaTags);
-      $strHeaderCoreStyles = "<link href=\"".URL_SYS_ROOT."core.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
+      $strHeaderCoreStyles = '<link href="'.URL_ROOT.'sys/core.css" rel="stylesheet" type="text/css">'."\n";
       $CMS->TH->SetHeaderCoreStyles($strHeaderCoreStyles);
-      $strHeaderScripts = "<script type=\"text/javascript\" src=\"".URL_SYS_ROOT."scripts.js\"></script>\n<script type=\"text/javascript\" src=\"".URL_SYS_ROOT."init.js\"></script>\n";
+      $strHeaderScripts  = '<script type="text/javascript" src="'.URL_ROOT.'sys/scripts.js"></script>'."\n";
+      $strHeaderScripts .= '<script type="text/javascript" src="'.URL_ROOT.'sys/init.js"></script>'."\n";
       $CMS->TH->SetHeaderScripts($strHeaderScripts);
       // 2.3.0
       // TinyMCE preview overrides this, so ensure it hasn't been set yet.

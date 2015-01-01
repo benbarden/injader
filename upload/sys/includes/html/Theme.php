@@ -27,16 +27,16 @@ class Theme extends Helper {
         $strThemeDir = $CMS->SYS->GetSysPref(C_PREF_DEFAULT_THEME); //"default";
       }
       if ($strWhich == C_TH_STYLESHEET) {
-        $strSysPath = URL_SYS_THEMES;
+        $strSysPath = URL_ROOT.'themes/user/';
       } else {
-        $strSysPath = ABS_SYS_THEMES;
+        $strSysPath = ABS_ROOT.'themes/user/';
       }
       if ($strLayoutStyle) {
         $strFilePath = $strLayoutStyle."/".$strWhich;
       } else {
         $strFilePath = $strWhich;
       }
-      $strPathToCheck = ABS_SYS_THEMES.$strThemeDir."/".$strFilePath;
+      $strPathToCheck = ABS_ROOT.'themes/user/'.$strThemeDir."/".$strFilePath;
       $strPath = $strSysPath.$strThemeDir."/".$strFilePath;
       if (file_exists($strPathToCheck) == true) {
         return $strPath;
@@ -112,7 +112,7 @@ class Theme extends Helper {
     
     function GetSysSearchForm() {
       global $CMS;
-      if (SVR_LOCATION != FN_SEARCH) {
+      if ($_SERVER['PHP_SELF'] != FN_SEARCH) {
         return $CMS->AC->SearchForm();
       }
     }

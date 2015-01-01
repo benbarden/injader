@@ -221,9 +221,9 @@ class Renderer
         $siteRSSArticlesUrl = FN_FEEDS."?name=articles";
 
         // Core styles URL
-        $siteStylesCoreUrl = URL_SYS_ROOT."core.css";
-        $siteScriptsCoreUrl = URL_SYS_ROOT."scripts.js";
-        $siteScriptsInitUrl = URL_SYS_ROOT."init.js";
+        $siteStylesCoreUrl = URL_ROOT."sys/core.css";
+        $siteScriptsCoreUrl = URL_ROOT."sys/scripts.js";
+        $siteScriptsInitUrl = URL_ROOT."sys/init.js";
 
         $settingsArray = array(
             'SiteTitle' => $siteTitle,

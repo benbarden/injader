@@ -464,7 +464,7 @@ PostArticleHTML;
   $strReadMoreLink = $CMS->AC->ReadMoreEditor();
   
   $strHTML = <<<END
-<script type="text/javascript" src="{URL_SYS_TINYMCE}tiny_mce.js"></script>
+<script type="text/javascript" src="{URL_ROOT}assets/js/tinymce/tiny_mce.js"></script>
 <script type="text/javascript">
 //<![CDATA[
   tinyMCE.init({

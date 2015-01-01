@@ -29,11 +29,11 @@
       return $this->strMessage;
     }
     function BuildMessage() {
-      $imgOutput = imagecreatefrompng(ABS_SYS_IFW."injader.png");
+      $imgOutput = imagecreatefrompng(ABS_ROOT."sys/includes/ifw/injader.png");
       $intImageX = (imagesx($imgOutput) - strlen($this->strMessage)) / 5; // 20
       $intImageY = imagesy($imgOutput) - (imagesy($imgOutput) / 3); // 65
       $imgTextColour = imagecolorallocate($imgOutput, 0, 0, 0);
-      ImageTTFText($imgOutput, 25, -5, $intImageX, $intImageY, $imgTextColour, ABS_SYS_IFW."FoundationRegular.ttf", $this->strMessage); 
+      ImageTTFText($imgOutput, 25, -5, $intImageX, $intImageY, $imgTextColour, ABS_ROOT."sys/includes/ifw/FoundationRegular.ttf", $this->strMessage);
       header("Content-Type: image/png");
       header("Pragma: public"); // required
       header("Expires: 0");

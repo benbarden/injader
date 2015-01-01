@@ -114,7 +114,7 @@ BackLink;
 <html>
 <head>
 <title>{M_ERR_PAGE_TITLE}</title>
-<link rel="stylesheet" type="text/css" href="{URL_SYS_ROOT}loginpage.css" />
+<link rel="stylesheet" type="text/css" href="{URL_ROOT}sys/loginpage.css" />
 </head>
 <body>
 <div id="mPage">
@@ -130,4 +130,3 @@ END;
       return $RC->DoAll($strErrorText);
     }
   }
-?>

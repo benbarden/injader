@@ -6,7 +6,6 @@ date_default_timezone_set('Europe/London');
 
 // inj Framework v3: System Constants
 require dirname(__FILE__).'/../upload/lib/Cms/Core/Constants/System.php';
-require dirname(__FILE__).'/../upload/sys/SystemDirs.php';
 
 // inj Framework v3: Autoloader
 require ABS_ROOT.'/lib/Cms/Core/Autoloader/Base.php';
