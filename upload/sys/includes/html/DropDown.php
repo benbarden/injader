@@ -74,13 +74,14 @@
             $blnProceed = true;
           } elseif ($strDDLType == $strAreaType) {
             if ($this->blnIsSearch) {
-              $CMS->RES->ViewArea($intDDLID);
+              $blnProceed = true;
             } elseif ($strAreaType == "Content") {
               $CMS->RES->CreateArticle($intDDLID);
+              $blnProceed = $CMS->RES->IsError() ? false : true;
             } elseif ($strAreaType == "File") {
               $CMS->RES->UploadFile($intDDLID);
+              $blnProceed = $CMS->RES->IsError() ? false : true;
             }
-            $blnProceed = $CMS->RES->IsError() ? false : true;
           }
           if ($blnProceed) {
             $strDDLNameIndent = " ";
@@ -283,25 +284,6 @@
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $strHTML;
     }
-    // ** Used for custom links ** //
-    function SystemComponents($strSelValue) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $arrComponents = $this->ResultQuery("SELECT id AS list_value, name AS list_text FROM {IFW_TBL_COMPONENTS} ORDER BY name ASC", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $strHTML = $this->BasicList($arrComponents, $strSelValue);
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $strHTML;
-    }
-    // ** Used for plugins ** //
-    function DatabaseConnections($strSelValue) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $arrConnections = $this->ResultQuery("SELECT id AS list_value, conn_name AS list_text FROM {IFW_TBL_CONNECTIONS} ORDER BY conn_name ASC", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $strHTML = "<option value=\"0\">(Use current database)</option>\n";
-      $strHTML .= $this->BasicList($arrConnections, $strSelValue);
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $strHTML;
-    }
     // ** View Users ** //
     function UserOrderField($strSelValue) {
       global $CMS;
@@ -368,23 +350,4 @@
       return $strHTML;
     }
     
-    /**
-     * Makes a drop down list of spam rule types
-     * @param $strSelValue
-     * @return string
-     */
-    function SpamRuleType($strSelValue) {
-    	
-    	global $CMS;
-    	$arrTypeList = $CMS->RC->Get("C_SPAMRULE_");
-    	for ($i=0; $i<count($arrTypeList); $i++) {
-        $arrTypeValues[$i]['list_value'] = $arrTypeList[$i]['key_value'];
-        $arrTypeValues[$i]['list_text']  = $arrTypeList[$i]['key_value'];
-      }
-      $strHTML = $this->BasicList($arrTypeValues, $strSelValue);
-      return $strHTML;
-      
-    }
-    
   }
-?>

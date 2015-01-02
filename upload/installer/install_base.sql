@@ -45,28 +45,6 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_AREAS} (
 INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style) VALUES (1, 'Home', 1, 1, 1, 2, 0, 0, 0, 10, 'create_date|desc', 'Y', '0', 0, 'home', '', '', '{C_AREA_CONTENT}', '', '');
 INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style) VALUES (2, 'Test', 1, 1, 3, 4, 0, 0, 0, 25, 'last_updated|desc', 'N', '0', 0, 'test', '', '', '{C_AREA_CONTENT}', '', '');
 
-DROP TABLE IF EXISTS {IFW_TBL_COMMENTS};
-CREATE TABLE IF NOT EXISTS {IFW_TBL_COMMENTS} (
-  id int(10) unsigned NOT NULL auto_increment,
-  content text NOT NULL,
-  create_date datetime NOT NULL default '0000-00-00 00:00:00',
-  edit_date datetime NOT NULL default '0000-00-00 00:00:00',
-  author_id int(10) unsigned NOT NULL default 0,
-  story_id int(10) unsigned NOT NULL default 0,
-  upload_id int(10) unsigned NOT NULL default 0,
-  comment_count int(10) unsigned NOT NULL default 0,
-  ip_address VARCHAR(20) NOT NULL default '',
-  comment_status VARCHAR(20) NOT NULL,
-  guest_name VARCHAR( 100 ) NOT NULL default '',
-  guest_email VARCHAR( 100 ) NOT NULL default '',
-  guest_url VARCHAR( 150 ) NOT NULL default '',
-  PRIMARY KEY(id),
-  INDEX story_id(story_id),
-  INDEX author_id(author_id),
-  INDEX upload_id(upload_id),
-  INDEX comment_status(comment_status)
-);
-
 DROP TABLE IF EXISTS {IFW_TBL_CONTENT};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
   id int(10) unsigned NOT NULL auto_increment,
@@ -78,14 +56,12 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
   create_date datetime NOT NULL default '0000-00-00 00:00:00',
   edit_date datetime NOT NULL default '0000-00-00 00:00:00',
   last_updated datetime NOT NULL default '0000-00-00 00:00:00',
-  locked char(1) NOT NULL default '',
   read_userlist text NOT NULL,
   hits int(10) unsigned NOT NULL default '0',
   tags TEXT NOT NULL,
   seo_title VARCHAR(100) NOT NULL default '',
   link_url VARCHAR(150) NOT NULL default '',
   content_status VARCHAR(20) NOT NULL,
-  comment_count INTEGER UNSIGNED NOT NULL DEFAULT 0,
   user_groups TEXT NOT NULL,
   tags_deleted TEXT NOT NULL,
   article_order INT(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -105,29 +81,15 @@ CREATE TABLE {IFW_TBL_PERMISSION_PROFILES} (
   id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   is_system CHAR(1) NOT NULL,
-  view_area TEXT NOT NULL,
   create_article TEXT NOT NULL,
   publish_article TEXT NOT NULL,
   edit_article TEXT NOT NULL,
   delete_article TEXT NOT NULL,
-  add_comment TEXT NOT NULL,
-  edit_comment TEXT NOT NULL,
-  delete_comment TEXT NOT NULL,
-  lock_article TEXT NOT NULL,
   attach_file TEXT NOT NULL,
   PRIMARY KEY (id),
   INDEX is_system(is_system)
 );
-INSERT INTO {IFW_TBL_PERMISSION_PROFILES}(name, is_system, view_area, create_article, publish_article, edit_article, delete_article, add_comment, edit_comment, delete_comment, lock_article, attach_file) VALUES('System', 'Y', '0|1|2', '2', '2', '2', '2', '0|1|2', '2', '2', '2', '2');
-
-DROP TABLE IF EXISTS {IFW_TBL_SPAM_RULES};
-CREATE TABLE IF NOT EXISTS {IFW_TBL_SPAM_RULES} (
-  id int(10) unsigned NOT NULL auto_increment, 
-  block_rule VARCHAR( 255 ) NOT NULL ,
-  block_type ENUM( 'Email', 'URL', 'Name', 'Comment', 'IP', 'Any' ) NOT NULL,
-  PRIMARY KEY(id),
-  INDEX (block_rule)
-);
+INSERT INTO {IFW_TBL_PERMISSION_PROFILES}(name, is_system, create_article, publish_article, edit_article, delete_article, attach_file) VALUES('System', 'Y', '2', '2', '2', '2', '2');
 
 DROP TABLE IF EXISTS {IFW_TBL_SETTINGS};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_SETTINGS} (
@@ -157,15 +119,8 @@ INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COOKIE_DAYS}
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_TAG_THRESHOLD}', '1');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_RSS_COUNT}', '10');
 
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COMMENT_CAPTCHA}', '0');
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COMMENT_USE_NOFOLLOW}', '1');
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COMMENT_NOFOLLOW_LIMIT}', '3');
-
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_ARTICLE_NOTIFY_ADMIN}', '1');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_ARTICLE_REVIEW_EMAIL}', '1');
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COMMENT_REVIEW_EMAIL}', '1');
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COMMENT_NOTIFICATION}', '1');
-INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_COMMENT_NOTIFY_AUTHOR}', '1');
 
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_THUMB_SMALL}', '100');
 INSERT INTO {IFW_TBL_SETTINGS}(preference, content) VALUES('{C_PREF_THUMB_MEDIUM}', '300');
@@ -286,12 +241,4 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_USER_SESSIONS} (
   PRIMARY KEY(id),
   INDEX user_id(user_id),
   INDEX session_id(session_id)
-);
-
-DROP TABLE IF EXISTS {IFW_TBL_USER_STATS};
-CREATE TABLE IF NOT EXISTS {IFW_TBL_USER_STATS} (
-  user_email VARCHAR( 100 ) NOT NULL ,
-  comment_count INT NOT NULL DEFAULT '0',
-  article_subscriptions TEXT NOT NULL,
-  PRIMARY KEY (user_email)
 );

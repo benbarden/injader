@@ -230,20 +230,6 @@ class Article extends Helper {
         $CMS->AL->Build(AL_TAG_ARTICLE_RESTORE, $intArticleID, $strTitle);
       }
     }
-    
-    function Lock($intArticleID) {
-      global $CMS;
-      $strTitle = $this->GetTitle($intArticleID);
-      $this->Query("UPDATE {IFW_TBL_CONTENT} SET locked = 'Y' WHERE id = $intArticleID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $CMS->AL->Build(AL_TAG_ARTICLE_LOCK, $intArticleID, $strTitle);
-    }
-    
-    function Unlock($intArticleID) {
-      global $CMS;
-      $strTitle = $this->GetTitle($intArticleID);
-      $this->Query("UPDATE {IFW_TBL_CONTENT} SET locked = 'N' WHERE id = $intArticleID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $CMS->AL->Build(AL_TAG_ARTICLE_UNLOCK, $intArticleID, $strTitle);
-    }
     function IncrementHits($intArticleID) {
       $arrContent = $this->ResultQuery("SELECT hits FROM {IFW_TBL_CONTENT} WHERE id = $intArticleID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $intHits = $arrContent[0]['hits'];
@@ -346,12 +332,6 @@ class Article extends Helper {
         $this->GetArticle($intArticleID);
       }
       return $this->arrArticle[$intArticleID]['content_status'] == C_CONT_PUBLISHED ? true : false;
-    }
-    function IsLocked($intArticleID) {
-      if (!isset($this->arrArticle[$intArticleID])) {
-        $this->GetArticle($intArticleID);
-      }
-      return $this->arrArticle[$intArticleID]['locked'] == "Y" ? true : false;
     }
     function IsDeleted($intArticleID) {
       if (!isset($this->arrArticle[$intArticleID])) {
@@ -459,7 +439,15 @@ class Article extends Helper {
       global $CMS;
       $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
       $strDateFormat = $CMS->SYS->GetDateFormat();
-      $arrUserContent = $CMS->ResultQuery("SELECT c.id, c.title, c.content_area_id, a.name AS area_name, a.seo_name AS area_seo_name, DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw, c.seo_title, c.hits, c.content_status, c.comment_count FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id WHERE c.content_area_id = a.id AND author_id = $intUserID $strWhereClause ORDER BY create_date_raw DESC LIMIT $intStart, $intContentPerPage", __CLASS__ . "::" . __FUNCTION__, __LINE__);
+      $arrUserContent = $CMS->ResultQuery("
+      SELECT c.id, c.title, c.content_area_id, a.name AS area_name, a.seo_name AS area_seo_name,
+      DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw, c.seo_title, c.hits,
+      c.content_status
+      FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a)
+      LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id
+      WHERE c.content_area_id = a.id AND author_id = $intUserID $strWhereClause
+      ORDER BY create_date_raw DESC LIMIT $intStart, $intContentPerPage
+      ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $arrUserContent;
     }
     // ** Count deleted content ** //
@@ -483,31 +471,6 @@ class Article extends Helper {
         }
       }
     }
-    // ** Refresh comment count ** //
-    function RefreshCommentCount() {
-      global $CMS;
-      $arrResult = $this->ResultQuery("SELECT id FROM {IFW_TBL_CONTENT} ORDER BY id ASC", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      for ($i=0; $i<count($arrResult); $i++) {
-        $intID    = $arrResult[$i]['id'];
-        $intCount = $CMS->COM->CountArticleComments($intID);
-        $this->Query("UPDATE {IFW_TBL_CONTENT} SET comment_count = $intCount WHERE id = $intID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      }
-    }
-    function RefreshArticleCommentCount($intArticleID) {
-      global $CMS;
-      $intCount = $CMS->COM->CountArticleComments($intArticleID);
-      $this->Query("UPDATE {IFW_TBL_CONTENT} SET comment_count = $intCount WHERE id = $intArticleID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
-    function BulkRefreshArticleCommentCount($strArticleIDs) {
-      global $CMS;
-      $strArticleIDs = str_replace("(", "", $strArticleIDs);
-      $strArticleIDs = str_replace(")", "", $strArticleIDs);
-      $arrArticleIDs = explode(",", $strArticleIDs);
-      for ($i=0; $i<count($arrArticleIDs); $i++) {
-        $intArticleID = $arrArticleIDs[$i];
-        $this->RefreshArticleCommentCount($intArticleID);
-      }
-    }
     // ** Select ** //
     function GetFirstID() {
       $arrItems = $this->ResultQuery("SELECT id FROM {IFW_TBL_CONTENT} LIMIT 1", __CLASS__ . "::" . __FUNCTION__, __LINE__);
@@ -528,16 +491,6 @@ class Article extends Helper {
       $this->Query("UPDATE {IFW_TBL_CONTENT} SET content_area_id = $intAreaID WHERE id IN $strArticleIDs", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $CMS->AL->Build(AL_TAG_ARTICLE_BULKMOVE, $intAreaID, $strArticleIDs);
     }
-    function BulkLock($strArticleIDs) {
-      global $CMS;
-      $this->Query("UPDATE {IFW_TBL_CONTENT} SET locked = 'Y' WHERE id IN $strArticleIDs", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $CMS->AL->Build(AL_TAG_ARTICLE_BULKLOCK, "", $strArticleIDs);
-    }
-    function BulkUnlock($strArticleIDs) {
-      global $CMS;
-      $this->Query("UPDATE {IFW_TBL_CONTENT} SET locked = 'N' WHERE id IN $strArticleIDs", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      $CMS->AL->Build(AL_TAG_ARTICLE_BULKUNLOCK, "", $strArticleIDs);
-    }
     function BulkEditAuthor($strArticleIDs, $intUserID) {
       global $CMS;
       $this->Query("UPDATE {IFW_TBL_CONTENT} SET author_id = $intUserID WHERE id IN $strArticleIDs", __CLASS__ . "::" . __FUNCTION__, __LINE__);
@@ -557,7 +510,6 @@ class Article extends Helper {
         }
         $this->Query("UPDATE {IFW_TBL_CONTENT} SET content_status = '$strContStatus' WHERE id = $intID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       }
-      //$CMS->AL->Build(AL_TAG_ARTICLE_BULKLOCK, "", $strArticleIDs);
     }
     function BulkDelete($strArticleIDs) {
       global $CMS;

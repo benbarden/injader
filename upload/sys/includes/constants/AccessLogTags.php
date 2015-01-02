@@ -27,8 +27,6 @@
   define('AL_TAG_ARTICLE_UNMARK',      "ArticleUnmarkForDeletion");
   define('AL_TAG_ARTICLE_DELETE',      "ArticleDelete");
   define('AL_TAG_ARTICLE_RESTORE',     "ArticleRestore");
-  define('AL_TAG_ARTICLE_LOCK',        "ArticleLock");
-  define('AL_TAG_ARTICLE_UNLOCK',      "ArticleUnlock");
   define('AL_TAG_ARTICLE_SAVEDRAFT',   "ArticleSaveDraft");
   define('AL_TAG_ARTICLE_REVIEW',      "ArticleReview");
   define('AL_TAG_ARTICLE_PUBLISH',     "ArticlePublish");
@@ -36,8 +34,6 @@
   
   // Articles - Bulk actions
   define('AL_TAG_ARTICLE_BULKMOVE',       "ArticleBulkMove");
-  define('AL_TAG_ARTICLE_BULKLOCK',       "ArticleBulkLock");
-  define('AL_TAG_ARTICLE_BULKUNLOCK',     "ArticleBulkUnlock");
   define('AL_TAG_ARTICLE_BULKEDITAUTHOR', "ArticleEditAuthor");
   define('AL_TAG_ARTICLE_BULKDELETE',     "ArticleBulkDelete");
   define('AL_TAG_ARTICLE_BULKRESTORE',    "ArticleBulkRestore");
@@ -50,11 +46,6 @@
   define('AL_TAG_FILE_DELETE',       "FileDelete");
   define('AL_TAG_FILE_LOCK',         "FileLock");
   define('AL_TAG_FILE_UNLOCK',       "FileUnlock");
-  
-  // Comments
-  define('AL_TAG_COMMENT_ADD',    "CommentAdd");
-  define('AL_TAG_COMMENT_DELETE', "CommentDelete");
-  define('AL_TAG_COMMENT_EDIT',   "CommentEdit");
   
   // Areas
   define('AL_TAG_AREA_VIEW',    "AreaView");
@@ -73,11 +64,6 @@
   define('AL_TAG_PPCA_DELETE', "PerProfileCADelete");
   define('AL_TAG_PPCA_EDIT',   "PerProfileCAEdit");
   define('AL_TAG_PPSYS_EDIT',  "PerProfileSYSEdit");
-  
-  // Plugins
-  define('AL_TAG_PLUGIN_CREATE', "PluginCreate");
-  define('AL_TAG_PLUGIN_EDIT',   "PluginEdit");
-  define('AL_TAG_PLUGIN_DELETE', "PluginDelete");
   
   // User
   define('AL_TAG_AVATAR_DELETE',     "AvatarDelete");

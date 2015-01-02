@@ -66,8 +66,6 @@
         $intAreaID        = $arrNewContent[$i]['content_area_id'];
         $intAuthorID      = $arrNewContent[$i]['author_id'];
         $strAuthorName    = $CMS->US->GetNameFromID($intAuthorID);
-        $CMS->RES->ViewArea($intAreaID);
-        if (!$CMS->RES->IsError()) {
           $strArticleLink = $strRSSLinkRoot.$permalink;
           $strCommentRSS = $strRSSLinkRoot.FN_FEEDS."?name=comments&amp;id=$intContentID";
           $strRSSFileContents .= <<<RSSFile
@@ -86,7 +84,6 @@
     </item>
 
 RSSFile;
-        }
       }
       $strRSSFileContents .= "  </channel>\n</rss>\n";
       $strHTML = $CMS->RC->DoAll($strRSSFileContents);
@@ -172,8 +169,6 @@ RSSFile;
         $strAuthorName    = $CMS->US->GetNameFromID($intAuthorID);
         $strIncludeInFeed = $intAreaID ? "Y" : $arrNewContent[$i]['include_in_rss_feed'];
         if ($strIncludeInFeed == "Y") {
-          $CMS->RES->ViewArea($intAreaID);
-          if (!$CMS->RES->IsError()) {
             $strArticleLink = $strRSSLinkRoot.$permalink;
             $strCommentRSS = $strRSSLinkRoot.FN_FEEDS."?name=comments&amp;id=$intContentID";
             $strRSSFileContents .= <<<RSSFile
@@ -192,7 +187,6 @@ RSSFile;
     </item>
 
 RSSFile;
-          }
         }
       }
       $strRSSFileContents .= "  </channel>\n</rss>\n";
@@ -257,15 +251,10 @@ RSSFile;
         $dteRSS           = date('r', strtotime($dteRSS));
         $intContentAreaID = $arrNewComments[$j]['content_area_id'];
         if ($intArticleID > 0) {
-          $CMS->RES->ViewArea($intContentAreaID);
-          if (!$CMS->RES->IsError()) {
             $permalink = $arrNewComments[$j]['permalink'];
             $strNewItemURL = $strRSSLinkRoot.$permalink."#c".$intCommentID;
             $strCommentTitle = $arrNewComments[$j]['con_title'];
             //$strCommentTitle = $this->DoEntities($strCommentTitle);
-          } else {
-            $strNewItemURL = "";
-          }
         }
         if ($strNewItemURL <> "") {
           $strRSSFileContents .= <<<RSSFile

@@ -326,9 +326,6 @@ class Engine
             case 'write':
                 $url = sprintf(URL_ROOT.'cp/write.php?action=%s&id=%s', $action, $id);
                 break;
-            case 'comments':
-                $url = sprintf(URL_ROOT.'cp/comments.php?type=%s', $type);
-                break;
             case 'users':
                 $url = sprintf(URL_ROOT.'cp/users.php?action=%s', $action);
                 break;
@@ -376,12 +373,6 @@ class Engine
                 $url = URL_ROOT.'cp/user_roles.php';
                 break;
             // Tools
-            case 'tools_spam_rules':
-                $url = URL_ROOT.'cp/spam_rules.php';
-                break;
-            case 'tools_spam_stats':
-                $url = URL_ROOT.'cp/tools_spam_stats.php';
-                break;
             case 'tools_user_sessions':
                 $url = URL_ROOT.'cp/tools_user_sessions.php';
                 break;

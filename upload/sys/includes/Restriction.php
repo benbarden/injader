@@ -84,10 +84,6 @@
       global $CMS;
       return $CMS->ART->GetAuthor($intArticleID);
     }
-    function GetCommentAuthor($intCommentID) {
-      global $CMS;
-      return $CMS->COM->GetAuthor($intCommentID);
-    }
     function GetFileAuthor($intFileID) {
       $dteStartTime = $this->MicrotimeFloat();
       $arrAuthor = $this->ResultQuery("SELECT username FROM {IFW_TBL_UPLOADS} up LEFT JOIN {IFW_TBL_USERS} u ON u.id = up.author_id WHERE up.id = $intFileID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
@@ -328,43 +324,6 @@
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
     }
-    // ** Area Permissions ** //
-    function ViewArea($intAreaID) {
-      global $CMS;
-      $dteStartTime = $this->MicrotimeFloat();
-      //if (!isset($this->arrAreaProfileIDs[$intAreaID])) {
-      //  $intPerProfileID = $CMS->AR->GetPerProfileID($intAreaID);
-      //  $this->arrAreaProfileIDs[$intAreaID] = $intPerProfileID;
-      //}
-      // Ensure area cache is loaded
-      if (empty($CMS->AR->arrArea[$intAreaID])) {
-        $CMS->AR->arrArea[$intAreaID] = $CMS->AR->GetArea($intAreaID);
-      }
-      if (empty($CMS->AR->arrArea[$intAreaID]['profile_id'])) {
-        $intProfileID = 0;
-      } else {
-        $intProfileID = $CMS->AR->arrArea[$intAreaID]['profile_id'];
-      }
-      // Grab allowed groups
-      if ($intProfileID) {
-        $strAllowedGroups = $CMS->AR->arrArea[$intAreaID]['view_area'];
-      } else {
-        $strAllowedGroups = $CMS->PP->GetViewArea("");
-      }
-      //$intPerProfileID = $this->arrAreaProfileIDs[$intAreaID];
-      //if (isset($this->arrAllowedGroups[$intAreaID]["view_area"])) {
-      //  $strAllowedGroups = $this->arrAllowedGroups[$intAreaID]["view_area"];
-      //} else {
-      //  $this->arrAllowedGroups[$intAreaID]["view_area"] = $strAllowedGroups;
-      //}
-      $this->SetAllowedGroups($strAllowedGroups);
-      $this->ValidatePublic();
-      if ($this->strOutput) {
-        $this->ValidateAllowedGroups();
-      }
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__ . " (Area: $intAreaID)", __LINE__);
-    }
     // ** Articles ** //
     function CreateArticle($intAreaID) {
       $dteStartTime = $this->MicrotimeFloat();
@@ -414,35 +373,6 @@
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
     }
-    // ** Comments ** //
-    function AddComment($intAreaID) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $this->GroupValidator($intAreaID, "add_comment");
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
-    function EditComment($intAreaID, $intCommentID) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $this->SetAuthor($this->GetCommentAuthor($intCommentID));
-      $this->ValidateAuthor();
-      if ($this->strOutput) {
-        $this->GroupValidator($intAreaID, "edit_comment");
-      }
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
-    function DeleteComment($intAreaID) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $this->GroupValidator($intAreaID, "delete_comment");
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
-    function LockArticle($intAreaID) {
-      $dteStartTime = $this->MicrotimeFloat();
-      $this->GroupValidator($intAreaID, "lock_article");
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
     // Permissions across multiple areas //
     function CountTotalWriteAccess() {
       global $CMS;
@@ -485,4 +415,3 @@
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
     }
   }
-?>

@@ -67,17 +67,11 @@
         case AL_TAG_ARTICLE_DELETE:
           $strLogDesc = M_AL_ARTICLE_DELETE;
           $blnBasicLog = false; $blnPLArticle = true; break;
-        case AL_TAG_ARTICLE_LOCK:
-          $strLogDesc = M_AL_ARTICLE_LOCK;
-          $blnBasicLog = false; $blnPLArticle = true; break;
         case AL_TAG_ARTICLE_MARK:
           $strLogDesc = M_AL_ARTICLE_MARK;
           $blnBasicLog = false; $blnPLArticle = true; break;
         case AL_TAG_ARTICLE_RESTORE:
           $strLogDesc = M_AL_ARTICLE_RESTORE;
-          $blnBasicLog = false; $blnPLArticle = true; break;
-        case AL_TAG_ARTICLE_UNLOCK:
-          $strLogDesc = M_AL_ARTICLE_UNLOCK;
           $blnBasicLog = false; $blnPLArticle = true; break;
         case AL_TAG_ARTICLE_SAVEDRAFT:
           $strLogDesc = M_AL_ARTICLE_SAVEDRAFT;
@@ -96,16 +90,6 @@
           $strLogDesc = "Bulk moved articles $strItemTitle to area $intItemID";
           $blnBasicLog = false;
           break;
-        case AL_TAG_ARTICLE_BULKLOCK:
-          $strItemTitle = str_replace(",", ", ", $strItemTitle);
-          $strLogDesc = "Bulk locked articles $strItemTitle";
-          $blnBasicLog = false;
-          break;
-        case AL_TAG_ARTICLE_BULKUNLOCK:
-          $strItemTitle = str_replace(",", ", ", $strItemTitle);
-          $strLogDesc = "Bulk unlocked articles $strItemTitle";
-          $blnBasicLog = false;
-          break;
         case AL_TAG_ARTICLE_BULKEDITAUTHOR:
           $strItemTitle = str_replace(",", ", ", $strItemTitle);
           $strLogDesc = "Bulk edited author for articles $strItemTitle";
@@ -121,18 +105,6 @@
           $strLogDesc = "Bulk restored articles $strItemTitle";
           $blnBasicLog = false;
           break;
-        case AL_TAG_COMMENT_ADD:
-          $strLogDesc = "Added comment"; break;
-        case AL_TAG_COMMENT_DELETE:
-          $strLogDesc = "Deleted comment"; break;
-        case AL_TAG_COMMENT_EDIT:
-          $strLogDesc = "Edited comment"; break;
-        case AL_TAG_PLUGIN_CREATE:
-          $strLogDesc = "Created plugin"; break;
-        case AL_TAG_PLUGIN_EDIT:
-          $strLogDesc = "Edited plugin"; break;
-        case AL_TAG_PLUGIN_DELETE:
-          $strLogDesc = "Deleted plugin"; break;
         case AL_TAG_PPCA_CREATE:
           $strLogDesc = "Created area-specific permission profile"; break;
         case AL_TAG_PPCA_DELETE:

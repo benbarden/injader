@@ -131,29 +131,15 @@ ExecTime;
                             <li><a href="/cp/files_site_upload.php?action=create">+ Add New File</a></li>
                         </ul>
                     </li>
-                    <!-- Comments -->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="/cp/comments.php?type=">Manage Comments</a></li>
-                            <li><a href="/cp/comments.php?type=approved">Approved</a></li>
-                            <li><a href="/cp/comments.php?type=pending">Pending</a></li>
-                            <li><a href="/cp/comments.php?type=spam">Spam</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/cp/tools_spam_stats.php">Spam Stats</a></li>
-                        </ul>
-                    </li>
                     <!-- Users -->
                     <li><a href="/cp/users.php?action=showall" title="Manage user accounts, roles, and permissions">Users</a></li>
                     <!-- Tools -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="/cp/spam_rules.php">Spam Rules</a></li>
-                            <li><a href="/cp/tools_spam_stats.php">Comment Spam Stats</a></li>
-                            <li><a href="/cp/tools_user_sessions.php">User Sessions</a></li>
                             <li><a href="/cp/access_log.php">Access Log</a></li>
                             <li><a href="/cp/error_log.php">Error Log</a></li>
+                            <li><a href="/cp/tools_user_sessions.php">User Sessions</a></li>
                         </ul>
                     </li>
                     <!-- Settings -->

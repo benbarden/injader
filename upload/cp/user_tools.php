@@ -28,7 +28,6 @@
   $blnCheckID = true;
   $blnCheckAvatar = false;
   $blnDeleteArticle = false; $blnUnmarkArticle = false;
-  $blnLockArticle = false; $blnUnlockArticle = false;
 
   $strAction = $_GET['action'];
   switch ($strAction) {
@@ -36,8 +35,6 @@
     case "clearavatar":   $strPageTitle = "Clear Avatar";   $blnCheckID = false; $blnCheckAvatar = false; break;
     case "deleteavatar":  $strPageTitle = "Delete Avatar";  $blnCheckAvatar = true; break;
     case "deletearticle": $strPageTitle = "Delete Article"; $blnDeleteArticle = true; break;
-    case "lockarticle":   $strPageTitle = "Lock Article";   $blnLockArticle = true; break;
-    case "unlockarticle": $strPageTitle = "Unlock Article"; $blnUnlockArticle = true; break;
     default: $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "strAction"); break;
   }
   
@@ -67,21 +64,6 @@
     $blnDeleted = $CMS->ART->IsDeleted($intItemID);
     if (($blnDeleteArticle) && ($blnDeleted)) {
       $CMS->Err_MFail(M_ERR_ARTICLE_MARKED, "");
-    }
-  }
-  if (($blnLockArticle) || ($blnUnlockArticle)) {
-    // Validate access
-    $intAreaID = $CMS->ART->GetArticleAreaID($intItemID);
-    $CMS->RES->LockArticle($intAreaID);
-    if ($CMS->RES->IsError()) {
-      $CMS->Err_MFail(M_ERR_UNAUTHORISED, "");
-    }
-    // Check if this is a valid action
-    $blnLocked = $CMS->ART->IsLocked($intItemID);
-    if (($blnLockArticle) && ($blnLocked)) {
-      $CMS->Err_MFail(M_ERR_ARTICLE_LOCKED, "");
-    } elseif (($blnUnlockArticle) && (!$blnLocked)) {
-      $CMS->Err_MFail(M_ERR_ARTICLE_UNLOCKED, "");
     }
   }
   
@@ -126,38 +108,6 @@
 </ul>
 
 DeleteArticle;
-      }
-      break;
-    case "lockarticle":
-      if ($_POST) {
-        $CMS->ART->Lock($intItemID);
-        $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Article locked. <a href=\"$strReturnURL\">Return</a></p>\n";
-      } else {
-        $strArticleTitle = $CMS->ART->GetTitle($intItemID);
-        $strFormMsg = <<<LockArticle
-<p>You are about to lock the following article:</p>
-<ul>
-<li>Title: $strArticleTitle</li>
-<li>ID: $intItemID</li>
-</ul>
-
-LockArticle;
-      }
-      break;
-    case "unlockarticle":
-      if ($_POST) {
-        $CMS->ART->Unlock($intItemID);
-        $strHTML = "<h1 class=\"page-header\">$strPageTitle</h1>\n<p>Article unlocked. <a href=\"$strReturnURL\">Return</a></p>\n";
-      } else {
-        $strArticleTitle = $CMS->ART->GetTitle($intItemID);
-        $strFormMsg = <<<UnlockArticle
-<p>You are about to unlock the following article:</p>
-<ul>
-<li>Title: $strArticleTitle</li>
-<li>ID: $intItemID</li>
-</ul>
-
-UnlockArticle;
       }
       break;
   }

@@ -89,7 +89,6 @@
     require ABS_ROOT.'sys/includes/ifw/IQuery.php';
     require ABS_ROOT.'sys/includes/ifw/RSSParser.php';
     require ABS_ROOT.'sys/includes/ifw/Thumb.php';
-    require ABS_ROOT.'sys/includes/ifw/Challenge.php';
     
     // Application-logic
     require ABS_ROOT.'sys/includes/Cookie.php';
@@ -111,17 +110,14 @@
     require ABS_ROOT.'sys/includes/db/Area.php';
     require ABS_ROOT.'sys/includes/db/AreaTraverse.php';
     require ABS_ROOT.'sys/includes/db/Article.php';
-    require ABS_ROOT.'sys/includes/db/Comment.php';
     require ABS_ROOT.'sys/includes/db/File.php';
     require ABS_ROOT.'sys/includes/db/PermissionProfile.php';
-    require ABS_ROOT.'sys/includes/db/SpamRule.php';
     require ABS_ROOT.'sys/includes/db/System.php';
     require ABS_ROOT.'sys/includes/db/Tags.php';
     require ABS_ROOT.'sys/includes/db/URLMapping.php';
     require ABS_ROOT.'sys/includes/db/User.php';
     require ABS_ROOT.'sys/includes/db/UserGroup.php';
     require ABS_ROOT.'sys/includes/db/UserSession.php';
-    require ABS_ROOT.'sys/includes/db/UserStats.php';
     
     // HTML
     require ABS_ROOT.'sys/includes/html/AdminPage.php';

@@ -20,7 +20,6 @@
   // User Stats
   $intContentCount = $CMS->ART->CountUserContent($intUserID, "AND content_status = 'Published'");
   $intFileCount    = $CMS->FL->CountUserFiles($intUserID);
-  $intCommentCount = $CMS->COM->CountUserComments($intUserID);
   // Admin Links
   $CMS->RES->Admin();
   if (!$CMS->RES->IsError()) {
@@ -86,10 +85,6 @@ AdminLinks;
   <tr>
     <td class="InfoColour">Files</td>
     <td><?php print($intFileCount); ?></td>
-  </tr>
-  <tr>
-    <td class="InfoColour">Comments</td>
-    <td><?php print($intCommentCount); ?></td>
   </tr>
   <tr>
     <td class="InfoColour" colspan="3"></td>

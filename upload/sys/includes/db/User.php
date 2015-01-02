@@ -29,7 +29,7 @@
       if (empty($intAvatarID)) {
         $intAvatarID = 0;
       }
-      if (($strCaller == FN_REGISTER) || ($strCaller == FN_COMMENT)) {
+      if ($strCaller == FN_REGISTER) {
         if ($strUserGroups == "") {
           $strUserGroups = $CMS->UG->GetDefaultGroup();
         }

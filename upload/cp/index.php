@@ -34,7 +34,6 @@ $repoAccessLog->purgeEntries($cpLogLimit);
 
 // Twig templating for CPanel
 $cpBindings = array(); //array_merge($globalBindings, $userBindings);
-$themeFile = 'index.twig';
 
 $cpBindings['CP']['Title'] = $strPageTitle;
 
@@ -73,31 +72,6 @@ $cpBindings['Auth']['IsAdmin'] = $isAdmin;
     ", basename(__FILE__), __LINE__);
       $cpBindings['Page']['ArticleCount'] = $arrArticleCount[0]['count'];
     
-    // Comment count
-    $arrCommentCount = $CMS->ResultQuery("
-    SELECT count(*) AS count, comment_status FROM {IFW_TBL_COMMENTS}
-    GROUP BY comment_status
-    ", basename(__FILE__), __LINE__);
-    $pendingCommentCount = 0;
-    $approvedCommentCount = 0;
-    $spamCommentCount = 0;
-    for ($i=0; $i<count($arrCommentCount); $i++) {
-      switch ($arrCommentCount[$i]['comment_status']) {
-        case "Pending":
-            $pendingCommentCount = $arrCommentCount[$i]['count'];
-          break;
-        case "Approved":
-            $approvedCommentCount = $arrCommentCount[$i]['count'];
-          break;
-        case "Spam":
-            $spamCommentCount = $arrCommentCount[$i]['count'];
-          break;
-      }
-    }
-      $cpBindings['Page']['PendingCommentCount'] = $pendingCommentCount;
-      $cpBindings['Page']['ApprovedCommentCount'] = $approvedCommentCount;
-      $cpBindings['Page']['SpamCommentCount'] = $spamCommentCount;
-
           // Site file count
     $arrSiteFileCount = $CMS->ResultQuery("SELECT count(*) AS count FROM {IFW_TBL_UPLOADS} WHERE is_siteimage = 'Y' AND is_avatar = 'N'", basename(__FILE__), __LINE__);
     $cpBindings['Page']['SiteFileCount'] = $arrSiteFileCount[0]['count'];
@@ -117,16 +91,6 @@ $canWriteContent = false;
     }
   }
 $cpBindings['Auth']['CanWriteContent'] = $canWriteContent;
-  
-  // Recent Comments
-  $recentComments = $CMS->ResultQuery("
-    SELECT com.id, com.content, com.create_date, con.title
-    FROM Cms_Comments com
-    JOIN Cms_Content con ON com.story_id = con.id
-    WHERE com.comment_status = 'Approved'
-    ORDER BY com.id DESC LIMIT 5
-  ", basename(__FILE__), __LINE__);
-  $cpBindings['Page']['RecentComments'] = $recentComments;
 
   // Recent Drafts
   $recentDrafts = $CMS->ResultQuery("
@@ -145,6 +109,6 @@ $cpBindings['Auth']['CanWriteContent'] = $canWriteContent;
 
 // Twig templating for CPanel
 $engine = $cmsContainer->getService('Theme.EngineCPanel');
-$outputHtml = $engine->render($themeFile, $cpBindings);
+$outputHtml = $engine->render('index.twig', $cpBindings);
 print($outputHtml);
 exit;

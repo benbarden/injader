@@ -26,13 +26,10 @@
   for ($i=0; $i<count($arrAreas); $i++) {
     $intAreaID = $arrAreas[$i]['id'];
     if ($arrAreas[$i]['type'] == "Content") {
-      $CMS->RES->ViewArea($intAreaID);
-      if (!$CMS->RES->IsError()) {
         if ($CMS->AR->CountContentInArea($intAreaID, C_CONT_PUBLISHED) > 0) {
           $arrSiteMapAreas[$j] = $arrAreas[$i];
           $j++;
         }
-      }
     }
   }
   

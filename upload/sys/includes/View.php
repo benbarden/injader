@@ -194,11 +194,8 @@
       $intNavCount = 0;
       for ($i=0; $i<count($arrAreas); $i++) {
         $intNavID = $arrAreas[$i]['id'];
-        $CMS->RES->ViewArea($intNavID);
-        if (!$CMS->RES->IsError()) {
           $arrNavigationItems[$j++] = $arrAreas[$i];
           $intNavCount++;
-        }
       }
       if ($blnDefaultPage) {
         $intTopLevelAreaID = ""; // Don't light up the navbar for default pages
@@ -221,10 +218,6 @@
 	        $strDDLName  = $arrDDLAreas[$i]['name'];
 	        $strDDLType  = $arrDDLAreas[$i]['type'];
 	        $intDDLLevel = $arrDDLAreas[$i]['level'];
-	        $blnProceed = false;
-	        $CMS->RES->ViewArea($intDDLID);
-	        $blnProceed = $CMS->RES->IsError() ? false : true;
-	        if ($blnProceed) {
 	        	$strDDLNameIndent = " ";
 	          if ($intDDLLevel > 1) {
 	            for ($k=1; $k<$intDDLLevel; $k++) {
@@ -233,10 +226,7 @@
 	          }
 	          $arrNavigationItems[$j]           = $arrDDLAreas[$i];
 	          $arrNavigationItems[$j]['indent'] = $strDDLNameIndent;
-	          //$arrNavigationItems[$j]['list_value'] = $intDDLID;
-	          //$arrNavigationItems[$j]['list_text']  = $strDDLNameIndent.$strDDLName;
 	          $j++;
-	        }
 	      }
       }
       // *** Assignments *** //
@@ -277,11 +267,6 @@
       $arrArea = $CMS->AR->GetArea($intID);
       if (!$arrArea['id']) {
         $this->Err_MFail(M_ERR_NO_ROWS_RETURNED, "Area ID: $intID");
-      }
-      // Check the user has access
-      $CMS->RES->ViewArea($intID);
-      if ($CMS->RES->IsError()) {
-        $CMS->Err_MFail(M_ERR_UNAUTHORISED, "ViewArea");
       }
       // ** SEO links ** //
       $strAreaName = $arrArea['name'];
@@ -433,11 +418,7 @@
       $arrParentedAreas = $CMS->AT->GetParentedAreas($intID, "All", "");
       $intSubareaCount = 0;
       for ($i=0; $i<count($arrParentedAreas); $i++) {
-        $intSubAreaID = $arrParentedAreas[$i]['id'];
-        $CMS->RES->ViewArea($intSubAreaID);
-        if (!$CMS->RES->IsError()) {
           $arrAvailableAreas[$intSubareaCount++] = $arrParentedAreas[$i];
-        }
       }
       // *** Assignments *** //
       $CMS->TH->SetSubareaCount($intSubareaCount);
@@ -490,10 +471,6 @@
         $this->Err_MFail(M_ERR_NO_ROWS_RETURNED, $intID);
     	}
       $intAreaID = $arrContent['content_area_id'];
-      $CMS->RES->ViewArea($intAreaID);
-      if ($CMS->RES->IsError()) {
-        $CMS->Err_MFail(M_ERR_UNAUTHORISED, "ViewArea");
-      }
       $strUserGroups = $arrContent['user_groups'];
       if ($strUserGroups) {
         $CMS->RES->ViewArticle($intID);
@@ -527,7 +504,6 @@
       $dteCreateDate = $arrContent['create_date'];
       $dteEditDate   = $arrContent['edit_date'];
       $strSEOTitle   = $arrContent['seo_title'];
-      $strLocked     = $arrContent['locked'];
       // Hits get incremented after we retrieve the record, so increment here too
       $intHits       = $arrContent['hits'] + 1;
       $strContURL    = $arrContent['link_url'];
@@ -570,19 +546,6 @@
         //$CMS->TH->NextRelatedContentItem();
       } else {
         $CMS->TH->SetRelatedContentCount(0);
-      }
-      /* ********************************************** */
-      /* *              Article - Comments              */
-      /* ********************************************** */
-      $arrComments = $CMS->TH->GetComments($intID);
-      // *** Assignments *** //
-      if (is_array($arrComments)) {
-        $CMS->TH->SetCommentCount(count($arrComments));
-        $CMS->TH->SetCommentItems($arrComments);
-        $CMS->TH->StartCommentItems();
-        //$CMS->TH->NextCommentItem();
-      } else {
-        $CMS->TH->SetCommentCount(0);
       }
       /* ********************************************** */
       /* *              Theme File Calls                */

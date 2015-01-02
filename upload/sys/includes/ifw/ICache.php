@@ -144,12 +144,9 @@
   		global $CMS;
   		
   		$CMS->CacheFile->Delete("System_SysPrefs");
-  		$CMS->CacheFile->Delete("AreaTraverse_".C_NAV_PRIMARY);
-      $CMS->CacheFile->Delete("AreaTraverse_".C_NAV_SECONDARY);
-      $CMS->CacheFile->Delete("AreaTraverse_".C_NAV_TERTIARY);
+  		$CMS->CacheFile->Delete("AreaTraverse_Primary");
       
   	}
   	
   }
 
-?>

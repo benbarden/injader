@@ -46,16 +46,11 @@
   $strProfileName = "";
   $strMissingName = "";
 
-  $strViewAreaGroupList       = "";
   $strCreateArticleGroupList  = "";
   $strPublishArticleGroupList = "";
   $strEditArticleGroupList    = "";
   $strDeleteArticleGroupList  = "";
   $strAttachFileGroupList     = "";
-  $strAddCommentGroupList     = "";
-  $strEditCommentGroupList    = "";
-  $strDeleteCommentGroupList  = "";
-  $strLockArticleGroupList    = "";
 
   if ($_POST) {
     $blnSubmitForm = true;
@@ -64,26 +59,21 @@
       $blnSubmitForm = false;
       $strMissingName = $CMS->AC->InvalidFormData("");
     }
-    $strViewAreaGroupList = !empty($_POST['chkViewArea']) ? $CMS->UG->BuildGroupList($_POST['chkViewArea'], "chkViewArea") : "";
     $strCreateArticleGroupList = !empty($_POST['chkCreateArticle']) ? $CMS->UG->BuildGroupList($_POST['chkCreateArticle'], "chkCreateArticle") : "";
     $strPublishArticleGroupList = !empty($_POST['chkPublishArticle']) ? $CMS->UG->BuildGroupList($_POST['chkPublishArticle'], "chkPublishArticle") : "";
     $strEditArticleGroupList = !empty($_POST['chkEditArticle']) ? $CMS->UG->BuildGroupList($_POST['chkEditArticle'], "chkEditArticle") : "";
     $strDeleteArticleGroupList = !empty($_POST['chkDeleteArticle']) ? $CMS->UG->BuildGroupList($_POST['chkDeleteArticle'], "chkDeleteArticle") : "";
     $strAttachFileGroupList = !empty($_POST['chkAttachFile']) ? $CMS->UG->BuildGroupList($_POST['chkAttachFile'], "chkAttachFile") : "";
-    $strAddCommentGroupList = !empty($_POST['chkAddComment']) ? $CMS->UG->BuildGroupList($_POST['chkAddComment'], "chkAddComment") : "";
-    $strEditCommentGroupList = !empty($_POST['chkEditComment']) ? $CMS->UG->BuildGroupList($_POST['chkEditComment'], "chkEditComment") : "";
-    $strDeleteCommentGroupList = !empty($_POST['chkDeleteComment']) ? $CMS->UG->BuildGroupList($_POST['chkDeleteComment'], "chkDeleteComment") : "";
-    $strLockArticleGroupList = !empty($_POST['chkLockArticle']) ? $CMS->UG->BuildGroupList($_POST['chkLockArticle'], "chkLockArticle") : "";
     if ($blnSubmitForm) {
       $strProfileName = $CMS->AddSlashesIFW($_POST['txtProfileName']);
       $strPageTitle .= " - Results";
       // Update database
       if ($blnCreate) {
         $strMsg = "created";
-        $CMS->PP->Create($strProfileName, $strViewAreaGroupList, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAddCommentGroupList, $strEditCommentGroupList, $strDeleteCommentGroupList, $strLockArticleGroupList, $strAttachFileGroupList);
+        $CMS->PP->Create($strProfileName, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAttachFileGroupList);
       } elseif ($blnEdit) {
         $strMsg = "edited";
-        $CMS->PP->Edit($intProfileID, $strProfileName, $strViewAreaGroupList, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAddCommentGroupList, $strEditCommentGroupList, $strDeleteCommentGroupList, $strLockArticleGroupList, $strAttachFileGroupList);
+        $CMS->PP->Edit($intProfileID, $strProfileName, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAttachFileGroupList);
       }
       // Display message
       $strHTML = <<<ConfirmHTML
@@ -98,57 +88,39 @@ ConfirmHTML;
     if ($blnEdit) {
       $arrPermissions = $CMS->PP->Get($intProfileID);
       $strProfileName             = $arrPermissions['name'];
-      $strViewAreaGroupList       = $arrPermissions['view_area'];
       $strCreateArticleGroupList  = $arrPermissions['create_article'];
       $strPublishArticleGroupList = $arrPermissions['publish_article'];
       $strEditArticleGroupList    = $arrPermissions['edit_article'];
       $strDeleteArticleGroupList  = $arrPermissions['delete_article'];
       $strAttachFileGroupList     = $arrPermissions['attach_file'];
-      $strAddCommentGroupList     = $arrPermissions['add_comment'];
-      $strEditCommentGroupList    = $arrPermissions['edit_comment'];
-      $strDeleteCommentGroupList  = $arrPermissions['delete_comment'];
-      $strLockArticleGroupList    = $arrPermissions['lock_article'];
     }
   }
   $CMS->AP->SetTitle($strPageTitle);
 
   // Repopulate form
-  $arrViewArea       = explode("|", $strViewAreaGroupList);
   $arrCreateArticle  = explode("|", $strCreateArticleGroupList);
   $arrPublishArticle = explode("|", $strPublishArticleGroupList);
   $arrEditArticle    = explode("|", $strEditArticleGroupList);
   $arrDeleteArticle  = explode("|", $strDeleteArticleGroupList);
   $arrAttachFile     = explode("|", $strAttachFileGroupList);
-  $arrAddComment     = explode("|", $strAddCommentGroupList);
-  $arrEditComment    = explode("|", $strEditCommentGroupList);
-  $arrDeleteComment  = explode("|", $strDeleteCommentGroupList);
-  $arrLockArticle    = explode("|", $strLockArticleGroupList);
-  
+
   $strSubmitButton = $CMS->AC->SubmitButton();
   $strCancelButton = $CMS->AC->CancelButton();
   
-  $strViewAreaHTML       = $CMS->AC->DoCheckboxes($arrViewArea, "ViewArea");
   $strCreateArticleHTML  = $CMS->AC->DoCheckboxes($arrCreateArticle, "CreateArticle");
   $strPublishArticleHTML = $CMS->AC->DoCheckboxes($arrPublishArticle, "PublishArticle");
   $strEditArticleHTML    = $CMS->AC->DoCheckboxes($arrEditArticle, "EditArticle");
   $strDeleteArticleHTML  = $CMS->AC->DoCheckboxes($arrDeleteArticle, "DeleteArticle");
   $strAttachFileHTML     = $CMS->AC->DoCheckboxes($arrAttachFile, "AttachFile");
-  $strAddCommentHTML     = $CMS->AC->DoCheckboxes($arrAddComment, "AddComment");
-  $strEditCommentHTML    = $CMS->AC->DoCheckboxes($arrEditComment, "EditComment");
-  $strDeleteCommentHTML  = $CMS->AC->DoCheckboxes($arrDeleteComment, "DeleteComment");
-  $strLockArticleHTML    = $CMS->AC->DoCheckboxes($arrLockArticle, "LockArticle");
-  
+
   if ($blnCreate) {
     $strFormTag = "<form id=\"frmAdminPerProf\" action=\"{FN_ADM_PERMISSION}?action=create\" method=\"post\">";
   } elseif ($blnEdit) {
     $strFormTag = "<form id=\"frmAdminPerProf\" action=\"{FN_ADM_PERMISSION}?action=edit&amp;id=$intProfileID\" method=\"post\">";
   }
   
-  $strSelectGroups = $CMS->AC->PermissionQuickLinks();
-
   $strHTML = <<<END
 <h1 class="page-header">$strPageTitle</h1>
-$strSelectGroups
 $strFormTag
 <div class="table-responsive">
 <table class="table table-striped">
@@ -158,13 +130,6 @@ $strFormTag
       $strMissingName
       <input id="txtProfileName" name="txtProfileName" type="text" size="50" maxlength="100" value="$strProfileName" />
     </td>
-  </tr>
-  <tr>
-    <td class="HeadColour SpanCell Bold" colspan="2">View</td>
-  </tr>
-  <tr>
-    <td>View Area</td>
-    <td>$strViewAreaHTML</td>
   </tr>
   <tr class="separator-row">
     <td colspan="2">Articles</td>
@@ -189,25 +154,6 @@ $strFormTag
     <td>Attach File</td>
     <td>$strAttachFileHTML</td>
   </tr>
-  <tr class="separator-row">
-    <td colspan="2">Comments</td>
-  </tr>
-  <tr>
-    <td>Add comment and edit own comments</td>
-    <td>$strAddCommentHTML</td>
-  </tr>
-  <tr>
-    <td>Edit all comments</td>
-    <td>$strEditCommentHTML</td>
-  </tr>
-  <tr>
-    <td>Delete comments</td>
-    <td>$strDeleteCommentHTML</td>
-  </tr>
-  <tr>
-    <td>Lock article to prevent comments</td>
-    <td>$strLockArticleHTML</td>
-  </tr>
   <tr>
     <td class="FootColour SpanCell Centre" colspan="2">
       $strSubmitButton $strCancelButton
@@ -219,4 +165,3 @@ $strFormTag
 
 END;
   $CMS->AP->Display($strHTML);
-?>

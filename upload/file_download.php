@@ -33,12 +33,6 @@
   $strIsSiteImage = $arrFile['is_siteimage'];
   $intArticleID   = $arrFile['article_id'];
   $intAreaID      = $arrFile['content_area_id']; // Article area ID
-  if (($strIsAvatar == "N") && ($strIsSiteImage == "N")) {
-    $CMS->RES->ViewArea($intAreaID);
-    if ($CMS->RES->IsError()) {
-      $CMS->Err_MFail(M_ERR_UNAUTHORISED, "ViewArea");
-    }
-  }
   // Default location
   $strDefaultLoc = $arrFile['location'];
   // Thumbnails

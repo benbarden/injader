@@ -12,10 +12,9 @@
                     <table class="table table-striped">
                         <tr class="separator-row">
                             <td colspan="2">Content</td>
-                            <td colspan="2">Comments</td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="width: 50%;">
                                 {% if Auth.CanWriteContent %}
                                     <a href="{{ cpLink('content_manage') }}">Articles</a>
                                 {% else %}
@@ -23,14 +22,6 @@
                                 {% endif %}
                             </td>
                             <td>{{ Page.ArticleCount }}</td>
-                            <td>
-                                {% if Auth.IsAdmin %}
-                                    <a href="{{ cpLink('comments', {'type': 'pending'}) }}">Pending</a>
-                                {% else %}
-                                    Pending
-                                {% endif %}
-                            </td>
-                            <td>{{ Page.PendingCommentCount }}</td>
                         </tr>
                         <tr>
                             <td>
@@ -41,26 +32,10 @@
                                 {% endif %}
                             </td>
                             <td>{{ Page.UserCount }}</td>
-                            <td>
-                                {% if Auth.IsAdmin %}
-                                    <a href="{{ cpLink('comments', {'type': 'approved'}) }}">Approved</a>
-                                {% else %}
-                                    Approved
-                                {% endif %}
-                            </td>
-                            <td>{{ Page.ApprovedCommentCount }}</td>
                         </tr>
                         <tr>
                             <td>Site Files</td>
                             <td>{{ Page.SiteFileCount }}</td>
-                            <td>
-                                {% if Auth.IsAdmin %}
-                                    <a href="{{ cpLink('comments', {'type': 'spam'}) }}">Spam</a>
-                                {% else %}
-                                    Spam
-                                {% endif %}
-                            </td>
-                            <td>{{ Page.SpamCommentCount }}</td>
                         </tr>
                     </table>
                 </div>
@@ -88,31 +63,6 @@
     <table width="100%">
         <tr>
             <td style="vertical-align: top; width: 48%;">
-                <h2 class="sub-header">Recent Comments</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        {% if Page.RecentComments %}
-                            {% for Item in Page.RecentComments %}
-                                <tr>
-                                    <td><a href="{{ cmsLinkArticle(Item.story_id) }}#c{{ Item.id }}">{{ Item.title }}</a></td>
-                                    <td>{{ Item.create_date|date('d M Y H:i') }}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        {{ Item.content }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td class="column1 comments"><em>No recent comments</em></td>
-                                <td class="column2">-</td>
-                            </tr>
-                        {% endif %}
-                    </table>
-                </div>
-            </td>
-            <td style="vertical-align: top; width: 48%;">
                 <h2 class="sub-header">Recent Drafts</h2>
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -138,6 +88,9 @@
                         {% endif %}
                     </table>
                 </div>
+            </td>
+            <td style="vertical-align: top; width: 48%;">
+                <h2 class="sub-header">&nbsp;</h2>
             </td>
         </tr>
     </table>

@@ -21,14 +21,26 @@
   class PermissionProfile extends Helper {
     var $arrSystemProfile;
     // ** Content Area ** //
-    function Create($strProfileName, $strViewArea, $strCreateArticle, $strPublishArticle, $strEditArticle, $strDeleteArticle, $strAddComment, $strEditComment, $strDeleteComment, $strLockArticle, $strAttachFile) {
+    function Create($strProfileName, $strCreateArticle, $strPublishArticle, $strEditArticle, $strDeleteArticle, $strAttachFile) {
       global $CMS;
-      $intID = $this->Query("INSERT INTO {IFW_TBL_PERMISSION_PROFILES}(name, is_system, view_area, create_article, publish_article, edit_article, delete_article, add_comment, edit_comment, delete_comment, lock_article, attach_file) VALUES ('$strProfileName', 'N', '$strViewArea', '$strCreateArticle', '$strPublishArticle', '$strEditArticle', '$strDeleteArticle', '$strAddComment', '$strEditComment', '$strDeleteComment', '$strLockArticle', '$strAttachFile')", __CLASS__ . "::" . __FUNCTION__, __LINE__);
+      $intID = $this->Query("
+      INSERT INTO {IFW_TBL_PERMISSION_PROFILES}(name, is_system, create_article, publish_article, edit_article, delete_article, attach_file)
+      VALUES ('$strProfileName', 'N', '$strCreateArticle', '$strPublishArticle', '$strEditArticle', '$strDeleteArticle', '$strAttachFile')
+      ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $CMS->AL->Build(AL_TAG_PPCA_CREATE, $intID, "");
     }
-    function Edit($intProfileID, $strProfileName, $strViewArea, $strCreateArticle, $strPublishArticle, $strEditArticle, $strDeleteArticle, $strAddComment, $strEditComment, $strDeleteComment, $strLockArticle, $strAttachFile) {
+    function Edit($intProfileID, $strProfileName, $strCreateArticle, $strPublishArticle, $strEditArticle, $strDeleteArticle, $strAttachFile) {
       global $CMS;
-      $this->Query("UPDATE {IFW_TBL_PERMISSION_PROFILES} SET name = '$strProfileName', view_area = '$strViewArea', create_article = '$strCreateArticle', publish_article = '$strPublishArticle', edit_article = '$strEditArticle', delete_article = '$strDeleteArticle', add_comment = '$strAddComment', edit_comment = '$strEditComment', delete_comment = '$strDeleteComment', lock_article = '$strLockArticle', attach_file = '$strAttachFile' WHERE id = $intProfileID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
+      $this->Query("
+      UPDATE {IFW_TBL_PERMISSION_PROFILES}
+      SET name = '$strProfileName',
+      create_article = '$strCreateArticle',
+      publish_article = '$strPublishArticle',
+      edit_article = '$strEditArticle',
+      delete_article = '$strDeleteArticle',
+      attach_file = '$strAttachFile'
+      WHERE id = $intProfileID
+      ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $CMS->AL->Build(AL_TAG_PPCA_EDIT, $intProfileID, "");
     }
     function Delete($intProfileID) {
@@ -46,21 +58,6 @@
       $arrPermissions = $this->ResultQuery("SELECT * FROM {IFW_TBL_PERMISSION_PROFILES} WHERE id = $intID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $arrPermissions[0];
     }
-    // ** View Area ** //
-    function GetViewArea($intID) {
-      $strGroups = "";
-      if ($intID) {
-        $arrPermissions = $this->ResultQuery("SELECT view_area FROM {IFW_TBL_PERMISSION_PROFILES} WHERE id = $intID", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-        $strGroups = $arrPermissions[0]['view_area'];
-      } else {
-        if (empty($this->arrSystemProfile['view_area'])) {
-          $arrPermissions = $this->ResultQuery("SELECT view_area FROM {IFW_TBL_PERMISSION_PROFILES} WHERE is_system = 'Y'", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-          $this->arrSystemProfile['view_area'] = $arrPermissions[0]['view_area'];
-        }
-        $strGroups = $this->arrSystemProfile['view_area'];
-      }
-      return $strGroups;
-    }
     // ** Usage ** //
     function IsProfileUsed($intProfileID) {
       global $CMS;
@@ -68,4 +65,3 @@
       return $arrUsage[0]['count'] > 0 ? true : false;
     }
   }
-?>

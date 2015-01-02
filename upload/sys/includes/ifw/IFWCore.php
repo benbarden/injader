@@ -179,7 +179,7 @@
       $strData = strip_tags($strData);
       return $strData;
     }
-    function FilterAlphanumeric($strData, $strExtraChars) {
+    function FilterAlphanumeric($strData, $strExtraChars = "") {
       $strData = preg_replace("/[^a-zA-Z0-9".$strExtraChars."]/", "", $strData);
       $strData = strip_tags($strData);
       return $strData;
@@ -294,16 +294,6 @@
         $strFileSize = $fltFileSizeMB."MB";
       }
       return $strFileSize;
-    }
-    // ** CAPTCHA builder ** //
-    function BuildRandomText($intLength) {
-      $strItemString = "AaBbCcDdEFfGgHhiJjKkLMmNnPpQqRrSsTUuVvWwXxYyZz23456789";
-      $strText = "";
-      for ($i=0; $i<$intLength; $i++) {
-        $strChar = rand(0, strlen($strItemString) - 1);
-        $strText .= $strItemString[$strChar];
-      }
-      return $strText;
     }
     // ** Sort rule ** //
     // Build sort rule array //

@@ -41,7 +41,6 @@
   $strMissingEmail = "";
   $strEmailInUse = "";
   $strEmail = "";
-  $strInvalidCAPTCHA = "";
 
   if ($_POST) {
     // Prevent multiple usernames being created in a row

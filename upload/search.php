@@ -221,13 +221,7 @@
 
   $CMS->AT->arrAreaData = array();
   $CMS->DD->strEmptyItem = "All";
-  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", true, true, C_NAV_PRIMARY);
-  $CMS->AT->arrAreaData = array();
-  $CMS->DD->strEmptyItem = "All";
-  $strAreaListSecondary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", true, true, C_NAV_SECONDARY);
-  $CMS->AT->arrAreaData = array();
-  $CMS->DD->strEmptyItem = "All";
-  $strAreaListTertiary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", true, true, C_NAV_TERTIARY);
+  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", true, true);
   
   $strSearchButton = $CMS->AC->SearchButton();
   
@@ -368,9 +362,8 @@ END;
       } else {
         $blnAddToResults = true;
       }
-      // Can user view this article?
-      $CMS->RES->ViewArea($intAreaID);
-      if ((!$CMS->RES->IsError()) && ($blnAddToResults == true)) {
+
+      if ($blnAddToResults) {
         $intViewableItems++;
         if ($intViewableItems == 1) {
           $strHTML .= <<<ResultHeader

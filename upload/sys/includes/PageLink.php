@@ -37,7 +37,7 @@
         $intLinkStyle = "1";
       }
       switch ($intLinkStyle) {
-        case "1": $strLink = FN_VIEW."/area/".$intID."/".$strTitle; break;
+        case "1": $strLink = URL_ROOT."index.php/area/".$intID."/".$strTitle; break;
         case "2": $strLink = URL_ROOT."area/".$intID."/".$strTitle; break;
         case "3":
         case "4":
@@ -63,7 +63,7 @@
         $intLinkStyle = "1";
       }
       switch ($intLinkStyle) {
-        case "1": $strLink = FN_VIEW."/article/".$intID."/".$strTitle; break;
+        case "1": $strLink = URL_ROOT."index.php/article/".$intID."/".$strTitle; break;
         case "2": $strLink = URL_ROOT."article/".$intID."/".$strTitle; break;
         case "3": $strLink = URL_ROOT.$strTitle; break;
         case "4": $strLink = URL_ROOT.$strAreaTitle."/".$strTitle."/"; break;
@@ -88,23 +88,9 @@
       if (!$strUser) {
         $strUser = $CMS->US->GetSEOTitle($intID);
       }
-      $strLink = FN_VIEW."/user/".$intID."/".$strUser;
-      // Reset
-      $this->SetTitle("");
-      return $strLink;
-    }
-    function ViewComment($intID) {
-      global $CMS;
-      $strLink = "";
-      $arrComment = $CMS->COM->GetComment($intID);
-      if ($arrComment['story_id']) {
-        $intArticleID = $arrComment['story_id'];
-        $strLink = $this->ViewArticle($intArticleID);
-        $strLink .= "#c".$intID;
-      }
+      $strLink = URL_ROOT."index.php/user/".$intID."/".$strUser;
       // Reset
       $this->SetTitle("");
       return $strLink;
     }
   }
-?>

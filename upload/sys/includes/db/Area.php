@@ -131,9 +131,8 @@
         // If it's still not set, get this specific area
         if (!isset($this->arrArea[$intAreaID])) {
           $arrArea = $this->ResultQuery("
-            SELECT a.*, p.id AS profile_id, is_system, view_area, create_article, 
-            edit_article, delete_article, add_comment, edit_comment, delete_comment, 
-            lock_article, attach_file FROM {IFW_TBL_AREAS} a 
+            SELECT a.*, p.id AS profile_id, is_system, create_article,
+            edit_article, delete_article, attach_file FROM {IFW_TBL_AREAS} a
             LEFT JOIN {IFW_TBL_PERMISSION_PROFILES} p ON a.permission_profile_id = p.id 
             WHERE a.id = $intAreaID
           ", __CLASS__ . "::" . __FUNCTION__ ." (Area: $intAreaID)", __LINE__);
@@ -144,9 +143,8 @@
     }
     function BuildTopLevelAreaCache() {
       $arrAreas = $this->ResultQuery("
-        SELECT a.*, p.id AS profile_id, is_system, view_area, create_article, 
-        edit_article, delete_article, add_comment, edit_comment, delete_comment, 
-        lock_article, attach_file FROM {IFW_TBL_AREAS} a 
+        SELECT a.*, p.id AS profile_id, is_system, create_article,
+        edit_article, delete_article, attach_file FROM {IFW_TBL_AREAS} a
         LEFT JOIN {IFW_TBL_PERMISSION_PROFILES} p ON a.permission_profile_id = p.id 
         WHERE area_level = 1 ORDER BY a.id ASC
       ", __CLASS__ . "::" . __FUNCTION__, __LINE__);

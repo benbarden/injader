@@ -36,17 +36,8 @@
     if (!$intTagThreshold) {
       $intTagThreshold = 0;
     }
-    $strUseCAPTCHA          = !empty($_POST['chkUseCAPTCHA']) ? 1 : 0;
     $strArticleNotifyAdmin  = !empty($_POST['chkArticleNotifyAdmin']) ? 1 : 0;
     $strArticleReviewEmail  = !empty($_POST['chkArticleReviewEmail']) ? 1 : 0;
-    $strReviewEmail         = !empty($_POST['chkReviewEmail']) ? 1 : 0;
-    $strCommentNotify       = !empty($_POST['chkCommentNotification']) ? 1 : 0;
-    $strCommentNotifyAuthor = !empty($_POST['chkCommentNotifyAuthor']) ? 1 : 0;
-    $strUseNoFollow         = !empty($_POST['chkUseNoFollow']) ? 1 : 0;
-    $intNoFollowLimit       = !empty($_POST['txtNoFollowLimit']) ? $CMS->FilterNumeric($_POST['txtNoFollowLimit']) : 0;
-    if (!$intNoFollowLimit) {
-      $intNoFollowLimit = '0';
-    }
     // Validation
     $blnSubmitForm = true;
     if (($intRSSCount < 5) || ($intRSSCount > 30)) {
@@ -61,29 +52,11 @@
       if ($CMS->SYS->GetSysPref(C_PREF_TAG_THRESHOLD) != $intTagThreshold) {
         $CMS->SYS->WriteSysPref(C_PREF_TAG_THRESHOLD, $intTagThreshold);
       }
-      if ($CMS->SYS->GetSysPref(C_PREF_COMMENT_CAPTCHA) != $strUseCAPTCHA) {
-        $CMS->SYS->WriteSysPref(C_PREF_COMMENT_CAPTCHA, $strUseCAPTCHA);
-      }
       if ($CMS->SYS->GetSysPref(C_PREF_ARTICLE_NOTIFY_ADMIN) != $strArticleNotifyAdmin) {
         $CMS->SYS->WriteSysPref(C_PREF_ARTICLE_NOTIFY_ADMIN, $strArticleNotifyAdmin);
       }
       if ($CMS->SYS->GetSysPref(C_PREF_ARTICLE_REVIEW_EMAIL) != $strArticleReviewEmail) {
         $CMS->SYS->WriteSysPref(C_PREF_ARTICLE_REVIEW_EMAIL, $strArticleReviewEmail);
-      }
-      if ($CMS->SYS->GetSysPref(C_PREF_COMMENT_REVIEW_EMAIL) != $strReviewEmail) {
-        $CMS->SYS->WriteSysPref(C_PREF_COMMENT_REVIEW_EMAIL, $strReviewEmail);
-      }
-      if ($CMS->SYS->GetSysPref(C_PREF_COMMENT_NOTIFICATION) != $strCommentNotify) {
-        $CMS->SYS->WriteSysPref(C_PREF_COMMENT_NOTIFICATION, $strCommentNotify);
-      }
-      if ($CMS->SYS->GetSysPref(C_PREF_COMMENT_NOTIFY_AUTHOR) != $strCommentNotifyAuthor) {
-        $CMS->SYS->WriteSysPref(C_PREF_COMMENT_NOTIFY_AUTHOR, $strCommentNotifyAuthor);
-      }
-      if ($CMS->SYS->GetSysPref(C_PREF_COMMENT_USE_NOFOLLOW) != $strUseNoFollow) {
-        $CMS->SYS->WriteSysPref(C_PREF_COMMENT_USE_NOFOLLOW, $strUseNoFollow);
-      }
-      if ($CMS->SYS->GetSysPref(C_PREF_COMMENT_NOFOLLOW_LIMIT) != $intNoFollowLimit) {
-        $CMS->SYS->WriteSysPref(C_PREF_COMMENT_NOFOLLOW_LIMIT, $intNoFollowLimit);
       }
       // Rebuild the cache
       $CMS->SYS->RebuildCache();
@@ -97,14 +70,8 @@
       switch ($strKey) {
         case C_PREF_TAG_THRESHOLD:          $intTagThreshold        = $strValue; break;
         case C_PREF_RSS_COUNT:              $intRSSCount            = $strValue; break;
-        case C_PREF_COMMENT_CAPTCHA:        $strUseCAPTCHA          = $strValue; break;
         case C_PREF_ARTICLE_NOTIFY_ADMIN:   $strArticleNotifyAdmin  = $strValue; break;
         case C_PREF_ARTICLE_REVIEW_EMAIL:   $strArticleReviewEmail  = $strValue; break;
-        case C_PREF_COMMENT_REVIEW_EMAIL:   $strReviewEmail         = $strValue; break;
-        case C_PREF_COMMENT_NOTIFICATION:   $strCommentNotify       = $strValue; break;
-        case C_PREF_COMMENT_NOTIFY_AUTHOR:  $strCommentNotifyAuthor = $strValue; break;
-        case C_PREF_COMMENT_USE_NOFOLLOW:   $strUseNoFollow         = $strValue; break;
-        case C_PREF_COMMENT_NOFOLLOW_LIMIT: $intNoFollowLimit       = $strValue; break;
       }
     }
   }
@@ -115,13 +82,8 @@
     $strConfirmMsg = "";
   }
   
-  $strUseCAPTCHAChecked          = $strUseCAPTCHA          == 1 ? " checked=\"checked\"" : "";
   $strArticleNotifyAdminChecked  = $strArticleNotifyAdmin  == 1 ? " checked=\"checked\"" : "";
   $strArticleReviewEmailChecked  = $strArticleReviewEmail  == 1 ? " checked=\"checked\"" : "";
-  $strReviewEmailChecked         = $strReviewEmail         == 1 ? " checked=\"checked\"" : "";
-  $strCommentNotifyChecked       = $strCommentNotify       == 1 ? " checked=\"checked\"" : "";
-  $strCommentNotifyAuthorChecked = $strCommentNotifyAuthor == 1 ? " checked=\"checked\"" : "";
-  $strUseNoFollowChecked         = $strUseNoFollow         == 1 ? " checked=\"checked\"" : "";
 
   $strSubmitButton = $CMS->AC->SubmitButton();
   $strCancelButton = $CMS->AC->CancelButton();
@@ -152,37 +114,6 @@ $strConfirmMsg
     </td>
   </tr>
   <tr class="separator-row">
-    <td colspan="2">Comment Settings</td>
-  </tr>
-  <tr>
-    <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkUseCAPTCHA">Use CAPTCHA</label></b>
-    </td>
-    <td>
-      <input id="chkUseCAPTCHA" name="chkUseCAPTCHA" type="checkbox"$strUseCAPTCHAChecked />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkUseNoFollow">Use nofollow for URLs</label></b>
-    </td>
-    <td>
-      <input id="chkUseNoFollow" name="chkUseNoFollow" type="checkbox"$strUseNoFollowChecked />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="txtNoFollowLimit">Disable nofollow for commenters with under</label></b>
-    </td>
-    <td>
-      <input id="txtNoFollowLimit" name="txtNoFollowLimit" type="text" size="4" maxlength="3" value="$intNoFollowLimit" />
-      comment(s)
-    </td>
-  </tr>
-  <tr class="separator-row">
     <td colspan="2">Email site admin when:</td>
   </tr>
   <tr>
@@ -204,36 +135,6 @@ $strConfirmMsg
     </td>
   </tr>
   <tr>
-    <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkReviewEmail">a comment enters moderation</label></b>
-    </td>
-    <td>
-      <input id="chkReviewEmail" name="chkReviewEmail" type="checkbox"$strReviewEmailChecked />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkCommentNotification">a new comment is posted</label></b>
-    </td>
-    <td>
-      <input id="chkCommentNotification" name="chkCommentNotification" type="checkbox"$strCommentNotifyChecked />
-    </td>
-  </tr>
-  <tr class="separator-row">
-    <td colspan="2">Email article author when:</td>
-  </tr>
-  <tr>
-    <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkCommentNotifyAuthor">a comment is posted</label></b>
-    </td>
-    <td>
-      <input id="chkCommentNotifyAuthor" name="chkCommentNotifyAuthor" type="checkbox"$strCommentNotifyAuthorChecked />
-    </td>
-  </tr>
-  <tr>
     <td class="FootColour SpanCell Centre" colspan="2">
       $strSubmitButton $strCancelButton
     </td>
@@ -244,4 +145,3 @@ $strConfirmMsg
 
 END;
   $CMS->AP->Display($strHTML);
-?>

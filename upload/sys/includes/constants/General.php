@@ -28,10 +28,7 @@
   define('PRD_COMPANY_URL',  'http://www.benbarden.com');
 
   // Cookies
-  define('C_CK_LOGIN',         'IJ-Login');
-  define('C_CK_COMMENT_NAME',  'IJ-CommentName');
-  define('C_CK_COMMENT_URL',   'IJ-CommentURL');
-  define('C_CK_COMMENT_EMAIL', 'IJ-CommentEmail');
+  define('C_CK_LOGIN', 'IJ-Login');
 
   // Content status
   define('C_CONT_PUBLISHED', 'Published');
@@ -43,25 +40,12 @@
   
   // Allowed file types
   define('C_ALLOWED_FILE_TYPES', 'JPG,PNG,GIF,TXT,DOC,XLS,PPT,PDF,ZIP,MP3');
-  
-  // Spam rule types
-  define('C_SPAMRULE_EMAIL',   'Email');
-  define('C_SPAMRULE_URL',     'URL');
-  define('C_SPAMRULE_NAME',    'Name');
-  define('C_SPAMRULE_COMMENT', 'Comment');
-  define('C_SPAMRULE_IP',      'IP');
-  //define('C_SPAMRULE_ANY',     'Any');
-  
+
   // Area types
   define('C_AREA_CONTENT', 'Content');
   define('C_AREA_LINKED',  'Linked');
   define('C_AREA_SMART',   'Smart');
-  
-  // Navigation types
-  define('C_NAV_PRIMARY',   'Primary');
-  define('C_NAV_SECONDARY', 'Secondary');
-  define('C_NAV_TERTIARY',  'Tertiary');
-  
+
   // Theme files
   define('C_TH_HEADER',     'header.php');
   define('C_TH_FOOTER',     'footer.php');
@@ -97,17 +81,9 @@
   define('C_PREF_TAG_THRESHOLD',        'prefTagThreshold');
   define('C_PREF_RSS_COUNT',            'prefRSSCount');
 
-  // Comment Settings
-  define('C_PREF_COMMENT_CAPTCHA',        'prefCommentCAPTCHA');
-  define('C_PREF_COMMENT_USE_NOFOLLOW',   'prefCommentUseNoFollow');
-  define('C_PREF_COMMENT_NOFOLLOW_LIMIT', 'prefCommentNoFollowLimit');
-  
   // Notification Settings
   define('C_PREF_ARTICLE_NOTIFY_ADMIN',   'prefArticleNotifyAdmin');
   define('C_PREF_ARTICLE_REVIEW_EMAIL',   'prefArticleReviewEmail');
-  define('C_PREF_COMMENT_REVIEW_EMAIL',   'prefCommentReviewEmail');
-  define('C_PREF_COMMENT_NOTIFICATION',   'prefCommentNotification');
-  define('C_PREF_COMMENT_NOTIFY_AUTHOR',  'prefCommentNotifyAuthor');
 
   // File Settings
   define('C_PREF_THUMB_SMALL',      'prefThumbSmall');

@@ -56,13 +56,8 @@
   
   // ** Articles ** //
   define('M_ERR_UNPUBLISHED_CONTENT', "This article is currently unpublished.");
-  define('M_ERR_ARTICLE_LOCKED', "This article is already locked.");
-  define('M_ERR_ARTICLE_UNLOCKED', "This article is already unlocked.");
   define('M_ERR_ARTICLE_MARKED', "This article is already marked for deletion.");
   define('M_ERR_ARTICLE_UNMARKED', "This article is not marked for deletion.");
-  
-  // ** Comments ** //
-  define('M_ERR_COMMENT_LOCKED', "Cannot comment on a locked article.");
 
   // ** Uploads ** //
   define('M_ERR_UPLOAD_NOT_FOUND', "The file does not exist. Please choose another.");
@@ -127,13 +122,10 @@
   define('M_AL_ARTICLE_CREATE', "Created article");
   define('M_AL_ARTICLE_EDIT', "Edited article");
   define('M_AL_ARTICLE_DELETE', "Deleted article");
-  define('M_AL_ARTICLE_LOCK', "Locked article");
   define('M_AL_ARTICLE_MARK', "Marked article for deletion");
   define('M_AL_ARTICLE_RESTORE', "Restored article");
-  define('M_AL_ARTICLE_UNLOCK', "Unlocked article");
   define('M_AL_ARTICLE_SAVEDRAFT', "Saved article draft");
   define('M_AL_ARTICLE_REVIEW', "Submitted article for review");
   define('M_AL_ARTICLE_PUBLISH', "Published article");
   define('M_AL_ARTICLE_SCHEDULE', "Scheduled article");
   
-?>

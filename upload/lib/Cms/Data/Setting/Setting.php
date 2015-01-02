@@ -53,17 +53,9 @@ class Setting
     const SETTING_TAG_THRESHOLD = 'prefTagThreshold';
     const SETTING_RSS_COUNT = 'prefRSSCount';
 
-    // Comments
-    const SETTING_COMMENT_CAPTCHA = 'prefCommentCAPTCHA';
-    const SETTING_COMMENT_USE_NOFOLLOW = 'prefCommentUseNoFollow';
-    const SETTING_COMMENT_NOFOLLOW_LIMIT = 'prefCommentNoFollowLimit';
-
     // Notifications
     const SETTING_ARTICLE_NOTIFY_ADMIN = 'prefArticleNotifyAdmin';
     const SETTING_ARTICLE_REVIEW_EMAIL = 'prefArticleReviewEmail';
-    const SETTING_COMMENT_REVIEW_EMAIL = 'prefCommentReviewEmail';
-    const SETTING_COMMENT_NOTIFICATION = 'prefCommentNotification';
-    const SETTING_COMMENT_NOTIFY_AUTHOR = 'prefCommentNotifyAuthor';
 
     // Files
     const SETTING_THUMB_SMALL = 'prefThumbSmall';

@@ -82,26 +82,10 @@
             if (($intID <> "") && ($intID <> $intContentID)) {
               $intAreaID = $CMS->ART->GetArticleAreaID($intID);
               if ($intAreaID) {
-                if (isset($arrViewArea[$intAreaID])) {
-                  if ($arrViewArea[$intAreaID]) {
-                    if (!empty($arrArticles[$intID])) {
-                      $arrArticles[$intID]++;
-                    } else {
-                      $arrArticles[$intID] = 1;
-                    }
-                  }
+                if (!empty($arrArticles[$intID])) {
+                  $arrArticles[$intID]++;
                 } else {
-                  $CMS->RES->ViewArea($intAreaID);
-                  if ($CMS->RES->IsError()) {
-                    $arrViewArea[$intAreaID] = false; // Caching
-                  } else {
-                    $arrViewArea[$intAreaID] = true; // Caching
-                    if (!empty($arrArticles[$intID])) {
-                      $arrArticles[$intID]++;
-                    } else {
-                      $arrArticles[$intID] = 1;
-                    }
-                  }
+                  $arrArticles[$intID] = 1;
                 }
               }
             }

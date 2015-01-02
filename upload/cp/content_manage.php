@@ -240,7 +240,7 @@ END;
       // Get content
       $strDateFormat = $CMS->SYS->GetDateFormat();
       $strContentSQL = "
-        SELECT c.id, c.title, c.permalink, c.seo_title, c.content_status, c.hits, c.comment_count, c.content_area_id,
+        SELECT c.id, c.title, c.permalink, c.seo_title, c.content_status, c.hits, c.content_area_id,
         DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw,
         a.name AS area_name, a.seo_name AS area_seo_name
         FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a)
@@ -271,7 +271,6 @@ END;
         $strStatus       = $arrAreaContent[$i]['content_status'];
         $strSEOTitle     = $arrAreaContent[$i]['seo_title'];
         $intHits         = $arrAreaContent[$i]['hits'];
-        $intComments     = $arrAreaContent[$i]['comment_count'];
         // Table header
         if ($i == 0) {
           // Bulk options
@@ -285,8 +284,6 @@ AdminBulk;
             } else {
               $strBulkOptions = <<<AdminBulk
           <option value="move">Move</option>
-          <option value="lock">Lock</option>
-          <option value="unlock">Unlock</option>
           <option value="editauthor">Edit Author</option>
           <option value="delete">Delete</option>
           <option value="restore">Restore</option>
@@ -314,7 +311,6 @@ $strPageNumbers
         <td>Area</td>
         <td>Created</td>
         <td>Status</td>
-        <td>Comments</td>
         <td>Hits</td>
         <td>Options</td>
         <td>
@@ -368,7 +364,6 @@ TableHeader;
         <td class="Centre Area"><a href="$strAreaLink">$strAreaName</a></td>
         <td class="Centre Created">$strCreateDate</td>
         <td class="Centre Status">$strStatus</td>
-        <td class="Centre Comments">$intComments</td>
         <td class="Centre Hits">$intHits</td>
         <td class="Centre Options">$strEditArticle $strEditTags</td>
         <td class="Centre Checkbox"><input type="checkbox" name="chkBulkOptions[]" id="chkBulkOptions$intID" value="$intID" /></td>

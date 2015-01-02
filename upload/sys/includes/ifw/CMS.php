@@ -28,41 +28,41 @@ class CMS extends Helper {
     var $IQ; // IQuery
     var $RES; // Restriction
     var $SYS; // System
-    
-    var $pages_Archives;
-    
-    // Class caching
-    var $AC; // Autocode
-    var $AL; // AccessLog
-    var $AP; // AdminPage
-    var $AR; // Area
-    var $ARCO; // AreaContent
-    var $ART; // Article
-    var $AT; // AreaTraverse
-    var $CHA; // Challenge
+
+    // Top-level
     var $CK; // Cookie
-    var $COM; // Comment
-    var $DD; // DropDown
-    var $FL; // File
     var $FMT; // Formatting
-    var $LP; // LoginPage
     var $MV; // View
     var $MSG; // Messaging
     var $PL; // PageLink
     var $PN; // PageNumber
-    var $PNN; // PageNumberNavigation
-    var $PP; // PermissionProfile
     var $RC; // ReplaceConstants
-    var $SR; // SortRule
+
+    // DB
+    var $AL; // AccessLog
+    var $AR; // Area
+    var $AT; // AreaTraverse
+    var $ART; // Article
+    var $FL; // File
+    var $PP; // PermissionProfile
     var $TG; // Tag
-    var $TH; // Theme
-    var $TS; // ThemeSetting
-    var $UG; // UserGroup
     var $UM; // URLMapping
     var $US; // User
+    var $UG; // UserGroup
     var $USess; // UserSession
-    var $UST; // UserStat
-    
+
+    // HTML
+    var $AP; // AdminPage
+    var $ARCO; // AreaContent
+    var $AC; // Autocode
+    var $DD; // DropDown
+    var $LP; // LoginPage
+    var $PNN; // PageNumberNavigation
+    var $TH; // Theme
+    var $TS; // ThemeSetting
+
+    var $pages_Archives;
+
     function InitClasses() {
         
         // Generic initialisation routine
@@ -75,7 +75,6 @@ class CMS extends Helper {
         $this->SYS   = new System;
         
         // Top level
-        $this->CHA   = new Challenge;
         $this->CK    = new Cookie;
         $this->FMT   = new Formatting;
         $this->MV    = new View;
@@ -89,16 +88,13 @@ class CMS extends Helper {
         $this->AR    = new Area;
         $this->AT    = new AreaTraverse;
         $this->ART   = new Article;
-        $this->COM   = new Comment;
         $this->FL    = new File;
         $this->PP    = new PermissionProfile;
-        $this->SR    = new SpamRule;
         $this->TG    = new Tags;
         $this->UM    = new URLMapping;
         $this->US    = new User;
         $this->UG    = new UserGroup;
         $this->USess = new UserSession;
-        $this->UST   = new UserStats;
 
         // HTML
         $this->AP    = new AdminPage;

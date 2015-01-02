@@ -20,16 +20,12 @@
 
     define('IFW_TBL_ACCESS_LOG',          "Cms_AccessLog");
     define('IFW_TBL_AREAS',               "Cms_Areas");
-    define('IFW_TBL_COMMENTS',            "Cms_Comments");
     define('IFW_TBL_CONTENT',             "Cms_Content");
-    define('IFW_TBL_PERMISSION_PROFILES', "Cms_PermissionProfile");
-    define('IFW_TBL_SPAM_RULES',          "Cms_SpamRules");
+    define('IFW_TBL_PERMISSION_PROFILES', "Cms_Permissions");
     define('IFW_TBL_SETTINGS',            "Cms_Settings");
     define('IFW_TBL_TAGS',                "Cms_Tags");
     define('IFW_TBL_UPLOADS',             "Cms_Uploads");
     define('IFW_TBL_URL_MAPPING',         "Cms_UrlMapping");
-    define('IFW_TBL_USERS',               "Cms_Users");
     define('IFW_TBL_USER_GROUPS',         "Cms_UserRoles");
+    define('IFW_TBL_USERS',               "Cms_Users");
     define('IFW_TBL_USER_SESSIONS',       "Cms_UserSessions");
-    define('IFW_TBL_USER_STATS',          "Cms_UserStats");
-

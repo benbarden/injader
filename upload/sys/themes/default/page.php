@@ -170,27 +170,3 @@ Tags:
 ?>
 <?php
   } // End comments > 0
-
-  // ** Begin comment form ** //
-  if ($CMS->TH->CanAddComments()) {
-    print($CMS->TH->GetCommentForm());
-  } else {
-    if ($CMS->TH->IsLoggedIn()) {
-      if ($CMS->TH->GetContentLocked() == "Y") {
-?>
-<p>This article is locked; comments cannot be added.</p>
-<?php
-      } else {
-?>
-<p>You do not have access to post comments in this area.</p>
-<?php
-      }
-    } else {
-      $strLoginLink    = FN_LOGIN;
-      $strRegisterLink = FN_REGISTER;
-?>
-<p>You must be registered and logged in to post comments. <a href="<?php print($strLoginLink); ?>">Log in here</a>.<br />Not registered? <a href="<?php print($strRegisterLink); ?>">Register now!</a></p>
-<?php
-    }
-  }
-?>

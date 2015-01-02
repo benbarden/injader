@@ -25,14 +25,15 @@
     exit("No ID specified!");
   }
   
-  $CMS->RES->ViewArea($intID);
-  if ($CMS->RES->IsError()) {
-    exit("No access to view this area!");
-  }
-  
   $strXMLData = "";
   
-  $arrResult = $CMS->ResultQuery("SELECT id, permalink, last_updated FROM {IFW_TBL_CONTENT} con WHERE content_area_id = $intID AND content_status = '{C_CONT_PUBLISHED}' ORDER BY create_date DESC", basename(__FILE__), __LINE__);
+  $arrResult = $CMS->ResultQuery("
+  SELECT id, permalink, last_updated
+  FROM {IFW_TBL_CONTENT} con
+  WHERE content_area_id = $intID
+  AND content_status = '{C_CONT_PUBLISHED}'
+  ORDER BY create_date DESC
+  ", basename(__FILE__), __LINE__);
   
   if (count($arrResult) == 0) {
     exit("There is no content on your site!");

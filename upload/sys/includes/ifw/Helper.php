@@ -60,4 +60,3 @@ class Helper extends IFWCore {
     }
     
 }
-?>

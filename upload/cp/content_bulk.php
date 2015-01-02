@@ -31,15 +31,11 @@
   }
   
   $strAction = $_POST['optBulk'];
-  $blnMove       = false; $blnLock   = false; $blnUnlock = false;
+  $blnMove       = false;
   $blnPublish    = false; $blnDelete = false;
   $blnEditAuthor = false;
   if ($strAction == "move") {
     $blnMove = true;
-  } elseif ($strAction == "lock") {
-    $blnLock = true;
-  } elseif ($strAction == "unlock") {
-    $blnUnlock = true;
   } elseif ($strAction == "editauthor") {
     $blnEditAuthor = true;
   } elseif ($strAction == "publish") {
@@ -64,12 +60,6 @@
       }
       $CMS->ART->BulkMove($intAreaID, $strArticleIDs);
       $strDidWhat = "moved";
-    } elseif ($blnLock) {
-      $CMS->ART->BulkLock($strArticleIDs);
-      $strDidWhat = "locked";
-    } elseif ($blnUnlock) {
-      $CMS->ART->BulkUnlock($strArticleIDs);
-      $strDidWhat = "unlocked";
     } elseif ($blnEditAuthor) {
       $intUserID = $CMS->FilterNumeric($_POST['optUser']);
       if (!$intUserID) {
@@ -131,10 +121,12 @@ ConfPage;
   $strActionMsg = "";
   if ($blnMove) {
     // Build area list
-    $strAreaList  = $CMS->DD->AreaHierarchy("", 0, "Content", false, false, C_NAV_PRIMARY);
+    $strAreaList  = $CMS->DD->AreaHierarchy("", 0, "Content", false, false);
     // Area list HTML
     $strFormContent = <<<AreaList
-<p>Please select the destination area for the above articles. All articles will be moved to the area you select. If you do not wish to proceed, click the Cancel button now.</p>
+<p>Please select the destination area for the above articles.
+All articles will be moved to the area you select.
+If you do not wish to proceed, click the Cancel button now.</p>
 <div>
 <select id="optArea" name="optArea">
 $strAreaList
@@ -143,16 +135,14 @@ $strAreaList
 </div>
 
 AreaList;
-  } elseif ($blnLock) {
-    $strFormContent = "";
-  } elseif ($blnUnlock) {
-    $strFormContent = "";
   } elseif ($blnEditAuthor) {
     // Build user list
     $strListUsers = $CMS->DD->UserList("");
     // Area list HTML
     $strFormContent = <<<AreaList
-<p>Please select the author to use for the above articles. The author of these articles will be changed to the user you specify. If you do not wish to proceed, click the Cancel button now.</p>
+<p>Please select the author to use for the above articles.
+The author of these articles will be changed to the user you specify.
+If you do not wish to proceed, click the Cancel button now.</p>
 <div>
 <select id="optUser" name="optUser">
 $strListUsers

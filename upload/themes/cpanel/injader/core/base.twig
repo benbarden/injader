@@ -84,29 +84,15 @@
                             <li><a href="{{ cpLink('file_add') }}">+ Add New File</a></li>
                         </ul>
                     </li>
-                    <!-- Comments -->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Comments <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ cpLink('comments') }}">Manage Comments</a></li>
-                            <li><a href="{{ cpLink('comments', {'type': 'approved'}) }}">Approved</a></li>
-                            <li><a href="{{ cpLink('comments', {'type': 'pending'}) }}">Pending</a></li>
-                            <li><a href="{{ cpLink('comments', {'type': 'spam'}) }}">Spam</a></li>
-                            <li class="divider"></li>
-                            <li><a href="{{ cpLink('tools_spam_stats') }}">Spam Stats</a></li>
-                        </ul>
-                    </li>
                     <!-- Users -->
                     <li><a href="{{ cpLink('users', {'action': 'showall'}) }}" title="Manage user accounts, roles, and permissions">Users</a></li>
                     <!-- Tools -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ cpLink('tools_spam_rules') }}">Spam Rules</a></li>
-                            <li><a href="{{ cpLink('tools_spam_stats') }}">Comment Spam Stats</a></li>
-                            <li><a href="{{ cpLink('tools_user_sessions') }}">User Sessions</a></li>
                             <li><a href="{{ cpLink('tools_access_log') }}">Access Log</a></li>
                             <li><a href="{{ cpLink('tools_error_log') }}">Error Log</a></li>
+                            <li><a href="{{ cpLink('tools_user_sessions') }}">User Sessions</a></li>
                         </ul>
                     </li>
                     <!-- Settings -->

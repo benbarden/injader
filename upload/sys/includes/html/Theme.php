@@ -452,9 +452,6 @@ ExecTime;
     function GetContentDeleted() {
       return $this->arrContentItems[$this->intContentIndex]['content_status'] == C_CONT_DELETED ? "Y" : "N";
     }
-    function GetContentLocked() {
-      return $this->arrContentItems[$this->intContentIndex]['locked'];
-    }
     function GetContentReadUserlist() {
       return $this->arrContentItems[$this->intContentIndex]['read_userlist'];
     }
@@ -535,10 +532,7 @@ ExecTime;
         return $strCustomExcerpt;
         
     }
-    
-    function GetContentCommentCount() {
-      return $this->arrContentItems[$this->intContentIndex]['comment_count'];
-    }
+
     // ** Attachments ** //
     function GetContentAttachments() {
       global $CMS;
@@ -738,214 +732,6 @@ ExecTime;
       }
       return $arrRelatedContent;
     }
-    // ** Comments - Assignments ** //
-    var $intCommentCount;
-    var $arrCommentItems;
-    var $intCommentIndex;
-    function SetCommentCount($intCount) {
-      $this->intCommentCount = $intCount;
-    }
-    function GetCommentCount() {
-      return $this->intCommentCount;
-    }
-    function GetCommentIndex() {
-      return $this->intCommentIndex;
-    }
-    function GetCommentNumber() {
-      return $this->intCommentIndex + 1;
-    }
-    function SetCommentItems($arrItems) {
-      $this->arrCommentItems = $arrItems;
-    }
-    function StartCommentItems() {
-      $this->intCommentIndex = -1; // increments to 0 for first item
-    }
-    function NextCommentItem() {
-      $this->intCommentIndex++;
-      return $this->intCommentIndex;
-    }
-    // ** Comments - Properties ** //
-    function GetCommentID() {
-      return $this->arrCommentItems[$this->intCommentIndex]['id'];
-    }
-    function GetCommentArticleID() {
-      return $this->arrCommentItems[$this->intCommentIndex]['article_id'];
-    }
-    function GetCommentAuthor() {
-      $strUser = $this->arrCommentItems[$this->intCommentIndex]['username'];
-      if (!$strUser) {
-        $strUser = $this->arrCommentItems[$this->intCommentIndex]['guest_name'];
-      }
-      return $strUser;
-    }
-    function GetCommentAuthorID() {
-      return $this->arrCommentItems[$this->intCommentIndex]['author_id'];
-    }
-    function GetCommentAuthorProfileLink() {
-      global $CMS;
-      $strProfileHTML = "";
-      if ($this->GetCommentAuthorID()) {
-        $strProfileURL = $CMS->PL->ViewUser($this->GetCommentAuthorID());
-        $strProfileHTML = "<a href=\"$strProfileURL\">".$this->GetCommentAuthor()."'s profile</a>";
-      }
-      return $strProfileHTML;
-    }
-    function GetCommentAvatarID() {
-      return $this->arrCommentItems[$this->intCommentIndex]['avatar_id'];
-    }
-    function GetCommentBody() {
-      return $this->arrCommentItems[$this->intCommentIndex]['content'];
-    }
-    function GetCommentCreateDate() {
-      return $this->arrCommentItems[$this->intCommentIndex]['create_date'];
-    }
-    function GetCommentEditDate() {
-      $dteEditedRaw = $this->GetCommentEditDateRaw();
-      if ($dteEditedRaw == "0000-00-00 00:00:00") {
-        return "";
-      } else {
-        return $this->arrCommentItems[$this->intCommentIndex]['edit_date'];
-      }
-    }
-    function GetCommentEditDateRaw() {
-      return $this->arrCommentItems[$this->intCommentIndex]['edit_date_raw'];
-    }
-    function GetCommentHomepageLink() {
-      $strLink = $this->arrCommentItems[$this->intCommentIndex]['homepage_link'];
-      if (!$strLink) {
-        $strLink = $this->arrCommentItems[$this->intCommentIndex]['guest_url'];
-      }
-      return $strLink;
-    }
-    function GetCommentHomepageText() {
-      return $this->arrCommentItems[$this->intCommentIndex]['homepage_text'];
-    }
-    function GetCommentAuthorHomepageLink() {
-      global $CMS;
-      $strHomePageLink = $this->GetCommentHomepageLink();
-      $strHomePageText = $this->GetCommentHomepageText();
-      if ($strHomePageLink) {
-        $strNoFollow = $CMS->SYS->GetSysPref(C_PREF_COMMENT_USE_NOFOLLOW);
-        if ($strNoFollow == "1") {
-          //$intCommentCount = $CMS->COM->CountUserComments($this->GetCommentAuthorID());
-          $intCommentCount = $this->GetCommentAuthorQuota();
-          $intNoFollowLimit = $CMS->SYS->GetSysPref(C_PREF_COMMENT_NOFOLLOW_LIMIT);
-          if ($intCommentCount >= $intNoFollowLimit) {
-            $blnUseNoFollow = false;
-          } else {
-            $blnUseNoFollow = true;
-          }
-        } else {
-          $blnUseNoFollow = false;
-        }
-        $strNoFollow = $blnUseNoFollow ? " rel=\"nofollow\"" : "";
-        if (!$strHomePageText) {
-          $strHomePageText = $this->GetCommentAuthor()."'s home page";
-        }
-        $strAuthorLink = "<a href=\"$strHomePageLink\"".$strNoFollow.">$strHomePageText</a>";
-      } else {
-        $strAuthorLink = "";
-      }
-      return $strAuthorLink;
-    }
-    function GetCommentIP() {
-      global $CMS;
-      $CMS->RES->Admin();
-      if (!$CMS->RES->IsError()) {
-        return $this->arrCommentItems[$this->intCommentIndex]['ip_address'];
-      } else {
-        return "";
-      }
-    }
-    function GetCommentAuthorQuota() {
-      global $CMS;
-      $intQuota = "";
-      if ($this->arrCommentItems[$this->intCommentIndex]['email']) {
-        $strEmail = $this->arrCommentItems[$this->intCommentIndex]['email'];
-      } elseif ($this->arrCommentItems[$this->intCommentIndex]['guest_email']) {
-        $strEmail = $this->arrCommentItems[$this->intCommentIndex]['guest_email'];
-      } else {
-        $strEmail = "";
-      }
-      if ($strEmail) {
-        $arrQuota = $CMS->UST->Get($strEmail);
-        $intQuota = $arrQuota['comment_count'];
-      }
-      return $intQuota;
-    }
-    function GetCommentRating() {
-      return $this->arrCommentItems[$this->intCommentIndex]['rating_value'];
-    }
-    function GetCommentPermalink() {
-      global $CMS;
-        $dbArticle = $CMS->ART->GetArticle($this->GetCommentArticleID());
-        $permalink = $dbArticle['permalink']."#c".$this->GetCommentID();
-      return $permalink;
-    }
-    // ** Comments - Links ** //
-    function GetCommentEditLink() {
-      global $CMS;
-      $strEdit = "";
-      $intAreaID    = $this->GetContentAreaID();
-      $intCommentID = $this->GetCommentID();
-      $CMS->RES->EditComment($intAreaID, $intCommentID);
-      if (!$CMS->RES->IsError()) {
-        $strEdit = "<a href=\"".FN_COMMENT."?action=edit&amp;id=$intCommentID&amp;area=$intAreaID\">Edit</a>";
-      }
-      return $strEdit;
-    }
-    function GetCommentDeleteLink() {
-      global $CMS;
-      $strDelete = "";
-      $intAreaID    = $this->GetContentAreaID();
-      $intCommentID = $this->GetCommentID();
-      $CMS->RES->DeleteComment($intAreaID);
-      if (!$CMS->RES->IsError()) {
-        $strDelete = "<a href=\"".FN_COMMENT."?action=delete&amp;id=$intCommentID&amp;area=$intAreaID\">Delete</a>";
-      }
-      return $strDelete;
-    }
-    // ** Comments - Builder ** //
-    function GetComments($intContentID) {
-      global $CMS;
-      $arrComments = $CMS->COM->GetArticleComments($intContentID);
-      return $arrComments;
-    }
-    function GetCommentForm() {
-      global $CMS;
-      $intContentID = $this->GetContentID();
-      $intAreaID    = $this->GetContentAreaID();
-      $strLocked    = $this->GetContentLocked();
-      if ($strLocked == "Y") {
-        $blnLocked = true;
-        $blnAddComment = false;
-      } else {
-        $blnLocked = false;
-        $CMS->RES->AddComment($intAreaID);
-        $blnAddComment = !$CMS->RES->IsError();
-      }
-  		if ($blnAddComment) {
-        $strCommentForm = $CMS->AC->CommentForm("", $intContentID, "Create", $intAreaID, "", "", "", "", "", "", "");
-  		} else {
-        $strCommentForm = "";
-  		}
-      return $strCommentForm;
-    }
-    // ** Comments - Permissions ** //
-    function CanAddComments() {
-      global $CMS;
-      $strLocked = $this->GetContentLocked();
-      $intAreaID = $this->GetContentAreaID();
-      if ($strLocked == "Y") {
-        $blnLocked = true;
-        $blnAddComment = false;
-      } else {
-        $blnLocked = false;
-        $CMS->RES->AddComment($intAreaID);
-        $blnAddComment = !$CMS->RES->IsError();
-      }
-      return $blnAddComment;
-    }
     function IsLoggedIn() {
       global $CMS;
       $CMS->RES->ValidateLoggedIn();
@@ -990,24 +776,6 @@ ExecTime;
         }
       }
       return $strDelete;
-    }
-    function GetContentLockLink() {
-      global $CMS;
-      $strLockLink = "";
-      $intAreaID    = $this->GetContentAreaID();
-      $intContentID = $this->GetContentID();
-      $strLocked   = $this->GetContentLocked();
-      $CMS->RES->LockArticle($intAreaID);
-      if (!$CMS->RES->IsError()) {
-          $dbArticle = $CMS->ART->GetArticle($intContentID);
-          $permalink = $dbArticle['permalink'];
-        if ($strLocked == "Y") {
-          $strLockLink = "<a href=\"".FN_USER_TOOLS."?action=unlockarticle&amp;id=$intContentID&amp;back=$permalink\">Unlock</a>";
-        } else {
-          $strLockLink = "<a href=\"".FN_USER_TOOLS."?action=lockarticle&amp;id=$intContentID&amp;back=$permalink\">Lock</a>";
-        }
-      }
-      return $strLockLink;
     }
     function GetContentIsUnread() {
       global $CMS;
@@ -1095,4 +863,3 @@ ExecTime;
     }
   }
 
-?>
