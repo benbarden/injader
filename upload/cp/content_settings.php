@@ -31,6 +31,7 @@
   $strBreachedRSSCountText = "";
   
   if ($_POST) {
+    $disqusId = empty($_POST['disqus-id']) ? "" : $_POST['disqus-id'];
     $intRSSCount = empty($_POST['txtRSSCount']) ? "0" : $CMS->FilterNumeric($_POST['txtRSSCount']);
     $intTagThreshold = empty($_POST['txtTagThreshold']) ? "0" : $CMS->FilterNumeric($_POST['txtTagThreshold']);
     if (!$intTagThreshold) {
@@ -46,6 +47,9 @@
     }
     // Update database
     if ($blnSubmitForm) {
+      if ($CMS->SYS->GetSysPref(C_PREF_DISQUS_ID) != $disqusId) {
+          $CMS->SYS->WriteSysPref(C_PREF_DISQUS_ID, $disqusId);
+      }
       if ($CMS->SYS->GetSysPref(C_PREF_RSS_COUNT) != $intRSSCount) {
         $CMS->SYS->WriteSysPref(C_PREF_RSS_COUNT, $intRSSCount);
       }
@@ -68,6 +72,7 @@
     $arrSysPrefs = $CMS->SYS->arrSysPrefs;
     foreach ($arrSysPrefs as $strKey => $strValue) {
       switch ($strKey) {
+        case C_PREF_DISQUS_ID:              $disqusId = $strValue; break;
         case C_PREF_TAG_THRESHOLD:          $intTagThreshold        = $strValue; break;
         case C_PREF_RSS_COUNT:              $intRSSCount            = $strValue; break;
         case C_PREF_ARTICLE_NOTIFY_ADMIN:   $strArticleNotifyAdmin  = $strValue; break;
@@ -97,6 +102,15 @@ $strConfirmMsg
 <table class="table table-striped">
   <tr>
     <td>
+      <b><label for="disqus-id">Disqus Id</label></b>
+      <br>If you wish to use Disqus for comments, enter the community id here.
+    </td>
+    <td>
+      <input id="disqus-id" name="disqus-id" type="text" size="40" maxlength="100" value="$disqusId" />
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b><label for="txtRSSCount">Feed item count</label></b>
       <br /><i>Must be between 5 and 30 items</i>
     </td>
@@ -113,13 +127,9 @@ $strConfirmMsg
       <input id="txtTagThreshold" name="txtTagThreshold" type="text" size="2" maxlength="2" value="$intTagThreshold" />
     </td>
   </tr>
-  <tr class="separator-row">
-    <td colspan="2">Email site admin when:</td>
-  </tr>
   <tr>
     <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkArticleReviewEmail">an article requires approval</label></b>
+      <b><label for="chkArticleReviewEmail">Email site admin when an article requires approval</label></b>
     </td>
     <td>
       <input id="chkArticleReviewEmail" name="chkArticleReviewEmail" type="checkbox"$strArticleReviewEmailChecked />
@@ -127,8 +137,7 @@ $strConfirmMsg
   </tr>
   <tr>
     <td>
-      <input type="hidden" name="dummy" value="dummy" />
-      <b><label for="chkArticleNotifyAdmin">a new article is published</label></b>
+      <b><label for="chkArticleNotifyAdmin">Email site admin when a new article is published</label></b>
     </td>
     <td>
       <input id="chkArticleNotifyAdmin" name="chkArticleNotifyAdmin" type="checkbox"$strArticleNotifyAdminChecked />

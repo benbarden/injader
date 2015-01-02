@@ -8,5 +8,6 @@
         | <a href="{{ Article.Permalink }}">Permalink</a>
     </p>
     {{ Article.Body|raw }}
+    {{ cmsBlock('comments.disqus') }}
 </div>
 {% endblock cms_content %}

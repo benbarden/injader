@@ -80,6 +80,7 @@
   // Content Settings
   define('C_PREF_TAG_THRESHOLD',        'prefTagThreshold');
   define('C_PREF_RSS_COUNT',            'prefRSSCount');
+  define('C_PREF_DISQUS_ID',            'prefDisqusId');
 
   // Notification Settings
   define('C_PREF_ARTICLE_NOTIFY_ADMIN',   'prefArticleNotifyAdmin');

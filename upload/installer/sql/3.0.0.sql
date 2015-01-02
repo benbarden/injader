@@ -24,9 +24,6 @@ DELETE FROM maj_sys_preferences WHERE preference = 'prefCommentReviewEmail';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefCommentNotification';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefCommentNotifyAuthor';
 
-UPDATE maj_sys_preferences SET content = 'injader' WHERE preference = 'prefDefaultTheme';
-UPDATE maj_sys_preferences SET content = '3.0.0' WHERE preference = 'prefCMSVersion';
-
 ALTER TABLE maj_access_log RENAME TO Cms_AccessLog;
 ALTER TABLE maj_areas RENAME TO Cms_Areas;
 ALTER TABLE maj_content RENAME TO Cms_Content;
@@ -49,3 +46,7 @@ ALTER TABLE Cms_Permissions DROP COLUMN add_comment;
 ALTER TABLE Cms_Permissions DROP COLUMN edit_comment;
 ALTER TABLE Cms_Permissions DROP COLUMN delete_comment;
 ALTER TABLE Cms_Permissions DROP COLUMN lock_article;
+
+UPDATE Cms_Settings SET content = 'injader' WHERE preference = 'prefDefaultTheme';
+UPDATE Cms_Settings SET content = '3.0.0' WHERE preference = 'prefCMSVersion';
+INSERT INTO Cms_Settings(preference, content) VALUES('prefDisqusId', '');

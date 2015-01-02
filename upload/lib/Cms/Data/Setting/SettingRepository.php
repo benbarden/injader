@@ -90,6 +90,11 @@ class SettingRepository implements ISettingRepository
         return $this->getSettingValue(Setting::SETTING_TIME_FORMAT);
     }
 
+    public function getSettingDisqusId()
+    {
+        return $this->getSettingValue(Setting::SETTING_DISQUS_ID);
+    }
+
     public function getDateFormat()
     {
         $settingDateFormat = $this->getSettingDateFormat();

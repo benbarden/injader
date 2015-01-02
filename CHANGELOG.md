@@ -7,16 +7,16 @@ This version breaks compatibility with previous versions.
 Upgrades to 3.0.0 are not supported.
 It is currently not possible to install Injader in a subfolder.
 
+* New: Revamped Control Panel and navigation
+* New: Manual editing of content URLs
+* New: Option to use Disqus comments
 * New: Themes now use Twig
 * New: Introduced Bootstrap for public-facing themes and for the Control Panel
-* New: Revamped Control Panel and navigation
-* New: Ability to theme the Control Panel (work-in-progress)
 * New: Introduced many new helper functions for themes
-* New: My Settings screen
-* New: Allow manual editing of content URLs
+* New: Ability to theme the Control Panel (work-in-progress)
 * Security: Replacing MD5 with BCRYPT
 * Maintenance: Moved sitemap URL to the Control Panel dashboard
-* Maintenance: Replaced in-page navigation and linking screens with dropdown menus in the Control Panel
+* Maintenance: Removed standard comments - use Disqus instead
 * Maintenance: Removed navigation types - areas now have one level only
 * Maintenance: Removed ?loggedin=1 from URLs to avoid multiple URLs from being shared
 * Maintenance: Removed setting: Allow password changes

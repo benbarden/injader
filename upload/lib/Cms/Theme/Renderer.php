@@ -212,6 +212,7 @@ class Renderer
         $siteDesc = $repoSetting->getSettingSiteDesc();
         $siteKeywords = $repoSetting->getSettingSiteKeywords();
         $siteCustomHeader = $repoSetting->getSettingSiteHeader();
+        $siteDisqusId = $repoSetting->getSettingDisqusId();
 
         $repoArea = $this->container->getService('Repo.Area');
         /* @var \Cms\Data\Area\AreaRepository $repoArea */
@@ -233,7 +234,8 @@ class Renderer
             'SiteStylesCoreUrl' => $siteStylesCoreUrl,
             'SiteScriptsCoreUrl' => $siteScriptsCoreUrl,
             'SiteScriptsInitUrl' => $siteScriptsInitUrl,
-            'SiteCustomHeader' => $siteCustomHeader
+            'SiteCustomHeader' => $siteCustomHeader,
+            'SiteDisqusId' => $siteDisqusId
         );
 
         $bindings['CMS']['Settings'] = $settingsArray;

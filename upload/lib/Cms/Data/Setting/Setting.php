@@ -52,6 +52,7 @@ class Setting
     // Content
     const SETTING_TAG_THRESHOLD = 'prefTagThreshold';
     const SETTING_RSS_COUNT = 'prefRSSCount';
+    const SETTING_DISQUS_ID = 'prefDisqusId';
 
     // Notifications
     const SETTING_ARTICLE_NOTIFY_ADMIN = 'prefArticleNotifyAdmin';
