@@ -58,17 +58,10 @@ class GetUrl
         $dataArray['error'] = '';
         $dataArray['title'] = $this->title;
 
-        $useDataModel = false;
-
         if ($this->id) {
-            if ($this->currentUrl) {
-                // if we have an id and a URL, we shouldn't even be in here
-                // We'll just return the current URL
-                $useDataModel = true;
-            } else {
-                // if we have an id but no URL, we need to refresh the URL
-                $useDataModel = false;
-            }
+            $useDataModel = true;
+        } else {
+            $useDataModel = false;
         }
 
         if ($useDataModel) {
@@ -78,17 +71,14 @@ class GetUrl
             if (!$modelArticle) {
                 throw new AjaxException(sprintf('Article not found: %s', $this->id));
             }
-
-            $articleUrl = $modelArticle['permalink'];
         } else {
             // Create a stub
             $modelArticle = new Article(array('id' => $this->id, 'title' => $this->title));
-
-            $iaLinkArticle = $this->container->getService('IA.LinkArticle');
-            $iaLinkArticle->setArticle($modelArticle);
-            $articleUrl = $iaLinkArticle->generate();
         }
 
+        $iaLinkArticle = $this->container->getService('IA.LinkArticle');
+        $iaLinkArticle->setArticle($modelArticle);
+        $articleUrl = $iaLinkArticle->generate();
         $dataArray['url'] = $articleUrl;
         print(json_encode($dataArray));
     }
