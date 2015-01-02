@@ -127,9 +127,7 @@
     } else {
       if (
           (strtolower($strContTitle) == "cp") ||
-          (strtolower($strContTitle) == "custom") ||
           (strtolower($strContTitle) == "data") ||
-          (strtolower($strContTitle) == "ext") ||
           (strtolower($strContTitle) == "info") ||
           (strtolower($strContTitle) == "installer") ||
           (strtolower($strContTitle) == "sys")
@@ -467,50 +465,6 @@ PostArticleHTML;
   $strReadMoreLink = $CMS->AC->ReadMoreEditor();
   
   $strHTML = <<<END
-<script type="text/javascript" src="{URL_ROOT}assets/js/tinymce/tiny_mce.js"></script>
-<script type="text/javascript">
-//<![CDATA[
-  tinyMCE.init({
-    theme : "advanced",
-    skin : "injader",
-    mode : "exact",
-    elements : "txtFormContent",
-    plugins : "contextmenu, emotions, fullscreen, inlinepopups, media, paste, preview, print, safari, spellchecker, table, visualchars",
-    //plugin_preview_width : "1024",
-    //plugin_preview_height : "768",
-    //plugin_preview_pageurl : "http://{SVR_HOST}{URL_ROOT}assets/js/tinymce/plugins/preview/injader.php",
-    // Theme options
-    theme_advanced_buttons1 : "bold, italic, underline, strikethrough, |, bullist, numlist, blockquote, |, justifyleft, justifycenter, justifyright, justifyfull, |, formatselect, fontselect, fontsizeselect, forecolor",
-    theme_advanced_buttons2 : "table, |, more, |, cut, copy, paste, pastetext, pasteword, |, outdent, indent, undo, redo, |, link, unlink, image, media, emotions, charmap, |, removeformat, code, |, help",
-    theme_advanced_buttons3 : "",
-    theme_advanced_buttons4 : "",
-    theme_advanced_toolbar_location : "top",
-    theme_advanced_toolbar_align : "left",
-    theme_advanced_statusbar_location : "bottom",
-    theme_advanced_resizing : true,
-    convert_urls : false,
-    setup : function(ed) {
-        // Add a custom button
-        ed.addButton('more', {
-            title : 'Read More',
-            image : '{URL_ROOT}sys/images/icons/application_tile_vertical.png',
-            onclick : function() {
-                ed.focus();
-                ed.selection.setContent('$strReadMoreLink');
-            }
-        });
-        // 
-        //var ed = tinyMCE.get('txtFormContent');
-        // Do your ajax call here, window.setTimeout fakes ajax call
-        ed.setProgressState(1); // Show progress
-        window.setTimeout(function() {
-        ed.setProgressState(0); // Hide progress
-        ed.setContent('$strContBody');
-        }, 500);
-    }
-  });
-//]]>
-</script>
 <h1 class="page-header">$strPageTitle</h1>
 $strModifiedAuthor
 $strFormTag
@@ -549,7 +503,7 @@ $strAreaListPrimary
     <tr>
       <td class="BaseColour" colspan="4">
         $strMissingContent
-        <textarea id="txtFormContent" name="txtFormContent" style="width: 100%; height: 400px;"></textarea>
+        <textarea id="txtFormContent" name="txtFormContent" style="width: 100%; height: 400px;">$strContBody</textarea>
       </td>
     </tr>
   </table>
@@ -681,7 +635,9 @@ FooterScript;
   ValidateAttachArea(arrAttachAreas); // do on startup
 /* ]]> */
 </script>
-<script>
+<script type="text/javascript">
+    var ckEditorElem = 'txtFormContent';
+
     $(document).ready(function() {
 
         var articleId = '$intContentID';
@@ -714,6 +670,8 @@ FooterScript;
         });
     });
 </script>
+<script type="text/javascript" src="{URL_ROOT}assets/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="{URL_ROOT}assets/js/injader/editor.js"></script>
 
 FooterScriptClose;
 

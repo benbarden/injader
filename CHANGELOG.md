@@ -2,9 +2,9 @@
 
 ## 3.0.0
 
-Note:
-This version breaks compatibility with previous versions.
-Upgrades to 3.0.0 are not supported.
+Notes:
+To simplify things, several legacy features have been removed in v3. Check the list below for details.
+Old themes cannot be migrated to the new theme system. This won't matter if you haven't used Injader before.
 It is currently not possible to install Injader in a subfolder.
 
 * New: Revamped Control Panel and navigation
@@ -13,6 +13,7 @@ It is currently not possible to install Injader in a subfolder.
 * New: Themes now use Twig
 * New: Introduced Bootstrap for public-facing themes and for the Control Panel
 * New: Introduced many new helper functions for themes
+* New: Replaced TinyMCE with CKEditor
 * New: Ability to theme the Control Panel (work-in-progress)
 * Security: Replacing MD5 with BCRYPT
 * Maintenance: Moved sitemap URL to the Control Panel dashboard
