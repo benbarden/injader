@@ -29,12 +29,11 @@
       ", __CLASS__ . "::" . __FUNCTION__, __LINE__);
       $CMS->AL->Build(AL_TAG_PPCA_CREATE, $intID, "");
     }
-    function Edit($intProfileID, $strProfileName, $strCreateArticle, $strPublishArticle, $strEditArticle, $strDeleteArticle, $strAttachFile) {
+    function Edit($intProfileID, $strCreateArticle, $strPublishArticle, $strEditArticle, $strDeleteArticle, $strAttachFile) {
       global $CMS;
       $this->Query("
       UPDATE {IFW_TBL_PERMISSION_PROFILES}
-      SET name = '$strProfileName',
-      create_article = '$strCreateArticle',
+      SET create_article = '$strCreateArticle',
       publish_article = '$strPublishArticle',
       edit_article = '$strEditArticle',
       delete_article = '$strDeleteArticle',

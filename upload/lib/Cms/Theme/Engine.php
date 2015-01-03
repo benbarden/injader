@@ -367,7 +367,7 @@ class Engine
                 $url = URL_ROOT.'cp/themes.php';
                 break;
             case 'permissions':
-                $url = URL_ROOT.'cp/permissions.php';
+                $url = URL_ROOT.'cp/permission.php?action=edit&id=1';
                 break;
             case 'user_roles':
                 $url = URL_ROOT.'cp/user_roles.php';

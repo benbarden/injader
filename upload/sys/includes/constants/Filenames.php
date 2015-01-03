@@ -53,7 +53,6 @@
     define('FN_ADM_INDEX',               URL_ROOT.'cp/index.php');
     define('FN_ADM_MANAGE_AVATARS',      URL_ROOT.'cp/manage_avatars.php');
     define('FN_ADM_PERMISSION',          URL_ROOT.'cp/permission.php');
-    define('FN_ADM_PERMISSIONS',         URL_ROOT.'cp/permissions.php');
     define('FN_ADM_THEMES',              URL_ROOT.'cp/themes.php');
     define('FN_ADM_TOOLS_USER_SESSIONS', URL_ROOT.'cp/tools_user_sessions.php');
     define('FN_ADM_UPLOAD_AVATAR',       URL_ROOT.'cp/upload_avatar.php');

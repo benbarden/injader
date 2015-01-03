@@ -153,7 +153,7 @@ ExecTime;
                             <li class="divider"></li>
                             <li><a href="/cp/themes.php">Themes</a></li>
                             <li class="divider"></li>
-                            <li><a href="/cp/permissions.php">Permissions</a></li>
+                            <li><a href="/cp/permission.php?action=edit&id=1">Permissions</a></li>
                             <li><a href="/cp/user_roles.php">User Roles</a></li>
                         </ul>
                     </li>

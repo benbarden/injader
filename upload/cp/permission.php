@@ -29,7 +29,7 @@
     $blnCreate = true;
     $blnEdit = false;
   } elseif ($strAction == "edit") {
-    $strPageTitle = "Edit Permission Profile";
+    $strPageTitle = "Edit Permissions";
     $blnCreate = false;
     $blnEdit = true;
   } else {
@@ -54,18 +54,12 @@
 
   if ($_POST) {
     $blnSubmitForm = true;
-    $strProfileName = $_POST['txtProfileName'];
-    if (!$strProfileName) {
-      $blnSubmitForm = false;
-      $strMissingName = $CMS->AC->InvalidFormData("");
-    }
     $strCreateArticleGroupList = !empty($_POST['chkCreateArticle']) ? $CMS->UG->BuildGroupList($_POST['chkCreateArticle'], "chkCreateArticle") : "";
     $strPublishArticleGroupList = !empty($_POST['chkPublishArticle']) ? $CMS->UG->BuildGroupList($_POST['chkPublishArticle'], "chkPublishArticle") : "";
     $strEditArticleGroupList = !empty($_POST['chkEditArticle']) ? $CMS->UG->BuildGroupList($_POST['chkEditArticle'], "chkEditArticle") : "";
     $strDeleteArticleGroupList = !empty($_POST['chkDeleteArticle']) ? $CMS->UG->BuildGroupList($_POST['chkDeleteArticle'], "chkDeleteArticle") : "";
     $strAttachFileGroupList = !empty($_POST['chkAttachFile']) ? $CMS->UG->BuildGroupList($_POST['chkAttachFile'], "chkAttachFile") : "";
     if ($blnSubmitForm) {
-      $strProfileName = $CMS->AddSlashesIFW($_POST['txtProfileName']);
       $strPageTitle .= " - Results";
       // Update database
       if ($blnCreate) {
@@ -73,12 +67,12 @@
         $CMS->PP->Create($strProfileName, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAttachFileGroupList);
       } elseif ($blnEdit) {
         $strMsg = "edited";
-        $CMS->PP->Edit($intProfileID, $strProfileName, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAttachFileGroupList);
+        $CMS->PP->Edit($intProfileID, $strCreateArticleGroupList, $strPublishArticleGroupList, $strEditArticleGroupList, $strDeleteArticleGroupList, $strAttachFileGroupList);
       }
       // Display message
       $strHTML = <<<ConfirmHTML
 <h1 class="page-header">$strPageTitle</h1>
-<p>Permission profile $strMsg. <a href="{FN_ADM_PERMISSIONS}">Permission Profiles</a></p>
+<p>Permissions $strMsg.</p>
 
 ConfirmHTML;
       $CMS->AP->Display($strHTML);
@@ -87,7 +81,6 @@ ConfirmHTML;
   if (!$_POST) {
     if ($blnEdit) {
       $arrPermissions = $CMS->PP->Get($intProfileID);
-      $strProfileName             = $arrPermissions['name'];
       $strCreateArticleGroupList  = $arrPermissions['create_article'];
       $strPublishArticleGroupList = $arrPermissions['publish_article'];
       $strEditArticleGroupList    = $arrPermissions['edit_article'];
@@ -124,16 +117,6 @@ ConfirmHTML;
 $strFormTag
 <div class="table-responsive">
 <table class="table table-striped">
-  <tr class="separator-row">
-    <td><label for="txtProfileName">Name</label></td>
-    <td>
-      $strMissingName
-      <input id="txtProfileName" name="txtProfileName" type="text" size="50" maxlength="100" value="$strProfileName" />
-    </td>
-  </tr>
-  <tr class="separator-row">
-    <td colspan="2">Articles</td>
-  </tr>
   <tr>
     <td>Create article and edit own articles</td>
     <td>$strCreateArticleHTML</td>
