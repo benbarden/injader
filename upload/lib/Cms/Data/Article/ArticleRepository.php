@@ -50,7 +50,7 @@ class ArticleRepository extends BaseRepository
             ");
             $pdoStatement->bindParam(':areaId', $areaId);
             $pdoStatement->execute();
-            $count = $pdoStatement->fetch();
+            $count = $pdoStatement->fetchColumn();
             return $count;
         } catch(\PDOException $e) {
             throw new DataException('getByArea: Failed', 0, $e);

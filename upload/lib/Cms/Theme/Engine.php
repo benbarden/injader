@@ -161,6 +161,12 @@ class Engine
             'needs_context' => true
         ));
         $twig->addFunction($funcBlock);
+        // cmsDomainFull
+        $funcDomainFull = new \Twig_SimpleFunction('cmsDomainFull',
+            array($this, 'cmsDomainFull'),
+            array('is_safe' => array('html')
+            ));
+        $twig->addFunction($funcDomainFull);
         // cmsLink
         $funcLinkArticle = new \Twig_SimpleFunction('cmsLinkArticle',
             array($this, 'cmsLinkArticle'),
@@ -207,6 +213,11 @@ class Engine
         } else {
             return sprintf('<p><strong>MISSING: %s</strong></p>', $blockFile);
         }
+    }
+
+    public function cmsDomainFull()
+    {
+        return 'http://'.$_SERVER['HTTP_HOST'];
     }
 
     public function cmsLinkArticle($itemId)

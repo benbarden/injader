@@ -157,10 +157,18 @@ class Renderer
                 // Content setup
                 $perPage = $area->getContentPerPage();
                 $totalCount = $articleRepo->countByArea($this->itemId);
+
+                // Pagination
                 $iaPagesOffset = new \Cms\Ia\Pages\Offset();
                 $iaPagesOffset->setPageNo($this->pageNo);
                 $iaPagesOffset->setPerPage($perPage);
                 $offset = $iaPagesOffset->calculate();
+
+                $iaPagesLast = new \Cms\Ia\Pages\LastPage();
+                $iaPagesLast->setItemCount($totalCount);
+                $iaPagesLast->setPerPage($perPage);
+                $lastPageNo = $iaPagesLast->calculate();
+
                 $areaContent = $articleRepo->getByAreaPublic(
                     $this->itemId, $perPage, $offset, $sortField, $sortDirection
                 );
@@ -170,6 +178,8 @@ class Renderer
                 $this->renderer->setArea($area);
                 if ($areaContent) {
                     $this->renderer->setAreaContent($areaContent);
+                    $this->renderer->setCurrentPageNo($this->pageNo);
+                    $this->renderer->setLastPageNo($lastPageNo);
                 }
                 if ($subareas) {
                     $this->renderer->setSubareas($subareas);

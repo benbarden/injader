@@ -1,3 +1,4 @@
+<meta name="generator" content="Injader - http://www.injader.com">
 {% if Page.Type == 'category' %}
     {% if Area.Desc != '' %}
         <meta name="description" content="{{ Area.Desc }}">
@@ -11,7 +12,16 @@
 <meta name="keywords" content="{{ CMS.Settings.SiteKeywords }}">
 {% endif %}
 
-<meta name="generator" content="Injader - http://www.injader.com">
+{% if Page.CanonicalUrl %}
+<link rel="canonical" href="{{ cmsDomainFull() }}{{ Page.CanonicalUrl }}">
+{% endif %}
+{% if Page.PrevUrl %}
+<link rel="prev" href="{{ cmsDomainFull() }}{{ Page.PrevUrl }}">
+{% endif %}
+{% if Page.NextUrl %}
+<link rel="next" href="{{ cmsDomainFull() }}{{ Page.NextUrl }}">
+{% endif %}
+
 <link rel="alternate" type="application/rss+xml" title="Site Feed - {{ CMS.Settings.SiteTitle }}" href="{{ CMS.Settings.SiteRSSArticlesUrl }}">
 {% if Area.FeedUrl %}
 <link rel="alternate" type="application/rss+xml" title="Area Feed - {{ Area.Name }} - {{ CMS.Settings.SiteTitle }}" href="{{ Area.FeedUrl }}">
@@ -24,7 +34,6 @@
 <link href="{{ URL.SiteRoot }}assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
 <link href="{{ URL.SiteRoot }}assets/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -35,15 +44,5 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="{{ URL.SiteRoot }}assets/js/bootstrap/bootstrap.min.js"></script>
 
-{# Classic Injader #}
-{#
-<link href="{{ CMS.Settings.SiteStylesCoreUrl }}" rel="stylesheet" type="text/css">
-<link href="{{ URL.ThemeRoot }}stylesheet.css" rel="stylesheet" type="text/css">
-#}
-{# Injader scripts #}
-{#
-<script type="text/javascript" src="{{ CMS.Settings.SiteScriptsCoreUrl }}"></script>
-<script type="text/javascript" src="{{ CMS.Settings.SiteScriptsInitUrl }}"></script>
-#}
-{# NOTE: TinyMCE preview overrides this, so ensure it hasn't been set yet. #}
+<!-- User-defined custom header -->
 {{ CMS.Settings.SiteCustomHeader|raw }}

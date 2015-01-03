@@ -39,6 +39,16 @@ class Category
      */
     private $areaContent;
 
+    /**
+     * @var integer
+     */
+    private $currentPageNo;
+
+    /**
+     * @var integer
+     */
+    private $lastPageNo;
+
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -63,6 +73,16 @@ class Category
     public function setAreaContent($areaContent)
     {
         $this->areaContent = $areaContent;
+    }
+
+    public function setCurrentPageNo($pageNo)
+    {
+        $this->currentPageNo = $pageNo;
+    }
+
+    public function setLastPageNo($pageNo)
+    {
+        $this->lastPageNo = $pageNo;
     }
 
     public function setupBindings()
@@ -112,7 +132,51 @@ class Category
         $repoUser = $this->container->getService('Repo.User');
 
         if ($this->areaContent) {
+
+            // Area URL
+            $area = $this->container->getService('Repo.Area')->getById($areaId);
+            $iaLinkArea = $this->container->getService('IA.LinkArea');
+            $iaLinkArea->setArea($area);
+            $areaUrl = $iaLinkArea->generate();
+
+            if ($this->currentPageNo == 1) {
+                $bindings['Page']['CanonicalUrl'] = $areaUrl;
+            } else {
+                $bindings['Page']['CanonicalUrl'] = sprintf('%s?page=%s', $areaUrl, $this->currentPageNo);
+            }
+
+            // Pagination
+            $bindings['Area']['Page']['Current'] = $this->currentPageNo;
+            $bindings['Area']['Page']['Last'] = $this->lastPageNo;
+
+            $prevPageNo = 0;
+            if ($this->currentPageNo > 1) {
+                $prevPageNo = $this->currentPageNo - 1;
+                $bindings['Area']['Page']['Prev'] = $prevPageNo;
+                if ($prevPageNo == 1) {
+                    $bindings['Page']['PrevUrl'] = $areaUrl;
+                } else {
+                    $bindings['Page']['PrevUrl'] = sprintf('%s?page=%s', $areaUrl, $prevPageNo);
+                }
+            }
+
+            if ($this->currentPageNo < $this->lastPageNo) {
+                $nextPageNo = $this->currentPageNo + 1;
+                $bindings['Area']['Page']['Next'] = $nextPageNo;
+                $bindings['Page']['NextUrl'] = sprintf('%s?page=%s', $areaUrl, $nextPageNo);
+            }
+
+            // only use numbered links if 10 pages or less
+            if ($this->lastPageNo <= 10) {
+                $pageNumberArray = array();
+                for ($i=1; $i<=$this->lastPageNo; $i++) {
+                    $pageNumberArray[] = $i;
+                }
+                $bindings['Area']['Page']['List'] = $pageNumberArray;
+            }
+
             foreach ($this->areaContent as $contentItem) {
+
                 $contentObject = new \Cms\Data\Article\Article($contentItem);
                 $contentArticle = new \Cms\Content\Article($contentObject, $iaLink);
                 $articleId = $contentObject->getId();
@@ -132,7 +196,9 @@ class Category
                     'AuthorUsername' => $authorUsername
                 );
                 $bindings['Area']['Content'][] = $contentRow;
+
             }
+
         }
 
         $this->bindings = $bindings;
