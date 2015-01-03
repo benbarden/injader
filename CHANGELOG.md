@@ -16,6 +16,8 @@ It is currently not possible to install Injader in a subfolder.
 * New: Replaced TinyMCE with CKEditor
 * New: Ability to theme the Control Panel (work-in-progress)
 * Security: Replacing MD5 with BCRYPT
+* SEO: Added canonical URL to category and article pages
+* SEO: Added prev/next URLs to category pages
 * Maintenance: Moved sitemap URL to the Control Panel dashboard
 * Maintenance: Removed standard comments - use Disqus instead
 * Maintenance: Removed navigation types - areas now have one level only
