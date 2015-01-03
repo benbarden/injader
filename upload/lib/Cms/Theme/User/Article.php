@@ -62,6 +62,8 @@ class Article
         $bindings['Page']['WrapperId'] = sprintf('article-page-%s', $articleId);
         $bindings['Page']['WrapperClass'] = 'article-page';
 
+        $bindings['Page']['CanonicalUrl'] = $articlePermalink;
+
         // Date
         $dateFormat = $this->container->getSetting('DateFormat');
         $iaLink = $this->container->getService('IA.LinkArticle');
