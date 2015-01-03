@@ -37,6 +37,7 @@
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            {#
             <div class="sidebar-module sidebar-module-inset">
                 <h4>About {{ CMS.Settings.SiteTitle }}</h4>
                 <p>{{ CMS.Settings.SiteDesc }}</p>
@@ -49,6 +50,7 @@
                 <h4>Subareas</h4>
                 {{ cmsBlock('area.subareas')|raw }}
             </div>
+            #}
             <div class="sidebar-module sidebar-module-inset">
                 <h4>Welcome {{ Login.User.Name }}!</h4>
                 <ul>
