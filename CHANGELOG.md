@@ -11,6 +11,7 @@ It is currently not possible to install Injader in a subfolder.
 * New: Manual editing of content URLs
 * New: Option to use Disqus comments
 * New: Themes now use Twig
+* New: Archives page can now be customised
 * New: Introduced Bootstrap for public-facing themes and for the Control Panel
 * New: Introduced many new helper functions for themes
 * New: Replaced TinyMCE with CKEditor

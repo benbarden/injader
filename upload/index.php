@@ -25,6 +25,8 @@
     
     require 'sys/header.php';
 
+    $pageType = null;
+
     // If there's a subfolder in the URL, don't treat this as part of the URL array
     $currentUrl = $_SERVER['REQUEST_URI'];
     $posFolder = strpos($currentUrl, URL_ROOT);
@@ -39,11 +41,7 @@
     $urlBit3 = array_key_exists(2, $currentUrlArray) ? $currentUrlArray[2] : "";
     $urlBit4 = array_key_exists(3, $currentUrlArray) ? $currentUrlArray[3] : "";
     if (($urlBit1 == 'cms') && ($urlBit2 == 'archives')) {
-        $strHTML = $CMS->pages_Archives->build($urlBit3, $urlBit4);
-        $archivesWrapper = '<div id="archives-page" class="archives-page">'."\n";
-        $CMS->TH->SetSysWrapperStart($archivesWrapper);
-        $CMS->MV->DefaultPageAllowRobots("Archives", $strHTML);
-        exit;
+        $pageType = 'archives';
     }
 
     // Homepage
@@ -52,10 +50,10 @@
 
     if ($isHomePage) {
 
-        $strObject = 'area';
-        $intItemID = $CMS->AR->GetDefaultAreaID();
+        $pageType = 'area';
+        $itemId = $CMS->AR->GetDefaultAreaID();
 
-    } else {
+    } elseif (!$pageType) {
 
         // ** Find this page in the database ** //
         $arrPageObject = $CMS->UM->getByUrl($_SERVER['REQUEST_URI']);
@@ -91,9 +89,11 @@
 
         // We have an active URL, so off we go!
         if (!empty($arrPageObject[0]['article_id'])) {
-            $strObject = "article"; $intItemID = $arrPageObject[0]['article_id'];
+            $pageType = "article";
+            $itemId = $arrPageObject[0]['article_id'];
         } elseif (!empty($arrPageObject[0]['area_id'])) {
-            $strObject = "area"; $intItemID = $arrPageObject[0]['area_id'];
+            $pageType = "area";
+            $itemId = $arrPageObject[0]['area_id'];
         } else {
             $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
         }
@@ -102,9 +102,10 @@
     
     // Theme renderer
     $themeRenderer = new \Cms\Theme\Renderer($cmsContainer);
-    switch ($strObject) {
+    switch ($pageType) {
         case "area":
         case "category":
+            $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectCategory();
             // Pagination
             $pageNo = null;
@@ -117,18 +118,29 @@
             $themeRenderer->setPageNo($pageNo);
             break;
         case "article":
+            $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectArticle();
             break;
         case "file":
+            $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectFile();
             break;
         case "user":
+            $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectUser();
             break;
+        case 'archives':
+            $themeRenderer->setObjectArchives();
+            if ($urlBit3) {
+                $themeRenderer->setRendererParam(1, $urlBit3);
+            }
+            if ($urlBit4) {
+                $themeRenderer->setRendererParam(2, $urlBit4);
+            }
+            break;
         default:
-            $CMS->Err_MFail(M_ERR_INVALID_VIEW_PARAM, $strObject);
+            $CMS->Err_MFail(M_ERR_INVALID_VIEW_PARAM, $pageType);
             break;
     }
-    $themeRenderer->setItemId($intItemID);
     $themeRenderer->render();
 

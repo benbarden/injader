@@ -61,8 +61,6 @@ class CMS extends Helper {
     var $TH; // Theme
     var $TS; // ThemeSetting
 
-    var $pages_Archives;
-
     function InitClasses() {
         
         // Generic initialisation routine
@@ -105,9 +103,6 @@ class CMS extends Helper {
         $this->PNN   = new PageNumberNavigation;
         $this->TH    = new Theme;
         $this->TS    = new ThemeSetting;
-
-        // Pages
-        $this->pages_Archives = new pages_Archives;
 
     }
     

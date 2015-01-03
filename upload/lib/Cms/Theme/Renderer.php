@@ -13,6 +13,7 @@ class Renderer
     const OBJECT_TYPE_ARTICLE  = 'article';
     const OBJECT_TYPE_FILE     = 'file';
     const OBJECT_TYPE_USER     = 'user';
+    const OBJECT_TYPE_ARCHIVES = 'archives';
 
     /**
      * @var \Cms\Core\Di\Container
@@ -57,21 +58,31 @@ class Renderer
     public function setObjectCategory()
     {
         $this->objectType = self::OBJECT_TYPE_CATEGORY;
+        $this->setupRenderer();
     }
 
     public function setObjectArticle()
     {
         $this->objectType = self::OBJECT_TYPE_ARTICLE;
+        $this->setupRenderer();
     }
 
     public function setObjectFile()
     {
         $this->objectType = self::OBJECT_TYPE_FILE;
+        $this->setupRenderer();
     }
 
     public function setObjectUser()
     {
         $this->objectType = self::OBJECT_TYPE_USER;
+        $this->setupRenderer();
+    }
+
+    public function setObjectArchives()
+    {
+        $this->objectType = self::OBJECT_TYPE_ARCHIVES;
+        $this->setupRenderer();
     }
 
     public function setItemId($itemId)
@@ -82,6 +93,11 @@ class Renderer
     public function setPageNo($pageNo)
     {
         $this->pageNo = $pageNo;
+    }
+
+    public function setRendererParam($index, $value)
+    {
+        $this->renderer->setParam($index, $value);
     }
 
     public function isObjectCategory()
@@ -104,6 +120,11 @@ class Renderer
         return $this->objectType == self::OBJECT_TYPE_USER;
     }
 
+    public function isObjectArchives()
+    {
+        return $this->objectType == self::OBJECT_TYPE_ARCHIVES;
+    }
+
     public function getItemId()
     {
         return $this->itemId;
@@ -111,18 +132,20 @@ class Renderer
 
     public function render()
     {
-        $this->getRenderer();
+        $this->setupBindings();
         $themeFile = $this->renderer->getFile();
         $userBindings = $this->renderer->getBindings();
 
-        if (array_key_exists('CMS', $userBindings)) {
-            throw new RendererException('Illegal binding key - Cannot override: CMS');
-        } elseif (array_key_exists('URL', $userBindings)) {
-            throw new RendererException('Illegal binding key - Cannot override: URL');
-        } elseif (array_key_exists('Nav', $userBindings)) {
-            throw new RendererException('Illegal binding key - Cannot override: Nav');
-        } elseif (array_key_exists('Login', $userBindings)) {
-            throw new RendererException('Illegal binding key - Cannot override: Login');
+        if ($userBindings) {
+            if (array_key_exists('CMS', $userBindings)) {
+                throw new RendererException('Illegal binding key - Cannot override: CMS');
+            } elseif (array_key_exists('URL', $userBindings)) {
+                throw new RendererException('Illegal binding key - Cannot override: URL');
+            } elseif (array_key_exists('Nav', $userBindings)) {
+                throw new RendererException('Illegal binding key - Cannot override: Nav');
+            } elseif (array_key_exists('Login', $userBindings)) {
+                throw new RendererException('Illegal binding key - Cannot override: Login');
+            }
         }
 
         // we may allow certain overrides here
@@ -135,7 +158,12 @@ class Renderer
         exit;
     }
 
-    private function getRenderer()
+    private function setupBindings()
+    {
+        $this->renderer->setupBindings();
+    }
+
+    private function setupRenderer()
     {
         switch ($this->objectType) {
             case self::OBJECT_TYPE_AREA:
@@ -184,7 +212,6 @@ class Renderer
                 if ($subareas) {
                     $this->renderer->setSubareas($subareas);
                 }
-                $this->renderer->setupBindings();
             break;
             case self::OBJECT_TYPE_ARTICLE:
 
@@ -194,7 +221,6 @@ class Renderer
 
                 $this->renderer = new \Cms\Theme\User\Article($this->container);
                 $this->renderer->setArticle($article);
-                $this->renderer->setupBindings();
 
                 break;
             case self::OBJECT_TYPE_FILE:
@@ -203,6 +229,9 @@ class Renderer
             case self::OBJECT_TYPE_USER:
                 //$this->renderer = new \Cms\Theme\User\User();
                 //break;
+            case self::OBJECT_TYPE_ARCHIVES:
+                $this->renderer = new \Cms\Theme\User\Archive($this->container);
+                break;
             default:
                 throw new RendererException(sprintf('Unknown object type: %s', $this->objectType));
                 break;

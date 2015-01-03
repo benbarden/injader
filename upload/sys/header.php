@@ -101,10 +101,6 @@
     require ABS_ROOT.'sys/includes/ReplaceConstants.php';
     require ABS_ROOT.'sys/includes/Restriction.php';
     require ABS_ROOT.'sys/includes/View.php';
-    
-    // Pages
-    require ABS_ROOT.'sys/includes/pages/Archives.php';
-    
     // Database
     require ABS_ROOT.'sys/includes/db/AccessLog.php';
     require ABS_ROOT.'sys/includes/db/Area.php';

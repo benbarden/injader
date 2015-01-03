@@ -1,0 +1,21 @@
+{% extends "core/base.twig" %}
+
+{% block cms_content %}
+<div id="archives-page" class="archives-page">
+    {% if Archives.SummaryList %}
+        <ul>
+            {% for Item in Archives.SummaryList %}
+                <li><a href="{{ Item.Url }}">{{ Item.Desc }}</a> ({{ Item.Count }})</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if Archives.ContentList %}
+        <ul>
+            {% for Item in Archives.ContentList %}
+                <li>{{ Item.Date }} - <a href="{{ Item.Url }}">{{ Item.Title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {{ cmsLinkPage('archives', 'Archives homepage', 'p', 'p') }}
+</div>
+{% endblock cms_content %}

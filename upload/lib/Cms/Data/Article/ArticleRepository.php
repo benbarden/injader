@@ -109,4 +109,84 @@ class ArticleRepository extends BaseRepository
             throw new DataException('getByArea: Failed', 0, $e);
         }
     }
-} 
+
+    public function getArchivesSummary($year = 0, $month = 0)
+    {
+        $year = (int) $year;
+        $month = (int) $month;
+        if ($month) {
+            if ($month < 10) {
+                $month = '0'.$month;
+            }
+        }
+
+        if (($year > 0) && ($month > 0)) {
+            $havingClause = "HAVING content_yyyy_mm = '$year-$month'";
+        } elseif ($year > 0) {
+            $havingClause = "HAVING content_yyyy = '$year'";
+        } else {
+            $havingClause = "";
+        }
+
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                SELECT DATE_FORMAT(create_date, '%Y-%m') AS content_yyyy_mm,
+                DATE_FORMAT(create_date, '%Y') AS content_yyyy,
+                DATE_FORMAT(create_date, '%m') AS content_mm,
+                DATE_FORMAT(create_date, '%M %Y') AS content_date_desc,
+                count(*) AS count
+                FROM Cms_Content
+                WHERE content_status = 'Published'
+                GROUP BY content_yyyy_mm
+                $havingClause
+                ORDER BY create_date DESC
+            ");
+            $pdoStatement->execute();
+            $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
+            return $dbData;
+        } catch(\PDOException $e) {
+            throw new DataException('getArchivesSummary: Failed', 0, $e);
+        }
+    }
+
+    public function getArchivesContent($year = 0, $month = 0)
+    {
+        $year = (int) $year;
+        $month = (int) $month;
+        if ($month) {
+            if ($month < 10) {
+                $month = '0'.$month;
+            }
+        }
+
+        if (($year > 0) && ($month > 0)) {
+            $whereClause = "AND DATE_FORMAT(create_date, '%Y-%m') = '$year-$month'";
+        } elseif ($year > 0) {
+            $whereClause = "AND DATE_FORMAT(create_date, '%Y') = '$year'";
+        } else {
+            $whereClause = "";
+        }
+
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                SELECT DATE_FORMAT(create_date, '%M %Y') AS content_yyyy_mm,
+                DATE_FORMAT(create_date, '%Y') AS content_yyyy,
+                DATE_FORMAT(create_date, '%m') AS content_mm,
+                id, content_area_id, title, permalink,
+                create_date AS content_date_full
+                FROM Cms_Content
+                WHERE content_status = 'Published'
+                $whereClause
+                ORDER BY create_date DESC
+            ");
+            $pdoStatement->execute();
+            $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
+            return $dbData;
+        } catch(\PDOException $e) {
+            throw new DataException('getArchivesContent: Failed', 0, $e);
+        }
+    }
+
+}
