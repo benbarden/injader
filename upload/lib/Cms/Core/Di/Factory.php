@@ -58,7 +58,9 @@ class Factory
 
         $this->setupAuthLayer($repoUserSession, $repoUser);
 
-        $linkStyle = $repoSetting->getSettingLinkStyle();
+        $dateFormat = $repoSetting->getDateFormat();
+        $linkStyle  = $repoSetting->getSettingLinkStyle();
+
         $iaOptimiser   = new \Cms\Ia\Tools\OptimiseUrl();
         $iaLinkArticle = new \Cms\Ia\Link\ArticleLink($linkStyle, $iaOptimiser);
         $iaLinkArea    = new \Cms\Ia\Link\AreaLink($linkStyle, $iaOptimiser);
@@ -76,6 +78,7 @@ class Factory
         if ($this->loggedInUser) {
             $cmsThemeEngine->setLoggedInUser($this->loggedInUser);
         }
+        $cmsThemeEngine->setDateFormat($dateFormat);
         $themeEngine       = $cmsThemeEngine->getEngine();
         $themeEngineCPanel = $cmsThemeEngine->getEngineCPanel();
         $themeEngineUT     = $cmsThemeEngine->getEngineUnitTesting();
@@ -102,7 +105,6 @@ class Factory
         $container = new Container($serviceLocator);
 
         // Save some settings
-        $dateFormat = $repoSetting->getDateFormat();
         $container->saveSetting('DateFormat', $dateFormat);
         $container->saveSetting('LinkStyle', $linkStyle);
 

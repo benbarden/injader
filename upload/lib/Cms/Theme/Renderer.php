@@ -8,6 +8,7 @@ use Cms\Exception\Theme\RendererException;
 
 class Renderer
 {
+    const OBJECT_TYPE_HOMEPAGE = 'homepage';
     const OBJECT_TYPE_AREA     = 'area';
     const OBJECT_TYPE_CATEGORY = 'category';
     const OBJECT_TYPE_ARTICLE  = 'article';
@@ -55,6 +56,12 @@ class Renderer
         unset($this->renderer);
     }
 
+    public function setObjectHomepage()
+    {
+        $this->objectType = self::OBJECT_TYPE_HOMEPAGE;
+        $this->setupRenderer();
+    }
+
     public function setObjectCategory()
     {
         $this->objectType = self::OBJECT_TYPE_CATEGORY;
@@ -98,6 +105,11 @@ class Renderer
     public function setRendererParam($index, $value)
     {
         $this->renderer->setParam($index, $value);
+    }
+
+    public function isObjectHomepage()
+    {
+        return $this->objectType == self::OBJECT_TYPE_HOMEPAGE;
     }
 
     public function isObjectCategory()
@@ -166,6 +178,9 @@ class Renderer
     private function setupRenderer()
     {
         switch ($this->objectType) {
+            case self::OBJECT_TYPE_HOMEPAGE:
+                $this->renderer = new \Cms\Theme\User\Homepage($this->container);
+                break;
             case self::OBJECT_TYPE_AREA:
             case self::OBJECT_TYPE_CATEGORY:
 
@@ -256,6 +271,10 @@ class Renderer
         $repoArea = $this->container->getService('Repo.Area');
         /* @var \Cms\Data\Area\AreaRepository $repoArea */
         $areasTopLevel = $repoArea->getTopLevel();
+
+        $repoArticle = $this->container->getService('Repo.Article');
+        /* @var \Cms\Data\Article\ArticleRepository $repoArticle */
+        $bindings['Content']['Recent'] = $repoArticle->getRecentPublic(5);
 
         // Default RSS URL
         $siteRSSArticlesUrl = FN_FEEDS."?name=articles";

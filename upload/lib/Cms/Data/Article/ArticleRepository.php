@@ -59,15 +59,20 @@ class ArticleRepository extends BaseRepository
 
     public function getByAreaPublic($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
-        return $this->getByArea('public', $areaId, $limit, $offset, $sortField, $sortDirection);
+        return $this->getContent('public', $areaId, $limit, $offset, $sortField, $sortDirection);
     }
 
     public function getByAreaAll($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
-        return $this->getByArea('all', $areaId, $limit, $offset, $sortField, $sortDirection);
+        return $this->getContent('all', $areaId, $limit, $offset, $sortField, $sortDirection);
     }
 
-    private function getByArea($mode, $areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    public function getRecentPublic($limit = 5)
+    {
+        return $this->getContent('public', 0, $limit);
+    }
+
+    private function getContent($mode, $areaId = 0, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
         try {
 
@@ -91,15 +96,24 @@ class ArticleRepository extends BaseRepository
                 default:       $pdoAccessSql = "AND content_status = 'Published'"; break;
             }
 
+            if ($areaId) {
+                $pdoAreaSql = 'AND content_area_id = :areaId';
+            } else {
+                $pdoAreaSql = '';
+            }
+
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT * FROM Cms_Content
-                WHERE content_area_id = :areaId
+                WHERE 1
+                $pdoAreaSql
                 $pdoAccessSql
                 ORDER BY $pdoSortField $pdoSortDirection
                 LIMIT :limit OFFSET :offset
             ");
-            $pdoStatement->bindParam(':areaId', $areaId);
+            if ($areaId) {
+                $pdoStatement->bindParam(':areaId', $areaId);
+            }
             $pdoStatement->bindValue(':offset', (int) $offset, \PDO::PARAM_INT);
             $pdoStatement->bindValue(':limit', (int) $limit, \PDO::PARAM_INT);
             $pdoStatement->execute();

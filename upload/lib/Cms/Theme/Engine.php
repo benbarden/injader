@@ -71,6 +71,11 @@ class Engine
     private $loggedInUser;
 
     /**
+     * @var string
+     */
+    private $dateFormat;
+
+    /**
      * @param string $current
      * @param integer $cache
      * @throws \Exception
@@ -143,6 +148,11 @@ class Engine
         $this->loggedInUser = $user;
     }
 
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
     /**
      * @return string
      */
@@ -161,12 +171,24 @@ class Engine
             'needs_context' => true
         ));
         $twig->addFunction($funcBlock);
+        // cmsData
+        $funcCmsDataContentRecent = new \Twig_SimpleFunction('cmsDataContentRecent',
+            array($this, 'cmsDataContentRecent'),
+            array('is_safe' => array('html')
+        ));
+        $twig->addFunction($funcCmsDataContentRecent);
         // cmsDomainFull
         $funcDomainFull = new \Twig_SimpleFunction('cmsDomainFull',
             array($this, 'cmsDomainFull'),
             array('is_safe' => array('html')
-            ));
+        ));
         $twig->addFunction($funcDomainFull);
+        // cmsFormatDate
+        $funcFormatDate = new \Twig_SimpleFunction('cmsFormatDate',
+            array($this, 'cmsFormatDate'),
+            array('is_safe' => array('html')
+        ));
+        $twig->addFunction($funcFormatDate);
         // cmsLink
         $funcLinkArticle = new \Twig_SimpleFunction('cmsLinkArticle',
             array($this, 'cmsLinkArticle'),
@@ -215,9 +237,24 @@ class Engine
         }
     }
 
+    public function cmsDataContentRecent($limit)
+    {
+        $contentArray = $this->repoArticle->getRecentPublic($limit);
+        return $contentArray;
+    }
+
     public function cmsDomainFull()
     {
         return 'http://'.$_SERVER['HTTP_HOST'];
+    }
+
+    public function cmsFormatDate($date, $format = '')
+    {
+        if ($format) {
+            return date($format, strtotime($date));
+        } else {
+            return date($this->dateFormat, strtotime($date));
+        }
     }
 
     public function cmsLinkArticle($itemId)
@@ -442,5 +479,12 @@ class Engine
     public function __destruct()
     {
         unset($this->engine);
+        unset($this->iaLinkArea);
+        unset($this->iaLinkArticle);
+        unset($this->iaLinkUser);
+        unset($this->loggedInUser);
+        unset($this->repoArea);
+        unset($this->repoArticle);
+        unset($this->repoUser);
     }
 } 

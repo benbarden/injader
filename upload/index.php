@@ -50,8 +50,7 @@
 
     if ($isHomePage) {
 
-        $pageType = 'area';
-        $itemId = $CMS->AR->GetDefaultAreaID();
+        $pageType = 'homepage';
 
     } elseif (!$pageType) {
 
@@ -103,8 +102,11 @@
     // Theme renderer
     $themeRenderer = new \Cms\Theme\Renderer($cmsContainer);
     switch ($pageType) {
-        case "area":
-        case "category":
+        case 'homepage':
+            $themeRenderer->setObjectHomepage();
+            break;
+        case 'area':
+        case 'category':
             // Pagination
             $pageNo = null;
             if (isset($_GET['page'])) {
@@ -118,15 +120,15 @@
             $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectCategory();
             break;
-        case "article":
+        case 'article':
             $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectArticle();
             break;
-        case "file":
+        case 'file':
             $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectFile();
             break;
-        case "user":
+        case 'user':
             $themeRenderer->setItemId($itemId);
             $themeRenderer->setObjectUser();
             break;
