@@ -157,11 +157,6 @@
       global $CMS;
       $dteStartTime = $this->MicrotimeFloat();
       $this->ClearErrors();
-      /* This breaks guest comments
-      $this->ValidateLoggedIn();
-      if ($this->IsError()) {
-        $this->InsufficientAccess();
-      } */
       $strAllowedGroups = $this->GetAllowedGroups();
       if ($strAllowedGroups != "") {
         $strUserGroups = $this->GetUserGroups();
@@ -373,45 +368,39 @@
       $dteEndTime = $this->MicrotimeFloat();
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
     }
-    // Permissions across multiple areas //
-    function CountTotalWriteAccess() {
-      global $CMS;
-      $arrTopLevelAreas  = $CMS->AT->GetParentedAreas("", "All", "");
-      $intAreaWriteCount = 0;
-      for ($i=0; $i<count($arrTopLevelAreas); $i++) {
-        $intID = $arrTopLevelAreas[$i]['id'];
-        $intAreaWriteCount += $CMS->RES->CountContentAreasWithWriteAccess($intID);
+
+    // *********** SIMPLIFIED METHODS *********** //
+
+      public function CanAddContent()
+      {
+          global $CMS;
+          $createArticleGroups = $CMS->ResultQuery("
+            SELECT create_article FROM Cms_Permissions
+          ");
+          $groupList = $createArticleGroups[0]['create_article'];
+          $this->SetAllowedGroups($groupList);
+          $this->ValidateAllowedGroups();
+          return !$this->IsError();
       }
-      return $intAreaWriteCount;
-    }
-    function CountContentAreasWithWriteAccess($intParentID) {
-      global $CMS;
-      $dteStartTime = $this->MicrotimeFloat();
-      $arrContentAreas = $CMS->AT->GetAllParentedAreas($intParentID, "Content", "");
-      $intAllowedAreas = 0;
-      for ($i=0; $i<count($arrContentAreas); $i++) {
-        $intID = $arrContentAreas[$i]['id'];
-        $this->CreateArticle($intID);
-        if (!$this->IsError()) {
-          $intAllowedAreas++;
-        }
+
+      public function CanPublish()
+      {
+          global $CMS;
+          $createArticleGroups = $CMS->ResultQuery("
+            SELECT publish_article FROM Cms_Permissions
+          ");
+          $groupList = $createArticleGroups[0]['publish_article'];
+          $this->SetAllowedGroups($groupList);
+          $this->ValidateAllowedGroups();
+          return !$this->IsError();
       }
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $intAllowedAreas;
-    }
-    // ** Manage Content ** //
-    function ViewManageContent() {
-      global $CMS;
-      $dteStartTime = $this->MicrotimeFloat();
-      $intMyArticleCount = $CMS->ART->CountUserContent($this->GetCurrentUserID(), "");
-      $intAreaWriteCount = $this->CountTotalWriteAccess();
-      if (($intMyArticleCount > 0) || ($intAreaWriteCount > 0)) {
-        $this->ClearErrors();
-      } else {
-        $this->InsufficientAccess();
+
+      public function IsAdmin()
+      {
+          global $CMS;
+          $adminGroupId = $CMS->UG->GetAdminGroupID();
+          $this->SetAllowedGroups($adminGroupId);
+          $this->ValidateAllowedGroups();
+          return !$this->IsError();
       }
-      $dteEndTime = $this->MicrotimeFloat();
-      $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-    }
   }

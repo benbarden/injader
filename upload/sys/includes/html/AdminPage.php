@@ -86,20 +86,8 @@ ExecTime;
       // New article
       // Content
         $strNewArticleLink = "";
-        $CMS->RES->ViewManageContent();
-      if ($CMS->RES->IsError()) {
-        $strManageContent = "";
-      } else {
-        // Create article?
-        if ($CMS->RES->CountTotalWriteAccess() > 0) {
+        if ($CMS->RES->CanAddContent()) {
           $strManageContent = $strNewArticleLink." | <a href=\"{FN_ADM_CONTENT_MANAGE}\" title=\"Manage Content\">Content</a>";
-          /*
-          $controlPanelLinks[] = array(
-              'URL' => '{FN_ADM_WRITE}?action=create',
-              'Title' => 'Add new content to the site',
-              'Text' => 'New Article'
-          );
-          */
           $strNewArticleLink = "<li><a href=\"{FN_ADM_WRITE}?action=create\" title=\"Add new content to the site\">+ Article</a></li>";
           $controlPanelLinks[] = array(
               'URL' => '{FN_ADM_CONTENT_MANAGE}',
@@ -109,7 +97,6 @@ ExecTime;
         } else {
           $strManageContent = "";
         }
-      }
       // Admin
       $CMS->RES->Admin();
       if ($CMS->RES->IsError()) {
@@ -118,8 +105,8 @@ ExecTime;
           $strAdminLinks = <<<AdminLinks
                     <!-- Content -->
                     <li><a href="/cp/content_manage.php?area=0&amp;status=0&amp;user=" title="Manage Content">Content</a></li>
-                    <!-- Areas -->
-                    <li><a href="/cp/areas.php" title="Manage your site areas">Areas</a></li>
+                    <!-- Categories -->
+                    <li><a href="/cp/categories.php">Categories</a></li>
                     <!-- Files -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Files <span class="caret"></span></a>

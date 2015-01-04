@@ -26,7 +26,7 @@ class Article extends Helper {
     var $arrArticle;
     
     // Insert, Update, Delete //
-    function Create($intAuthorID, $dteDate, $strTitle, $strContent, $intAreaID, 
+    function Create($intAuthorID, $dteDate, $strTitle, $strContent, $categoryId,
         $strTags, $strContURL, $strContStatus, $strUserGroups, 
         $strExcerpt, $intOrder, $contentUrl) {
         
@@ -36,7 +36,7 @@ class Article extends Helper {
         
         $strQuery = sprintf("
             INSERT INTO {IFW_TBL_CONTENT}(
-                author_id, create_date, title, permalink, content, content_area_id, last_updated,
+                author_id, create_date, title, permalink, content, category_id, last_updated,
                 read_userlist, tags, seo_title, link_url, content_status, user_groups, 
                 tags_deleted, article_excerpt, article_order
             ) VALUES(
@@ -47,9 +47,9 @@ class Article extends Helper {
             mysql_real_escape_string($intAuthorID),
             mysql_real_escape_string($dteDate),
             mysql_real_escape_string($strTitle),
-            "",
+            mysql_real_escape_string($contentUrl),
             mysql_real_escape_string($strContent),
-            mysql_real_escape_string($intAreaID),
+            mysql_real_escape_string($categoryId),
             mysql_real_escape_string($dteDate),
             "",
             mysql_real_escape_string($strTags),
@@ -65,23 +65,7 @@ class Article extends Helper {
         $intID = $this->Query($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
         
         // Update mapping table
-        if ($contentUrl) {
-            $strLink = $contentUrl;
-        } else {
-            $CMS->PL->SetTitle($strSEOTitle);
-            $strLink = $CMS->PL->ViewArticle($intID, $intAreaID);
-            $CMS->PL->SetTitle("");
-        }
-        $CMS->UM->addLink($strLink, $intID, 0);
-
-        $strQuery = sprintf("
-            UPDATE {IFW_TBL_CONTENT}
-            SET permalink = '%s'
-            WHERE id = %s
-        ",
-            mysql_real_escape_string($strLink),
-            mysql_real_escape_string($intID)
-        );
+        $CMS->UM->addLink($contentUrl, $intID, 0);
 
         $this->Query($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
 
@@ -107,21 +91,13 @@ class Article extends Helper {
         return $intID;
     }
     
-    function Edit($intID, $intAuthorID, $strTitle, $strContent, $dteCreateDate, 
-        $intAreaID, $strTags, $strContURL, $strContStatus, $strUserGroups,
+    function Edit($intID, $intAuthorID, $strTitle, $strContent, $dteCreateDate,
+        $categoryId, $strTags, $strContURL, $strContStatus, $strUserGroups,
         $strExcerpt, $intOrder, $contentUrl) {
         
         global $CMS;
         $dteEditDate = $CMS->SYS->GetCurrentDateAndTime();
         $strSEOTitle = $CMS->MakeSEOTitle($strTitle);
-
-        if ($contentUrl) {
-            $strLink = $contentUrl;
-        } else {
-            $CMS->PL->SetTitle($strSEOTitle);
-            $strLink = $CMS->PL->ViewArticle($intID, $intAreaID);
-            $CMS->PL->SetTitle("");
-        }
 
         $strQuery = sprintf("
             UPDATE {IFW_TBL_CONTENT}
@@ -129,7 +105,7 @@ class Article extends Helper {
             title = '%s',
             permalink = '%s',
             content = '%s', 
-            content_area_id = %s, 
+            category_id = %s,
             create_date = '%s', 
             edit_date = '%s', 
             last_updated = '%s', 
@@ -144,9 +120,9 @@ class Article extends Helper {
         ",
             mysql_real_escape_string($intAuthorID),
             mysql_real_escape_string($strTitle),
-            mysql_real_escape_string($strLink),
+            mysql_real_escape_string($contentUrl),
             mysql_real_escape_string($strContent),
-            mysql_real_escape_string($intAreaID),
+            mysql_real_escape_string($categoryId),
             mysql_real_escape_string($dteCreateDate),
             mysql_real_escape_string($dteEditDate),
             mysql_real_escape_string($dteEditDate),
@@ -163,7 +139,7 @@ class Article extends Helper {
         $this->Query($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
         
         // Update mapping table
-        $CMS->UM->addLink($strLink, $intID, 0);
+        $CMS->UM->addLink($contentUrl, $intID, 0);
 
         switch ($strContStatus) {
             case C_CONT_PUBLISHED:
@@ -282,14 +258,14 @@ class Article extends Helper {
         $strDateFormat = $CMS->SYS->GetDateFormat();
         $arrArticle = $this->ResultQuery("
           SELECT con.*, u.username, u.email, 
-          u.avatar_id, a.name AS area_name,
+          u.avatar_id, cat.name AS category_name,
           DATE_FORMAT(con.create_date, '$strDateFormat') AS create_date, 
           con.create_date AS create_date_raw, 
           DATE_FORMAT(con.edit_date, '$strDateFormat') AS edit_date, 
           con.edit_date AS edit_date_raw
-          FROM ({IFW_TBL_CONTENT} con, {IFW_TBL_AREAS} a)
+          FROM ({IFW_TBL_CONTENT} con, {IFW_TBL_CATEGORIES} cat)
           LEFT JOIN {IFW_TBL_USERS} u ON con.author_id = u.id
-          WHERE con.id = $intArticleID AND con.content_area_id = a.id
+          WHERE con.id = $intArticleID AND con.category_id = cat.id
         ", __CLASS__ . "::" . __FUNCTION__ . " (Article $intArticleID)", __LINE__);
         $this->arrArticle[$intArticleID] = $arrArticle[0];
       }

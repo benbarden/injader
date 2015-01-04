@@ -95,7 +95,7 @@ class Engine
             ABS_ROOT.'themes/system',
         );
         $this->cPanelPathsArray = array(
-            ABS_ROOT.'themes/cpanel/injader'
+            ABS_ROOT.'themes/cpanel/injader',
         );
 
         // Set up caching
@@ -389,8 +389,8 @@ class Engine
             case 'manage_avatars':
                 $url = URL_ROOT.'cp/manage_avatars.php';
                 break;
-            case 'areas':
-                $url = URL_ROOT.'cp/areas.php';
+            case 'categories':
+                $url = URL_ROOT.'cp/categories.php';
                 break;
             case 'files':
                 $url = sprintf(URL_ROOT.'cp/files.php?type=%s', $type);

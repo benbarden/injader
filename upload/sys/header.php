@@ -106,6 +106,7 @@
     require ABS_ROOT.'sys/includes/db/Area.php';
     require ABS_ROOT.'sys/includes/db/AreaTraverse.php';
     require ABS_ROOT.'sys/includes/db/Article.php';
+    require ABS_ROOT.'sys/includes/db/Category.php';
     require ABS_ROOT.'sys/includes/db/File.php';
     require ABS_ROOT.'sys/includes/db/PermissionProfile.php';
     require ABS_ROOT.'sys/includes/db/System.php';

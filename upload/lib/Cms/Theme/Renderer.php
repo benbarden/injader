@@ -184,22 +184,22 @@ class Renderer
             case self::OBJECT_TYPE_AREA:
             case self::OBJECT_TYPE_CATEGORY:
 
-                $areaRepo = $this->container->getService('Repo.Area');
-                /* @var \Cms\Data\Area\AreaRepository $areaRepo */
+                $categoryRepo = $this->container->getService('Repo.Category');
+                /* @var \Cms\Data\Category\CategoryRepository $categoryRepo */
                 $articleRepo = $this->container->getService('Repo.Article');
                 /* @var \Cms\Data\Article\ArticleRepository $articleRepo */
 
-                // Area and subarea setup
-                $area = $areaRepo->getById($this->itemId);
-                $subareas = $areaRepo->getSubareas($this->itemId);
+                // Category setup
+                $category = $categoryRepo->getById($this->itemId);
+                //$subareas = $areaRepo->getSubareas($this->itemId);
 
                 // Sort Rule setup
-                $sortField = $area->getSortRuleField();
-                $sortDirection = $area->getSortRuleDirection();
+                $sortField = $category->getSortRuleField();
+                $sortDirection = $category->getSortRuleDirection();
 
                 // Content setup
-                $perPage = $area->getContentPerPage();
-                $totalCount = $articleRepo->countByArea($this->itemId);
+                $perPage = $category->getItemsPerPage();
+                $totalCount = $articleRepo->countByCategory($this->itemId);
 
                 // Pagination
                 $iaPagesOffset = new \Cms\Ia\Pages\Offset();
@@ -212,21 +212,23 @@ class Renderer
                 $iaPagesLast->setPerPage($perPage);
                 $lastPageNo = $iaPagesLast->calculate();
 
-                $areaContent = $articleRepo->getByAreaPublic(
+                $areaContent = $articleRepo->getByCategoryPublic(
                     $this->itemId, $perPage, $offset, $sortField, $sortDirection
                 );
 
                 // Renderer setup
                 $this->renderer = new \Cms\Theme\User\Category($this->container);
-                $this->renderer->setArea($area);
+                $this->renderer->setCategory($category);
                 if ($areaContent) {
                     $this->renderer->setAreaContent($areaContent);
                     $this->renderer->setCurrentPageNo($this->pageNo);
                     $this->renderer->setLastPageNo($lastPageNo);
                 }
+                /*
                 if ($subareas) {
                     $this->renderer->setSubareas($subareas);
                 }
+                */
             break;
             case self::OBJECT_TYPE_ARTICLE:
 
@@ -276,6 +278,10 @@ class Renderer
         /* @var \Cms\Data\Article\ArticleRepository $repoArticle */
         $bindings['Content']['Recent'] = $repoArticle->getRecentPublic(5);
 
+        $repoCategory = $this->container->getService('Repo.Category');
+        /* @var \Cms\Data\Category\CategoryRepository $repoCategory */
+        $categoriesTopLevel = $repoCategory->getTopLevel();
+
         // Default RSS URL
         $siteRSSArticlesUrl = FN_FEEDS."?name=articles";
 
@@ -301,7 +307,8 @@ class Renderer
         $bindings['URL']['SiteRoot'] = URL_ROOT;
         $bindings['URL']['ThemeRoot'] = $publicThemePath;
 
-        $bindings['Nav']['TopLevelAreas'] = $this->processAreaData($areasTopLevel);
+        //$bindings['Nav']['TopLevelAreas'] = $this->processAreaData($areasTopLevel);
+        $bindings['Nav']['TopLevelAreas'] = $this->processCategoryData($categoriesTopLevel);
 
         // User access
         if ($this->container->hasService('Auth.CurrentUser')) {
@@ -333,5 +340,24 @@ class Renderer
         }
 
         return $areaArray;
+    }
+
+    private function processCategoryData($catData)
+    {
+        $catArray = array();
+
+        if ($catData) {
+            foreach ($catData as $catItem) {
+                $catObject = new \Cms\Data\Category\Category($catItem);
+                $catArray[] = array(
+                    'Id' => $catObject->getCategoryId(),
+                    'Name' => $catObject->getName(),
+                    'Desc' => $catObject->getDescription(),
+                    'Url' => $catObject->getPermalink()
+                );;
+            }
+        }
+
+        return $catArray;
     }
 }

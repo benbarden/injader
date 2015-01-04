@@ -39,18 +39,17 @@
   $CMS->AP->SetTitle($strPageTitle);
 	
 	if ($blnEdit) {
-    $intContentID = empty($_GET['id']) ? "" : $CMS->FilterNumeric($_GET['id']);
-    if (!$intContentID) {
-      $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "ID");
-    }
+        $intContentID = empty($_GET['id']) ? "" : $CMS->FilterNumeric($_GET['id']);
+        if (!$intContentID) {
+          $CMS->Err_MFail(M_ERR_MISSINGPARAMS_SYSTEM, "ID");
+        }
 	} else {
         $intContentID = '';
     }
 	
   if ($blnCreate) {
-    $intAreaID = empty($_GET['area']) ? "" : $_GET['area'];
-    $intTotalWriteAccess = $CMS->RES->CountTotalWriteAccess();
-    if ($intTotalWriteAccess == 0) {
+    $categoryId = empty($_GET['area']) ? "" : $_GET['area'];
+    if (!$CMS->RES->CanAddContent()) {
       $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Author");
     }
   } elseif ($blnEdit) {
@@ -58,8 +57,8 @@
     if (count($arrContent) == 0) {
       $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, $intContentID);
     }
-    $intAreaID = $arrContent['content_area_id'];
-    $CMS->RES->EditArticle($intAreaID, $intContentID);
+    $categoryId = $arrContent['category_id'];
+    $CMS->RES->EditArticle($categoryId, $intContentID);
 		if ($CMS->RES->IsError()) {
       $CMS->Err_MFail(M_ERR_UNAUTHORISED, "EditArticle");
     }
@@ -77,22 +76,6 @@
   $strDraftSaved = "";
   $strExcerpt = ""; $intCustomOrder = "";
   $contentUrl = "";
-  
-  $intMaxFileSize = $CMS->SYS->GetSysPref(C_PREF_ATTACH_MAX_SIZE);
-  $strFileSize = ($intMaxFileSize / 1000000)."MB";
-
-  $strFileError = "";
-  
-  // Is there an existing attachment?
-  if ($blnCreate) {
-    $blnExistingAttachment = false;
-  } elseif ($blnEdit) {
-    $arrExisting = $CMS->FL->GetAttachedFiles($intContentID);
-    $blnExistingAttachment = count($arrExisting) == 0 ? false : true;
-  }
-  if ($blnExistingAttachment) {
-    $intFileID = $arrExisting[0]['id'];
-  }
 
 	if ($_POST) {
 		$blnSubmitForm = true;
@@ -113,7 +96,7 @@
 		if (!isset($intCustomOrder) || ($intCustomOrder == '')) $intCustomOrder = 0;
     $strArticleTags = $CMS->StripSlashesIFW($_POST['txtArticleTags']);
     // Validate area
-    $intAreaID = empty($_POST['optParent']) ? "" : $_POST['optParent'];
+    $categoryId = empty($_POST['optParent']) ? "" : $_POST['optParent'];
     // Link override
     $contentUrl = empty($_POST['content-url']) ? "" : $_POST['content-url'];
     // Validate content
@@ -155,7 +138,7 @@
             } else {
                 $strSEOTitle = $CMS->MakeSEOTitle($strContTitle);
                 $CMS->PL->SetTitle($strSEOTitle);
-                $strLink = $CMS->PL->ViewArticle($intCheckArticleID, $intAreaID);
+                $strLink = $CMS->PL->ViewArticle($intCheckArticleID, $categoryId);
                 $CMS->PL->SetTitle("");
             }
             $blnInvalid = $CMS->UM->isUrlInUse($strLink, $intCheckArticleID, "");
@@ -167,78 +150,15 @@
         }
       }
     }
-    if (!$intAreaID) {
+    if (!$categoryId) {
       $blnSubmitForm = false;
     }
-    // ** Attachment checking ** //
-    $blnHasAttachment = false;
-    $strFileLocation = empty($_POST['txtFileLocation']) ? "" : $_POST['txtFileLocation'];
-    if (!empty($_FILES['txtFile']['name'])) {
-      if ((empty($_POST['txtFileLocation'])) && (!$_FILES['txtFile']['name'])) {
-        //$blnSubmitForm = false;
-        //$strFileError = $CMS->AC->InvalidFormData(M_ERR_UPLOAD_OR_URL);
-      } else {
-        $blnHasAttachment = true;
-      }
-    }
-    if ($blnHasAttachment) {
-      // Process file errors
-      if (($_FILES['txtFile']['error']) && ($_FILES['txtFile']['name'])) {
-        $blnSubmitForm = false;
-        $strFileSubmitError = $CMS->FL->SubmissionError($_FILES['txtFile']['error']);
-        $strFileError = $CMS->AC->InvalidFormData($strFileSubmitError);
-      }
-      // OK to upload?
-      $FU = new FileUpload;
-      if ($_FILES['txtFile']['name']) {
-        $FU->Setup($_FILES['txtFile']['name'], "File", "Upload");
-      } elseif ($_POST['txtFileLocation']) {
-        $FU->Setup($_POST['txtFileLocation'], "File", "Link");
-      }
-      // Prevent two uploads referencing the same file
-      if ($_FILES['txtFile']['name']) {
-        $strCurrentFileID = $blnExistingAttachment ? $intFileID : "";
-        if ($CMS->FL->IsDuplicateFile($FU->GetDBFilePath(), $strCurrentFileID)) {
-          $blnSubmitForm = false;
-          $strFileError = $CMS->Err_MWarn(M_ERR_UPLOAD_DUPLICATE, $FU->GetDBFilePath());
-        } else {
-          // Is this a valid file?
-          $fileExtension = $CMS->GetExtensionFromPath($FU->GetDBFilePath());
-          $fileExtension = strtoupper($fileExtension);
-          $allowedTypesArray = explode(",", C_ALLOWED_FILE_TYPES);
-          if (!in_array($fileExtension, $allowedTypesArray)) {
-            $blnSubmitForm = false;
-            $strFileError = $CMS->Err_MWarn("For security reasons, this file type is not permitted. [$fileExtension]", $FU->GetDBFilePath());
-          }
-        }
-      }
-    }
+
     // ** Check if OK to submit ** //
   	if ($blnSubmitForm) {
       // Process title
       $strContTitle = $CMS->AddSlashesIFW($strContTitle);
       $strContTitle = $CMS->DoEntities($strContTitle);
-      // Process file attachment
-      if ($blnHasAttachment) {
-        // If there's an existing attachment and a new one is being uploaded, delete previous version
-        if (($blnExistingAttachment) && ($_FILES['txtFile']['name'])) {
-          $strWarnings = $CMS->FL->UnlinkAll($intFileID);
-        }
-        // Upload file
-        if ($FU->IsFileUpload()) {
-          $FU->Submit($_FILES['txtFile']['tmp_name']);
-          if ($FU->IsError()) {
-            $CMS->Err_MFail($FU->GetErrorDesc(), $FU->GetErrorInfo());
-          }
-        }
-        // Make thumbnails
-        if ($blnExistingAttachment) {
-          $FU->DoThumbs($intFileID);
-        } else {
-          $FU->DoThumbs("");
-        }
-        $strWarnings .= $FU->GetWarnings();
-      }
       // Prepare content for database
       $CMS->AP->SetTitle($strPageTitle." - Results");
 
@@ -276,9 +196,8 @@
         }
       }
       // Check if the user has publish access
-      $CMS->RES->PublishArticle($intAreaID);
-      if ($CMS->RES->IsError()) {
-        $strContStatus = C_CONT_REVIEW;
+      if (!$CMS->RES->CanPublish()) {
+          $strContStatus = C_CONT_REVIEW;
       }
       $CMS->RES->ClearErrors();
       // Check if the article is future-dated
@@ -296,8 +215,8 @@
         } else {
           $blnFirstPublish = false;
         }
-        $intContentID = $CMS->ART->Create($intAuthorID, $dteArticleCreated, $strContTitle, 
-            $strContBody, $intAreaID, "", $strContURL, $strContStatus, $strGroupList,
+        $intContentID = $CMS->ART->Create($intAuthorID, $dteArticleCreated, $strContTitle,
+            $strContBody, $categoryId, "", $strContURL, $strContStatus, $strGroupList,
             $strExcerpt, $intCustomOrder, $contentUrl);
         $strTagList = $CMS->TG->BuildIDList($strArticleTags, $intContentID);
         $CMS->ART->SetTags($intContentID, $strTagList);
@@ -317,18 +236,9 @@
           $blnFirstPublish = false;
         }
         $CMS->ART->Edit($intContentID, $intAuthorID, $strContTitle, $strContBody, 
-            $dteArticleCreated, $intAreaID, $strTagList, $strContURL, $strContStatus, 
+            $dteArticleCreated, $categoryId, $strTagList, $strContURL, $strContStatus,
             $strGroupList, $strExcerpt, $intCustomOrder, $contentUrl);
         $CMS->ART->ClearUserlist($intContentID);
-      }
-      // Create file
-      if ($blnHasAttachment) {
-        if ($blnExistingAttachment) {
-          $strGroups = "";
-          $CMS->FL->EditAttachment($intFileID, $FU->GetDBFilePath(), $intUserID, $dteArticleCreated,  $strContTitle, $FU->GetDBThumbSmall(), $FU->GetDBThumbMedium(), $FU->GetDBThumbLarge(), $intContentID);
-        } else {
-          $intFileID = $CMS->FL->CreateAttachment($FU->GetDBFilePath(), $intUserID, $dteArticleCreated,  $strContTitle, $FU->GetDBThumbSmall(), $FU->GetDBThumbMedium(), $FU->GetDBThumbLarge(), $intContentID);
-        }
       }
       // Notify admin
       if ($strContStatus == C_CONT_REVIEW) {
@@ -342,7 +252,7 @@
       if ($strContStatus == C_CONT_PUBLISHED) {
         $strItemMsg = "Article published.";
         if ($blnCreate) {
-          $strAddAnother = " <a href=\"{FN_ADM_WRITE}?action=create&amp;area=$intAreaID\">Add another article</a> :";
+          $strAddAnother = " <a href=\"{FN_ADM_WRITE}?action=create&amp;area=$categoryId\">Add another article</a> :";
         }
         $strSEOTitle = $CMS->MakeSEOTitle($strContTitle);
         $CMS->PL->SetTitle($strSEOTitle);
@@ -351,7 +261,7 @@
         $articleData = $CMS->ART->GetArticle($intContentID);
         // populate links
         $strViewArticle = $articleData['permalink'];
-        $strViewArea    = $CMS->PL->ViewArea($intAreaID);
+        $strViewArea    = $CMS->PL->ViewArea($categoryId);
         $strConfLinks = "\n<br /><a href=\"$strViewArticle\">View the article</a> :$strAddAnother";
       } elseif ($strContStatus == C_CONT_DRAFT) {
         $strItemMsg = "Draft saved.";
@@ -375,11 +285,9 @@ PostArticleHTML;
   // *** START OF WRITE FORM *** //
   $strFileUploadText = "Attach a file (optional):";
   if ($_POST) {
-    //$strContBody = $CMS->PreparePageForEditing($strContBody);
       $strContBody = str_replace("\r", "", $strContBody);
       $strContBody = str_replace("\n", "", $strContBody);
       $strContBody = str_replace("'", "\'", $strContBody);
-    //$strContBody = $CMS->StripSlashesIFW($strContBody);
   } else {
     // ** Display data that was entered if form was not submitted ** //
     if ($blnCreate) {
@@ -387,19 +295,15 @@ PostArticleHTML;
       $strContTitle = "";
       $strContBody  = "";
       $strContURL   = "";
-      $strFileLocation = "";
       if (!empty($_GET['area'])) {
-        $intAreaID = $CMS->FilterNumeric($_GET['area']);
-        if ($intAreaID) {
-          $arrTempArea = $CMS->AR->GetArea($intAreaID);
-        }
+        $categoryId = $CMS->FilterNumeric($_GET['area']);
       } else {
-        $intAreaID = 0;
+        $categoryId = 0;
       }
     } elseif ($blnEdit) {
       $strContTitle = $CMS->StripSlashesIFW($arrContent['title']);
       //$strContTitle = $CMS->DoEntities($strContTitle);
-      $intAreaID = $arrContent['content_area_id'];
+      $categoryId = $arrContent['category_id'];
       $dteArticleCreated = $arrContent['create_date_raw'];
       
       $strContBody = $arrContent['content'];
@@ -410,19 +314,16 @@ PostArticleHTML;
           $strContBody = str_replace($strReadMorePublic, $strReadMoreEditor, $strContBody);
       }
       
-      //$strContBody = $CMS->PreparePageForEditing($strContBody);
       $strContBody = str_replace("\r", "", $strContBody);
       $strContBody = str_replace("\n", "", $strContBody);
       $strContBody = str_replace("'", "\'", $strContBody);
-      //$strContBody = $CMS->StripSlashesIFW($strContBody);
-      
+
       // Tags
       $strTagIDList = $arrContent['tags'];
       if ($strTagIDList) {
         $strArticleTags = $CMS->TG->BuildNameList($strTagIDList);
       }
       $strContURL = $arrContent['link_url'];
-      $strFileLocation = $arrExisting[0]['location'];
       $strExcerpt = $arrContent['article_excerpt'];
       $intCustomOrder = $arrContent['article_order'];
 
@@ -451,9 +352,8 @@ PostArticleHTML;
   $strPageTitle = $CMS->AP->GetTitle();
 
   // Areas
-  $CMS->AT->arrAreaData = array();
-  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, "", "Content", false, false);
-  
+  $categoryDropDownHtml = $CMS->DD->CategoryList($categoryId, false);
+
   // Date
   $strDateLists = $CMS->AC->DateListsShort($dteArticleCreated);
   
@@ -487,8 +387,8 @@ $strDraftSaved
       </td>
       <td><b>Area</b>:</td>
       <td>
-        <select id="optParent" name="optParent" onchange="ValidateAttachArea(arrAttachAreasPrimary);">
-$strAreaListPrimary
+        <select id="optParent" name="optParent">
+$categoryDropDownHtml
         </select>
       </td>
     </tr>
@@ -562,26 +462,6 @@ $strAreaListPrimary
         <em>Good for e.g. third-party links.</em>
       </td>
     </tr>
-    <tr class="separator-row">
-      <td colspan="2">File Attachment</td>
-    </tr>
-    <tr>
-      <td><label for="txtFile">$strFileUploadText</label></td>
-      <td>
-        $strFileError
-        <input type="hidden" name="MAX_FILE_SIZE" value="$intMaxFileSize" />
-        <input type="file" id="txtFile" name="txtFile" size="50" />
-        <br />Maximum file size: $strFileSize
-      </td>
-    </tr>
-    <tr>
-      <td><label for="txtFileLocation">Direct URL:</label></td>
-      <td>
-        <input type="text" id="txtFileLocation" name="txtFileLocation" size="50" value="$strFileLocation" />
-        <input type="hidden" id="txtFileLocationOrig" name="txtFileLocationOrig" size="50" value="$strFileLocation" />
-        <input type="hidden" id="txtCanAttachFile" name="txtCanAttachFile" />
-      </td>
-    </tr>
   </table>
 </div>
 
@@ -602,39 +482,6 @@ END;
 
   // ** SCRIPT ** //
   $strHTML .= <<<FooterScript
-<script type="text/javascript">
-/* <![CDATA[ */
-  function ValidateAttachArea(arrAttachAreas) {
-    elem = document.getElementById('optParent');
-    intAreaID = parseInt(elem.value);
-    intProceed = 0;
-    for (i=0; i<arrAttachAreas.length; i++) {
-      if (arrAttachAreas[i] == intAreaID) {
-        intProceed = 1;
-        break;
-      }
-    }
-    if (intProceed == 1) {
-      document.getElementById('txtCanAttachFile').value = 'Y';
-      document.getElementById('txtFile').disabled = '';
-      document.getElementById('txtFileLocation').disabled = '';
-    } else {
-      document.getElementById('txtCanAttachFile').value = 'N';
-      document.getElementById('txtFile').disabled = 'yes';
-      document.getElementById('txtFileLocation').disabled = 'yes';
-    }
-  }
-
-FooterScript;
-
-  // Attach access
-  $CMS->AT->arrAreaData = array();
-  $arrAttachAreasPrimary   = $CMS->DD->AreaHierarchyAttachJS();
-  $strHTML .= $CMS->DD->GetAttachArrayJS($arrAttachAreasPrimary, '');
-  $strHTML .= <<<FooterScriptClose
-  ValidateAttachArea(arrAttachAreas); // do on startup
-/* ]]> */
-</script>
 <script type="text/javascript">
     var ckEditorElem = 'txtFormContent';
 
@@ -673,6 +520,6 @@ FooterScript;
 <script type="text/javascript" src="{URL_ROOT}assets/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="{URL_ROOT}assets/js/injader/editor.js"></script>
 
-FooterScriptClose;
+FooterScript;
 
   $CMS->AP->Display($strHTML);

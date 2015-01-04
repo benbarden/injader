@@ -36,8 +36,8 @@
     // Admin
     define('FN_ADM_ACCESS_LOG',          URL_ROOT.'cp/access_log.php');
     define('FN_ADMIN_TOOLS',             URL_ROOT.'cp/admin_tools.php');
-    define('FN_ADM_AREA',                URL_ROOT.'cp/area.php');
-    define('FN_ADM_AREAS',               URL_ROOT.'cp/areas.php');
+    define('FN_ADM_CATEGORIES',          URL_ROOT.'cp/categories.php');
+    define('FN_ADM_CATEGORY',            URL_ROOT.'cp/category.php');
     define('FN_ADM_CHANGE_PASSWORD',     URL_ROOT.'cp/change_password.php');
     define('FN_ADM_CONTENT_BULK',        URL_ROOT.'cp/content_bulk.php');
     define('FN_ADM_CONTENT_EDITTAGS',    URL_ROOT.'cp/content_edittags.php');

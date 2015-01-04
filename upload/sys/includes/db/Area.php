@@ -179,32 +179,7 @@
       }
       return $this->arrArea[$intAreaID]['seo_name'];
     }
-    
-    /**
-     * Counts the total number of areas
-     * @return integer
-     */
-    function CountAreas() {
-      $arrAreaCount = $this->ResultQuery("SELECT count(*) AS count FROM {IFW_TBL_AREAS} "
-        , __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $arrAreaCount[0]['count'];
-    }
-    
-    /**
-     * Counts the number of areas with a particular area type
-     * @param $strAreaType
-     * @return integer
-     */
-    function CountAreasByAreaType($strAreaType) {
-    	if (empty($strAreaType)) {
-    		return "0";
-    	} else {
-        $strWhereClause = " WHERE area_type = '$strAreaType' ";
-      }
-      $arrAreaCount = $this->ResultQuery("SELECT count(*) AS count FROM {IFW_TBL_AREAS} ".
-        $strWhereClause, __CLASS__ . "::" . __FUNCTION__, __LINE__);
-      return $arrAreaCount[0]['count'];
-    }
+
 
     /**
      * Counts the number of articles that exist in a comma-delimeted list of IDs.

@@ -20,9 +20,8 @@
 
   require '../sys/header.php';
   $cpItemsPerPage = $cmsContainer->getService('Cms.Config')->getByKey('CP.ItemsPerPage');
-  $CMS->RES->ViewManageContent();
-  if ($CMS->RES->IsError()) {
-    $CMS->Err_MFail(M_ERR_UNAUTHORISED, "ViewManageContent");
+  if (!$CMS->RES->CanAddContent()) {
+      $CMS->Err_MFail(M_ERR_UNAUTHORISED, "ViewManageContent");
   }
   $strPageTitle = "Manage Content";
   $CMS->AP->SetTitle($strPageTitle);
@@ -45,22 +44,18 @@
     }
   }
   
-  $intAreaID = "";
+  $categoryId = "";
   $strWhereClause = "";
   $strGetURL = "";
   $intNumPages = 0;
 
-  if ($CMS->RES->CountTotalWriteAccess() < $CMS->AR->CountAreasByAreaType(C_AREA_CONTENT)) {
-    $blnAllowEmpty = false;
-  } else {
-    $blnAllowEmpty = true;
-  }
+  $blnAllowEmpty = true;
 
   $blnInvalidSearch = false;
   $strAddArticle = "<br />";
 
   if (isset($_GET['area'])) {
-      $intAreaID = $CMS->FilterNumeric($_GET['area']);
+      $categoryId = $CMS->FilterNumeric($_GET['area']);
     if ($strGetURL) {
       $strGetURL .= "&amp;area=".$_GET['area'];
     } else {
@@ -68,16 +63,16 @@
     }
   }
 
-  if ($intAreaID) {
-    if ($intAreaID == 0) {
+  if ($categoryId) {
+    if ($categoryId == 0) {
       if ($blnAllowEmpty) {
         $strWhereClause = "";
       } else {
         $blnInvalidSearch = true;
       }
     } else {
-      $strWhereClause = " AND content_area_id = $intAreaID ";
-      $strAddArticle = "<p><a href=\"{FN_ADM_WRITE}?action=create&amp;area=$intAreaID\">Add an article to this area</a></p>";
+      $strWhereClause = " AND category_id = $categoryId ";
+      $strAddArticle = "<p><a href=\"{FN_ADM_WRITE}?action=create&amp;area=$categoryId\">Add an article to this category</a></p>";
     }
   }
 
@@ -169,7 +164,7 @@ TagOptions3;
 
   $CMS->AT->arrAreaData = array();
   $CMS->DD->strEmptyItem = "All";
-  $strAreaListPrimary = $CMS->DD->AreaHierarchy($intAreaID, 0, "Content", $blnAllowEmpty, false);
+  $categoryDropDownHtml = $CMS->DD->CategoryList($categoryId, $blnAllowEmpty);
 
   $strStatusList   = $CMS->DD->ContentStatus($strStatus);
   $strSearchButton = $CMS->AC->SearchButton();
@@ -188,7 +183,7 @@ TagOptions3;
     </td>
     <td>
       <select id="area" name="area">
-$strAreaListPrimary
+$categoryDropDownHtml
       </select>
     </td>
     <td>
@@ -233,26 +228,29 @@ END;
 
   // ** List all content in area ** //
   if (!$blnInvalidSearch) {
-    if (isset($intAreaID) && ($intAreaID <> "")) {
+    if (isset($categoryId) && ($categoryId <> "")) {
       // Page numbers
       $intContentPerPage = $cpItemsPerPage;
       $intStart = $CMS->PN->GetPageStart($intContentPerPage, $intPageNumber);
       // Get content
       $strDateFormat = $CMS->SYS->GetDateFormat();
-      $strContentSQL = "
-        SELECT c.id, c.title, c.permalink, c.seo_title, c.content_status, c.hits, c.content_area_id,
+      $arrAreaContent = $CMS->ResultQuery("
+        SELECT c.id, c.title, c.permalink, c.seo_title, c.content_status, c.hits, c.category_id,
         DATE_FORMAT(c.create_date, '$strDateFormat') AS create_date, c.create_date AS create_date_raw,
-        a.name AS area_name, a.seo_name AS area_seo_name
-        FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a)
+        cat.name AS category_name, cat.permalink AS category_permalink
+        FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_CATEGORIES} cat)
         LEFT JOIN {IFW_TBL_USERS} u ON c.author_id = u.id
-        WHERE c.content_area_id = a.id $strWhereClause
+        WHERE c.category_id = cat.id
+        $strWhereClause
         ORDER BY c.id ASC
         LIMIT $intStart, $intContentPerPage
-      ";
-      // LIMIT $intStart, $intContentPerPage
-      $arrAreaContent = $CMS->ResultQuery($strContentSQL, basename(__FILE__), __LINE__);
-      $strCountSQL = "SELECT count(*) AS count FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_AREAS} a) WHERE c.content_area_id = a.id $strWhereClause ORDER BY c.id ASC";
-      $arrAreaCount = $CMS->ResultQuery($strCountSQL, basename(__FILE__), __LINE__);
+      ", basename(__FILE__), __LINE__);
+      $arrAreaCount = $CMS->ResultQuery("
+        SELECT count(*) AS count FROM ({IFW_TBL_CONTENT} c, {IFW_TBL_CATEGORIES} cat)
+        WHERE c.category_id = cat.id
+        $strWhereClause
+        ORDER BY c.id ASC
+      ", basename(__FILE__), __LINE__);
       $intAreaCount = $arrAreaCount[0]['count'];
       // Page number links
       $intNumPages = $CMS->PN->GetTotalPages($intContentPerPage, $intAreaCount);
@@ -260,17 +258,14 @@ END;
       // Loopity loop
       for ($i=0; $i<count($arrAreaContent); $i++) {
         $intID           = $arrAreaContent[$i]['id'];
-        $intAreaID       = $arrAreaContent[$i]['content_area_id'];
-        $strAreaName     = $arrAreaContent[$i]['area_name'];
-        $strSEOAreaName  = $arrAreaContent[$i]['area_seo_name'];
-        $CMS->PL->SetTitle($strSEOAreaName);
-        $strAreaLink     = $CMS->PL->ViewArea($intAreaID);
         $strCreateDate   = $arrAreaContent[$i]['create_date'];
         $strTitle        = $arrAreaContent[$i]['title'];
         $permalink       = $arrAreaContent[$i]['permalink'];
         $strStatus       = $arrAreaContent[$i]['content_status'];
         $strSEOTitle     = $arrAreaContent[$i]['seo_title'];
         $intHits         = $arrAreaContent[$i]['hits'];
+        $categoryName    = $arrAreaContent[$i]['category_name'];
+        $categoryLink    = $arrAreaContent[$i]['category_permalink'];
         // Table header
         if ($i == 0) {
           // Bulk options
@@ -293,14 +288,10 @@ AdminBulk;
           } else {
             $strBulkOptions = "<option value=\"\">&nbsp;</option>";
           }
-          // No longer used
-          // <!-- $strPageNumbers -->
           // Build header
           $strHTML .= <<<TableHeader
 $strAddArticle
 $strPageNumbers
-  <!--<form action="{FN_ADM_CONTENT_MANAGE}" method="post">-->
-  <!--</form>-->
 <form action="{FN_ADM_CONTENT_BULK}" method="post">
 <div class="table-responsive">
 <table class="table table-striped">
@@ -336,7 +327,7 @@ TableHeader;
         }
         // Permissions
         $CMS->RES->ClearErrors();
-        $CMS->RES->EditArticle($intAreaID, $intID);
+        $CMS->RES->EditArticle($categoryId, $intID);
         if ($CMS->RES->IsError()) {
           $strEditArticle = "";
         } else {
@@ -361,7 +352,7 @@ TableHeader;
       <tr id="$strRowID" class="$strRowClass">
         <td class="Centre ID">$intID</td>
         <td class="Left Title"><a href="$permalink" title="View this article">$strTitle</a></td>
-        <td class="Centre Area"><a href="$strAreaLink">$strAreaName</a></td>
+        <td class="Centre Area"><a href="$categoryLink">$categoryName</a></td>
         <td class="Centre Created">$strCreateDate</td>
         <td class="Centre Status">$strStatus</td>
         <td class="Centre Hits">$intHits</td>
@@ -399,4 +390,3 @@ TableFooter;
 FooterScript;
   
   $CMS->AP->Display($strHTML);
-?>

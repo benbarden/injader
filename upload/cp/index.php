@@ -47,24 +47,15 @@ if ($cmsContainer->hasService('Auth.CurrentUser')) {
     $cpBindings['Login']['User'] = $userArray;
 }
 
-$CMS->RES->Admin();
-if ($CMS->RES->IsError()) {
-    $isAdmin = false;
-} else {
-    $isAdmin = true;
-}
-$cpBindings['Auth']['IsAdmin'] = $isAdmin;
+$cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();
+$cpBindings['Auth']['CanWriteContent'] = $CMS->RES->CanAddContent();
 
   // ** Quick Stats ** //
-  if (!$isAdmin) {
+  if (!$CMS->RES->IsAdmin()) {
     $intArticleCount     = "-";
     $intCommentCount     = "-";
     $intSiteFileCount    = "-";
     $intUserCount        = "-";
-    $strNewestUser       = "-";
-    $intApprovedComments = "-";
-    $intPendingComments  = "-";
-    $intSpamComments     = "-";
   } else {
     // Article count
     $arrArticleCount = $CMS->ResultQuery("
@@ -82,16 +73,6 @@ $cpBindings['Auth']['IsAdmin'] = $isAdmin;
     
   }
   
-  // Content
-$canWriteContent = false;
-  $CMS->RES->ViewManageContent();
-  if (!$CMS->RES->IsError()) {
-    if ($CMS->RES->CountTotalWriteAccess() > 0) {
-        $canWriteContent = true;
-    }
-  }
-$cpBindings['Auth']['CanWriteContent'] = $canWriteContent;
-
   // Recent Drafts
   $recentDrafts = $CMS->ResultQuery("
     SELECT id, title, create_date FROM Cms_Content WHERE content_status = 'Draft'

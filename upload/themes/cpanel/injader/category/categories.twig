@@ -1,0 +1,32 @@
+{% extends "core/base.twig" %}
+
+{% block cp_content %}
+
+<h1 class="page-header">Categories</h1>
+
+    <button onclick="top.location.href = '/cp/category.php?action=create';">New Category</button>
+
+    <div style="clear: both; float: none;">&nbsp;</div>
+
+    {% if Page.CategoryList %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Options</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for Item in Page.CategoryList %}
+                    <tr>
+                        <td>{{ Item.name }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+{% endblock cp_content %}

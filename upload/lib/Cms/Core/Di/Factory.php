@@ -9,6 +9,7 @@ use Cms\Data\AccessLog\AccessLogRepository,
     Cms\Data\Setting\SettingRepository,
     Cms\Data\User\UserRepository,
     Cms\Data\UserSession\UserSessionRepository;
+use Cms\Data\Category\CategoryRepository;
 
 
 class Factory
@@ -52,6 +53,7 @@ class Factory
         $repoAccessLog = new AccessLogRepository($pdo);
         $repoArea = new AreaRepository($pdo);
         $repoArticle = new ArticleRepository($pdo);
+        $repoCategory = new CategoryRepository($pdo);
         $repoSetting = new SettingRepository($pdo);
         $repoUser = new UserRepository($pdo);
         $repoUserSession = new UserSessionRepository($pdo);
@@ -94,6 +96,7 @@ class Factory
         $serviceLocator->set('Repo.AccessLog', $repoAccessLog);
         $serviceLocator->set('Repo.Area', $repoArea);
         $serviceLocator->set('Repo.Article', $repoArticle);
+        $serviceLocator->set('Repo.Category', $repoCategory);
         $serviceLocator->set('Repo.Setting', $repoSetting);
         $serviceLocator->set('Repo.User', $repoUser);
         $serviceLocator->set('Repo.UserSession', $repoUserSession);

@@ -349,5 +349,51 @@
       $this->SetExecutionTime($dteStartTime, $dteEndTime, __CLASS__ . "::" . __FUNCTION__, __LINE__);
       return $strHTML;
     }
-    
+
+      // ** Category list ** //
+      function CategoryList($selectedItem, $allowEmpty)
+      {
+          global $CMS;
+          $this->blnAllowEmpty = $allowEmpty;
+          if (empty($this->strEmptyItem)) {
+              $this->strEmptyItem = "All";
+          }
+
+          $dropDownData = array();
+
+          $topLevelList = $CMS->CAT->getTopLevel();
+
+          foreach ($topLevelList as $topLevelItem) {
+
+              $itemId   = $topLevelItem['id'];
+              $itemName = $topLevelItem['name'];
+
+              $dropDownData[] = array('list_value' => $itemId, 'list_text' => $itemName);
+
+              $categoryChildren = $CMS->CAT->getByParent($itemId);
+
+              if ($categoryChildren) {
+
+                  foreach ($categoryChildren as $childItem) {
+
+                      $childId   = $childItem['id'];
+                      $childName = $childItem['name'];
+
+                      $dropDownData[] = array('list_value' => $childId, 'list_text' => '- '.$childName);
+                      // @todo add recursive function for adding children below this level
+
+                  }
+
+              }
+
+          }
+
+          if (empty($dropDownData)) {
+              $strHTML = $this->BasicList("", $selectedItem);
+          } else {
+              $strHTML = $this->BasicList($dropDownData, $selectedItem);
+          }
+          return $strHTML;
+      }
+
   }

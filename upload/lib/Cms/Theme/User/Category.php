@@ -15,9 +15,9 @@ class Category
     private $container;
 
     /**
-     * @var \Cms\Data\Area\Area
+     * @var \Cms\Data\Category\Category
      */
-    private $area;
+    private $category;
 
     /**
      * @var string
@@ -60,9 +60,9 @@ class Category
         unset($this->container);
     }
 
-    public function setArea(Area $area)
+    public function setCategory(\Cms\Data\Category\Category $category)
     {
-        $this->area = $area;
+        $this->category = $category;
     }
 
     public function setSubareas($subareas)
@@ -87,31 +87,35 @@ class Category
 
     public function setupBindings()
     {
-        $areaId = $this->area->getAreaId();
+        $categoryId = $this->category->getCategoryId();
 
         $bindings = array();
 
         //$bindings['Area'] = $this->area;
         $bindings['Page']['Type'] = 'category';
-        $bindings['Page']['Title'] = $this->area->getName();
+        $bindings['Page']['Title'] = $this->category->getName();
 
-        $bindings['Area']['Id'] = $areaId;
-        $bindings['Area']['Name'] = $this->area->getName();
-        $bindings['Area']['Desc'] = $this->area->getAreaDescription();
+        $bindings['Area']['Id'] = $categoryId;
+        $bindings['Area']['Name'] = $this->category->getName();
+        $bindings['Area']['Desc'] = $this->category->getDescription();
 
+        $areaUrl = $this->category->getPermalink();
+        $bindings['Area']['Url'] = $areaUrl;
+
+        /*
         $bindings['Area']['IsTypeContent'] = $this->area->isContentArea();
         $bindings['Area']['IsTypeLinked'] = $this->area->isLinkedArea();
         $bindings['Area']['IsTypeSmart'] = $this->area->isSmartArea();
+        */
 
-        if ($this->area->isContentArea()) {
-            $bindings['Area']['FeedUrl'] = sprintf('%s?name=articles&id=%s', FN_FEEDS, $areaId);
-        }
+        $bindings['Area']['FeedUrl'] = sprintf('%s?name=articles&id=%s', FN_FEEDS, $categoryId);
 
         // Wrapper IDs and classes
-        $bindings['Page']['WrapperId'] = sprintf('area-index-%s', $areaId);
+        $bindings['Page']['WrapperId'] = sprintf('area-index-%s', $categoryId);
         $bindings['Page']['WrapperClass'] = 'area-index';
 
         // Subareas
+        /*
         if ($this->subareas) {
             foreach ($this->subareas as $subareaItem) {
                 $subareaObject = new \Cms\Data\Area\Area($subareaItem);
@@ -123,6 +127,7 @@ class Category
                 $bindings['Area']['Subareas'][] = $subareaRow;
             }
         }
+        */
 
         // Date
         $dateFormat = $this->container->getSetting('DateFormat');
@@ -134,10 +139,9 @@ class Category
         if ($this->areaContent) {
 
             // Area URL
-            $area = $this->container->getService('Repo.Area')->getById($areaId);
-            $iaLinkArea = $this->container->getService('IA.LinkArea');
-            $iaLinkArea->setArea($area);
-            $areaUrl = $iaLinkArea->generate();
+            //$area = $this->container->getService('Repo.Area')->getById($areaId);
+            //$iaLinkArea = $this->container->getService('IA.LinkArea');
+            //$iaLinkArea->setArea($area);
 
             if ($this->currentPageNo == 1) {
                 $bindings['Page']['CanonicalUrl'] = $areaUrl;

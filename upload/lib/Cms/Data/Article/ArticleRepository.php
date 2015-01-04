@@ -39,32 +39,32 @@ class ArticleRepository extends BaseRepository
         }
     }
 
-    public function countByArea($areaId)
+    public function countByCategory($categoryId)
     {
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT count(*) FROM Cms_Content
-                WHERE content_area_id = :areaId
+                WHERE category_id = :categoryId
                 AND content_status = 'Published'
             ");
-            $pdoStatement->bindParam(':areaId', $areaId);
+            $pdoStatement->bindParam(':categoryId', $categoryId);
             $pdoStatement->execute();
             $count = $pdoStatement->fetchColumn();
             return $count;
         } catch(\PDOException $e) {
-            throw new DataException('getByArea: Failed', 0, $e);
+            throw new DataException('countByCategory: Failed', 0, $e);
         }
     }
 
-    public function getByAreaPublic($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    public function getByCategoryPublic($categoryId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
-        return $this->getContent('public', $areaId, $limit, $offset, $sortField, $sortDirection);
+        return $this->getContent('public', $categoryId, $limit, $offset, $sortField, $sortDirection);
     }
 
-    public function getByAreaAll($areaId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    public function getByCategoryAll($categoryId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
-        return $this->getContent('all', $areaId, $limit, $offset, $sortField, $sortDirection);
+        return $this->getContent('all', $categoryId, $limit, $offset, $sortField, $sortDirection);
     }
 
     public function getRecentPublic($limit = 5)
@@ -72,7 +72,7 @@ class ArticleRepository extends BaseRepository
         return $this->getContent('public', 0, $limit);
     }
 
-    private function getContent($mode, $areaId = 0, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    private function getContent($mode, $categoryId = 0, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
         try {
 
@@ -96,23 +96,23 @@ class ArticleRepository extends BaseRepository
                 default:       $pdoAccessSql = "AND content_status = 'Published'"; break;
             }
 
-            if ($areaId) {
-                $pdoAreaSql = 'AND content_area_id = :areaId';
+            if ($categoryId) {
+                $pdoCategorySql = 'AND category_id = :categoryId';
             } else {
-                $pdoAreaSql = '';
+                $pdoCategorySql = '';
             }
 
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT * FROM Cms_Content
                 WHERE 1
-                $pdoAreaSql
+                $pdoCategorySql
                 $pdoAccessSql
                 ORDER BY $pdoSortField $pdoSortDirection
                 LIMIT :limit OFFSET :offset
             ");
-            if ($areaId) {
-                $pdoStatement->bindParam(':areaId', $areaId);
+            if ($categoryId) {
+                $pdoStatement->bindParam(':categoryId', $categoryId);
             }
             $pdoStatement->bindValue(':offset', (int) $offset, \PDO::PARAM_INT);
             $pdoStatement->bindValue(':limit', (int) $limit, \PDO::PARAM_INT);
@@ -120,7 +120,7 @@ class ArticleRepository extends BaseRepository
             $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
             return $dbData;
         } catch(\PDOException $e) {
-            throw new DataException('getByArea: Failed', 0, $e);
+            throw new DataException('getContent: Failed', 0, $e);
         }
     }
 
@@ -188,7 +188,7 @@ class ArticleRepository extends BaseRepository
                 SELECT DATE_FORMAT(create_date, '%M %Y') AS content_yyyy_mm,
                 DATE_FORMAT(create_date, '%Y') AS content_yyyy,
                 DATE_FORMAT(create_date, '%m') AS content_mm,
-                id, content_area_id, title, permalink,
+                id, category_id, title, permalink,
                 create_date AS content_date_full
                 FROM Cms_Content
                 WHERE content_status = 'Published'

@@ -11,39 +11,17 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_ACCESS_LOG} (
   INDEX ip_address(ip_address)
 );
 
-DROP TABLE IF EXISTS {IFW_TBL_AREAS};
-CREATE TABLE IF NOT EXISTS {IFW_TBL_AREAS} (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(125) NOT NULL DEFAULT '',
-  area_level int(10) UNSIGNED NOT NULL DEFAULT 0,
-  area_order int(10) UNSIGNED NOT NULL DEFAULT 0,
-  hier_left int(10) UNSIGNED NOT NULL DEFAULT 0,
-  hier_right int(10) UNSIGNED NOT NULL DEFAULT 0,
-  parent_id int(10) UNSIGNED NOT NULL DEFAULT 0,
-  permission_profile_id int(10) UNSIGNED NOT NULL DEFAULT 0,
-  area_graphic_id int(10) UNSIGNED NOT NULL DEFAULT 0,
-  content_per_page int(10) UNSIGNED NOT NULL DEFAULT 0,
-  sort_rule VARCHAR(100) NOT NULL DEFAULT '',
-  include_in_rss_feed CHAR(1) NOT NULL DEFAULT 'Y',
-  max_file_size VARCHAR(20) NOT NULL DEFAULT '0',
-  max_files_per_user int(10) UNSIGNED NOT NULL DEFAULT 0,
-  area_url VARCHAR(200) NOT NULL DEFAULT '',
-  smart_tags TEXT NOT NULL,
-  seo_name VARCHAR(100) NOT NULL DEFAULT '',
-  area_description TEXT NOT NULL,
-  area_type VARCHAR(45) NOT NULL,
-  theme_path TEXT NOT NULL,
-  layout_style VARCHAR(50) NOT NULL DEFAULT '',
-  subarea_content_on_index CHAR( 1 ) NOT NULL DEFAULT 'N',
-  PRIMARY KEY(id),
-  INDEX parent_id(parent_id),
-  INDEX permission_profile_id(permission_profile_id),
-  INDEX area_graphic_id(area_graphic_id),
-  INDEX area_type(area_type)
-);
-
-INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style) VALUES (1, 'Home', 1, 1, 1, 2, 0, 0, 0, 10, 'create_date|desc', 'Y', '0', 0, 'home', '', '', '{C_AREA_CONTENT}', '', '');
-INSERT INTO {IFW_TBL_AREAS} (id, name, area_level, area_order, hier_left, hier_right, parent_id, permission_profile_id, area_graphic_id, content_per_page, sort_rule, include_in_rss_feed, max_file_size, max_files_per_user, seo_name, smart_tags, area_description, area_type, theme_path, layout_style) VALUES (2, 'Test', 1, 1, 3, 4, 0, 0, 0, 25, 'last_updated|desc', 'N', '0', 0, 'test', '', '', '{C_AREA_CONTENT}', '', '');
+DROP TABLE IF EXISTS {IFW_TBL_CATEGORIES};
+CREATE TABLE IF NOT EXISTS {IFW_TBL_CATEGORIES} (
+  id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  permalink VARCHAR(255) NOT NULL,
+  description TEXT NULL,
+  parent_id INT(10) UNSIGNED NULL,
+  items_per_page INT(10) UNSIGNED NOT NULL,
+  sort_rule VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id));
+INSERT INTO {IFW_TBL_CATEGORIES} (id, name, permalink, items_per_page, sort_rule) VALUES(1, 'General', '/general/', 5, 'create_date|desc');
 
 DROP TABLE IF EXISTS {IFW_TBL_CONTENT};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
@@ -52,7 +30,7 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
   permalink VARCHAR(255) NOT NULL,
   content mediumtext NOT NULL,
   author_id int(10) unsigned NOT NULL default 0,
-  content_area_id int(10) unsigned NOT NULL default 0,
+  category_id int(10) unsigned NULL default 0,
   create_date datetime NOT NULL default '0000-00-00 00:00:00',
   edit_date datetime NOT NULL default '0000-00-00 00:00:00',
   last_updated datetime NOT NULL default '0000-00-00 00:00:00',
@@ -68,7 +46,7 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_CONTENT} (
   article_excerpt TEXT NOT NULL,
   PRIMARY KEY(id),
   INDEX author_id(author_id), 
-  INDEX content_area_id(content_area_id),
+  INDEX category_id(category_id),
   INDEX content_status(content_status)
 ) ENGINE = MyISAM;
 ALTER TABLE {IFW_TBL_CONTENT} ADD FULLTEXT title(title);
@@ -181,12 +159,12 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_URL_MAPPING} (
   relative_url VARCHAR( 255 ) NOT NULL ,
   is_active CHAR( 1 ) NOT NULL DEFAULT 'Y' ,
   article_id INT( 10 ) NOT NULL DEFAULT '0' ,
-  area_id INT( 10 ) NOT NULL DEFAULT '0' ,
+  category_id INT( 10 ) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (relative_url)
 );
 ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX is_active(is_active);
 ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX article_id(article_id);
-ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX area_id(area_id);
+ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX category_id(category_id);
 
 DROP TABLE IF EXISTS {IFW_TBL_USERS};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_USERS} (

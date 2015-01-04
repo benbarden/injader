@@ -4,7 +4,7 @@
         <ul class="pagination">
             {% if Area.Page.Prev %}
                 <li>
-                    <a href="{{ cmsLinkArea(Area.Id) }}?page={{ Area.Page.Prev }}" aria-label="Previous">
+                    <a href="{{ Area.Url }}?page={{ Area.Page.Prev }}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -19,12 +19,12 @@
                 {% if Page == Area.Page.Current %}
                     <li class="active"><span>{{ Page }} <span class="sr-only">(current)</span></span></li>
                 {% else %}
-                    <li><a href="{{ cmsLinkArea(Area.Id) }}?page={{ Page }}">{{ Page }}</a></li>
+                    <li><a href="{{ Area.Url }}?page={{ Page }}">{{ Page }}</a></li>
                 {% endif %}
             {% endfor %}
             {% if Area.Page.Next %}
                 <li>
-                    <a href="{{ cmsLinkArea(Area.Id) }}?page={{ Area.Page.Next }}" aria-label="Next">
+                    <a href="{{ Area.Url }}?page={{ Area.Page.Next }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -42,7 +42,7 @@
         <ul class="pager">
             {% if Area.Page.Prev %}
                 <li class="previous">
-                    <span><a href="{{ cmsLinkArea(Area.Id) }}?page={{ Area.Page.Prev }}"><span aria-hidden="true">&larr;</span> Previous</a></span>
+                    <span><a href="{{ Area.Url }}?page={{ Area.Page.Prev }}"><span aria-hidden="true">&larr;</span> Previous</a></span>
                 </li>
             {% else %}
                 <li class="previous disabled">
@@ -51,7 +51,7 @@
             {% endif %}
             {% if Area.Page.Next %}
                 <li class="next">
-                    <span><a href="{{ cmsLinkArea(Area.Id) }}?page={{ Area.Page.Next }}">Next <span aria-hidden="true">&rarr;</span></a></span>
+                    <span><a href="{{ Area.Url }}?page={{ Area.Page.Next }}">Next <span aria-hidden="true">&rarr;</span></a></span>
                 </li>
             {% else %}
                 <li class="next disabled">

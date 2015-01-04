@@ -1,6 +1,7 @@
 {% if Nav.TopLevelAreas %}
-    {#<a class="blog-nav-item active" href="#">Home</a>#}
+    {# put class=active after blog-nav-item for a nice arrow! #}
+    <a class="blog-nav-item" href="/">Home</a>
     {% for Item in Nav.TopLevelAreas %}
-        <a class="blog-nav-item" href="{{ cmsLinkArea(Item.Id) }}">{{ Item.Name }}</a>
+        <a class="blog-nav-item" href="{{ Item.Url }}">{{ Item.Name }}</a>
     {% endfor %}
 {% endif %}

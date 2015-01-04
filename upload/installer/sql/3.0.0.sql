@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS maj_areas;
 DROP TABLE IF EXISTS maj_comments;
 DROP TABLE IF EXISTS maj_connections;
 DROP TABLE IF EXISTS maj_form_recipients;
@@ -25,7 +26,6 @@ DELETE FROM maj_sys_preferences WHERE preference = 'prefCommentNotification';
 DELETE FROM maj_sys_preferences WHERE preference = 'prefCommentNotifyAuthor';
 
 ALTER TABLE maj_access_log RENAME TO Cms_AccessLog;
-ALTER TABLE maj_areas RENAME TO Cms_Areas;
 ALTER TABLE maj_content RENAME TO Cms_Content;
 ALTER TABLE maj_permission_profiles RENAME TO Cms_PermissionProfile;
 ALTER TABLE maj_sys_preferences RENAME TO Cms_Settings;
@@ -50,3 +50,20 @@ ALTER TABLE Cms_Permissions DROP COLUMN lock_article;
 UPDATE Cms_Settings SET content = 'injader' WHERE preference = 'prefDefaultTheme';
 UPDATE Cms_Settings SET content = '3.0.0' WHERE preference = 'prefCMSVersion';
 INSERT INTO Cms_Settings(preference, content) VALUES('prefDisqusId', '');
+
+CREATE TABLE Cms_Categories (
+  id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  permalink VARCHAR(255) NOT NULL,
+  description TEXT NULL,
+  parent_id INT(10) UNSIGNED NULL,
+  items_per_page INT(10) UNSIGNED NOT NULL,
+  sort_rule VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id));
+INSERT INTO Cms_Categories (id, name, permalink, items_per_page, sort_rule) VALUES(1, 'General', '/general/', 5, 'create_date|desc');
+
+ALTER TABLE Cms_Content CHANGE COLUMN content_area_id category_id INT(10) UNSIGNED NULL DEFAULT '0';
+ALTER TABLE Cms_Content DROP INDEX content_area_id , ADD INDEX category_id (category_id ASC);
+UPDATE Cms_Content SET category_id = 1;
+
+ALTER TABLE Cms_UrlMapping CHANGE COLUMN area_id category_id INT(10) NOT NULL DEFAULT '0' ;

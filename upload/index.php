@@ -70,9 +70,9 @@
                 $strErrText       = "Article ".$arrPageObject[0]['article_id'];
                 $arrNewPageObject = $CMS->UM->getActiveArticle($arrPageObject[0]['article_id']);
                 $blnRedirected    = true;
-            } elseif (!empty($arrPageObject[0]['area_id'])) {
-                $strErrText       = "Area ".$arrPageObject[0]['area_id'];
-                $arrNewPageObject = $CMS->UM->getActiveArea($arrPageObject[0]['area_id']);
+            } elseif (!empty($arrPageObject[0]['category_id'])) {
+                $strErrText       = "Category ".$arrPageObject[0]['category_id'];
+                $arrNewPageObject = $CMS->UM->getActiveArea($arrPageObject[0]['category_id']);
                 $blnRedirected    = true;
             } else {
                 $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
@@ -90,9 +90,9 @@
         if (!empty($arrPageObject[0]['article_id'])) {
             $pageType = "article";
             $itemId = $arrPageObject[0]['article_id'];
-        } elseif (!empty($arrPageObject[0]['area_id'])) {
-            $pageType = "area";
-            $itemId = $arrPageObject[0]['area_id'];
+        } elseif (!empty($arrPageObject[0]['category_id'])) {
+            $pageType = "category";
+            $itemId = $arrPageObject[0]['category_id'];
         } else {
             $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
         }

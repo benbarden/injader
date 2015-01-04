@@ -43,6 +43,7 @@ class CMS extends Helper {
     var $AR; // Area
     var $AT; // AreaTraverse
     var $ART; // Article
+    var $CAT; // Category;
     var $FL; // File
     var $PP; // PermissionProfile
     var $TG; // Tag
@@ -86,6 +87,7 @@ class CMS extends Helper {
         $this->AR    = new Area;
         $this->AT    = new AreaTraverse;
         $this->ART   = new Article;
+        $this->CAT   = new Category;
         $this->FL    = new File;
         $this->PP    = new PermissionProfile;
         $this->TG    = new Tags;

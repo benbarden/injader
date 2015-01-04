@@ -20,6 +20,7 @@
 
     define('IFW_TBL_ACCESS_LOG',          "Cms_AccessLog");
     define('IFW_TBL_AREAS',               "Cms_Areas");
+    define('IFW_TBL_CATEGORIES',          "Cms_Categories");
     define('IFW_TBL_CONTENT',             "Cms_Content");
     define('IFW_TBL_PERMISSION_PROFILES', "Cms_Permissions");
     define('IFW_TBL_SETTINGS',            "Cms_Settings");
