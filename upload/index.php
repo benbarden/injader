@@ -105,8 +105,6 @@
     switch ($pageType) {
         case "area":
         case "category":
-            $themeRenderer->setItemId($itemId);
-            $themeRenderer->setObjectCategory();
             // Pagination
             $pageNo = null;
             if (isset($_GET['page'])) {
@@ -116,6 +114,9 @@
                 $pageNo = 1;
             }
             $themeRenderer->setPageNo($pageNo);
+            // Must set page number before setting object
+            $themeRenderer->setItemId($itemId);
+            $themeRenderer->setObjectCategory();
             break;
         case "article":
             $themeRenderer->setItemId($itemId);
