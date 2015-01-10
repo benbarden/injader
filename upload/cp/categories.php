@@ -56,6 +56,11 @@
 
     $cpBindings['Page']['CategoryList'] = $categoryList;
 
+    if (isset($_GET['msg'])) {
+        $getMsg = $_GET['msg'];
+        $cpBindings['CP']['Msg'] = $getMsg;
+    }
+
     $engine = $cmsContainer->getService('Theme.EngineCPanel');
     $outputHtml = $engine->render('category/categories.twig', $cpBindings);
     print($outputHtml);

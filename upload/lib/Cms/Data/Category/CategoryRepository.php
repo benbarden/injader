@@ -10,6 +10,7 @@ use Cms\Data\BaseRepository,
 class CategoryRepository extends BaseRepository
 {
     const TABLE_NAME = 'Cms_Categories';
+    const TABLE_KEY = 'id';
 
     public function exists($id)
     {
@@ -79,8 +80,22 @@ class CategoryRepository extends BaseRepository
         }
     }
 
-    public function saveCategory(Category $category)
+    public function save(Category $category)
     {
+        if ($category->getCategoryId()) {
+            parent::updateRecord($category);
+        } else {
+            parent::addRecord($category);
+        }
+    }
 
+    public function delete(Category $category)
+    {
+        $categoryId = $category->getCategoryId();
+        if (!$categoryId) {
+            throw new DataException('Cannot delete record - id not set');
+        }
+
+        parent::deleteRecord($category);
     }
 } 

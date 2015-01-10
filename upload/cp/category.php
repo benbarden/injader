@@ -67,200 +67,113 @@
     $cpBindings['Form']['Action'] = $formAction;
 
     $repoCategory = $cmsContainer->getService('Repo.Category');
+    /* @var \Cms\Data\Category\CategoryRepository $repoCategory */
+
+    $formErrors = array();
+    $formPrefill = array();
 
     if ($getId) {
+
         $categoryData = $repoCategory->getById($getId);
         if (!$categoryData) {
             throw new \Cms\Exception\Data\DataException('Category not found: '.$getId);
         }
         $cpBindings['Data']['Category'] = $categoryData;
+
+        /* @var \Cms\Data\Category\Category $categoryData */
+        $dbName = $categoryData->getName();
+        $dbPermalink = $categoryData->getPermalink();
+        $dbDescription = $categoryData->getDescription();
+        $dbPerPage = $categoryData->getItemsPerPage();
+        $dbParentId = $categoryData->getParentId();
+        if (!$dbParentId) {
+            $dbParentId = 0;
+        }
+        $dbSortRule = $categoryData->getSortRule();
+
+    } else {
+
+        $categoryData = null;
+
     }
+
+    if ($_POST) {
+        $postName        = $_POST['name'];
+        $postPermalink   = $_POST['permalink'];
+        $postDescription = $_POST['description'];
+        $postPerPage     = (int) $_POST['items-per-page'];
+        $postParentId    = (int) $_POST['parent-id'];
+        $postSortRule    = $_POST['sort-rule'];
+        if (!$postName) {
+            $formErrors[] = array('Field' => 'name', 'Message' => 'Missing category name');
+        }
+        if (!$postPermalink) {
+            $formErrors[] = array('Field' => 'permalink', 'Message' => 'Missing permalink');
+        }
+        if (!$postPerPage) {
+            $formErrors[] = array('Field' => 'items-per-page', 'Message' => 'Missing items per page');
+        }
+        if (!$postSortRule) {
+            $formErrors[] = array('Field' => 'sort-rule', 'Message' => 'Missing sort rule');
+        }
+        if (!$formErrors) {
+            $dbData = array();
+            $dbData['id'] = $getId;
+            $dbData['name'] = $postName;
+            $dbData['permalink'] = $postPermalink;
+            $dbData['description'] = $postDescription;
+            if ($postParentId) {
+                $dbData['parent_id'] = $postParentId;
+            }
+            $dbData['items_per_page'] = $postPerPage;
+            $dbData['sort_rule'] = $postSortRule;
+            $modelCategory = new \Cms\Data\Category\Category($dbData);
+            try {
+                if ($isDelete) {
+                    $repoCategory->delete($modelCategory);
+                } else {
+                    $repoCategory->save($modelCategory);
+                }
+                if ($isCreate) {
+                    $resultMsg = '?msg=addsuccess';
+                } elseif ($isEdit) {
+                    $resultMsg = '?msg=editsuccess';
+                } elseif ($isDelete) {
+                    $resultMsg = '?msg=deletesuccess';
+                }
+                $resultsUrl = URL_ROOT.'cp/categories.php'.$resultMsg;
+                header('Location: '.$resultsUrl);
+            } catch (\Cms\Exception\Data\DataException $e) {
+                $formErrors[] = array('Message' => 'DataException: '.$e->getMessage());
+            }
+        }
+    }
+
+    // Prefill form
+    if ($_POST) {
+        $formPrefill[] = array('Field' => 'name', 'Value' => $postName);
+        $formPrefill[] = array('Field' => 'permalink', 'Value' => $postPermalink);
+        $formPrefill[] = array('Field' => 'description', 'Value' => $postDescription);
+        if ($postPerPage != '0') {
+            $formPrefill[] = array('Field' => 'items-per-page', 'Value' => $postPerPage);
+        }
+        $formPrefill[] = array('Field' => 'parent-id', 'Value' => $postParentId);
+        $formPrefill[] = array('Field' => 'sort-rule', 'Value' => $postSortRule);
+    } elseif ($categoryData) {
+        $formPrefill[] = array('Field' => 'name', 'Value' => $dbName);
+        $formPrefill[] = array('Field' => 'permalink', 'Value' => $dbPermalink);
+        $formPrefill[] = array('Field' => 'description', 'Value' => $dbDescription);
+        if ($dbPerPage != '0') {
+            $formPrefill[] = array('Field' => 'items-per-page', 'Value' => $dbPerPage);
+        }
+        $formPrefill[] = array('Field' => 'parent-id', 'Value' => $dbParentId);
+        $formPrefill[] = array('Field' => 'sort-rule', 'Value' => $dbSortRule);
+    }
+
+    $cpBindings['Form']['Errors'] = $formErrors;
+    $cpBindings['Form']['Prefill'] = $formPrefill;
 
     $engine = $cmsContainer->getService('Theme.EngineCPanel');
     $outputHtml = $engine->render($themeFile, $cpBindings);
     print($outputHtml);
     exit;
-
-///////// to complete /////////////////
-
-  $strAreaName = ""; $strAreaDesc = "";
-  $intItemsPerPage = "5";
-  $strSortRuleField = ""; $strSortRuleOrder = ""; 
-
-  if ($_POST) {
-
-    // ** GRAB POST DATA ** //
-
-    $arrPostData  = $CMS->ArrayAddSlashes($_POST);
-    $strAreaName  = $arrPostData['txtAreaName'];
-    
-    if ($blnDelete) {
-      $blnSubmitForm = true;
-    } else {
-      $strAreaDesc  = $CMS->PrepareTemplateForSaving($_POST['txtAreaDesc']);
-      $intParentID  = $CMS->FilterNumeric($arrPostData['optParent']);
-      $intAreaOrder = $CMS->FilterNumeric($arrPostData['txtAreaOrder']);
-      if ($blnLinkedArea) {
-        $strAreaURL = $arrPostData['txtAreaURL'];
-        $intItemsPerPage = 0;
-      } else {
-        $strAreaURL = "";
-        $intItemsPerPage  = $CMS->FilterNumeric($arrPostData['txtItemsPerPage']);
-        $strSortRuleField = $arrPostData['optSortRuleField'];
-        $strSortRuleOrder = $arrPostData['optSortRuleOrder'];
-      }
-
-      // ** VALIDATE POST DATA ** //
-
-      $blnSubmitForm = true;
-      if (!$strAreaName) {
-        $strMissingAreaName = $CMS->AC->InvalidFormData("");
-        $blnSubmitForm = false;
-      } else {
-        if (
-            (strtolower($strAreaName) == "cp") ||
-            (strtolower($strAreaName) == "custom") ||
-            (strtolower($strAreaName) == "data") ||
-            (strtolower($strAreaName) == "ext") ||
-            (strtolower($strAreaName) == "info") ||
-            (strtolower($strAreaName) == "installer") ||
-            (strtolower($strAreaName) == "sys")
-            )
-          {
-          $blnSubmitForm = false;
-          $strMissingAreaName = $CMS->AC->InvalidFormData(M_ERR_SYSTEM_SEO_AREA_NAME);
-        } else {
-            $blnInvalid = false;
-            // Check if the link has been used
-            $blnCheckLink = false;
-            if ($blnCreate) {
-                $intLinkStyle = $CMS->SYS->GetSysPref(C_PREF_LINK_STYLE);
-                if (!in_array($intLinkStyle, array("1", "2"))) {
-                    $blnCheckLink = true;
-                    $intCheckAreaID = 0;
-                }
-            } elseif ($blnEdit) {
-                $blnCheckLink = true;
-                $intCheckAreaID = $intAreaID;
-            }
-            if ($blnCheckLink) {
-                $strSEOTitle = $CMS->MakeSEOTitle($strAreaName);
-                $CMS->PL->SetTitle($strSEOTitle);
-                $strLink = $CMS->PL->ViewArea($intCheckAreaID);
-                $CMS->PL->SetTitle("");
-                $blnInvalid = $CMS->UM->isUrlInUse($strLink, "", $intCheckAreaID);
-                // Tell the user if it's invalid
-                if ($blnInvalid) {
-                  $blnSubmitForm = false;
-                  $strMissingAreaName = $CMS->AC->InvalidFormData(M_ERR_DUPLICATE_SEO_TITLE);
-                }
-            }
-        }
-      }
-
-    }
-
-    if ($blnSubmitForm) {
-
-      // ** PREPARE FOR DATABASE ** //
-      
-      if (!$blnDelete) {
-        if ($blnLinkedArea) {
-          $strSortRule = "";
-        } else {
-          $strSortRule = $strSortRuleField."|".$strSortRuleOrder;
-        }
-        $strSmartTags = "";
-        if ($blnSmartArea) {
-          if ($intTagID1) {
-            $strSmartTags = $intTagID1;
-          }
-          if ($intTagID2) {
-            if ($strSmartTags) {
-              $strSmartTags .= "|".$intTagID2;
-            } else {
-              $strSmartTags = $intTagID2;
-            }
-          }
-          if ($intTagID3) {
-            if ($strSmartTags) {
-              $strSmartTags .= "|".$intTagID3;
-            } else {
-              $strSmartTags = $intTagID3;
-            }
-          }
-        }
-      }
-      
-      // ** WRITE TO DATABASE ** //
-      $blnRebuild = true;
-      if ($blnCreate) {
-        $intAreaID = $CMS->AR->CreateArea($strAreaName, $intLevel, $intAreaOrder, 0, 0, 
-          $intParentID, $intPerProfileID, $intAreaGraphicID, $intItemsPerPage, 
-          $strSortRule, $strIncludeInFeed, $intMaxFileSizeBytes, $intMaxFilesPerUser, 
-          $strAreaURL, $strSmartTags, $strAreaDesc, $strAreaTypeName, $strAreaTheme, 
-          $strLayoutStyle, $strSubareaContent);
-        $strMsg = "created";
-      } elseif ($blnEdit) {
-        $CMS->AR->EditArea($intAreaID, $strAreaName, $intLevel, $intAreaOrder, 0, 0, 
-          $intParentID, $intPerProfileID, $intAreaGraphicID, $intItemsPerPage, 
-          $strSortRule, $strIncludeInFeed, $intMaxFileSizeBytes, $intMaxFilesPerUser, 
-          $strAreaURL, $strSmartTags, $strAreaDesc, $strAreaTypeName, $strAreaTheme, 
-          $strLayoutStyle, $blnRebuild, $strSubareaContent);
-        $strMsg = "edited";
-      } elseif ($blnDelete) {
-        $CMS->AR->DeleteArea($intAreaID);
-        $strMsg = "deleted";
-      }
-      $strHTML = "<h1>$strPageTitle</h1>\n<p>Area was successfully $strMsg. <a href=\"{FN_ADM_AREAS}\">Manage Areas</a></p>";
-      $strPageTitle .= " - Results";
-      $CMS->AP->SetTitle($strPageTitle);
-      $CMS->AP->Display($strHTML);
-    }
-  }
-
-  // ** NO POST ** //
-
-  $CMS->AP->SetTitle($strPageTitle);
-
-  if ($_POST) {
-    // Fields where slashes need to be stripped
-    $arrData = $CMS->ArrayStripSlashes($_POST);
-    $strAreaName = $arrData['txtAreaName'];
-    $strAreaDesc  = $CMS->PrepareTemplateForEditing($_POST['txtAreaDesc']);
-  } else {
-      $arrArea = $CMS->AR->GetArea($intAreaID);
-      $strAreaName = $CMS->StripSlashesIFW($arrArea['name']);
-      $strAreaDesc = $CMS->PrepareTemplateForEditing($arrArea['area_description']);
-      $intParentID  = $arrArea['parent_id'];
-      $intAreaOrder = $arrArea['area_order'];
-        $intItemsPerPage = $arrArea['content_per_page'];
-        $arrSortRule = explode("|", $arrArea['sort_rule']);
-        $strSortRuleField = $arrSortRule[0];
-        $strSortRuleOrder = $arrSortRule[1];
-    }
-
-  if ($blnDelete) {
-  
-    $strHTML = <<<END
-<h1 class="page-header">$strPageTitle</h1>
-<form id="frmMajesticForm" action="{FN_ADM_AREA}?$strFormAction" method="post">
-<table class="DefaultTable MediumTable FixedTable" cellspacing="1">
-  <tr>
-    <td class="HeadColour SpanCell" colspan="2"><b>Delete Area</b></td>
-  </tr>
-  <tr>
-    <td class="BaseColour" colspan="2">
-      <input type="hidden" name="txtAreaName" value="$strAreaName" />
-      You are about to delete the following area: $strAreaName
-    </td>
-  </tr>
-
-END;
-
-  } else {
-
-      $strSRFieldDD = $CMS->DD->SortRuleField($strSortRuleField);
-      $strSROrderDD = $CMS->DD->SortRuleOrder($strSortRuleOrder);
-
-  }

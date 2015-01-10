@@ -392,6 +392,9 @@ class Engine
             case 'categories':
                 $url = URL_ROOT.'cp/categories.php';
                 break;
+            case 'category':
+                $url = sprintf(URL_ROOT.'cp/category.php?action=%s&id=%s', $action, $id);
+                break;
             case 'files':
                 $url = sprintf(URL_ROOT.'cp/files.php?type=%s', $type);
                 break;

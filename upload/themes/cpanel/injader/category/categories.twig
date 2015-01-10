@@ -4,6 +4,31 @@
 
 <h1 class="page-header">Categories</h1>
 
+    {% if CP.Msg %}
+        {% if CP.Msg == 'addsuccess' %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Category added.
+            </div>
+        {% elseif CP.Msg == 'editsuccess' %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Category updated.
+            </div>
+        {% elseif CP.Msg == 'deletesuccess' %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Category deleted.
+            </div>
+        {% endif %}
+    {% endif %}
+
     <button onclick="top.location.href = '/cp/category.php?action=create';">New Category</button>
 
     <div style="clear: both; float: none;">&nbsp;</div>
@@ -21,7 +46,9 @@
                 {% for Item in Page.CategoryList %}
                     <tr>
                         <td>{{ Item.name }}</td>
-                        <td></td>
+                        <td>
+                            <a href="{{ cpLink('category', {'action': 'edit', 'id': Item.id}) }}">Edit</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

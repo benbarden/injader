@@ -132,5 +132,18 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/assets/js/bootstrap/ie10-viewport-bug-workaround.js"></script>
 
+<script type="text/javascript">
+    function alertAutoHide() {
+        if ($('.alert-dismissible').length) {
+            $('.alert-dismissible').fadeOut();
+        }
+    }
+    $(document).ready(function() {
+        if ($('.alert-dismissible').length) {
+            window.setTimeout('alertAutoHide()', 3000);
+        }
+    });
+</script>
+
 </body>
 </html>
