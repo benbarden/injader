@@ -270,10 +270,6 @@ class Renderer
         $siteCustomHeader = $repoSetting->getSettingSiteHeader();
         $siteDisqusId = $repoSetting->getSettingDisqusId();
 
-        $repoArea = $this->container->getService('Repo.Area');
-        /* @var \Cms\Data\Area\AreaRepository $repoArea */
-        $areasTopLevel = $repoArea->getTopLevel();
-
         $repoArticle = $this->container->getService('Repo.Article');
         /* @var \Cms\Data\Article\ArticleRepository $repoArticle */
         $bindings['Content']['Recent'] = $repoArticle->getRecentPublic(5);

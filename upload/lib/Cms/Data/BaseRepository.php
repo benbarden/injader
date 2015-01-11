@@ -144,7 +144,11 @@ abstract class BaseRepository implements IRepository
             $this->bindParams();
             $this->pdoStatement->execute();
         } catch(\PDOException $e) {
-            throw new DataException('Failed to run addRecord', 0, $e);
+            $errorInfo = $this->pdoStatement->errorInfo();
+            if ($errorInfo) {
+                $errorMsg = $errorInfo[2];
+            }
+            throw new DataException('Failed to run addRecord: '.$errorMsg);
         }
     }
 
@@ -184,7 +188,11 @@ abstract class BaseRepository implements IRepository
             $this->pdoStatement->bindParam(':'.$updateVar, $updateId);
             $this->pdoStatement->execute();
         } catch(\PDOException $e) {
-            throw new DataException('Failed to run updateRecord', 0, $e);
+            $errorInfo = $this->pdoStatement->errorInfo();
+            if ($errorInfo) {
+                $errorMsg = $errorInfo[2];
+            }
+            throw new DataException('Failed to run updateRecord: '.$errorMsg);
         }
     }
 
@@ -218,7 +226,11 @@ abstract class BaseRepository implements IRepository
             $this->pdoStatement->bindParam(':'.$deleteVar, $deleteId);
             $this->pdoStatement->execute();
         } catch(\PDOException $e) {
-            throw new DataException('Failed to run deleteRecord', 0, $e);
+            $errorInfo = $this->pdoStatement->errorInfo();
+            if ($errorInfo) {
+                $errorMsg = $errorInfo[2];
+            }
+            throw new DataException('Failed to run deleteRecord: '.$errorMsg);
         }
     }
 }

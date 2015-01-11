@@ -67,3 +67,6 @@ ALTER TABLE Cms_Content DROP INDEX content_area_id , ADD INDEX category_id (cate
 UPDATE Cms_Content SET category_id = 1;
 
 ALTER TABLE Cms_UrlMapping CHANGE COLUMN area_id category_id INT(10) NOT NULL DEFAULT '0' ;
+
+ALTER TABLE Cms_UrlMapping ADD COLUMN id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST, DROP PRIMARY KEY, ADD PRIMARY KEY (id);
+ALTER TABLE Cms_UrlMapping ADD UNIQUE INDEX relative_url (relative_url ASC);

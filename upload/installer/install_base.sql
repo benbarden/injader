@@ -156,15 +156,17 @@ CREATE TABLE IF NOT EXISTS {IFW_TBL_UPLOADS} (
 
 DROP TABLE IF EXISTS {IFW_TBL_URL_MAPPING};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_URL_MAPPING} (
-  relative_url VARCHAR( 255 ) NOT NULL ,
-  is_active CHAR( 1 ) NOT NULL DEFAULT 'Y' ,
-  article_id INT( 10 ) NOT NULL DEFAULT '0' ,
-  category_id INT( 10 ) NOT NULL DEFAULT '0' ,
-  PRIMARY KEY (relative_url)
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  relative_url varchar(255) NOT NULL,
+  is_active char(1) NOT NULL DEFAULT 'Y',
+  article_id int(10) NOT NULL DEFAULT '0',
+  category_id int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY relative_url (relative_url),
+  KEY is_active (is_active),
+  KEY article_id (article_id),
+  KEY category_id (category_id)
 );
-ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX is_active(is_active);
-ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX article_id(article_id);
-ALTER TABLE {IFW_TBL_URL_MAPPING} ADD INDEX category_id(category_id);
 
 DROP TABLE IF EXISTS {IFW_TBL_USERS};
 CREATE TABLE IF NOT EXISTS {IFW_TBL_USERS} (

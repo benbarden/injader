@@ -75,7 +75,7 @@ class AreaRepository implements IRepository
             $dbData = $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
             return $dbData;
         } catch(\PDOException $e) {
-            throw new DataException("Couldn't get navigation for: ". $navType, 0, $e);
+            throw new DataException("Failed: getTopLevel", 0, $e);
         }
     }
 

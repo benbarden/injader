@@ -22,10 +22,11 @@
         $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
     }
 
-    function showCpErrorPage($cmsContainer, $errorMsg)
+    function showCpErrorPage($cmsContainer, $cpBindings, $errorMsg)
     {
+        $cpBindings['Error'] = $errorMsg;
         $engine = $cmsContainer->getService('Theme.EngineCPanel');
-        $outputHtml = $engine->render('core/cp-error.twig', array('Error' => $errorMsg));
+        $outputHtml = $engine->render('core/cp-error.twig', $cpBindings);
         print($outputHtml);
         exit;
     }
@@ -54,7 +55,7 @@
             $themeFile = 'category/category-modify.twig';
             if (!$getId) {
                 $errorMsg = 'Missing parameter: Id';
-                showCpErrorPage($cmsContainer, $errorMsg);
+                showCpErrorPage($cmsContainer, $cpBindings, $errorMsg);
             }
             $formAction = '/cp/category.php?action=edit&id='.$getId;
             break;
@@ -64,13 +65,13 @@
             $themeFile = 'category/category-delete.twig';
             if (!$getId) {
                 $errorMsg = 'Missing parameter: Id';
-                showCpErrorPage($cmsContainer, $errorMsg);
+                showCpErrorPage($cmsContainer, $cpBindings, $errorMsg);
             }
             $formAction = '/cp/category.php?action=delete&id='.$getId;
             break;
         default:
             $errorMsg = 'Missing parameter: Action';
-            showCpErrorPage($cmsContainer, $errorMsg);
+            showCpErrorPage($cmsContainer, $cpBindings, $errorMsg);
             break;
     }
 
@@ -78,12 +79,17 @@
     $cpBindings['Form']['Action'] = $formAction;
 
     $repoCategory = $cmsContainer->getService('Repo.Category');
-    /* @var \Cms\Data\Category\CategoryRepository $repoCategory */
     $repoArticle = $cmsContainer->getService('Repo.Article');
+    $repoUrlMapping = $cmsContainer->getService('Repo.UrlMapping');
+    /* @var \Cms\Data\Category\CategoryRepository $repoCategory */
     /* @var \Cms\Data\Article\ArticleRepository $repoArticle */
-    if ($repoArticle->countByCategoryAll($getId) > 0) {
-        $errorMsg = 'Please remove all content from this category before attempting to delete it.';
-        showCpErrorPage($cmsContainer, $errorMsg);
+    /* @var \Cms\Data\UrlMapping\UrlMappingRepository $repoUrlMapping */
+
+    if ($isDelete) {
+        if ($repoArticle->countByCategoryAll($getId) > 0) {
+            $errorMsg = 'Please remove all content from this category before attempting to delete it.';
+            showCpErrorPage($cmsContainer, $cpBindings, $errorMsg);
+        }
     }
 
     $formErrors = array();
@@ -115,6 +121,7 @@
     }
 
     if ($_POST) {
+        $modelUrlMapping = null;
         if ($isDelete) {
             $postId = $_POST['category-id'];
             if ($postId != $getId) {
@@ -139,6 +146,19 @@
             if (!$postSortRule) {
                 $formErrors[] = array('Field' => 'sort-rule', 'Message' => 'Missing sort rule');
             }
+            // Validate permalink
+            if (!$isDelete) {
+                $modelUrlMapping = $repoUrlMapping->getByUrl($postPermalink);
+                if ($modelUrlMapping) {
+                    if ($isCreate) {
+                        $formErrors[] = array('Field' => 'permalink', 'Message' => 'Permalink is already in use [1]');
+                    } elseif ($isEdit) {
+                        if ($modelUrlMapping->getCategoryId() != $getId) {
+                            $formErrors[] = array('Field' => 'permalink', 'Message' => 'Permalink is already in use [2]');
+                        }
+                    }
+                }
+            }
         }
         if (!$formErrors) {
             $dbData = array();
@@ -154,11 +174,41 @@
                 $dbData['sort_rule'] = $postSortRule;
             }
             $modelCategory = new \Cms\Data\Category\Category($dbData);
-            try {
-                if ($isDelete) {
-                    $repoCategory->delete($modelCategory);
+
+            $addUrlMapping = false;
+            if ($isCreate) {
+                $addUrlMapping = true;
+            } elseif ($isEdit) {
+                if ($modelUrlMapping) {
+                    if ($modelUrlMapping->getRelativeUrl() != $postPermalink) {
+                        $addUrlMapping = true;
+                    }
                 } else {
+                    $addUrlMapping = true;
+                }
+            }
+
+            if ($addUrlMapping) {
+                $modelUrlMapping = new \Cms\Data\UrlMapping\UrlMapping();
+                $modelUrlMapping->setRelativeUrl($postPermalink);
+                $modelUrlMapping->setArticleId(0);
+                $modelUrlMapping->setCategoryId($getId);
+                $modelUrlMapping->setIsActive('Y');
+            }
+
+            try {
+                if ($isCreate) {
                     $repoCategory->save($modelCategory);
+                    $repoUrlMapping->create($modelUrlMapping);
+                } elseif ($isEdit) {
+                    $repoCategory->save($modelCategory);
+                    if ($addUrlMapping) {
+                        $repoUrlMapping->deactivateAllByCategory($getId);
+                        $repoUrlMapping->create($modelUrlMapping);
+                    }
+                } elseif ($isDelete) {
+                    $repoCategory->delete($modelCategory);
+                    $repoUrlMapping->deleteAllByCategory($getId);
                 }
                 if ($isCreate) {
                     $resultMsg = '?msg=addsuccess';

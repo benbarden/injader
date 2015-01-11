@@ -6,10 +6,11 @@ namespace Cms\Core\Di;
 use Cms\Data\AccessLog\AccessLogRepository,
     Cms\Data\Area\AreaRepository,
     Cms\Data\Article\ArticleRepository,
+    Cms\Data\Category\CategoryRepository,
     Cms\Data\Setting\SettingRepository,
+    Cms\Data\UrlMapping\UrlMappingRepository,
     Cms\Data\User\UserRepository,
     Cms\Data\UserSession\UserSessionRepository;
-use Cms\Data\Category\CategoryRepository;
 
 
 class Factory
@@ -48,13 +49,16 @@ class Factory
         $themeCache   = $config->getByKey('Theme.Cache');
         $engineCache  = ($themeCache == 'On') ? 1 : 0;
 
-        $pdo = new \PDO($dsn, $user, $pw);
+        $pdo = new \PDO($dsn, $user, $pw, array(
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+        ));
 
         $repoAccessLog = new AccessLogRepository($pdo);
         $repoArea = new AreaRepository($pdo);
         $repoArticle = new ArticleRepository($pdo);
         $repoCategory = new CategoryRepository($pdo);
         $repoSetting = new SettingRepository($pdo);
+        $repoUrlMapping = new UrlMappingRepository($pdo);
         $repoUser = new UserRepository($pdo);
         $repoUserSession = new UserSessionRepository($pdo);
 
@@ -98,6 +102,7 @@ class Factory
         $serviceLocator->set('Repo.Article', $repoArticle);
         $serviceLocator->set('Repo.Category', $repoCategory);
         $serviceLocator->set('Repo.Setting', $repoSetting);
+        $serviceLocator->set('Repo.UrlMapping', $repoUrlMapping);
         $serviceLocator->set('Repo.User', $repoUser);
         $serviceLocator->set('Repo.UserSession', $repoUserSession);
         $serviceLocator->set('Theme.Engine', $themeEngine);
