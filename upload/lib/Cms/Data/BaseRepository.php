@@ -104,6 +104,12 @@ abstract class BaseRepository implements IRepository
         return $updateSql;
     }
 
+    private function buildDeleteSql($table, $key, $deleteVar)
+    {
+        $deleteSql = "DELETE FROM $table WHERE $key = :".$deleteVar;
+        return $deleteSql;
+    }
+
     private function bindParams()
     {
         foreach ($this->dbValues as $item) {
@@ -178,7 +184,41 @@ abstract class BaseRepository implements IRepository
             $this->pdoStatement->bindParam(':'.$updateVar, $updateId);
             $this->pdoStatement->execute();
         } catch(\PDOException $e) {
-            throw new DataException('Failed to run addRecord', 0, $e);
+            throw new DataException('Failed to run updateRecord', 0, $e);
+        }
+    }
+
+    protected function deleteRecord($model)
+    {
+        $this->validateDefinitions($model);
+        $dbDefinitions = $model->getDbDefinitions();
+        $table = $dbDefinitions['core']['tableName'];
+        $key = $dbDefinitions['core']['tableKey'];
+
+        // Prepare db field names
+        $deleteId = null;
+        $deleteVar = null;
+        foreach ($dbDefinitions['fields'] as $field => $defs) {
+
+            $dbValue = call_user_func(array($model, $defs['classMethod']));
+            $objectVar = $defs['objectVar'];
+            if ($field == $key) {
+                $deleteId = $dbValue;
+                $deleteVar = $objectVar;
+            }
+        }
+
+        if (!$deleteId) {
+            throw new DataException('Cannot delete: Row id not in array');
+        }
+        $deleteSql = $this->buildDeleteSql($table, $key, $deleteVar);
+
+        try {
+            $this->pdoStatement = $this->db->prepare($deleteSql);
+            $this->pdoStatement->bindParam(':'.$deleteVar, $deleteId);
+            $this->pdoStatement->execute();
+        } catch(\PDOException $e) {
+            throw new DataException('Failed to run deleteRecord', 0, $e);
         }
     }
 }

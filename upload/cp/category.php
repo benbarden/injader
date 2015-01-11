@@ -98,35 +98,44 @@
     }
 
     if ($_POST) {
-        $postName        = $_POST['name'];
-        $postPermalink   = $_POST['permalink'];
-        $postDescription = $_POST['description'];
-        $postPerPage     = (int) $_POST['items-per-page'];
-        $postParentId    = (int) $_POST['parent-id'];
-        $postSortRule    = $_POST['sort-rule'];
-        if (!$postName) {
-            $formErrors[] = array('Field' => 'name', 'Message' => 'Missing category name');
-        }
-        if (!$postPermalink) {
-            $formErrors[] = array('Field' => 'permalink', 'Message' => 'Missing permalink');
-        }
-        if (!$postPerPage) {
-            $formErrors[] = array('Field' => 'items-per-page', 'Message' => 'Missing items per page');
-        }
-        if (!$postSortRule) {
-            $formErrors[] = array('Field' => 'sort-rule', 'Message' => 'Missing sort rule');
+        if ($isDelete) {
+            $postId = $_POST['category-id'];
+            if ($postId != $getId) {
+                $formErrors[] = array('Message' => 'Category id mismatch!');
+            }
+        } else {
+            $postName        = $_POST['name'];
+            $postPermalink   = $_POST['permalink'];
+            $postDescription = $_POST['description'];
+            $postPerPage     = (int) $_POST['items-per-page'];
+            $postParentId    = (int) $_POST['parent-id'];
+            $postSortRule    = $_POST['sort-rule'];
+            if (!$postName) {
+                $formErrors[] = array('Field' => 'name', 'Message' => 'Missing category name');
+            }
+            if (!$postPermalink) {
+                $formErrors[] = array('Field' => 'permalink', 'Message' => 'Missing permalink');
+            }
+            if (!$postPerPage) {
+                $formErrors[] = array('Field' => 'items-per-page', 'Message' => 'Missing items per page');
+            }
+            if (!$postSortRule) {
+                $formErrors[] = array('Field' => 'sort-rule', 'Message' => 'Missing sort rule');
+            }
         }
         if (!$formErrors) {
             $dbData = array();
             $dbData['id'] = $getId;
-            $dbData['name'] = $postName;
-            $dbData['permalink'] = $postPermalink;
-            $dbData['description'] = $postDescription;
-            if ($postParentId) {
-                $dbData['parent_id'] = $postParentId;
+            if (!$isDelete) {
+                $dbData['name'] = $postName;
+                $dbData['permalink'] = $postPermalink;
+                $dbData['description'] = $postDescription;
+                if ($postParentId) {
+                    $dbData['parent_id'] = $postParentId;
+                }
+                $dbData['items_per_page'] = $postPerPage;
+                $dbData['sort_rule'] = $postSortRule;
             }
-            $dbData['items_per_page'] = $postPerPage;
-            $dbData['sort_rule'] = $postSortRule;
             $modelCategory = new \Cms\Data\Category\Category($dbData);
             try {
                 if ($isDelete) {
@@ -159,7 +168,7 @@
         }
         $formPrefill[] = array('Field' => 'parent-id', 'Value' => $postParentId);
         $formPrefill[] = array('Field' => 'sort-rule', 'Value' => $postSortRule);
-    } elseif ($categoryData) {
+    } elseif ($categoryData && $isEdit) {
         $formPrefill[] = array('Field' => 'name', 'Value' => $dbName);
         $formPrefill[] = array('Field' => 'permalink', 'Value' => $dbPermalink);
         $formPrefill[] = array('Field' => 'description', 'Value' => $dbDescription);

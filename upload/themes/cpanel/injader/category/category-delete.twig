@@ -2,8 +2,22 @@
 
 {% block cp_content %}
 
-<h1 class="page-header">{{ CP.Title }}</h1>
+    <h1 class="page-header">{{ CP.Title }}</h1>
 
-<p>You are about to delete the category: {{ Category.name }}</p>
+    {% include "core/form-errors.twig" %}
+
+    <p>You are about to delete the category: <strong>{{ Data.Category.name }}</strong></p>
+
+    <p>Are you sure you want to do this?</p>
+
+    <form class="form-horizontal" action="{{ Form.Action }}" method="post">
+        <input type="hidden" name="category-id" value="{{ Data.Category.categoryId }}">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a class="btn btn-default" href="{{ cpLink('categories') }}" role="button">Cancel and go back</a>
+            </div>
+        </div>
+    </form>
 
 {% endblock cp_content %}

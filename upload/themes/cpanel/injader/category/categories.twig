@@ -38,16 +38,23 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Options</th>
+                <th class="col-md-1">Id</th>
+                <th class="col-md-3">Name</th>
+                <th class="col-md-3">Permalink</th>
+                <th class="col-md-1">Items per page</th>
+                <th class="col-md-2">Options</th>
             </tr>
             </thead>
             <tbody>
                 {% for Item in Page.CategoryList %}
                     <tr>
+                        <th>{{ Item.id }}</th>
                         <td>{{ Item.name }}</td>
+                        <td>{{ Item.permalink }}</td>
+                        <td>{{ Item.items_per_page }}</td>
                         <td>
-                            <a href="{{ cpLink('category', {'action': 'edit', 'id': Item.id}) }}">Edit</a>
+                            <a href="{{ cpLink('category', {'action': 'edit', 'id': Item.id}) }}">Edit</a> :
+                            <a href="{{ cpLink('category', {'action': 'delete', 'id': Item.id}) }}">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}

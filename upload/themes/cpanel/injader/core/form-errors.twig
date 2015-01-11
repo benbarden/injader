@@ -1,0 +1,10 @@
+{% if Form.Errors %}
+    <div class="alert alert-danger" role="alert">
+        <strong>The following errors occurred:</strong>
+        <br>
+        {% for Item in Form.Errors %}
+            {{ Item.Message }}
+            <br>
+        {% endfor %}
+    </div>
+{% endif %}

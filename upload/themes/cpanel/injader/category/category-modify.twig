@@ -4,16 +4,7 @@
 
     <h1 class="page-header">{{ CP.Title }}</h1>
 
-    {% if Form.Errors %}
-        <div class="alert alert-danger" role="alert">
-            <strong>The following errors occurred:</strong>
-            <br>
-            {% for Item in Form.Errors %}
-                {{ Item.Message }}
-                <br>
-            {% endfor %}
-        </div>
-    {% endif %}
+    {% include "core/form-errors.twig" %}
 
     <form class="form-horizontal" action="{{ Form.Action }}" method="post">
         <div class="form-group">

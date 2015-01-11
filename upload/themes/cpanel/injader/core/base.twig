@@ -136,11 +136,17 @@
     function alertAutoHide() {
         if ($('.alert-dismissible').length) {
             $('.alert-dismissible').fadeOut();
+            alertClearMsgUrl();
         }
+    }
+    function alertClearMsgUrl() {
+        var pageTitle = document.getElementsByTagName("title")[0].innerHTML;
+        newUrlArray = top.location.href.split('?msg=');
+        window.history.replaceState({} , pageTitle, newUrlArray[0]);
     }
     $(document).ready(function() {
         if ($('.alert-dismissible').length) {
-            window.setTimeout('alertAutoHide()', 3000);
+            window.setTimeout('alertAutoHide()', 2000);
         }
     });
 </script>
