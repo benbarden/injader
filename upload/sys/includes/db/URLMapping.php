@@ -78,10 +78,10 @@ class URLMapping extends Helper {
      * Adds a link to the mapping table
      * @param $strURL
      * @param $intArticleID
-     * @param $intAreaID
+     * @param $categoryId
      * @return void
      */
-    function addLink($strURL, $intArticleID, $intAreaID) {
+    function addLink($strURL, $intArticleID, $categoryId) {
         
         global $CMS;
         
@@ -107,13 +107,13 @@ class URLMapping extends Helper {
                 WHERE is_active = 'Y'
                 AND article_id = %s
             ", mysql_real_escape_string($intArticleID));
-        } elseif (!empty($intAreaID)) {
+        } elseif (!empty($categoryId)) {
             $strQuery = sprintf("
                 UPDATE {IFW_TBL_URL_MAPPING}
                 SET is_active = 'N'
                 WHERE is_active = 'Y'
-                AND area_id = %s
-            ", mysql_real_escape_string($intAreaID));
+                AND category_id = %s
+            ", mysql_real_escape_string($categoryId));
         }
         $CMS->Query($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
         
@@ -129,7 +129,7 @@ class URLMapping extends Helper {
         // ** 4. Finally, add the new mapping
         $strQuery = sprintf("
             INSERT INTO {IFW_TBL_URL_MAPPING} (
-                relative_url, is_active, article_id, area_id
+                relative_url, is_active, article_id, category_id
             )
             VALUES (
                 '%s', 'Y', %s, %s
@@ -137,7 +137,7 @@ class URLMapping extends Helper {
         ",
             mysql_real_escape_string($strURL),
             mysql_real_escape_string($intArticleID),
-            mysql_real_escape_string($intAreaID)
+            mysql_real_escape_string($categoryId)
         );
         $CMS->Query($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
         
@@ -185,20 +185,20 @@ class URLMapping extends Helper {
     }
     
     /**
-     * Gets the active URL for a given area ID
-     * @param $intAreaID
+     * Gets the active URL for a given category
+     * @param $categoryId
      * @return string
      */
-    function getActiveArea($intAreaID) {
+    function getActiveCategory($categoryId) {
         
         global $CMS;
         
         $strQuery = sprintf("
             SELECT *
             FROM {IFW_TBL_URL_MAPPING}
-            WHERE area_id = %s
+            WHERE category_id = %s
             AND is_active = 'Y'
-        ", mysql_real_escape_string($intAreaID));
+        ", mysql_real_escape_string($categoryId));
         $arrResult = $CMS->ResultQuery($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
         return is_array($arrResult) ? $arrResult : "";
         
@@ -208,10 +208,10 @@ class URLMapping extends Helper {
      * Checks if a url has been used by another page
      * @param $strUrl
      * @param $intArticleID
-     * @param $intAreaID
+     * @param $categoryId
      * @return boolean
      */
-    function isUrlInUse($strUrl, $intArticleID = "", $intAreaID = "") {
+    function isUrlInUse($strUrl, $intArticleID = "", $categoryId = "") {
         
         global $CMS;
         
@@ -225,14 +225,14 @@ class URLMapping extends Helper {
                 mysql_real_escape_string($intArticleID),
                 mysql_real_escape_string($strUrl)
             );
-        } elseif (!empty($intAreaID)) {
+        } elseif (!empty($categoryId)) {
             $strQuery = sprintf("
                 SELECT count(*) AS count
                 FROM {IFW_TBL_URL_MAPPING}
-                WHERE area_id <> %s
+                WHERE category_id <> %s
                 AND relative_url = '%s'
             ",
-                mysql_real_escape_string($intAreaID),
+                mysql_real_escape_string($categoryId),
                 mysql_real_escape_string($strUrl)
             );
         } else {
@@ -246,108 +246,6 @@ class URLMapping extends Helper {
         }
         $arrResult = $CMS->ResultQuery($strQuery, __CLASS__ . "::" . __FUNCTION__, __LINE__);
         return $arrResult[0]['count'] > 0 ? true : false;
-        
-    }
-    
-    // ** ** ** code below this line may be removed ** ** ** //
-    
-    /**
-     * Used to create the cache in the event it doesn't exist
-     * @return void
-     */
-    function FirstCacheBuild() {
-        
-        global $CMS;
-        
-        if (!$CMS->CacheFile->Exists("URLMapping_URLs")) {
-            $this->RebuildCache();
-        }
-        
-    }
-    
-    /**
-     * Used to forcefully rebuild the class cache from the database
-     * @return void
-     */
-    function RebuildCache() {
-        
-        global $CMS;
-        
-        $this->arrURLData = array();
-        
-        $arrResult = $CMS->ResultQuery("SELECT * FROM {IFW_TBL_URL_MAPPING}", 
-            __CLASS__ . "::" . __FUNCTION__, __LINE__);
-        for ($i=0; $i<count($arrResult); $i++) {
-            foreach ($arrResult[$i] as $key => $value) {
-        	   $this->arrURLData[$key] = $value;
-            }
-        }
-        
-        $CMS->CacheBuild->ArrayBuild("URLMapping_URLs", $this->arrURLData);
-        
-    }
-    
-    /**
-     * Stores a cache item using the specified format
-     * @param $strKey
-     * @param $arrData
-     * @return void
-     */
-    function StoreCacheItem($strKey, $arrData) {
-        
-        $this->arrURLData[$strKey] = $arrData;
-	    
-    }
-    
-    /**
-      * Retrieves an item from the cache
-      * @param $strKey
-      * @return array if found, else boolean(false)
-      */
-    function LoadCacheItem($strKey) {
-        
-        if (array_key_exists($strKey, $this->arrURLData)) {
-        	
-        	return $this->arrURLData[$strKey];
-        	
-        } else {
-        	
-        	return false;
-        	
-        }
-
-    }
-    
-    /**
-     * Checks whether a URL exists in the mapping table
-     * @param $strURL
-     * @return boolean
-     */
-    function Exists($strURL) {
-        
-        $arrCacheData = $this->LoadCacheItem($strURL);
-        
-        if (!is_array($arrCacheData)) {
-        	
-            $arrResult = $this->ResultQuery("SELECT * FROM {IFW_TBL_URL_MAPPING} ".
-            "WHERE relative_url = '$strURL'", __CLASS__ . "::" . __FUNCTION__, __LINE__);
-            
-            $this->StoreCacheItem($strURL, $arrResult[0]);
-            
-            $arrCacheData = $this->LoadCacheItem($strURL);
-            
-        }
-        
-        return count($arrCacheData) > 0 ? true : false;
-        
-    }
-    
-    /**
-     * Checks whether a URL is active
-     * @param $strURL
-     * @return boolean
-     */
-    function IsActive($strURL) {
         
     }
     

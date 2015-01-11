@@ -199,7 +199,7 @@ class Renderer
 
                 // Content setup
                 $perPage = $category->getItemsPerPage();
-                $totalCount = $articleRepo->countByCategory($this->itemId);
+                $totalCount = $articleRepo->countByCategoryPublic($this->itemId);
 
                 // Pagination
                 $iaPagesOffset = new \Cms\Ia\Pages\Offset();

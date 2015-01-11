@@ -53,8 +53,8 @@
                         <td>{{ Item.permalink }}</td>
                         <td>{{ Item.items_per_page }}</td>
                         <td>
-                            <a href="{{ cpLink('category', {'action': 'edit', 'id': Item.id}) }}">Edit</a> :
-                            <a href="{{ cpLink('category', {'action': 'delete', 'id': Item.id}) }}">Delete</a>
+                            <a class="btn btn-default" href="{{ cpLink('category', {'action': 'edit', 'id': Item.id}) }}" role="button">Edit</a>
+                            <a class="btn btn-danger" href="{{ cpLink('category', {'action': 'delete', 'id': Item.id}) }}" role="button">Delete</a>
                         </td>
                     </tr>
                 {% endfor %}

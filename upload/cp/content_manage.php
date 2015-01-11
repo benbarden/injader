@@ -179,7 +179,7 @@ TagOptions3;
   </tr>
   <tr>
     <td>
-      <label><b>Area</b></label>
+      <label><b>Category</b></label>
     </td>
     <td>
       <select id="area" name="area">

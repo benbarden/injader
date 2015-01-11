@@ -22,6 +22,14 @@
         $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
     }
 
+    function showCpErrorPage($cmsContainer, $errorMsg)
+    {
+        $engine = $cmsContainer->getService('Theme.EngineCPanel');
+        $outputHtml = $engine->render('core/cp-error.twig', array('Error' => $errorMsg));
+        print($outputHtml);
+        exit;
+    }
+
     $cpBindings = array();
 
     $cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();
@@ -45,7 +53,8 @@
             $pageTitle = 'Edit Category';
             $themeFile = 'category/category-modify.twig';
             if (!$getId) {
-                throw new \Cms\Exception\Cp\PageException('Missing parameter: Id');
+                $errorMsg = 'Missing parameter: Id';
+                showCpErrorPage($cmsContainer, $errorMsg);
             }
             $formAction = '/cp/category.php?action=edit&id='.$getId;
             break;
@@ -54,12 +63,14 @@
             $pageTitle = 'Delete Category';
             $themeFile = 'category/category-delete.twig';
             if (!$getId) {
-                throw new \Cms\Exception\Cp\PageException('Missing parameter: Id');
+                $errorMsg = 'Missing parameter: Id';
+                showCpErrorPage($cmsContainer, $errorMsg);
             }
             $formAction = '/cp/category.php?action=delete&id='.$getId;
             break;
         default:
-            throw new \Cms\Exception\Cp\PageException('Missing parameter: Action');
+            $errorMsg = 'Missing parameter: Action';
+            showCpErrorPage($cmsContainer, $errorMsg);
             break;
     }
 
@@ -68,6 +79,12 @@
 
     $repoCategory = $cmsContainer->getService('Repo.Category');
     /* @var \Cms\Data\Category\CategoryRepository $repoCategory */
+    $repoArticle = $cmsContainer->getService('Repo.Article');
+    /* @var \Cms\Data\Article\ArticleRepository $repoArticle */
+    if ($repoArticle->countByCategoryAll($getId) > 0) {
+        $errorMsg = 'Please remove all content from this category before attempting to delete it.';
+        showCpErrorPage($cmsContainer, $errorMsg);
+    }
 
     $formErrors = array();
     $formPrefill = array();

@@ -39,14 +39,30 @@ class ArticleRepository extends BaseRepository
         }
     }
 
-    public function countByCategory($categoryId)
+    public function countByCategoryPublic($categoryId)
     {
+        return $this->countByCategory('public', $categoryId);
+    }
+
+    public function countByCategoryAll($categoryId)
+    {
+        return $this->countByCategory('all', $categoryId);
+    }
+
+    private function countByCategory($mode, $categoryId)
+    {
+        if ($mode == 'public') {
+            $pdoStatusSql = "AND content_status = 'Published'";
+        } else {
+            $pdoStatusSql = "";
+        }
+
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 SELECT count(*) FROM Cms_Content
                 WHERE category_id = :categoryId
-                AND content_status = 'Published'
+                $pdoStatusSql
             ");
             $pdoStatement->bindParam(':categoryId', $categoryId);
             $pdoStatement->execute();
