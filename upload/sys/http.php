@@ -25,6 +25,7 @@
         } else {
             header("Location: $url");
         }
+        exit;
     }
 
     function httpRedirectPerm($url)
