@@ -154,7 +154,9 @@
                         $formErrors[] = array('Field' => 'permalink', 'Message' => 'Permalink is already in use [1]');
                     } elseif ($isEdit) {
                         if ($modelUrlMapping->getCategoryId() != $getId) {
-                            $formErrors[] = array('Field' => 'permalink', 'Message' => 'Permalink is already in use [2]');
+                            $formErrors[] = array('Message' => 'Permalink is already in use. Please choose another.');
+                        } elseif ($modelUrlMapping->getArticleId()) {
+                            $formErrors[] = array('Message' => 'Permalink is already in use. Please choose another.');
                         }
                     }
                 }
@@ -180,15 +182,14 @@
                 $addUrlMapping = true;
             } elseif ($isEdit) {
                 if ($modelUrlMapping) {
-                    if ($modelUrlMapping->getRelativeUrl() != $postPermalink) {
-                        $addUrlMapping = true;
-                    }
+                    $urlRowId = $modelUrlMapping->getId();
                 } else {
                     $addUrlMapping = true;
                 }
             }
 
             if ($addUrlMapping) {
+                // ok to set up the new model
                 $modelUrlMapping = new \Cms\Data\UrlMapping\UrlMapping();
                 $modelUrlMapping->setRelativeUrl($postPermalink);
                 $modelUrlMapping->setArticleId(0);
@@ -196,31 +197,35 @@
                 $modelUrlMapping->setIsActive('Y');
             }
 
-            try {
-                if ($isCreate) {
-                    $repoCategory->save($modelCategory);
-                    $repoUrlMapping->create($modelUrlMapping);
-                } elseif ($isEdit) {
-                    $repoCategory->save($modelCategory);
-                    if ($addUrlMapping) {
-                        $repoUrlMapping->deactivateAllByCategory($getId);
+            if (!$formErrors) {
+                try {
+                    if ($isCreate) {
+                        $repoCategory->save($modelCategory);
                         $repoUrlMapping->create($modelUrlMapping);
+                    } elseif ($isEdit) {
+                        $repoCategory->save($modelCategory);
+                        if ($addUrlMapping) {
+                            $urlRowId = $repoUrlMapping->create($modelUrlMapping);
+                        } elseif ($modelUrlMapping) {
+                            $repoUrlMapping->activateById($urlRowId);
+                        }
+                        $repoUrlMapping->deactivateByCategory($getId, $urlRowId);
+                    } elseif ($isDelete) {
+                        $repoCategory->delete($modelCategory);
+                        $repoUrlMapping->deleteAllByCategory($getId);
                     }
-                } elseif ($isDelete) {
-                    $repoCategory->delete($modelCategory);
-                    $repoUrlMapping->deleteAllByCategory($getId);
+                    if ($isCreate) {
+                        $resultMsg = '?msg=addsuccess';
+                    } elseif ($isEdit) {
+                        $resultMsg = '?msg=editsuccess';
+                    } elseif ($isDelete) {
+                        $resultMsg = '?msg=deletesuccess';
+                    }
+                    $resultsUrl = URL_ROOT.'cp/categories.php'.$resultMsg;
+                    header('Location: '.$resultsUrl);
+                } catch (\Cms\Exception\Data\DataException $e) {
+                    $formErrors[] = array('Message' => 'DataException: '.$e->getMessage());
                 }
-                if ($isCreate) {
-                    $resultMsg = '?msg=addsuccess';
-                } elseif ($isEdit) {
-                    $resultMsg = '?msg=editsuccess';
-                } elseif ($isDelete) {
-                    $resultMsg = '?msg=deletesuccess';
-                }
-                $resultsUrl = URL_ROOT.'cp/categories.php'.$resultMsg;
-                header('Location: '.$resultsUrl);
-            } catch (\Cms\Exception\Data\DataException $e) {
-                $formErrors[] = array('Message' => 'DataException: '.$e->getMessage());
             }
         }
     }

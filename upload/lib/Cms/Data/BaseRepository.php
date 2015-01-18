@@ -143,6 +143,7 @@ abstract class BaseRepository implements IRepository
             $this->pdoStatement = $this->db->prepare($insertSql);
             $this->bindParams();
             $this->pdoStatement->execute();
+            return $this->db->lastInsertId();
         } catch(\PDOException $e) {
             $errorInfo = $this->pdoStatement->errorInfo();
             if ($errorInfo) {

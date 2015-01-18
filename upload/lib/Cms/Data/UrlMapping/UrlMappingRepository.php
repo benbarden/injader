@@ -67,19 +67,37 @@ class UrlMappingRepository extends BaseRepository
         }
     }
 
-    public function deactivateAllByCategory($categoryId)
+    public function deactivateByCategory($categoryId, $excludeRowId)
     {
         try {
             /* @var \PDOStatement $pdoStatement */
             $pdoStatement = $this->db->prepare("
                 UPDATE ".self::TABLE_NAME."
                 SET is_active = 'N'
-                WHERE category_id = :category_id
+                WHERE category_id = :categoryId
+                AND id != :excludeRowId
             ");
-            $pdoStatement->bindParam(':category_id', $categoryId);
+            $pdoStatement->bindParam(':categoryId', $categoryId);
+            $pdoStatement->bindParam(':excludeRowId', $excludeRowId);
             $pdoStatement->execute();
         } catch(\PDOException $e) {
-            throw new DataException('Failed to run: deactivateAllByCategory', 0, $e);
+            throw new DataException('Failed to run: deactivateByCategory', 0, $e);
+        }
+    }
+
+    public function activateById($rowId)
+    {
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                UPDATE ".self::TABLE_NAME."
+                SET is_active = 'Y'
+                WHERE id = :rowId
+            ");
+            $pdoStatement->bindParam(':rowId', $rowId);
+            $pdoStatement->execute();
+        } catch(\PDOException $e) {
+            throw new DataException('Failed to run: activateById', 0, $e);
         }
     }
 
@@ -100,7 +118,7 @@ class UrlMappingRepository extends BaseRepository
 
     public function create(UrlMapping $urlMapping)
     {
-        parent::addRecord($urlMapping);
+        return parent::addRecord($urlMapping);
     }
 
     public function update(UrlMapping $urlMapping)

@@ -72,7 +72,7 @@
                 $blnRedirected    = true;
             } elseif (!empty($arrPageObject[0]['category_id'])) {
                 $strErrText       = "Category ".$arrPageObject[0]['category_id'];
-                $arrNewPageObject = $CMS->UM->getActiveArea($arrPageObject[0]['category_id']);
+                $arrNewPageObject = $CMS->UM->getActiveCategory($arrPageObject[0]['category_id']);
                 $blnRedirected    = true;
             } else {
                 $CMS->Err_MFail(M_ERR_NO_ROWS_RETURNED, "No article or area id for this url!");
