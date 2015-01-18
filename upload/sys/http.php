@@ -18,15 +18,18 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-  function httpRedirect($url) {
-    if (headers_sent()) {
-      echo "<script type='text/javascript'>location.href='$url';</script>";
-    } else {
-      header("Location: $url");
+    function httpRedirect($url)
+    {
+        if (headers_sent()) {
+            echo "<script type='text/javascript'>location.href='$url';</script>";
+        } else {
+            header("Location: $url");
+        }
     }
-  }
-  function httpRedirectPerm($url) {
-    header("HTTP/1.1 301 Moved Permanently");
-    header("Location: $url");
-  }
-?>
+
+    function httpRedirectPerm($url)
+    {
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: $url");
+        exit;
+    }
