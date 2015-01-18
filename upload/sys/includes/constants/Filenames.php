@@ -22,7 +22,7 @@
     define('FN_FEEDS',          URL_ROOT.'feeds.php');
     define('FN_FILE_DOWNLOAD',  URL_ROOT.'file_download.php');
     define('FN_FORGOT_PW',      URL_ROOT.'forgot_pw.php');
-    define('FN_INDEX',          URL_ROOT.'index.php');
+    define('FN_INDEX',          URL_ROOT);
     define('FN_LOGIN',          URL_ROOT.'login.php');
     define('FN_LOGOUT',         URL_ROOT.'logout.php');
     define('FN_PLEASE_WAIT',    URL_ROOT.'please_wait.php');

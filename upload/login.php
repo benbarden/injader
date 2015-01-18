@@ -87,6 +87,7 @@
         exit;
       }
       // ** Go back link ** //
+      $strReferrer = str_replace('http://'.SVR_HOST.URL_ROOT, '', $strReferrer);
       if ($strReferrer) {
         $strGoBack = "<li><a href=\"$strReferrer\">Go back to the page you were just viewing</a></li>";
       } else {
@@ -98,7 +99,7 @@
 <p>You have successfully logged in.</p>
 <ul>
 $strGoBack
-<li><a href="{FN_INDEX}">Go to the home page</a></li>
+<li><a href="/">Go to the home page</a></li>
 <li><a href="{FN_ADM_INDEX}">View or modify your account settings</a></li>
 </ul>
 

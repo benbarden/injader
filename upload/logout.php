@@ -25,25 +25,22 @@
   }
   $CMS->US->Logout($CMS->RES->GetCurrentUserID());
   $strReferrer = empty($_SERVER['HTTP_REFERER']) ? "" : $_SERVER['HTTP_REFERER'];
-  if ($strReferrer) {
-    // Fix broken page number links
-    if ((strpos($strReferrer, "?") === false) && (strpos($strReferrer, "&") !== false)) {
-      $strReferrer = str_replace("&", "?", $strReferrer);
+    // ** Go back link ** //
+    $strReferrer = str_replace('http://'.SVR_HOST.URL_ROOT, '', $strReferrer);
+    if ($strReferrer) {
+        $strGoBack = "<li><a href=\"$strReferrer\">Go back to the page you were just viewing</a></li>";
+    } else {
+        $strGoBack = "";
     }
-    $strGoBack = "<li><a href=\"$strReferrer\">Go back to the page you were just viewing</a></li>";
-  } else {
-    $strGoBack = "";
-  }
       // ** Display results ** //
       $strHTML = <<<END
 <h1>Logged out</h1>
 <p>You have successfully logged out.</p>
 <ul>
 $strGoBack
-<li><a href="{FN_INDEX}">Go to the home page</a></li>
+<li><a href="/">Go to the home page</a></li>
 </ul>
 
 END;
   $CMS->LP->SetTitle("Logged out");
   $CMS->LP->Display($strHTML);
-?>
