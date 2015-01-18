@@ -240,7 +240,6 @@ CMSHeader;
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{URL_ROOT}assets/js/bootstrap/bootstrap.min.js"></script>
-<script src="{URL_ROOT}assets/js/bootstrap/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{URL_ROOT}assets/js/bootstrap/ie10-viewport-bug-workaround.js"></script>
 
