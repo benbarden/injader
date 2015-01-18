@@ -130,6 +130,8 @@ RewriteRule ^(.*)$ index.php/$1 [QSA,L]
 
 # END Injader
 
+Options -Indexes
+
 htaccess;
             
             // Build htaccess file
