@@ -22,15 +22,6 @@
         $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
     }
 
-    function showCpErrorPage($cmsContainer, $cpBindings, $errorMsg)
-    {
-        $cpBindings['Error'] = $errorMsg;
-        $engine = $cmsContainer->getService('Theme.EngineCPanel');
-        $outputHtml = $engine->render('core/cp-error.twig', $cpBindings);
-        print($outputHtml);
-        exit;
-    }
-
     $cpBindings = array();
 
     $cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();

@@ -134,3 +134,13 @@
     
     // Connect to database
     $CMS->IQ->Connect($strDBHost, $strDBSchema, $strDBAdminUser, $strDBAdminPass);
+
+    // Page functions
+    function showCpErrorPage($cmsContainer, $cpBindings, $errorMsg)
+    {
+        $cpBindings['Error'] = $errorMsg;
+        $engine = $cmsContainer->getService('Theme.EngineCPanel');
+        $outputHtml = $engine->render('core/cp-error.twig', $cpBindings);
+        print($outputHtml);
+        exit;
+    }
