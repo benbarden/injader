@@ -47,7 +47,7 @@ class URLMapping extends Helper {
         
         // ** Step 2. Process areas ** //
         $arrAreas = $CMS->ResultQuery("
-            SELECT id, seo_name FROM {IFW_TBL_AREAS}
+            SELECT id, seo_name FROM {IFW_TBL_CATEGORIES}
             WHERE area_type = 'Content'
             ORDER BY id ASC
         ", __CLASS__ . "::" . __FUNCTION__, __LINE__);

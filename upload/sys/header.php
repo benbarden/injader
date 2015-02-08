@@ -21,6 +21,12 @@
     error_reporting(E_ALL);
     ini_set('display_errors', true);
     date_default_timezone_set('Europe/London');
+
+    if (strpos($_SERVER['REQUEST_URI'], '/installer/install.php') !== false) {
+        $isInstalling = true;
+    } else {
+        $isInstalling = false;
+    }
     
     // ** Query Time ** //
     
@@ -72,9 +78,11 @@
     $twigCacheEnabled  = 0; // 1 = enabled; disable for dev purposes
 
     // Third-party
-    $config = new \Cms\Core\Di\Config(ABS_ROOT.'data/secure/config.ini');
-    $factory = new \Cms\Core\Di\Factory();
-    $cmsContainer = $factory->buildContainer($config);
+    if (!$isInstalling) {
+        $config = new \Cms\Core\Di\Config(ABS_ROOT.'data/secure/config.ini');
+        $factory = new \Cms\Core\Di\Factory();
+        $cmsContainer = $factory->buildContainer($config);
+    }
 
     // Passwords
     require ABS_ROOT.'lib/Password/password.php';
@@ -146,12 +154,15 @@
     }
 
     // Access permissions
-    $currentUser = $cmsContainer->getService('Auth.CurrentUser');
-    $accessPermission = new \Cms\Access\Permission($cmsContainer, $currentUser);
+    if (!$isInstalling) {
+        if ($cmsContainer->hasService('Auth.CurrentUser')) {
+            $currentUser = $cmsContainer->getService('Auth.CurrentUser');
+            $accessPermission = new \Cms\Access\Permission($cmsContainer, $currentUser);
+        }
 
-    // CPanel bindings
-    $cpBindings = array();
+        // CPanel bindings
+        $cpBindings = array();
 
-    $cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();
-    $cpBindings['Auth']['CanWriteContent'] = $CMS->RES->CanAddContent();
-
+        $cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();
+        $cpBindings['Auth']['CanWriteContent'] = $CMS->RES->CanAddContent();
+    }

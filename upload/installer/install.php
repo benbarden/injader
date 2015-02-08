@@ -25,8 +25,6 @@
     $intStep = 1;
   }
   $strPageTitle = "Injader Installer - Step $intStep";
-  global $blnInstalling;
-  $blnInstalling = true; // Required to prevent problems with scheduling
   // Initially, some external files will be missing
   switch ($intStep) {
     case 1:
@@ -285,6 +283,28 @@ DBVARS;
       }
       fwrite($cmsFile, $strFile);
       fclose($cmsFile);
+      // Also create config file
+      $configIniUrl = '../data/secure/config.ini';
+      touch($configIniUrl);
+      $configIniData = <<<configIni
+[Database]
+DSN = 'mysql:host=$strDBHost;dbname=$strDBSchema'
+User = $strDBAdminUser
+Pass = $strDBAdminPass
+
+[Theme]
+Current = injader
+Cache = Off
+
+[CP]
+ItemsPerPage = 25
+LogLimit = 3000
+
+configIni;
+      $configSaved = file_put_contents($configIniUrl, $configIniData);
+        if (!$configSaved) {
+            $IJP->Display("<h1>Installation Error</h1>\n\n<p>config.ini cannot be written to. Please check the permissions on the /data/secure/ directory and try again.</p>\n\n<p><i>Source: &lt;install.php, step $intStep&gt;</i></p>", "Error");
+        }
       // Test connection
       include $strFileURL;
       mysql_connect($strDBHost, $strDBAdminUser, $strDBAdminPass)
@@ -316,7 +336,7 @@ DBVARS;
         VALUES ('$strMajesticUser', '$pwHash', '', '', 'admin@yoursite.com', '', '', '', '', '', 0, '1|2|3', 'N')
       ", basename(__FILE__), __LINE__);
       // Build link mapping table
-      $CMS->UM->rebuildAll();
+      //$CMS->UM->rebuildAll();
       // ** Confirm completion ** //
       $IJP->Display("<h1>Installation - Step 4</h1>\n\n<p>Installation completed successfully.</p>\n\n<p><b>IMPORTANT:</b> Please complete the following steps before continuing:</p>\n\n<ul>\n<li>CHMOD the data/secure directory to 755</li>\n<li>Delete the installer directory</li>\n</ul>\n<p>After completing these steps, <a href=\"".FN_LOGIN."\">login to start setting up your site</a>.</p>", $strPageTitle);
 
