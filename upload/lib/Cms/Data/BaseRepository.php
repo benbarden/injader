@@ -117,6 +117,12 @@ abstract class BaseRepository implements IRepository
         }
     }
 
+    private function getClassMethodFromObjectVar($objectVar)
+    {
+        // Example: categoryId -> getCategoryId
+        return 'get'.ucfirst($objectVar);
+    }
+
     protected function addRecord($model)
     {
         $this->validateDefinitions($model);
@@ -129,8 +135,10 @@ abstract class BaseRepository implements IRepository
             // for addRecord, ignore the key
             if ($field == $key) continue;
 
-            $dbValue = call_user_func(array($model, $defs['classMethod']));
             $objectVar = $defs['objectVar'];
+            $classMethod = $this->getClassMethodFromObjectVar($objectVar);
+            //$classMethod = $defs['classMethod'];
+            $dbValue = call_user_func(array($model, $classMethod));
 
             $this->dbFields[] = $field;
             $this->dbValues[] = array('field' => $field, 'value' => $dbValue, 'objectVar' => $objectVar);
@@ -165,8 +173,11 @@ abstract class BaseRepository implements IRepository
         $updateVar = null;
         foreach ($dbDefinitions['fields'] as $field => $defs) {
 
-            $dbValue = call_user_func(array($model, $defs['classMethod']));
             $objectVar = $defs['objectVar'];
+            $classMethod = $this->getClassMethodFromObjectVar($objectVar);
+            //$classMethod = $defs['classMethod'];
+            $dbValue = call_user_func(array($model, $classMethod));
+
             if ($field == $key) {
                 $updateId = $dbValue;
                 $updateVar = $objectVar;
@@ -209,8 +220,11 @@ abstract class BaseRepository implements IRepository
         $deleteVar = null;
         foreach ($dbDefinitions['fields'] as $field => $defs) {
 
-            $dbValue = call_user_func(array($model, $defs['classMethod']));
             $objectVar = $defs['objectVar'];
+            $classMethod = $this->getClassMethodFromObjectVar($objectVar);
+            //$classMethod = $defs['classMethod'];
+            $dbValue = call_user_func(array($model, $classMethod));
+
             if ($field == $key) {
                 $deleteId = $dbValue;
                 $deleteVar = $objectVar;

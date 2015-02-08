@@ -22,11 +22,6 @@
         $CMS->Err_MFail(M_ERR_UNAUTHORISED, "Admin");
     }
 
-    $cpBindings = array();
-
-    $cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();
-    $cpBindings['Auth']['CanWriteContent'] = $CMS->RES->CanAddContent();
-
     // Parameters
     $getAction = empty($_GET['action']) ? "" : $_GET['action'];
     $getId = empty($_GET['id']) ? "" : (int) $_GET['id'];
@@ -184,14 +179,17 @@
                 $modelUrlMapping = new \Cms\Data\UrlMapping\UrlMapping();
                 $modelUrlMapping->setRelativeUrl($postPermalink);
                 $modelUrlMapping->setArticleId(0);
-                $modelUrlMapping->setCategoryId($getId);
+                if ($getId) {
+                    $modelUrlMapping->setCategoryId($getId);
+                }
                 $modelUrlMapping->setIsActive('Y');
             }
 
             if (!$formErrors) {
                 try {
                     if ($isCreate) {
-                        $repoCategory->save($modelCategory);
+                        $newCatId = $repoCategory->save($modelCategory);
+                        $modelUrlMapping->setCategoryId($newCatId);
                         $repoUrlMapping->create($modelUrlMapping);
                     } elseif ($isEdit) {
                         $repoCategory->save($modelCategory);

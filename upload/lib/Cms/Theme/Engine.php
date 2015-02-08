@@ -377,6 +377,12 @@ class Engine
             case 'users':
                 $url = sprintf(URL_ROOT.'cp/users.php?action=%s', $action);
                 break;
+            case 'articles':
+                $url = URL_ROOT.'cp/articles.php';
+                break;
+            case 'article':
+                $url = sprintf(URL_ROOT.'cp/article.php?action=%s&id=%s', $action, $id);
+                break;
             case 'content_manage':
                 $url = URL_ROOT.'cp/content_manage.php?area=0&status=0&user=';
                 break;

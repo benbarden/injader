@@ -7,6 +7,7 @@ use Cms\Data\AccessLog\AccessLogRepository,
     Cms\Data\Area\AreaRepository,
     Cms\Data\Article\ArticleRepository,
     Cms\Data\Category\CategoryRepository,
+    Cms\Data\Permission\PermissionRepository,
     Cms\Data\Setting\SettingRepository,
     Cms\Data\UrlMapping\UrlMappingRepository,
     Cms\Data\User\UserRepository,
@@ -57,6 +58,7 @@ class Factory
         $repoArea = new AreaRepository($pdo);
         $repoArticle = new ArticleRepository($pdo);
         $repoCategory = new CategoryRepository($pdo);
+        $repoPermission = new PermissionRepository($pdo);
         $repoSetting = new SettingRepository($pdo);
         $repoUrlMapping = new UrlMappingRepository($pdo);
         $repoUser = new UserRepository($pdo);
@@ -101,6 +103,7 @@ class Factory
         $serviceLocator->set('Repo.Area', $repoArea);
         $serviceLocator->set('Repo.Article', $repoArticle);
         $serviceLocator->set('Repo.Category', $repoCategory);
+        $serviceLocator->set('Repo.Permission', $repoPermission);
         $serviceLocator->set('Repo.Setting', $repoSetting);
         $serviceLocator->set('Repo.UrlMapping', $repoUrlMapping);
         $serviceLocator->set('Repo.User', $repoUser);

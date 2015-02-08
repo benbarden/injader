@@ -85,7 +85,7 @@ class CategoryRepository extends BaseRepository
         if ($category->getCategoryId()) {
             parent::updateRecord($category);
         } else {
-            parent::addRecord($category);
+            return parent::addRecord($category);
         }
     }
 

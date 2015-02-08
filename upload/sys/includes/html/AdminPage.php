@@ -88,11 +88,11 @@ ExecTime;
         $strNewArticleLink = "";
         if ($CMS->RES->CanAddContent()) {
           $strManageContent = $strNewArticleLink." | <a href=\"{FN_ADM_CONTENT_MANAGE}\" title=\"Manage Content\">Content</a>";
-          $strNewArticleLink = "<li><a href=\"{FN_ADM_WRITE}?action=create\" title=\"Add new content to the site\">+ Article</a></li>";
+          $strNewArticleLink = "<li><a href=\"/cp/article.php?action=create\" title=\"Add new content to the site\">+ Article</a></li>";
           $controlPanelLinks[] = array(
-              'URL' => '{FN_ADM_CONTENT_MANAGE}',
-              'Title' => 'Manage Content',
-              'Text' => 'Content'
+              'URL' => '/cp/articles.php',
+              'Title' => 'Articles',
+              'Text' => 'Articles'
           );
         } else {
           $strManageContent = "";
@@ -104,7 +104,7 @@ ExecTime;
       } else {
           $strAdminLinks = <<<AdminLinks
                     <!-- Content -->
-                    <li><a href="/cp/content_manage.php?area=0&amp;status=0&amp;user=" title="Manage Content">Content</a></li>
+                    <li><a href="/cp/articles.php">Articles</a></li>
                     <!-- Categories -->
                     <li><a href="/cp/categories.php">Categories</a></li>
                     <!-- Files -->
@@ -252,4 +252,3 @@ Footer;
       return $strFooter;
     }
   }
-?>

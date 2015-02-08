@@ -1,0 +1,23 @@
+{% extends "core/base.twig" %}
+
+{% block cp_content %}
+
+    <h1 class="page-header">{{ CP.Title }}</h1>
+
+    {% include "core/form-errors.twig" %}
+
+    <p>You are about to delete the article: <strong>{{ Data.Article.title }}</strong></p>
+
+    <p>Are you sure you want to do this?</p>
+
+    <form class="form-horizontal" action="{{ Form.Action }}" method="post">
+        <input type="hidden" name="article-id" value="{{ Data.Article.id }}">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-danger">Yes, delete it</button>
+                <a class="btn btn-default" href="{{ cpLink('articles') }}" role="button">No, cancel and go back</a>
+            </div>
+        </div>
+    </form>
+
+{% endblock cp_content %}

@@ -66,11 +66,11 @@
                     </ul>
                 </li>
                 {% if Auth.CanWriteContent %}
-                    <li><a href="{{ cpLink('write', {'action': 'create'}) }}">+ Article</a></li>
+                    <li><a href="{{ cpLink('article', {'action': 'create'}) }}">+ Article</a></li>
                 {% endif %}
                 {% if Auth.IsAdmin %}
                     <!-- Content -->
-                    <li><a href="{{ cpLink('content_manage') }}" title="Manage Content">Content</a></li>
+                    <li><a href="{{ cpLink('articles') }}">Articles</a></li>
                     <!-- Categories -->
                     <li><a href="{{ cpLink('categories') }}">Categories</a></li>
                     <!-- Files -->

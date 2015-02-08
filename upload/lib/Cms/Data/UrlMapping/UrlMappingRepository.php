@@ -85,6 +85,24 @@ class UrlMappingRepository extends BaseRepository
         }
     }
 
+    public function deactivateByArticle($articleId, $excludeRowId)
+    {
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                UPDATE ".self::TABLE_NAME."
+                SET is_active = 'N'
+                WHERE article_id = :articleId
+                AND id != :excludeRowId
+            ");
+            $pdoStatement->bindParam(':articleId', $articleId);
+            $pdoStatement->bindParam(':excludeRowId', $excludeRowId);
+            $pdoStatement->execute();
+        } catch(\PDOException $e) {
+            throw new DataException('Failed to run: deactivateByArticle', 0, $e);
+        }
+    }
+
     public function activateById($rowId)
     {
         try {
@@ -113,6 +131,21 @@ class UrlMappingRepository extends BaseRepository
             $pdoStatement->execute();
         } catch(\PDOException $e) {
             throw new DataException('Failed to run: deleteAllByCategory', 0, $e);
+        }
+    }
+
+    public function deleteAllByArticle($articleId)
+    {
+        try {
+            /* @var \PDOStatement $pdoStatement */
+            $pdoStatement = $this->db->prepare("
+                DELETE FROM ".self::TABLE_NAME."
+                WHERE article_id = :articleId
+            ");
+            $pdoStatement->bindParam(':articleId', $articleId);
+            $pdoStatement->execute();
+        } catch(\PDOException $e) {
+            throw new DataException('Failed to run: deleteAllByArticle', 0, $e);
         }
     }
 

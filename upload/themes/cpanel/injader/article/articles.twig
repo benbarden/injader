@@ -1,0 +1,64 @@
+{% extends "core/base.twig" %}
+
+{% block cp_content %}
+
+<h1 class="page-header">Articles</h1>
+
+    {% if CP.Msg %}
+        {% if CP.Msg == 'addsuccess' %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Article added.
+            </div>
+        {% elseif CP.Msg == 'editsuccess' %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Article updated.
+            </div>
+        {% elseif CP.Msg == 'deletesuccess' %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                Article deleted.
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <button onclick="top.location.href = '/cp/article.php?action=create';">New Article</button>
+
+    <div style="clear: both; float: none;">&nbsp;</div>
+
+    {% if Page.ArticleList %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th class="col-md-1">Id</th>
+                <th class="col-md-3">Title</th>
+                <th class="col-md-3">Permalink</th>
+                <th class="col-md-2">Options</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for Item in Page.ArticleList %}
+                    <tr>
+                        <th>{{ Item.id }}</th>
+                        <td>{{ Item.title }}</td>
+                        <td>{{ Item.permalink }}</td>
+                        <td>
+                            <a class="btn btn-default" href="{{ cpLink('article', {'action': 'edit', 'id': Item.id}) }}" role="button">Edit</a>
+                            <a class="btn btn-danger" href="{{ cpLink('article', {'action': 'delete', 'id': Item.id}) }}" role="button">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+{% endblock cp_content %}

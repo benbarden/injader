@@ -144,3 +144,14 @@
         print($outputHtml);
         exit;
     }
+
+    // Access permissions
+    $currentUser = $cmsContainer->getService('Auth.CurrentUser');
+    $accessPermission = new \Cms\Access\Permission($cmsContainer, $currentUser);
+
+    // CPanel bindings
+    $cpBindings = array();
+
+    $cpBindings['Auth']['IsAdmin'] = $CMS->RES->IsAdmin();
+    $cpBindings['Auth']['CanWriteContent'] = $CMS->RES->CanAddContent();
+

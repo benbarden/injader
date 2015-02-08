@@ -1,0 +1,129 @@
+{% extends "core/base.twig" %}
+
+{% block cp_content %}
+
+    <h1 class="page-header">{{ CP.Title }}</h1>
+
+    {% include "core/form-errors.twig" %}
+
+    <form class="form-horizontal" action="{{ Form.Action }}" method="post">
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" name="title" placeholder="Article title" size="40" maxlength="125">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Permalink</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="permalink" name="permalink" placeholder="Permalink" size="40" maxlength="255">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="category-id" class="col-sm-2 control-label">Category</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="category-id" name="category-id">
+                    <option value="0">None</option>
+                    {% for Item in Data.CategoryList %}
+                    <option value="{{ Item.id }}">{{ Item.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="content-body" class="col-sm-2 control-label">Body</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="content-body" name="content-body" style="width: 100%; height: 400px;">{{ Form.CKEditor.Body }}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-sm-2 control-label">Excerpt</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="excerpt" name="excerpt" style="width: 100%; height: 100px;"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Link URL</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="link-url" name="link-url" placeholder="Link URL" size="40" maxlength="150">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Creation date</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" id="create-date-day" name="create-date-day" placeholder="Date" style="width: 200px;">
+            </div>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="create-date-time" name="create-date-time" placeholder="Time" style="width: 200px;">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+
+        var ckEditorElem = 'content-body';
+        var articleId = '{{ Data.Article.id }}';
+
+        $(document).ready(function() {
+
+            {% if Form.Errors %}
+            {% for Item in Form.Errors %}
+                {% if Item.Field %}
+                    $('#{{ Item.Field }}').parent().parent().addClass('has-error');
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if Form.Prefill %}
+            {% for Item in Form.Prefill %}
+                tagName = $('#{{ Item.Field }}').prop('tagName');
+                savedValue = '{{ Item.Value }}';
+                if (tagName == 'select') {
+                    $('#{{ Item.Field }}').each(function(elem) {
+                        if ($(elem).val() == savedValue) {
+                            $(elem).prop('selected', 'selected');
+                            return;
+                        }
+                    });
+                } else {
+                    $('#{{ Item.Field }}').val(savedValue);
+                }
+            {% endfor %}
+            {% endif %}
+
+            $('#tabs').tabs();
+
+            $('#title, #permalink').on('blur', function() {
+
+                var articleTitle = $('#title').val();
+                var currentUrl = $('#permalink').val();
+                if ((articleId != '') && (currentUrl != '')) {
+                    return false;
+                }
+
+                $.post('/ajax/article/BuildUrl.php', {
+                    'id': articleId,
+                    'title': articleTitle,
+                    'currentUrl': currentUrl
+                }, function(json) {
+                    console.log(json);
+                    var urlObject = $.parseJSON(json);
+                    if (urlObject.error == '') {
+                        articleUrl = urlObject.url;
+                        $('#permalink').val(articleUrl);
+                    } else {
+                        $('#permalink').val('');
+                    }
+                });
+
+            });
+        });
+
+    </script>
+    <script type="text/javascript" src="/assets/js/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/assets/js/injader/editor.js"></script>
+{% endblock cp_content %}

@@ -40,6 +40,11 @@ ALTER TABLE Cms_Content ADD COLUMN permalink VARCHAR(255) NOT NULL AFTER title;
 ALTER TABLE Cms_Content ADD INDEX permalink (permalink ASC);
 ALTER TABLE Cms_Content DROP COLUMN comment_count;
 ALTER TABLE Cms_Content DROP COLUMN locked;
+ALTER TABLE Cms_Content DROP COLUMN edit_date;
+ALTER TABLE Cms_Content DROP COLUMN read_userlist;
+ALTER TABLE Cms_Content DROP COLUMN hits;
+ALTER TABLE Cms_Content DROP COLUMN seo_title;
+ALTER TABLE Cms_Content DROP COLUMN user_groups;
 
 ALTER TABLE Cms_Permissions DROP COLUMN view_area;
 ALTER TABLE Cms_Permissions DROP COLUMN add_comment;

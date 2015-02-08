@@ -9,6 +9,28 @@ use Cms\Data\BaseRepository,
 
 class ArticleRepository extends BaseRepository
 {
+    const TABLE_NAME = 'Cms_Content';
+    const TABLE_KEY = 'id';
+
+    public function save(Article $article)
+    {
+        if ($article->getId()) {
+            parent::updateRecord($article);
+        } else {
+            return parent::addRecord($article);
+        }
+    }
+
+    public function delete(Article $article)
+    {
+        $articleId = $article->getId();
+        if (!$articleId) {
+            throw new DataException('Cannot delete record - id not set');
+        }
+
+        parent::deleteRecord($article);
+    }
+
     public function exists($id)
     {
         try {
@@ -81,6 +103,11 @@ class ArticleRepository extends BaseRepository
     public function getByCategoryAll($categoryId, $limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
     {
         return $this->getContent('all', $categoryId, $limit, $offset, $sortField, $sortDirection);
+    }
+
+    public function getAll($limit = 25, $offset = 0, $sortField = "create_date", $sortDirection = "DESC")
+    {
+        return $this->getContent('all', 0, $limit, $offset, $sortField, $sortDirection);
     }
 
     public function getRecentPublic($limit = 5)
